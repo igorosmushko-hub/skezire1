@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Қазақ рулары энциклопедиясы — 47 ру тарихы | Шежіре</title>
+  <meta name="description" lang="kk" content="Қазақ рулары мен жүздердің толық энциклопедиясы. Ұлы, Орта, Кіші жүз және Жүзден тыс — 47 рудың тарихы, тамғасы, ұраны, белгілі тұлғалары.">
+  <meta name="description" lang="ru" content="Полная энциклопедия казахских родов и жузов. Старший, Средний, Младший жуз и Вне жузов — история 47 родов с тамгами, боевыми кличами и известными представителями.">
+  <meta name="keywords" content="қазақ рулары, казахские роды, казахские племена, жүз, жуз, шежіре, генеалогия, арғын, найман, дулат, адай, керей, қыпшақ, жалайыр, шапырашты, конырат, табын, байулы, жетиру, алимулы, торе, кожа">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="encyclopedia.html">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Encyclopedia-specific styles ── */
+    .enc-hero {
+      min-height: 38vh;
+      background: linear-gradient(145deg, #001A5A 0%, #003082 55%, #0F3460 100%);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 100px 24px 60px;
+      position: relative; overflow: hidden;
+    }
+    .enc-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='40,2 78,40 40,78 2,40' fill='none' stroke='%23C8A84B' stroke-width='.5' opacity='.1'/%3E%3C/svg%3E");
+      background-size: 80px 80px; pointer-events: none;
+    }
+    .enc-hero-content { position: relative; z-index: 2; max-width: 700px; }
+    .enc-hero-title {
+      font-family: var(--ff-head); color: var(--gold);
+      font-size: clamp(2.2rem, 7vw, 4.5rem); line-height: 1.1;
+      margin: 16px 0 12px;
+    }
+    .enc-hero-title small {
+      display: block; font-size: 40%; font-weight: 400;
+      color: rgba(255,255,255,.55); letter-spacing: .35em; text-transform: uppercase;
+      margin-top: 6px;
+    }
+    .enc-hero-sub { color: rgba(255,255,255,.6); font-size: .95rem; }
+
+    .enc-quick-nav {
+      background: #fff; border-bottom: 1px solid rgba(0,48,130,.1);
+      position: sticky; top: 64px; z-index: 800;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    }
+    .enc-quick-links {
+      display: flex; justify-content: center; gap: 4px;
+      flex-wrap: wrap; padding: 10px 24px;
+    }
+    .enc-quick-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 20px; border-radius: 100px;
+      font-size: .85rem; font-weight: 600; color: var(--blue);
+      border: 1.5px solid rgba(0,48,130,.15);
+      transition: background .18s, border-color .18s, color .18s;
+    }
+    .enc-quick-link:hover {
+      background: var(--blue); color: var(--gold);
+      border-color: var(--blue);
+    }
+    .enc-quick-count {
+      background: var(--blue); color: var(--gold);
+      font-size: .7rem; font-weight: 700; border-radius: 100px;
+      padding: 1px 7px; min-width: 22px; text-align: center;
+    }
+    .enc-quick-link:hover .enc-quick-count { background: var(--gold); color: #1A0A00; }
+
+    .enc-main { padding: 72px 0 100px; background: var(--off-white); }
+
+    .enc-zhuz-section { margin-bottom: 80px; }
+    .enc-zhuz-header {
+      display: flex; align-items: center; gap: 20px; margin-bottom: 16px;
+    }
+    .enc-zhuz-header h2 {
+      font-family: var(--ff-head); font-size: 1.9rem;
+      color: var(--blue); white-space: nowrap;
+    }
+    .enc-zhuz-intro {
+      background: rgba(0,48,130,.04); border-left: 4px solid var(--gold);
+      border-radius: 0 var(--r-sm) var(--r-sm) 0;
+      padding: 14px 20px; margin-bottom: 36px;
+      color: var(--muted); font-size: .93rem; line-height: 1.65;
+    }
+
+    .enc-subgroup-label {
+      display: flex; align-items: center; gap: 12px;
+      margin: 40px 0 20px;
+    }
+    .enc-subgroup-label h3 {
+      font-family: var(--ff-head); font-size: 1.25rem; color: var(--blue);
+      white-space: nowrap;
+    }
+    .enc-subgroup-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(0,48,130,.3), transparent);
+    }
+
+    .enc-tribes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .enc-tribe-card {
+      background: #fff; border-radius: var(--r-md);
+      border: 1px solid rgba(0,48,130,.09);
+      box-shadow: var(--shadow-sm);
+      transition: transform .2s, box-shadow .2s;
+      scroll-margin-top: 140px;
+      overflow: hidden;
+    }
+    .enc-tribe-card:hover {
+      transform: translateY(-3px); box-shadow: var(--shadow-md);
+    }
+    .enc-tribe-header {
+      display: flex; align-items: center; gap: 14px;
+      background: linear-gradient(135deg, var(--blue), #0B3D91);
+      padding: 16px 20px;
+    }
+    .enc-tamga {
+      width: 46px; height: 46px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(200,168,75,.18); border: 1.5px solid rgba(200,168,75,.45);
+      border-radius: 8px; font-size: 1.4rem; color: var(--gold);
+      font-family: Georgia, serif;
+    }
+    .enc-tribe-name {
+      font-family: var(--ff-head); font-size: 1.15rem;
+      color: var(--gold); line-height: 1.2; margin: 0;
+    }
+    .enc-uran {
+      font-size: .73rem; color: rgba(200,168,75,.65);
+      font-style: italic; letter-spacing: .06em; margin-top: 3px;
+    }
+    .enc-tribe-body { padding: 18px 20px; }
+    .enc-tribe-body p {
+      font-size: .9rem; color: #3A3A5C; line-height: 1.65; margin-bottom: 14px;
+    }
+    .enc-tribe-meta {
+      font-size: .8rem; color: var(--muted);
+      padding-top: 10px; border-top: 1px solid rgba(0,48,130,.07);
+    }
+    .enc-notable {
+      margin-top: 12px; padding: 10px 14px;
+      background: rgba(0,48,130,.04); border-radius: var(--r-sm);
+    }
+    .enc-notable-title {
+      font-size: .72rem; font-weight: 700; letter-spacing: .07em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 6px;
+    }
+    .enc-notable ul { list-style: none; }
+    .enc-notable li {
+      font-size: .83rem; color: var(--muted); padding-left: 14px;
+      position: relative; margin-bottom: 4px;
+    }
+    .enc-notable li::before {
+      content: '✦'; position: absolute; left: 0;
+      color: var(--gold); font-size: .6rem; top: 3px;
+    }
+    .enc-notable strong { color: var(--text); font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .enc-tribes-grid { grid-template-columns: 1fr; }
+      .enc-quick-link { padding: 6px 14px; font-size: .78rem; }
+      .enc-hero { padding: 90px 20px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAVBAR ─────────────────────────────────────────────── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <a href="index.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none">
+        <span class="nav-orn">◆</span><span>Шежіре</span><span class="nav-orn">◆</span>
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html"><span class="lang-kk">Басты бет</span><span class="lang-ru" style="display:none">Главная</span></a></li>
+      <li><a href="#uly-zhuz"><span class="lang-kk">Ұлы жүз</span><span class="lang-ru" style="display:none">Старший жуз</span></a></li>
+      <li><a href="#orta-zhuz"><span class="lang-kk">Орта жүз</span><span class="lang-ru" style="display:none">Средний жуз</span></a></li>
+      <li><a href="#kishi-zhuz"><span class="lang-kk">Кіші жүз</span><span class="lang-ru" style="display:none">Младший жуз</span></a></li>
+      <li><a href="#other-zhuz"><span class="lang-kk">Жүзден тыс</span><span class="lang-ru" style="display:none">Вне жузов</span></a></li>
+    </ul>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="kk" onclick="setEncLang('kk')">ҚАЗ</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" data-lang="ru" onclick="setEncLang('ru')">РУС</button>
+    </div>
+    <button class="nav-burger" id="nav-burger" aria-label="Меню">☰</button>
+  </nav>
+
+  <!-- ─── HERO ───────────────────────────────────────────────── -->
+  <section class="enc-hero">
+    <div class="enc-hero-content">
+      <div class="hero-badge lang-kk">Қазақ халқының рухани мұрасы</div>
+      <div class="hero-badge lang-ru" style="display:none">Духовное наследие казахского народа</div>
+      <h1 class="enc-hero-title">
+        <span class="lang-kk">Қазақ рулары<small>Жүздер мен рулардың энциклопедиясы</small></span>
+        <span class="lang-ru" style="display:none">Казахские роды<small>Энциклопедия жузов и родов</small></span>
+      </h1>
+      <p class="enc-hero-sub lang-kk">47 ру &nbsp;·&nbsp; 4 топ &nbsp;·&nbsp; Жеті жүз жыл тарихы</p>
+      <p class="enc-hero-sub lang-ru" style="display:none">47 родов &nbsp;·&nbsp; 4 группы &nbsp;·&nbsp; Семь веков истории</p>
+    </div>
+  </section>
+
+  <!-- ─── QUICK NAV ───────────────────────────────────────────── -->
+  <nav class="enc-quick-nav" aria-label="Жүздер бойынша навигация">
+    <div class="enc-quick-links">
+      <a href="#uly-zhuz" class="enc-quick-link">
+        <span class="lang-kk">Ұлы жүз</span><span class="lang-ru" style="display:none">Старший жуз</span>
+        <span class="enc-quick-count">12</span>
+      </a>
+      <a href="#orta-zhuz" class="enc-quick-link">
+        <span class="lang-kk">Орта жүз</span><span class="lang-ru" style="display:none">Средний жуз</span>
+        <span class="enc-quick-count">8</span>
+      </a>
+      <a href="#kishi-zhuz" class="enc-quick-link">
+        <span class="lang-kk">Кіші жүз</span><span class="lang-ru" style="display:none">Младший жуз</span>
+        <span class="enc-quick-count">24</span>
+      </a>
+      <a href="#other-zhuz" class="enc-quick-link">
+        <span class="lang-kk">Жүзден тыс</span><span class="lang-ru" style="display:none">Вне жузов</span>
+        <span class="enc-quick-count">3</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ─── MAIN CONTENT ───────────────────────────────────────── -->
+  <main class="enc-main">
+    <div class="container">
+
+      <!-- ════════════════ ҰЛЫ ЖҮЗ ════════════════ -->
+      <section id="uly-zhuz" class="enc-zhuz-section">
+        <div class="enc-zhuz-header">
+          <div class="orn-line"></div>
+          <h2 class="lang-kk">Ұлы жүз</h2>
+          <h2 class="lang-ru" style="display:none">Старший жуз</h2>
+          <div class="orn-line"></div>
+        </div>
+        <div class="enc-zhuz-intro">
+          <span class="lang-kk">Ұлы жүз — оңтүстік-шығыс Қазақстандағы Жетісу өңірін мекендеген. Іле, Шу, Талас өзендері бойы мен Тянь-Шань баурайы — тарихи жері. 12 негізгі ру бар.</span>
+          <span class="lang-ru" style="display:none">Старший жуз — населял юго-восточный Казахстан, регион Жетысу (Семиречье). Исторические земли — берега рек Или, Чу, Талас и предгорья Тянь-Шаня. Включает 12 основных родов.</span>
+        </div>
+
+        <div class="enc-tribes-grid">
+
+          <!-- ДУЛАТ -->
+          <article id="tribe-dulat" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⋔</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Дулат</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Дулат</h3>
+                <div class="enc-uran">Бақтыяр!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Дулат — Ұлы жүздің ең ірі рулы. Жетісу мен Іле өзенінің бойын, Шу жазығын ежелден мекендеген. Қазақ хандығы дәуірінде хандарды сайлауда үлкен ықпалы болды. Руда Барақ батыр, Суюнш-қожа сияқты тарихи тұлғалар жетілді. Тамғасы ⋔ — үш тармақты белгі. Бүгінде Алматы мен Жамбыл облыстарында шоғырланған.</p>
+              <p class="lang-ru" style="display:none">Дулат — крупнейшее племя Старшего жуза. С древности населяли Жетысу, берега Или и Чуйскую долину. В эпоху Казахского ханства имели большое влияние при избрании ханов. Из рода вышли батыр Барак и государственный деятель Суюнш-кожа. Тамга ⋔ — трёхзубчатый знак. Сегодня сосредоточены в Алматинской и Жамбылской областях.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Жетісу · Іле өзені · Шу жазығы</span>
+                <span class="lang-ru" style="display:none">📍 Жетысу · река Или · Чуйская долина</span>
+              </div>
+              <div class="enc-notable">
+                <div class="enc-notable-title lang-kk">Атақты тұлғалар</div>
+                <div class="enc-notable-title lang-ru" style="display:none">Известные представители</div>
+                <ul>
+                  <li><strong>Барақ батыр</strong> — <span class="lang-kk">XVIII ғ. жоңғарларға қарсы соғыстың батыры</span><span class="lang-ru" style="display:none">батыр XVIII в., герой войны с джунгарами</span></li>
+                  <li><strong>Суюнш-қожа</strong> — <span class="lang-kk">Қазақ хандығын нығайтқан XV ғ. саяси тұлға</span><span class="lang-ru" style="display:none">политический деятель XV в., укреплявший Казахское ханство</span></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- ЖАЛАЙЫР -->
+          <article id="tribe-jalayir" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊥</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Жалайыр</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Жалайыр</h3>
+                <div class="enc-uran">Бұлбұл!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Жалайыр — Ұлы жүздің ежелгі рулы, ата-тегі түркі-монғол тайпаларына барып тіреледі. Жетісу мен Балқаш маңын мекендеген. Монғол дәуірінде де ірі тайпа ретінде белгілі болған. Байжігіт батыр XVIII ғ. жоңғарларға қарсы ерлік жасады. Тамғасы ⊥, ұраны «Бұлбұл!». Алматы облысы мен Жетісуда тіршілік етеді.</p>
+              <p class="lang-ru" style="display:none">Жалайыр — древний род Старшего жуза, ведущий происхождение от тюрко-монгольских племён. Населяли Жетысу и Прибалхашье. В монгольскую эпоху были известным крупным племенем. Батыр Байжигит прославился героизмом в войне с джунгарами в XVIII в. Тамга ⊥, уран «Бұлбұл!». Проживают в Алматинской области и Жетысу.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Жетісу · Балқаш маңы</span>
+                <span class="lang-ru" style="display:none">📍 Жетысу · Прибалхашье</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ШАПЫРАШТЫ -->
+          <article id="tribe-shapyrashty" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⋒</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Шапырашты</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Шапырашты</h3>
+                <div class="enc-uran">Алаш!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Шапырашты — Алматы маңын мен Іле өзенінің орта ағысын мекендеген. Тянь-Шань тауларының баурайы — тарихи жайылымы. XVIII ғасырдағы атақты Бөлтірік жырау осы рудан шыққан. Жыраулар мен батырлар мекені. Тамғасы ⋒, ұраны «Алаш!». Алматы маңы мен Жетісуда тіршілік етеді.</p>
+              <p class="lang-ru" style="display:none">Шапырашты — населяли окрестности Алматы и среднее течение Или. Предгорья Тянь-Шаня — их исторические пастбища. Известный жырау Болтирик XVIII в. — из этого рода. Родина жырау и батыров. Тамга ⋒, уран «Алаш!». Проживают в районе Алматы и в Жетысу.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Алматы маңы · Іле өзені · Тянь-Шань</span>
+                <span class="lang-ru" style="display:none">📍 Окрестности Алматы · Или · Тянь-Шань</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ЫСТЫ -->
+          <article id="tribe-ysty" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊳</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Ысты</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Ысты</h3>
+                <div class="enc-uran">Алаш!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Ысты — Сырдария мен Шу аралығын мекендеген Ұлы жүздің ежелгі рулы. Тарихи жазбаларда «Ыстық» деп те кездеседі. Мал шаруашылығымен айналысқан, Шу-Талас жазығын жайлаған. Тамғасы ⊳, ұраны «Алаш!». Оңтүстік Қазақстан мен Жамбыл облыстарында ұрпақтары тіршілік етеді.</p>
+              <p class="lang-ru" style="display:none">Ысты — древний род Старшего жуза, населявший территорию между Сырдарьёй и Чу. В исторических источниках записывается как «Ыстык». Занимались скотоводством, пасли скот на Чу-Таласской равнине. Тамга ⊳, уран «Алаш!». Потомки живут в Южном Казахстане и Жамбылской области.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Сырдария · Шу аралығы</span>
+                <span class="lang-ru" style="display:none">📍 Сырдарья · Чу (междуречье)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ОШАҚТЫ -->
+          <article id="tribe-oshakty" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊡</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Ошақты</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Ошакты</h3>
+                <div class="enc-uran">Ошақты!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Ошақты — Жетісудың батыс бөлігін, Іле мен Шу арасындағы жерлерді мекендеген Ұлы жүз руы. Жайылымдық мал шаруашылығымен айналысқан. Ру ішкі тармақтарға бөлінген. Тамғасы ⊡, ұраны «Ошақты!». Жамбыл мен Алматы облыстарында кездеседі.</p>
+              <p class="lang-ru" style="display:none">Ошакты — род Старшего жуза, населявший западную часть Жетысу, земли между Или и Чу. Занимались кочевым скотоводством. Род делится на внутренние ветви. Тамга ⊡, уран «Ошақты!». Встречается в Жамбылской и Алматинской областях.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Жетісу батысы · Іле — Шу аралығы</span>
+                <span class="lang-ru" style="display:none">📍 Западное Жетысу · между Или и Чу</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- СІРГЕЛІ -->
+          <article id="tribe-sirgeli" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⌦</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Сіргелі</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Сіргелі</h3>
+                <div class="enc-uran">Кербұға!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Сіргелі — Шу өзенінің орта ағысы мен Алматы маңын мекендеген Ұлы жүздің белді рулы. XVIII ғасырдағы жоңғар шапқыншылығына қарсы белсенді соғысқан. Мәтенбай батыр осы рудан. Тамғасы ⌦, ұраны «Кербұға!». Алматы маңы мен Шу алқабында тіршілік етеді.</p>
+              <p class="lang-ru" style="display:none">Сіргелі — значительный род Старшего жуза, населявший среднее течение Чу и окрестности Алматы. Активно сражались против джунгарских нашествий в XVIII в. Батыр Матенбай — из этого рода. Тамга ⌦, уран «Кербұға!». Проживают в районе Алматы и Чуйской долине.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Шу өзені · Алматы маңы</span>
+                <span class="lang-ru" style="display:none">📍 Река Чу · окрестности Алматы</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ҚАҢЛЫ -->
+          <article id="tribe-kanly" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⌂</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Қаңлы</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Каңлы</h3>
+                <div class="enc-uran">Алаш!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Қаңлы — ежелгі «Қаңлы» мемлекетімен байланысы бар тарихи ру. Сырдария жазығы мен Оңтүстік Қазақстанда орналасқан. Орта ғасырлық жылнамаларда жиі аталады. Тамғасы ⌂, ұраны «Алаш!». Оңтүстік Қазақстан мен Қызылорда өңірінде ұрпақтары тіршілік етеді.</p>
+              <p class="lang-ru" style="display:none">Каңлы — исторический род, связанный с древним государством «Канглы». Населяли Сырдарьинскую равнину и Южный Казахстан. Часто упоминаются в средневековых летописях. Тамга ⌂, уран «Алаш!». Потомки рода проживают в Южном Казахстане и Кызылординском регионе.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Сырдария · Оңтүстік Қазақстан</span>
+                <span class="lang-ru" style="display:none">📍 Сырдарья · Южный Казахстан</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- АЛБАН -->
+          <article id="tribe-alban" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊞</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Албан</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Албан</h3>
+                <div class="enc-uran">Алаш!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Албан — Жетісудың шығыс бөлігін, Тянь-Шань баурайын мекендеген Ұлы жүз руы. Қытай шекарасына жақын орналасқан. Тайлақ батыр XVIII ғ. жоңғарларға қарсы күресте ерлік көрсетті. Тамғасы ⊞, ұраны «Алаш!». Алматы облысының шығыс аудандарында шоғырланған.</p>
+              <p class="lang-ru" style="display:none">Албан — род Старшего жуза, населявший восточную часть Жетысу и предгорья Тянь-Шаня. Расположены вблизи китайской границы. Батыр Тайлак прославился в борьбе с джунгарами в XVIII в. Тамга ⊞, уран «Алаш!». Сосредоточены в восточных районах Алматинской области.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Жетісу шығысы · Тянь-Шань баурайы</span>
+                <span class="lang-ru" style="display:none">📍 Восточное Жетысу · предгорья Тянь-Шаня</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- СУАН -->
+          <article id="tribe-suan" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⌬</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Суан</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Суан</h3>
+                <div class="enc-uran">Алаш!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Суан — Жетісу өңірінде, Іле өзені маңында мекендеген Ұлы жүздің бір рулы. Ата-тегі ежелгі үйсін тайпаларымен байланыстырылады деп болжанады. Мал шаруашылығымен айналысқан. Тамғасы ⌬, ұраны «Алаш!». Алматы облысы мен Жетісуда тіршілік етеді.</p>
+              <p class="lang-ru" style="display:none">Суан — один из родов Старшего жуза, населявших регион Жетысу вдоль реки Или. Происхождение предположительно связывается с древними племенами усуней. Занимались скотоводством. Тамга ⌬, уран «Алаш!». Проживают в Алматинской области и Жетысу.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Іле өзені · Жетісу</span>
+                <span class="lang-ru" style="display:none">📍 Река Или · Жетысу</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ШАНЫШҚЫЛЫ -->
+          <article id="tribe-shanishkily" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⌗</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Шанышқылы</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Шанышкылы</h3>
+                <div class="enc-uran">Алаш!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Шанышқылы — Жетісудың оңтүстік бөлігінде, Тянь-Шань мен Қырғыз Алатауының баурайында мекендеген. «Шанышқылы» атауы «шанышқы» — ілмек сөзімен байланысты деп есептеледі. Тамғасы ⌗, ұраны «Алаш!». Алматы облысының оңтүстік аудандарында шоғырланған.</p>
+              <p class="lang-ru" style="display:none">Шанышкылы — населяли южную часть Жетысу, предгорья Тянь-Шаня и Киргизского Алатау. Название связывают со словом «шанышкы» — крючок. Тамга ⌗, уран «Алаш!». Сосредоточены в южных районах Алматинской области.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Жетісу оңтүстігі · Тянь-Шань</span>
+                <span class="lang-ru" style="display:none">📍 Южное Жетысу · Тянь-Шань</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ЖАНЫС -->
+          <article id="tribe-janyis" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊿</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Жаныс</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Жаныс</h3>
+                <div class="enc-uran">Жаныс!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Жаныс — Шу өзені мен Мойынқұм жазығын мекендеген Ұлы жүз рулы. Ру атауы «жан» — тіршілік, жан сөзімен байланыстырылады. Шу алқабын жайлаған, мал шаруашылығымен айналысқан. Тамғасы ⊿, ұраны «Жаныс!». Жамбыл облысында шоғырланған.</p>
+              <p class="lang-ru" style="display:none">Жаныс — род Старшего жуза, населявший долину Чу и равнину Муюнкум. Название связывают со словом «жан» — душа, жизнь. Занимали Чуйскую долину, занимались скотоводством. Тамга ⊿, уран «Жаныс!». Сосредоточены в Жамбылской области.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Шу өзені · Мойынқұм</span>
+                <span class="lang-ru" style="display:none">📍 Река Чу · равнина Муюнкум</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ҚАТАҒАН -->
+          <article id="tribe-katagan" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊕</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Қатаған</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Катаган</h3>
+                <div class="enc-uran">Қатаған!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Қатаған — Ұлы жүздің ежелгі рулы, Сырдария маңы мен Оңтүстік Қазақстанда мекендеген. Орта ғасырлық жылнамаларда жиі аталады. Тамғасы ⊕, ұраны «Қатаған!». Оңтүстік Қазақстан мен Сырдария өңірінде ұрпақтары тіршілік етеді.</p>
+              <p class="lang-ru" style="display:none">Катаган — древний род Старшего жуза, населявший Присырдарье и Южный Казахстан. Неоднократно упоминаются в средневековых хрониках. Тамга ⊕, уран «Қатаған!». Потомки проживают в Южном Казахстане и Сырдарьинском регионе.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Сырдария маңы · Оңтүстік Қазақстан</span>
+                <span class="lang-ru" style="display:none">📍 Присырдарье · Южный Казахстан</span>
+              </div>
+            </div>
+          </article>
+
+        </div><!-- /.enc-tribes-grid -->
+      </section><!-- /#uly-zhuz -->
+
+      <!-- ════════════════ ОРТА ЖҮЗ ════════════════ -->
+      <section id="orta-zhuz" class="enc-zhuz-section">
+        <div class="enc-zhuz-header">
+          <div class="orn-line"></div>
+          <h2 class="lang-kk">Орта жүз</h2>
+          <h2 class="lang-ru" style="display:none">Средний жуз</h2>
+          <div class="orn-line"></div>
+        </div>
+        <div class="enc-zhuz-intro">
+          <span class="lang-kk">Орта жүз — Орталық және Солтүстік-Шығыс Қазақстанды, Сарыарқа даласын мекендеген. Ертіс, Есіл, Тобыл өзендері бойы — тарихи жері. 8 негізгі ру бар.</span>
+          <span class="lang-ru" style="display:none">Средний жуз — населял Центральный и Северо-Восточный Казахстан, степи Сарыарки. Исторические земли — бассейны рек Иртыш, Ишим и Тобол. Включает 8 основных родов.</span>
+        </div>
+
+        <div class="enc-tribes-grid">
+
+          <!-- АРҒЫН -->
+          <article id="tribe-argyn" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">Ж</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Арғын</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Аргын</h3>
+                <div class="enc-uran">Ақжол!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Арғын — Орта жүздің ең ірі рулы, Сарыарқаның кең байтақ даласын ежелден мекендеген. Қазақ рухани мәдениетіне орасан үлес қосқан: Асан қайғы жырау, Бұқар жырау Қалқаманұлы, ұлы ақын Абай Құнанбаев — бәрі арғыннан шыққан. «Ақжол!» ұраны, Ж тамғасы. Орталық Қазақстан, Сарыарқа — арғын жерінің жүрегі.</p>
+              <p class="lang-ru" style="display:none">Аргын — крупнейший род Среднего жуза, с древности населявший обширные степи Сарыарки. Внёс огромный вклад в духовную культуру: жырау Асан-Кайгы, Бухар-жырау Калкаманов, великий поэт Абай Кунанбаев — все из аргынов. Уран «Ақжол!», тамга Ж. Центральный Казахстан, Сарыарка — сердце аргынских земель.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Орталық Қазақстан · Сарыарқа</span>
+                <span class="lang-ru" style="display:none">📍 Центральный Казахстан · Сарыарка</span>
+              </div>
+              <div class="enc-notable">
+                <div class="enc-notable-title lang-kk">Атақты тұлғалар</div>
+                <div class="enc-notable-title lang-ru" style="display:none">Известные представители</div>
+                <ul>
+                  <li><strong>Асан қайғы</strong> — <span class="lang-kk">XV ғ. жырауы, «Жер ұйық» іздеушісі</span><span class="lang-ru" style="display:none">жырау XV в., искатель «земли обетованной»</span></li>
+                  <li><strong>Бұқар жырау</strong> — <span class="lang-kk">XVIII ғ. ұлы жырауы, Абылай ханның кеңесшісі</span><span class="lang-ru" style="display:none">великий жырау XVIII в., советник хана Аблая</span></li>
+                  <li><strong>Абай Құнанбаев</strong> — <span class="lang-kk">1845–1904. Қазақтың ұлы ақыны мен ойшылы</span><span class="lang-ru" style="display:none">1845–1904. Великий казахский поэт и мыслитель</span></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- НАЙМАН -->
+          <article id="tribe-naiman" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">Ψ</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Найман</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Найман</h3>
+                <div class="enc-uran">Қаракерей!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Найман — Орта жүздің ірі рулы. «Найман» сөзі монғолша «сегіз» — сегіз ру бірлігін білдіреді. Алтай тауынан Сарыарқаға дейін жайылған. Ұлы Қабанбай батыр (1691–1787), жазушы Мұхтар Әуезов (1897–1961) — найман ұрпағы. Тамғасы Ψ, ұраны «Қаракерей!». Шығыс Қазақстан — тарихи жері.</p>
+              <p class="lang-ru" style="display:none">Найман — крупный род Среднего жуза. «Найман» по-монгольски «восемь» — союз восьми племён. Расселялись от Алтая до Сарыарки. Великий батыр Кабанбай (1691–1787), писатель Мухтар Ауэзов (1897–1961) — потомки найман. Тамга Ψ, уран «Қаракерей!». Восточный Казахстан — историческая родина.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Шығыс Қазақстан · Алтай · Сарыарқа</span>
+                <span class="lang-ru" style="display:none">📍 Восточный Казахстан · Алтай · Сарыарка</span>
+              </div>
+              <div class="enc-notable">
+                <div class="enc-notable-title lang-kk">Атақты тұлғалар</div>
+                <div class="enc-notable-title lang-ru" style="display:none">Известные представители</div>
+                <ul>
+                  <li><strong>Қабанбай батыр</strong> — <span class="lang-kk">XVIII ғ. ұлы батыры, жоңғарларға қарсы соғыстың қолбасшысы</span><span class="lang-ru" style="display:none">великий батыр XVIII в., главнокомандующий в войне с джунгарами</span></li>
+                  <li><strong>Мұхтар Әуезов</strong> — <span class="lang-kk">«Абай жолы» эпопеясының авторы, Социалистік Еңбек Ері</span><span class="lang-ru" style="display:none">автор эпопеи «Путь Абая», Герой Социалистического Труда</span></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- КЕРЕЙ -->
+          <article id="tribe-kerey" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">✛</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Керей</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Керей</h3>
+                <div class="enc-uran">Алаш!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Керей — 1465 жылы Қазақ хандығының негізін қалауда орасан зор рол атқарды. Жәнібек хан мен Керей хан осы рулар негізінде хандық құрды. Шығыс Қазақстан мен Алтай баурайын мекендеген. Тамғасы ✛, ұраны «Алаш!». Керей ханның есімі ру атауымен тікелей байланысты.</p>
+              <p class="lang-ru" style="display:none">Керей — сыграли ключевую роль в основании Казахского ханства в 1465 году. Ханы Жанибек и Керей создали ханство именно на базе этих родов. Населяли Восточный Казахстан и предгорья Алтая. Тамга ✛, уран «Алаш!». Имя хана Керея непосредственно связано с названием рода.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Шығыс Қазақстан · Алтай баурайы</span>
+                <span class="lang-ru" style="display:none">📍 Восточный Казахстан · предгорья Алтая</span>
+              </div>
+              <div class="enc-notable">
+                <div class="enc-notable-title lang-kk">Атақты тұлғалар</div>
+                <div class="enc-notable-title lang-ru" style="display:none">Известные представители</div>
+                <ul>
+                  <li><strong>Керей хан</strong> — <span class="lang-kk">Қазақ хандығының бірінші ханы (1465–1473)</span><span class="lang-ru" style="display:none">первый хан Казахского ханства (1465–1473)</span></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- ҚЫПШАҚ -->
+          <article id="tribe-kypshak" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">↑</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Қыпшақ</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Кыпшак</h3>
+                <div class="enc-uran">Олжа!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Қыпшақ — ежелгі және кең тараған түркі тайпасы, Орта жүздің белді рулы. Ерте орта ғасырларда Қыпшақ даласы Еуразияның ең ірі тайпалық одақтарының бірін қамтыды. Орталық Қазақстан даласын мекендеген. Тамғасы ↑, ұраны «Олжа!».</p>
+              <p class="lang-ru" style="display:none">Кыпшак — одно из древних и широко распространённых тюркских племён, важный род Среднего жуза. В раннем средневековье Кыпчакская степь охватывала один из крупнейших племенных союзов Евразии. Населяли степи Центрального Казахстана. Тамга ↑, уран «Олжа!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Орталық Қазақстан</span>
+                <span class="lang-ru" style="display:none">📍 Центральный Казахстан</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- УАҚ -->
+          <article id="tribe-uak" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊗</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Уақ</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Уак</h3>
+                <div class="enc-uran">Алтай!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Уақ — Орта жүздің бір рулы, Орталық және Солтүстік Қазақстанда, Есіл мен Тобыл өзендерінің бойын мекендеген. Тарихта батырлары мен ақындарымен белгілі. Тамғасы ⊗, ұраны «Алтай!». Солтүстік Қазақстан облыстарында тіршілік етеді.</p>
+              <p class="lang-ru" style="display:none">Уак — один из родов Среднего жуза, населявших Центральный и Северный Казахстан, берега рек Ишим и Тобол. Исторически известны батырами и акынами. Тамга ⊗, уран «Алтай!». Проживают в областях Северного Казахстана.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Солтүстік Қазақстан · Есіл · Тобыл</span>
+                <span class="lang-ru" style="display:none">📍 Северный Казахстан · Ишим · Тобол</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ҚОҢЫРАТ -->
+          <article id="tribe-konyrat" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⌾</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Қоңырат</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Конырат</h3>
+                <div class="enc-uran">Алаш!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Қоңырат — ежелгі монғол-түркі тайпасынан тараған Орта жүздің белді рулы. Арал теңізі маңы мен Сырдарияның төменгі ағысын мекендеген. Хорезм шахтарының ататегімен байланысты деп есептеледі. Тамғасы ⌾, ұраны «Алаш!».</p>
+              <p class="lang-ru" style="display:none">Конырат — значительный род Среднего жуза, ведущий происхождение от древнего монголо-тюркского племени. Населяли Приаралье и низовья Сырдарьи. Предположительно связан с родословной хорезмийских шахов. Тамга ⌾, уран «Алаш!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Арал маңы · Сырдарияның төменгі ағысы</span>
+                <span class="lang-ru" style="display:none">📍 Приаралье · низовья Сырдарьи</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ТАРАКТЫ -->
+          <article id="tribe-tarakty" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⌿</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Таракты</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Таракты</h3>
+                <div class="enc-uran">Таракты!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Таракты — Орта жүздің бір рулы, Торғай жазығы мен Солтүстік Қазақстанда мекендеген. Ру атауы тарақ тәріздес тамғасымен байланысты деп есептеледі. Тамғасы ⌿, ұраны «Таракты!». Солтүстік Қазақстан мен Торғай өңірінде тіршілік етеді.</p>
+              <p class="lang-ru" style="display:none">Таракты — один из родов Среднего жуза, населявший Тургайскую равнину и Северный Казахстан. Название предположительно связано с тамгой в форме гребня. Тамга ⌿, уран «Таракты!». Проживают в Северном Казахстане и Тургайском регионе.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Торғай жазығы · Солтүстік Қазақстан</span>
+                <span class="lang-ru" style="display:none">📍 Тургайская равнина · Северный Казахстан</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- МЕРКІТ -->
+          <article id="tribe-merkit" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊠</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Меркіт</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Меркит</h3>
+                <div class="enc-uran">Алаш!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Меркіт — монғол дәуірінде белгілі болған ежелгі тайпа, кейіннен Орта жүздің рулары арасына кірген. Сарыарқаның шығыс бөлігінде мекендеген. Тамғасы ⊠, ұраны «Алаш!». Шығыс Қазақстан облысында ұрпақтары тіршілік етеді.</p>
+              <p class="lang-ru" style="display:none">Меркит — древнее племя, известное в монгольскую эпоху, впоследствии вошедшее в состав Среднего жуза. Населяли восточную часть Сарыарки. Тамга ⊠, уран «Алаш!». Потомки проживают в Восточно-Казахстанской области.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Сарыарқа шығысы</span>
+                <span class="lang-ru" style="display:none">📍 Восточная Сарыарка</span>
+              </div>
+            </div>
+          </article>
+
+        </div><!-- /.enc-tribes-grid -->
+      </section><!-- /#orta-zhuz -->
+
+      <!-- ════════════════ КІШІ ЖҮЗ ════════════════ -->
+      <section id="kishi-zhuz" class="enc-zhuz-section">
+        <div class="enc-zhuz-header">
+          <div class="orn-line"></div>
+          <h2 class="lang-kk">Кіші жүз</h2>
+          <h2 class="lang-ru" style="display:none">Младший жуз</h2>
+          <div class="orn-line"></div>
+        </div>
+        <div class="enc-zhuz-intro">
+          <span class="lang-kk">Кіші жүз — Батыс Қазақстан, Каспий теңізі маңы мен Арал өңірін мекендеген. Байұлы (12 ру), Жетіру (7 ру) және Әлімұлы (5 ру) — үш үлкен бірлестіктен тұрады.</span>
+          <span class="lang-ru" style="display:none">Младший жуз — населял Западный Казахстан, Прикаспийский регион и Приаралье. Состоит из трёх объединений: Байулы (12 родов), Жетиру (7 родов) и Алимулы (5 родов).</span>
+        </div>
+
+        <!-- ── Байұлы ── -->
+        <div class="enc-subgroup-label">
+          <h3 class="lang-kk">Байұлы</h3>
+          <h3 class="lang-ru" style="display:none">Байулы</h3>
+          <div class="enc-subgroup-line"></div>
+          <span style="font-size:.8rem;color:var(--muted);white-space:nowrap">12 <span class="lang-kk">ру</span><span class="lang-ru" style="display:none">родов</span></span>
+        </div>
+
+        <div class="enc-tribes-grid">
+
+          <!-- АДАЙ -->
+          <article id="tribe-aday" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">Ⅴ</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Адай</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Адай</h3>
+                <div class="enc-uran">Адай!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Адай — Кіші жүздің ең мәшhүр рулы, Маңғыстау түбегі мен Каспий жағалауын мекендеген. Тарихта ерлігі мен тәуелсіз рухымен танымал. Сопы-ойшыл Бекет ата мен батыр Исатай Тайманов — адайлардан. XIX ғасырда орыс отаршылдығына қарсы бас көтерген. Тамғасы Ⅴ, ұраны «Адай!».</p>
+              <p class="lang-ru" style="display:none">Адай — наиболее известный род Младшего жуза, населявший полуостров Мангышлак и побережье Каспия. Исторически прославились воинственностью и независимым духом. Суфийский мудрец Бекет-ата и батыр Исатай Тайманов — из адаев. В XIX в. восставали против российского колониализма. Тамга Ⅴ, уран «Адай!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Маңғыстау · Каспий жағалауы</span>
+                <span class="lang-ru" style="display:none">📍 Мангышлак · Каспийское побережье</span>
+              </div>
+              <div class="enc-notable">
+                <div class="enc-notable-title lang-kk">Атақты тұлғалар</div>
+                <div class="enc-notable-title lang-ru" style="display:none">Известные представители</div>
+                <ul>
+                  <li><strong>Бекет ата</strong> — <span class="lang-kk">1750–1813. Сопы-ойшыл, Маңғыстаудағы қасиетті орынның негізін қалаушы</span><span class="lang-ru" style="display:none">1750–1813. Суфийский мыслитель, основатель святилищ на Мангышлаке</span></li>
+                  <li><strong>Исатай Тайманов</strong> — <span class="lang-kk">1791–1838. Шаруалар көтерілісінің басшысы</span><span class="lang-ru" style="display:none">1791–1838. Предводитель крестьянского восстания</span></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- БАЙБАҚТЫ -->
+          <article id="tribe-baybakty" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊡</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Байбақты</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Байбакты</h3>
+                <div class="enc-uran">Байбақты!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Байбақты — Байұлы тобының рулы, Жайық өзенінің төменгі ағысы мен Каспий жағалауын мекендеген. Ру атауы «байлыққа тойған» мағынасын білдіреді деп есептеледі. Тамғасы ⊡, ұраны «Байбақты!».</p>
+              <p class="lang-ru" style="display:none">Байбакты — род группы Байулы, населявший низовья Яика и Каспийское побережье. Название предположительно означает «пресытившийся богатством». Тамга ⊡, уран «Байбақты!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Жайық төменгі ағысы · Каспий</span>
+                <span class="lang-ru" style="display:none">📍 Низовья Яика · Каспий</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ЖАППАС -->
+          <article id="tribe-zhappas" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⌁</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Жаппас</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Жаппас</h3>
+                <div class="enc-uran">Жаппас!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Жаппас — Байұлы тобына кіретін ру, Жайық өзені мен Арал теңізі аралығын мекендеген. Мал шаруашылығымен айналысқан. Тамғасы ⌁, ұраны «Жаппас!».</p>
+              <p class="lang-ru" style="display:none">Жаппас — род из группы Байулы, населявший территорию между Яиком и Аральским морем. Занимались скотоводством. Тамга ⌁, уран «Жаппас!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Жайық — Арал аралығы</span>
+                <span class="lang-ru" style="display:none">📍 Между Яиком и Аральским морем</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- АЛАША -->
+          <article id="tribe-alasha" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊘</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Алаша</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Алаша</h3>
+                <div class="enc-uran">Алаша!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Алаша — Байұлы тобының рулы, Каспий маңы мен Жайық өзені бойын мекендеген. «Алаша хан» аңызымен байланыстырылады. Тамғасы ⊘, ұраны «Алаша!».</p>
+              <p class="lang-ru" style="display:none">Алаша — род группы Байулы, населявший Прикаспий и берега Яика. Связывается с легендой об «Алаша хане». Тамга ⊘, уран «Алаша!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Каспий маңы · Жайық өзені</span>
+                <span class="lang-ru" style="display:none">📍 Прикаспий · река Яик</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- БЕРШ -->
+          <article id="tribe-bersh" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊢</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Берш</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Бериш</h3>
+                <div class="enc-uran">Берш!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Берш (Бериш) — Байұлы тобына кіретін ру, Батыс Қазақстанда мекендеген. Каспий маңы даласын жайлаған. Тамғасы ⊢, ұраны «Берш!».</p>
+              <p class="lang-ru" style="display:none">Бериш — род из группы Байулы, населявший Западный Казахстан. Занимали прикаспийские степи. Тамга ⊢, уран «Берш!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Батыс Қазақстан · Каспий маңы</span>
+                <span class="lang-ru" style="display:none">📍 Западный Казахстан · Прикаспий</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ЕСЕНТЕМІР -->
+          <article id="tribe-esentemir" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⌹</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Есентемір</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Есентемир</h3>
+                <div class="enc-uran">Есентемір!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Есентемір — Байұлы тобының рулы, Жайық өзені мен Каспий жағалауын мекендеген. Ру атауы кісі есімінен шыққан деп есептеледі. Тамғасы ⌹, ұраны «Есентемір!».</p>
+              <p class="lang-ru" style="display:none">Есентемир — род группы Байулы, населявший берега Яика и Каспия. Название предположительно происходит от личного имени. Тамга ⌹, уран «Есентемір!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Жайық · Каспий жағалауы</span>
+                <span class="lang-ru" style="display:none">📍 Яик · Каспийское побережье</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- МАСКАР -->
+          <article id="tribe-maskar" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⌶</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Маскар</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Маскар</h3>
+                <div class="enc-uran">Маскар!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Маскар — Байұлы тобының рулы, Атырау маңы мен Каспий теңізінің солтүстігінде мекендеген. Тамғасы ⌶, ұраны «Маскар!».</p>
+              <p class="lang-ru" style="display:none">Маскар — род группы Байулы, населявший окрестности Атырау и север Каспия. Тамга ⌶, уран «Маскар!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Атырау маңы · Каспий солтүстігі</span>
+                <span class="lang-ru" style="display:none">📍 Окрестности Атырау · Северный Каспий</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ТАНА -->
+          <article id="tribe-tana" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⋔</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Тана</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Тана</h3>
+                <div class="enc-uran">Тана!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Тана — Байұлы тобының рулы, Каспий теңізінің солтүстік-шығыс жағалауын мекендеген. Тамғасы ⋔, ұраны «Тана!».</p>
+              <p class="lang-ru" style="display:none">Тана — род группы Байулы, населявший северо-восточное побережье Каспия. Тамга ⋔, уран «Тана!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Каспий солтүстік-шығысы</span>
+                <span class="lang-ru" style="display:none">📍 Северо-восток Каспия</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ТАЗ -->
+          <article id="tribe-taz" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊤</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Таз</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Таз</h3>
+                <div class="enc-uran">Таз!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Таз — Байұлы тобына кіретін ру, Жайық өзені мен Каспий маңын мекендеген. Тамғасы ⊤, ұраны «Таз!».</p>
+              <p class="lang-ru" style="display:none">Таз — род из группы Байулы, населявший берега Яика и Прикаспий. Тамга ⊤, уран «Таз!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Жайық · Каспий маңы</span>
+                <span class="lang-ru" style="display:none">📍 Яик · Прикаспий</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ШЕРКЕШ -->
+          <article id="tribe-sherkesh" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊣</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Шеркеш</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Черкес</h3>
+                <div class="enc-uran">Шеркеш!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Шеркеш (Черкес) — Байұлы тобының рулы, Батыс Қазақстанда мекендеген. Каспий маңы мен Жайық өзенінің бойын жайлаған. Тамғасы ⊣, ұраны «Шеркеш!».</p>
+              <p class="lang-ru" style="display:none">Черкес — род группы Байулы, населявший Западный Казахстан. Занимали Прикаспий и берега Яика. Тамга ⊣, уран «Шеркеш!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Батыс Қазақстан · Каспий маңы</span>
+                <span class="lang-ru" style="display:none">📍 Западный Казахстан · Прикаспий</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ЫСЫҚ -->
+          <article id="tribe-ysyk" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊳</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Ысық</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Ысык</h3>
+                <div class="enc-uran">Ысық!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Ысық — Байұлы тобына кіретін ру, Каспий маңы мен Жайық өзенінің бойында мекендеген. Тамғасы ⊳, ұраны «Ысық!».</p>
+              <p class="lang-ru" style="display:none">Ысык — род из группы Байулы, населявший Прикаспий и берега Яика. Тамга ⊳, уран «Ысық!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Каспий маңы · Жайық</span>
+                <span class="lang-ru" style="display:none">📍 Прикаспий · Яик</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ҚЫЗЫЛҚҰРТ -->
+          <article id="tribe-kyzylkurt" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊸</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Қызылқұрт</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Кызылкурт</h3>
+                <div class="enc-uran">Қызылқұрт!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Қызылқұрт — Байұлы тобының рулы, Маңғыстау мен Каспий жағалауын мекендеген. Тамғасы ⊸, ұраны «Қызылқұрт!».</p>
+              <p class="lang-ru" style="display:none">Кызылкурт — род группы Байулы, населявший Мангышлак и Каспийское побережье. Тамга ⊸, уран «Қызылқұрт!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Маңғыстау · Каспий жағалауы</span>
+                <span class="lang-ru" style="display:none">📍 Мангышлак · побережье Каспия</span>
+              </div>
+            </div>
+          </article>
+
+        </div><!-- /.enc-tribes-grid Байұлы -->
+
+        <!-- ── Жетіру ── -->
+        <div class="enc-subgroup-label">
+          <h3 class="lang-kk">Жетіру</h3>
+          <h3 class="lang-ru" style="display:none">Жетыру</h3>
+          <div class="enc-subgroup-line"></div>
+          <span style="font-size:.8rem;color:var(--muted);white-space:nowrap">7 <span class="lang-kk">ру</span><span class="lang-ru" style="display:none">родов</span></span>
+        </div>
+
+        <div class="enc-tribes-grid">
+
+          <!-- ТАБЫН -->
+          <article id="tribe-tabyn" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊕</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Табын</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Табын</h3>
+                <div class="enc-uran">Табын!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Табын — Кіші жүздің Жетіру тобына кіретін ірі ру. Тарихи жерлері — Орал өзені мен Каспий теңізінің солтүстік жағалауы. Малшаруашылығымен, жылқы өсірумен ерекшеленеді. Ел ішінде батылдығымен мәшһүр. Ресей мен Хиуа хандықтарымен шекаралас аймақтарда белсенді тарихи рөл атқарды. Тамғасы ⊕, ұраны «Табын!».</p>
+              <p class="lang-ru" style="display:none">Табын — крупный род группы Жетыру Младшего жуза. Исторические земли — северное побережье Каспия и берега Урала. Отличались скотоводством и коневодством. Известны мужеством. Играли активную роль в приграничных районах с Россией и Хивинским ханством. Тамга ⊕, уран «Табын!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Батыс Қазақстан · Каспий маңы</span>
+                <span class="lang-ru" style="display:none">📍 Западный Казахстан · Прикаспий</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ТАМА -->
+          <article id="tribe-tama" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⋈</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Тама</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Тама</h3>
+                <div class="enc-uran">Тама!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Тама — Жетіру тобының ежелгі руларының бірі. Тарихи тұрақтары — Арал теңізінің солтүстік-батысы, Сырдария өзенінің орта бойы. Бай ауызша дәстүрімен, батырлар жыры мен шежіресімен танымал. Арал-Каспий аралығындағы сауда жолдарын бақылауда маңызды рөл атқарды. Тамғасы ⋈, ұраны «Тама!».</p>
+              <p class="lang-ru" style="display:none">Тама — один из древних родов группы Жетыру. Исторические стоянки — северо-запад Аральского моря, среднее течение Сырдарьи. Известны богатой устной традицией и генеалогиями. Играли важную роль в контроле торговых путей между Аралом и Каспием. Тамга ⋈, уран «Тама!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Арал маңы · Ақтөбе облысы</span>
+                <span class="lang-ru" style="display:none">📍 Приаралье · Актюбинская область</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ЖАҒАЛБАЙЛЫ -->
+          <article id="tribe-zhagalbaily" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⌖</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Жағалбайлы</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Жагалбайлы</h3>
+                <div class="enc-uran">Жағалбайлы!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Жағалбайлы — Кіші жүз Жетіруінің батыс өкілі. Тарихи жерлері — Жайық өзенінің төменгі сағасы мен Каспий жағалауы. Балықшылық пен мал шаруашылығын ұштастырды. Ресей экспансиясы кезеңінде өз жерін қорғаған батыр ұрпақтарымен белгілі. Тамғасы ⌖, ұраны «Жағалбайлы!».</p>
+              <p class="lang-ru" style="display:none">Жагалбайлы — западный представитель Жетыру Младшего жуза. Исторические земли — нижнее течение Яика и берега Каспия. Сочетали рыболовство и скотоводство. Известны батырами, защищавшими свои земли в период российской экспансии. Тамга ⌖, уран «Жагалбайлы!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Атырау облысы · Каспий жағалауы</span>
+                <span class="lang-ru" style="display:none">📍 Атырауская область · побережье Каспия</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- КЕРДЕРІ -->
+          <article id="tribe-kerderi" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⋋</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Кердері</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Кердери</h3>
+                <div class="enc-uran">Кердері!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Кердері — Жетіру тобының тарихи руларының бірі. Арал теңізінің шығысы мен Қызылорда аймағында таралған. Жылқы шаруашылығы мен сауда-саттықта белсенді болды. Казак-қазақ шекаралас аймақтарда дипломатиялық делдалдық қызметін атқарды. Тамғасы ⋋, ұраны «Кердері!».</p>
+              <p class="lang-ru" style="display:none">Кердери — один из исторических родов группы Жетыру. Распространены к востоку от Аральского моря и в Кызылординском регионе. Были активны в коневодстве и торговле. Выполняли роль дипломатических посредников в казачье-казахских приграничных районах. Тамга ⋋, уран «Кердери!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Қызылорда · Арал шығысы</span>
+                <span class="lang-ru" style="display:none">📍 Кызылорда · восток Аральского моря</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ТЕЛЕУ -->
+          <article id="tribe-teleu" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">✦</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Телеу</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Телеу</h3>
+                <div class="enc-uran">Телеу!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Телеу — Жетіру топтарының бірінде орын алған ру. Орал облысы мен Ақтөбе өңірінде жер иеленді. Мал шаруашылығымен, әсіресе қой өсірумен айналысты. Хандық кезеңінде білімді билер мен батырлар шығарды. Ауызша тарих дәстүрін ұрпаққа жеткізуде үлгілі болды. Тамғасы ✦, ұраны «Телеу!».</p>
+              <p class="lang-ru" style="display:none">Телеу — род, входящий в группу Жетыру. Владели землями в Уральской и Актюбинской областях. Занимались скотоводством, особенно овцеводством. В ханский период выдвигали грамотных биев и батыров. Отличались сохранением устных исторических традиций. Тамга ✦, уран «Телеу!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Батыс Қазақстан · Ақтөбе облысы</span>
+                <span class="lang-ru" style="display:none">📍 Западный Казахстан · Актюбинская область</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- РАМАДАН -->
+          <article id="tribe-ramadan" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">◈</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Рамадан</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Рамадан</h3>
+                <div class="enc-uran">Рамадан!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Рамадан — Жетіру тобының тарихи тамыры тереңде жатқан руы. Каспий маңы мен Ембі өзені алабында орналасты. Ислам мәдениетін тарату мен насихаттауда белсенді рөл атқарды. Руының аты исламдық ораза айы — Рамадан — атымен байланысты деп есептеледі. Тамғасы ◈, ұраны «Рамадан!».</p>
+              <p class="lang-ru" style="display:none">Рамадан — глубоко укоренённый исторический род группы Жетыру. Располагались в Прикаспийском регионе и бассейне реки Эмба. Играли активную роль в распространении исламской культуры. Название рода связывают с исламским месяцем поста Рамаданом. Тамга ◈, уран «Рамадан!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Атырау · Ембі өзені алабы</span>
+                <span class="lang-ru" style="display:none">📍 Атырау · бассейн реки Эмба</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ТІЛЕУ -->
+          <article id="tribe-tileu" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⋄</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Тілеу</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Тилеу</h3>
+                <div class="enc-uran">Тілеу!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Тілеу — Жетіру тобының жетінші руы. Тарихи мекені — Ақтөбе мен Орал аймақтарының шекарасы. Аз санымен де тарихта маңызды іздерін қалдырды. Жетіру топтарының ішінде шежіре жасауға деген ерекше ілтипатымен ерекшеленді. Ру ішінде шешен билер мен ақындарды шығарды. Тамғасы ⋄, ұраны «Тілеу!».</p>
+              <p class="lang-ru" style="display:none">Тилеу — седьмой род группы Жетыру. Историческая обитель — граница Актюбинского и Уральского регионов. Несмотря на небольшую численность, оставил значимый след в истории. Среди родов Жетыру выделялся особым вниманием к шежире. Выдвигал красноречивых биев и акынов. Тамга ⋄, уран «Тилеу!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Ақтөбе · Батыс Қазақстан облыстары</span>
+                <span class="lang-ru" style="display:none">📍 Актюбинская · Западно-Казахстанская области</span>
+              </div>
+            </div>
+          </article>
+
+        </div><!-- /.enc-tribes-grid Жетіру -->
+
+        <!-- ── Әлімұлы ── -->
+        <div class="enc-subgroup-label">
+          <h3 class="lang-kk">Әлімұлы</h3>
+          <h3 class="lang-ru" style="display:none">Алимулы</h3>
+          <div class="enc-subgroup-line"></div>
+          <span style="font-size:.8rem;color:var(--muted);white-space:nowrap">5 <span class="lang-kk">ру</span><span class="lang-ru" style="display:none">родов</span></span>
+        </div>
+
+        <div class="enc-tribes-grid">
+
+          <!-- ШӨМЕКЕЙ -->
+          <article id="tribe-shomekei" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊞</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Шөмекей</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Шомекей</h3>
+                <div class="enc-uran">Шөмекей!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Шөмекей — Кіші жүздің Әлімұлы тобынан шыққан ірі ру. Ақтөбе мен Батыс Қазақстан облыстарында жайылды. Ұлт-азаттық қозғалысының символы — ақын Махамбет Өтемісов осы рудан шыққан. Жылқы өсіруге бейімділігімен және өжет мінезімен танылды. Ру ішінде ақындар мен жыраулар дәстүрі гүлдеп өсті. Тамғасы ⊞, ұраны «Шөмекей!».</p>
+              <p class="lang-ru" style="display:none">Шомекей — крупный род группы Алимулы Младшего жуза. Распространён в Актюбинской и Западно-Казахстанской областях. Из этого рода происходит поэт-символ Махамбет Утемисов. Известны коневодством и решительным характером. В роду процветала традиция акынов и жырау. Тамга ⊞, уран «Шомекей!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Ақтөбе · Батыс Қазақстан облыстары</span>
+                <span class="lang-ru" style="display:none">📍 Актюбинская · Западно-Казахстанская области</span>
+              </div>
+              <div class="enc-notable">
+                <div class="enc-notable-title lang-kk">Атақты тұлғалар</div>
+                <div class="enc-notable-title lang-ru" style="display:none">Известные представители</div>
+                <ul>
+                  <li><strong>Махамбет Өтемісов</strong> — <span class="lang-kk">1804–1846. Ақын, Исатай Тайманов көтерілісінің жыршысы</span><span class="lang-ru" style="display:none">1804–1846. Поэт, певец восстания Исатая Тайманова</span></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- ШЕКТІ -->
+          <article id="tribe-shekti" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊟</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Шекті</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Шекты</h3>
+                <div class="enc-uran">Шекті!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Шекті — Әлімұлы тобының ежелгі руы. Тарихи мекені — Арал теңізінің батысы мен Ырғыз өзені алабы. Сауда және дипломатия салаларында белсенді болды. Орыс казак-бекіністерімен шекаралас өлкеде өзінің территориялық бірлігін сақтады. Тамғасы ⊟, ұраны «Шекті!».</p>
+              <p class="lang-ru" style="display:none">Шекты — древний род группы Алимулы. Исторические места — запад Аральского моря и бассейн Иргиза. Были активны в торговле и дипломатии. Сохраняли территориальную целостность в приграничных с казачьими крепостями районах. Тамга ⊟, уран «Шекты!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Ақтөбе облысы · Ырғыз аймағы</span>
+                <span class="lang-ru" style="display:none">📍 Актюбинская область · Иргизский регион</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ҚАРАКЕСЕК -->
+          <article id="tribe-karakesek" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⊠</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Қаракесек</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Каракесек</h3>
+                <div class="enc-uran">Қаракесек!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Қаракесек — Кіші жүз Әлімұлының орта тобы. Орынбор маңы мен Ырғыз-Торғай аймағын мекендеді. Сауда жолдары мен жазбаша байланысы жақсы дамыған рулардың бірі. Жергілікті хандар мен орыс әкімшілігі арасындағы делдалдық қызметте белсенді рөл атқарды. Тамғасы ⊠, ұраны «Қаракесек!».</p>
+              <p class="lang-ru" style="display:none">Каракесек — средний род Алимулы Младшего жуза. Обитали в районах Оренбурга и Иргиз-Тургайского региона. Один из родов с развитыми торговыми путями. Активно выступали посредниками между местными ханами и российской администрацией. Тамга ⊠, уран «Каракесек!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Ақтөбе · Қостанай облыстары</span>
+                <span class="lang-ru" style="display:none">📍 Актюбинская · Костанайская области</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ҚАРАТАЙ -->
+          <article id="tribe-karatay" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">◎</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Қаратай</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Каратай</h3>
+                <div class="enc-uran">Қаратай!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Қаратай — Әлімұлы тобының кіші руларының бірі. Ырғыз өзенінің жоғарғы жағалауы мен Торғай далаларын жайлады. Ауыз әдебиетінде ерлік дастандарымен мәшһүр. Жылқы өсіру және аңшылықпен айналысты. Орыс отаршылығы кезінде діни-мәдени дәстүрін сақтаған рулардың бірі. Тамғасы ◎, ұраны «Қаратай!».</p>
+              <p class="lang-ru" style="display:none">Каратай — один из малых родов группы Алимулы. Занимали верховья Иргиза и Тургайские степи. В устной литературе известны героическими поэмами. Занимались коневодством и охотой. Стали одним из родов, сохранивших религиозно-культурные традиции в период колонизации. Тамга ◎, уран «Каратай!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Ақтөбе облысы · Торғай даласы</span>
+                <span class="lang-ru" style="display:none">📍 Актюбинская область · Тургайская степь</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- КЕТЕ -->
+          <article id="tribe-kete" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">◉</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Кете</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Кете</h3>
+                <div class="enc-uran">Кете!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Кете — Кіші жүздің Әлімұлы тобындағы ежелгі рулардың бірі. Сырдария өзенінің орта бойы мен Қызылорда аймағында таралды. Суармалы егіншілік пен мал шаруашылығын ұштастырды. Орта Азия мен Қазақстанның сауда жолдарында делдалдық қызмет атқарды. Сырдария бойындағы қалалармен тығыз байланысты болды. Тамғасы ◉, ұраны «Кете!».</p>
+              <p class="lang-ru" style="display:none">Кете — один из древних родов группы Алимулы Младшего жуза. Распространились в среднем течении Сырдарьи и Кызылординском регионе. Сочетали поливное земледелие и скотоводство. Выступали посредниками на торговых путях Средней Азии и Казахстана. Тесно связаны с городами на Сырдарье. Тамга ◉, уран «Кете!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Қызылорда облысы · Сырдария бойы</span>
+                <span class="lang-ru" style="display:none">📍 Кызылординская область · берега Сырдарьи</span>
+              </div>
+            </div>
+          </article>
+
+        </div><!-- /.enc-tribes-grid Әлімұлы -->
+
+      </section><!-- /#kishi-zhuz -->
+
+      <!-- ════════════════ ЖҮЗДЕН ТЫС ════════════════ -->
+      <section id="other-zhuz" class="enc-zhuz-section">
+        <div class="enc-zhuz-header">
+          <div class="orn-line"></div>
+          <h2 class="lang-kk">Жүзден тыс топтар</h2>
+          <h2 class="lang-ru" style="display:none">Группы вне жузов</h2>
+          <div class="orn-line"></div>
+        </div>
+        <div class="enc-zhuz-intro">
+          <span class="lang-kk">Торе, Қожа және Төленгіт — казақ қоғамында ерекше мәртебелі топтар. Олар жүз жүйесіне кірмейді, бірақ ел тарихында аса маңызды рөл атқарды.</span>
+          <span class="lang-ru" style="display:none">Торе, Кожа и Толенгит — группы с особым статусом в казахском обществе. Они не входят в систему жузов, но сыграли важнейшую роль в истории народа.</span>
+        </div>
+
+        <div class="enc-tribes-grid">
+
+          <!-- ТОРЕ -->
+          <article id="tribe-tore" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">☽</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Торе (Сұлтандар)</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Торе (Султаны)</h3>
+                <div class="enc-uran">Аллаяр!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Торе — Шыңғысханның тікелей ұрпақтарынан тарайтын ханзадалар тобы. Казақ хандығы тарихында хан сайлауына ерекше хақылы болды. Сұлтан деген атақ алып жүрді. Үш жүздің үстінен жоғары саяси мәртебеге ие болды. Орыс отаршылығы кезінде де хандар мен сұлтандар берген мәртебелі топ.</p>
+              <p class="lang-ru" style="display:none">Торе — группа потомков Чингисхана по прямой линии. В истории Казахского ханства имели исключительное право на избрание ханом. Носили титул султана. Обладали высоким политическим статусом над тремя жузами. В период российской колонизации — привилегированная группа, дававшая ханов и султанов.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Бүкіл Қазақстан · барлық жүздерде</span>
+                <span class="lang-ru" style="display:none">📍 Весь Казахстан · во всех жузах</span>
+              </div>
+              <div class="enc-notable">
+                <div class="enc-notable-title lang-kk">Атақты тұлғалар</div>
+                <div class="enc-notable-title lang-ru" style="display:none">Известные представители</div>
+                <ul>
+                  <li><strong>Тәуке хан</strong> — <span class="lang-kk">үш жүзді біріктірген хан, «Жеті жарғы» заңнамасының авторы</span><span class="lang-ru" style="display:none">хан, объединивший три жуза, автор свода законов «Жеті жарғы»</span></li>
+                  <li><strong>Абылай хан</strong> — <span class="lang-kk">ұлы қолбасшы және дипломат, XVIII ғасырдың символы</span><span class="lang-ru" style="display:none">великий полководец и дипломат, символ XVIII века</span></li>
+                  <li><strong>Кенесары хан</strong> — <span class="lang-kk">1802–1847. Соңғы хан, ұлт-азаттық күрестің рәмізі</span><span class="lang-ru" style="display:none">1802–1847. Последний хан, символ национально-освободительной борьбы</span></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- ҚОЖА -->
+          <article id="tribe-koja" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">✤</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Қожа</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Кожа</h3>
+                <div class="enc-uran">Бисмілла!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Қожа — Пайғамбар Мұхаммед (с.а.у.) немесе оның серіктерінің ұрпақтары болып саналатын діни мәртебелі топ. Казақ даласында имамдар, молдалар мен дін жолбасшылары шығарды. Ислам мәдениетін, мектеп пен медресе жүйесін таратуда шешуші рөл атқарды. Саяси жағдайда бейтараптық танытып, барлық жүздер арасында сыйлы болды.</p>
+              <p class="lang-ru" style="display:none">Кожа — религиозно привилегированная группа, считающаяся потомками пророка Мухаммада (мир ему) или его сподвижников. Давали имамов, мулл и религиозных лидеров. Сыграли решающую роль в распространении исламской культуры, мектебов и медресе. Соблюдали политический нейтралитет и пользовались уважением во всех жузах.</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Бүкіл Қазақстан · әсіресе оңтүстік қалалар</span>
+                <span class="lang-ru" style="display:none">📍 Весь Казахстан · особенно южные города</span>
+              </div>
+              <div class="enc-notable">
+                <div class="enc-notable-title lang-kk">Атақты тұлғалар</div>
+                <div class="enc-notable-title lang-ru" style="display:none">Известные представители</div>
+                <ul>
+                  <li><strong>Қожа Ахмет Яссауи</strong> — <span class="lang-kk">ХII ғасырдың ұлы сопы-ақыны, Түркістанда жерленген</span><span class="lang-ru" style="display:none">великий суфийский поэт XII века, погребённый в Туркестане</span></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- ТӨЛЕНГІТ -->
+          <article id="tribe-tolengit" class="enc-tribe-card">
+            <div class="enc-tribe-header">
+              <div class="enc-tamga">⬡</div>
+              <div>
+                <h3 class="enc-tribe-name lang-kk">Төленгіт</h3>
+                <h3 class="enc-tribe-name lang-ru" style="display:none">Толенгит</h3>
+                <div class="enc-uran">Төленгіт!</div>
+              </div>
+            </div>
+            <div class="enc-tribe-body">
+              <p class="lang-kk">Төленгіт — хан жанұяларының жеке гвардиясы мен қызметшілерінен тарайтын топ. Тарихи тұрғыдан Ұлы жүз хандарының қорғаушы жасақтарынан жасақталды. Ханға адал болу дәстүрі Төленгіттің ерекше белгісі. XIX ғасырда орыс патшалығы олардың мәртебесін қайта қарады. Тамғасы ⬡, ұраны «Төленгіт!».</p>
+              <p class="lang-ru" style="display:none">Толенгит — группа, происходящая от личных гвардейцев и слуг ханских семей. Исторически формировалась из охранных отрядов ханов Старшего жуза. Особая черта — традиция верности хану. В XIX веке российское царство пересмотрело их статус. Тамга ⬡, уран «Толенгит!».</p>
+              <div class="enc-tribe-meta">
+                <span class="lang-kk">📍 Ұлы жүз аймағы · Жетісу · Оңтүстік Қазақстан</span>
+                <span class="lang-ru" style="display:none">📍 Регион Старшего жуза · Жетысу · Южный Казахстан</span>
+              </div>
+            </div>
+          </article>
+
+        </div><!-- /.enc-tribes-grid other -->
+      </section><!-- /#other-zhuz -->
+
+    </div><!-- /.container -->
+  </main>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-orn" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer-body">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo">Шежіре</a>
+          <p class="lang-kk">Болашақ ұрпақтар үшін ата-тек тарихын сақтаймыз</p>
+          <p class="lang-ru" style="display:none">Сохраняем историю рода для будущих поколений</p>
+        </div>
+        <blockquote class="footer-quote">
+          <p>«Жеті атасын білмеген жетесіз»</p>
+          <cite class="lang-kk">— Қазақ мақалы</cite>
+          <cite class="lang-ru" style="display:none">— Казахская мудрость</cite>
+        </blockquote>
+      </div>
+      <p class="footer-copy">
+        © 2024 Шежіре &nbsp;•&nbsp;
+        <span class="lang-kk">Қазақша шежіре ағашы</span>
+        <span class="lang-ru" style="display:none">Казахское генеалогическое дерево</span>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    'use strict';
+
+    let encLang = localStorage.getItem('shejire-lang') || 'kk';
+
+    function setEncLang(lang) {
+      encLang = lang;
+      document.documentElement.lang = lang;
+
+      document.querySelectorAll('.lang-kk').forEach(el => {
+        el.style.display = lang === 'kk' ? '' : 'none';
+      });
+      document.querySelectorAll('.lang-ru').forEach(el => {
+        el.style.display = lang === 'ru' ? '' : 'none';
+      });
+      document.querySelectorAll('.lang-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.lang === lang);
+      });
+
+      document.title = lang === 'kk'
+        ? 'Қазақ рулары энциклопедиясы — 47 ру тарихы | Шежіре'
+        : 'Энциклопедия казахских родов — история 47 родов | Шежіре';
+
+      localStorage.setItem('shejire-lang', lang);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (encLang !== 'kk') setEncLang(encLang);
+
+      const nav = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 40);
+      }, { passive: true });
+    });
+  </script>
+
+</body>
+</html>
