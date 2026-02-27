@@ -7,15 +7,15 @@
    HERO
    ================================================================ */
 .enc-hero {
-  min-height: 38vh;
+  min-height: 28vh;
   background: linear-gradient(145deg, #001A5A 0%, #003082 55%, #0F3460 100%);
   display: flex; align-items: center; justify-content: center;
-  text-align: center; padding: 100px 24px 60px;
+  text-align: center; padding: 80px 24px 40px;
   position: relative; overflow: hidden;
 }
 .enc-hero--compact {
-  min-height: 28vh;
-  padding: 90px 24px 48px;
+  min-height: 18vh;
+  padding: 72px 24px 32px;
 }
 .enc-hero-bg {
   position: absolute; inset: 0;
@@ -27,11 +27,11 @@
 }
 .enc-hero-title {
   font-family: var(--ff-head); color: var(--gold);
-  font-size: clamp(2rem, 6vw, 3.8rem); line-height: 1.15;
-  margin: 12px 0 10px;
+  font-size: clamp(1.8rem, 5vw, 3rem); line-height: 1.15;
+  margin: 8px 0 6px;
 }
 .enc-hero-sub {
-  color: rgba(255,255,255,.6); font-size: .95rem;
+  color: rgba(255,255,255,.6); font-size: .9rem;
   max-width: 540px; margin: 0 auto;
 }
 
@@ -56,14 +56,14 @@
 .enc-pager {
   display: flex; justify-content: space-between; align-items: center;
   max-width: 1100px; margin: 0 auto;
-  padding: 16px 24px;
+  padding: 10px 24px;
   border-bottom: 1px solid rgba(0,48,130,.08);
   background: var(--white, #fff);
 }
 .enc-pager a {
   display: inline-flex; align-items: center; gap: 6px;
-  font-size: .85rem; font-weight: 500; color: var(--blue);
-  padding: 6px 14px; border-radius: var(--r-sm, 8px);
+  font-size: .82rem; font-weight: 500; color: var(--blue);
+  padding: 5px 12px; border-radius: var(--r-sm, 8px);
   border: 1px solid rgba(0,48,130,.15);
   text-decoration: none;
   transition: background .18s, color .18s;
@@ -78,7 +78,7 @@
    MAIN — content area
    ================================================================ */
 .enc-main {
-  padding: 48px 0 60px;
+  padding: 32px 0 40px;
   background: var(--off-white, #F5F0E8);
 }
 
@@ -88,51 +88,50 @@
 .hub-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 28px;
-  padding: 48px 0 60px;
+  gap: 20px;
+  padding: 0;
 }
 .hub-card {
   background: var(--white, #fff);
   border-radius: var(--r-md, 16px);
-  padding: 36px 28px;
+  padding: 28px 24px;
   border: 1px solid rgba(0,48,130,.1);
   transition: transform .2s, box-shadow .2s, border-color .2s;
-  display: flex; flex-direction: column; gap: 12px;
+  display: flex; flex-direction: column; gap: 10px;
   text-align: center; text-decoration: none; color: inherit;
 }
 .hub-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-md, 0 6px 24px rgba(0,0,0,.12));
   border-color: var(--gold);
 }
 .hub-card-icon {
-  font-size: 2.8rem; line-height: 1;
-  margin-bottom: 4px;
+  font-size: 2.4rem; line-height: 1;
+  margin-bottom: 2px;
 }
 .hub-card-title {
-  font-family: var(--ff-head); font-size: 1.5rem;
+  font-family: var(--ff-head); font-size: 1.35rem;
   color: var(--blue);
 }
 .hub-card-desc {
-  font-size: .88rem; color: var(--muted, #6B7280); line-height: 1.55;
+  font-size: .85rem; color: var(--muted, #6B7280); line-height: 1.5;
   flex: 1;
 }
 .hub-card-count {
   display: inline-flex; align-items: center; gap: 6px;
   justify-content: center;
-  font-size: .82rem; font-weight: 600;
+  font-size: .8rem; font-weight: 600;
   color: var(--gold-dark, #8B7130);
   background: rgba(200,168,75,.1);
-  padding: 6px 16px; border-radius: 100px;
-  margin-top: 4px;
+  padding: 4px 14px; border-radius: 100px;
 }
 .hub-card-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 10px 20px; border-radius: var(--r-sm, 8px);
+  padding: 8px 18px; border-radius: var(--r-sm, 8px);
   background: var(--blue); color: var(--gold);
-  font-size: .88rem; font-weight: 600;
+  font-size: .85rem; font-weight: 600;
   transition: background .18s, transform .18s;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 .hub-card-btn:hover {
   background: var(--blue-light, #1B5FC7);
@@ -143,79 +142,237 @@
    ZHUZ PAGE — Section title + Tribes grid
    ================================================================ */
 .enc-section-title {
-  font-family: var(--ff-head); font-size: 1.5rem;
-  color: var(--blue); margin-bottom: 28px;
-  padding-bottom: 12px;
+  font-family: var(--ff-head); font-size: 1.35rem;
+  color: var(--blue); margin-bottom: 20px;
+  padding-bottom: 10px;
   border-bottom: 2px solid rgba(200,168,75,.25);
 }
 .enc-tribes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
-  padding-bottom: 40px;
+  gap: 16px;
 }
 
 /* ── Tribe Card ─────────────────────────────────────────────────── */
-.tribe-card {
+.enc-tribe-card {
   background: var(--white, #fff);
   border-radius: var(--r-md, 16px);
-  padding: 28px 24px;
+  padding: 20px 20px;
   border: 1px solid rgba(0,48,130,.1);
+  border-left: 4px solid var(--gold);
   transition: transform .2s, box-shadow .2s, border-color .2s;
-  display: flex; flex-direction: column; gap: 10px;
+  display: flex; flex-direction: column; gap: 8px;
   text-decoration: none; color: inherit;
 }
-.tribe-card:hover {
-  transform: translateY(-3px);
+.enc-tribe-card:hover {
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md, 0 6px 24px rgba(0,0,0,.12));
   border-color: var(--gold);
 }
-.tribe-card-header {
-  display: flex; align-items: center; gap: 14px;
+.enc-tribe-card-header {
+  display: flex; align-items: center; gap: 12px;
 }
-.tribe-card-tamga {
-  font-size: 2rem; line-height: 1;
-  width: 48px; height: 48px;
+.enc-tribe-card-tamga {
+  font-size: 1.6rem; line-height: 1;
+  width: 40px; height: 40px;
   display: flex; align-items: center; justify-content: center;
   background: rgba(0,48,130,.06); border-radius: var(--r-sm, 8px);
   color: var(--blue);
   flex-shrink: 0;
 }
-.tribe-card-name {
-  font-family: var(--ff-head); font-size: 1.2rem;
+.enc-tribe-card-name {
+  font-family: var(--ff-head); font-size: 1.1rem;
   color: var(--blue);
 }
-.tribe-card-subname {
-  font-size: .8rem; color: var(--muted, #6B7280); font-weight: 400;
+.enc-tribe-card-subname {
+  font-size: .78rem; color: var(--muted, #6B7280); font-weight: 400;
 }
-.tribe-card-subgroup {
+.enc-tribe-card-subgroup {
+  font-size: .72rem; font-weight: 600;
+  color: var(--gold-dark, #8B7130);
+  background: rgba(200,168,75,.12);
+  padding: 2px 8px; border-radius: 100px;
+  display: inline-block; width: fit-content;
+}
+.enc-tribe-card-desc {
+  font-size: .82rem; color: var(--muted, #6B7280); line-height: 1.5;
+  flex: 1;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.enc-tribe-card-meta {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  font-size: .75rem; color: var(--muted, #6B7280);
+}
+.enc-tribe-card-meta span {
+  display: flex; align-items: center; gap: 4px;
+}
+.enc-tribe-card-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: .82rem; font-weight: 600;
+  color: var(--white, #fff);
+  background: var(--blue);
+  padding: 6px 14px;
+  border-radius: var(--r-sm, 8px);
+  margin-top: 4px;
+  transition: background .2s, transform .2s;
+}
+.enc-tribe-card:hover .enc-tribe-card-link {
+  background: var(--gold-dark, #8B7130);
+  transform: translateX(2px);
+}
+
+/* ================================================================
+   TRIBE TABS — inline tribe content on zhuz page
+   ================================================================ */
+.tribe-tabs {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 2px solid rgba(200,168,75,.25);
+}
+.tribe-tabs-bar {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.tribe-tab {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid rgba(0,48,130,.12);
+  border-radius: var(--r-sm, 8px);
+  background: var(--white, #fff);
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: .8rem; font-weight: 500;
+  color: var(--text, #1A1A2E);
+  transition: all .2s;
+}
+.tribe-tab:hover {
+  border-color: var(--gold);
+  background: rgba(200,168,75,.06);
+}
+.tribe-tab--active {
+  background: var(--blue);
+  color: var(--gold);
+  border-color: var(--blue);
+}
+.tribe-tab-tamga {
+  font-size: 1rem; line-height: 1;
+}
+.tribe-tab-name {
+  font-family: var(--ff-head);
+}
+
+/* Tab content */
+.tribe-tabs-content {
+  background: var(--white, #fff);
+  border-radius: var(--r-md, 16px);
+  padding: 24px 24px;
+  border: 1px solid rgba(0,48,130,.1);
+}
+.tribe-tabs-header {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 14px;
+}
+.tribe-tabs-tamga-big {
+  font-size: 2.2rem; line-height: 1;
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,48,130,.06);
+  border-radius: var(--r-sm, 8px);
+  color: var(--blue);
+  flex-shrink: 0;
+}
+.tribe-tabs-title {
+  font-family: var(--ff-head); font-size: 1.4rem;
+  color: var(--blue); margin: 0;
+}
+.tribe-tabs-subgroup {
   font-size: .75rem; font-weight: 600;
   color: var(--gold-dark, #8B7130);
   background: rgba(200,168,75,.12);
-  padding: 2px 10px; border-radius: 100px;
-  display: inline-block; width: fit-content;
+  padding: 2px 8px; border-radius: 100px;
+  display: inline-block; margin-top: 2px;
 }
-.tribe-card-desc {
-  font-size: .85rem; color: var(--muted, #6B7280); line-height: 1.55;
-  flex: 1;
-  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-  overflow: hidden;
+.tribe-tabs-desc {
+  font-size: .9rem; line-height: 1.6;
+  color: var(--text, #1A1A2E);
+  margin-bottom: 18px;
 }
-.tribe-card-meta {
-  display: flex; gap: 16px; flex-wrap: wrap;
-  font-size: .78rem; color: var(--muted, #6B7280);
+
+/* Info cards grid */
+.tribe-tabs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
 }
-.tribe-card-meta span {
-  display: flex; align-items: center; gap: 4px;
+.tribe-tabs-card {
+  background: var(--off-white, #F5F0E8);
+  border-radius: var(--r-sm, 8px);
+  padding: 14px 12px;
+  text-align: center;
 }
-.tribe-card-link {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-size: .85rem; font-weight: 600; color: var(--blue);
-  margin-top: 4px;
-  transition: color .2s;
+.tribe-tabs-card-label {
+  font-size: .7rem; font-weight: 600;
+  color: var(--muted, #6B7280);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 4px;
 }
-.tribe-card:hover .tribe-card-link {
-  color: var(--gold-dark, #8B7130);
+.tribe-tabs-card-value {
+  font-family: var(--ff-head); font-size: 1.15rem;
+  color: var(--blue);
+}
+.tribe-tabs-card-value--sm {
+  font-size: .88rem; font-family: inherit;
+}
+
+/* Notable persons */
+.tribe-tabs-notable {
+  margin-bottom: 16px;
+}
+.tribe-tabs-notable-title {
+  font-family: var(--ff-head); font-size: .95rem;
+  color: var(--blue); margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid rgba(200,168,75,.2);
+}
+.tribe-tabs-notable-list {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.tribe-tabs-notable-item {
+  padding: 10px 14px;
+  background: var(--off-white, #F5F0E8);
+  border-radius: var(--r-sm, 8px);
+  border-left: 3px solid var(--gold);
+}
+.tribe-tabs-notable-name {
+  font-weight: 600; font-size: .85rem; color: var(--blue);
+  margin-bottom: 1px;
+}
+.tribe-tabs-notable-role {
+  font-size: .78rem; color: var(--muted, #6B7280); line-height: 1.45;
+}
+
+/* Link to full tribe page */
+.tribe-tabs-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px;
+  border-radius: var(--r-sm, 8px);
+  background: var(--blue);
+  color: var(--gold);
+  font-size: .82rem; font-weight: 600;
+  text-decoration: none;
+  transition: background .18s, transform .18s;
+}
+.tribe-tabs-link:hover {
+  background: var(--blue-light, #1B5FC7);
+  transform: translateY(-1px);
 }
 
 /* ================================================================
@@ -224,62 +381,62 @@
 .tribe-detail {
   max-width: 800px;
   margin: 0 auto;
-  padding: 40px 0 60px;
+  padding: 24px 0 40px;
 }
 .tribe-detail-desc {
-  font-size: 1.05rem; line-height: 1.75; color: var(--text, #1A1A2E);
-  margin-bottom: 36px;
+  font-size: 1rem; line-height: 1.7; color: var(--text, #1A1A2E);
+  margin-bottom: 24px;
 }
 .tribe-detail-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
 }
 .tribe-detail-card {
   background: var(--white, #fff);
   border-radius: var(--r-md, 16px);
-  padding: 24px 20px;
+  padding: 18px 16px;
   border: 1px solid rgba(0,48,130,.1);
   text-align: center;
 }
 .tribe-detail-card-label {
-  font-size: .75rem; font-weight: 600;
+  font-size: .72rem; font-weight: 600;
   color: var(--muted, #6B7280); text-transform: uppercase;
-  letter-spacing: .1em; margin-bottom: 8px;
+  letter-spacing: .08em; margin-bottom: 6px;
 }
 .tribe-detail-card-value {
-  font-family: var(--ff-head); font-size: 1.6rem;
+  font-family: var(--ff-head); font-size: 1.4rem;
   color: var(--blue);
 }
 .tribe-detail-card-value.tamga-big {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
 }
 
 /* ── Notable persons ───────────────────────────────────────────── */
-.tribe-notable { margin-top: 12px; }
+.tribe-notable { margin-top: 8px; }
 .tribe-notable-title {
-  font-family: var(--ff-head); font-size: 1.2rem;
-  color: var(--blue); margin-bottom: 16px;
-  padding-bottom: 8px;
+  font-family: var(--ff-head); font-size: 1.1rem;
+  color: var(--blue); margin-bottom: 12px;
+  padding-bottom: 6px;
   border-bottom: 2px solid rgba(200,168,75,.25);
 }
 .notable-list {
-  display: flex; flex-direction: column; gap: 16px;
+  display: flex; flex-direction: column; gap: 10px;
 }
 .notable-item {
   background: var(--white, #fff);
   border-radius: var(--r-md, 16px);
-  padding: 20px 24px;
+  padding: 16px 20px;
   border: 1px solid rgba(0,48,130,.1);
   border-left: 4px solid var(--gold);
 }
 .notable-item-name {
-  font-weight: 600; font-size: 1rem; color: var(--blue);
-  margin-bottom: 4px;
+  font-weight: 600; font-size: .95rem; color: var(--blue);
+  margin-bottom: 2px;
 }
 .notable-item-role {
-  font-size: .88rem; color: var(--muted, #6B7280); line-height: 1.5;
+  font-size: .85rem; color: var(--muted, #6B7280); line-height: 1.45;
 }
 
 /* ================================================================
@@ -287,34 +444,46 @@
    ================================================================ */
 .enc-cta {
   background: linear-gradient(135deg, var(--blue) 0%, #0B3D91 100%);
-  text-align: center; padding: 56px 24px;
+  text-align: center; padding: 36px 24px;
 }
 .enc-cta h3 {
   font-family: var(--ff-head); color: var(--gold);
-  font-size: 1.8rem; margin-bottom: 8px;
+  font-size: 1.5rem; margin-bottom: 6px;
 }
 .enc-cta p {
-  color: rgba(255,255,255,.6); margin-bottom: 24px;
+  color: rgba(255,255,255,.6); margin-bottom: 16px;
 }
 
 /* ================================================================
    RESPONSIVE
    ================================================================ */
 @media (max-width: 768px) {
-  .enc-hero { min-height: 30vh; padding: 84px 16px 40px; }
-  .enc-hero--compact { min-height: 22vh; padding: 80px 16px 32px; }
-  .enc-hero-title { font-size: clamp(1.6rem, 8vw, 2.4rem); }
+  .enc-hero { min-height: 22vh; padding: 68px 16px 32px; }
+  .enc-hero--compact { min-height: 14vh; padding: 64px 16px 24px; }
+  .enc-hero-title { font-size: clamp(1.5rem, 7vw, 2.2rem); }
 
-  .hub-grid { grid-template-columns: 1fr; gap: 20px; padding: 32px 0 40px; }
+  .hub-grid { grid-template-columns: 1fr; gap: 14px; }
   .enc-tribes-grid { grid-template-columns: 1fr; }
 
-  .enc-pager { flex-wrap: wrap; gap: 8px; }
-  .enc-pager a { font-size: .8rem; padding: 5px 10px; }
+  .enc-pager { flex-wrap: wrap; gap: 6px; }
+  .enc-pager a { font-size: .78rem; padding: 4px 10px; }
 
   .tribe-detail-grid { grid-template-columns: 1fr 1fr; }
+
+  .tribe-tabs-content { padding: 18px 16px; }
+  .tribe-tabs-tamga-big { width: 44px; height: 44px; font-size: 1.8rem; }
+  .tribe-tabs-title { font-size: 1.2rem; }
+  .tribe-tabs-grid { grid-template-columns: 1fr 1fr; }
+
+  .enc-cta { padding: 28px 16px; }
+  .enc-cta h3 { font-size: 1.3rem; }
 }
 
 @media (max-width: 480px) {
   .tribe-detail-grid { grid-template-columns: 1fr; }
   .enc-breadcrumb { font-size: .75rem; flex-wrap: wrap; justify-content: center; }
+
+  .tribe-tabs-grid { grid-template-columns: 1fr; }
+  .tribe-tabs-header { gap: 12px; }
+  .tribe-tabs-tamga-big { width: 40px; height: 40px; font-size: 1.6rem; }
 }
