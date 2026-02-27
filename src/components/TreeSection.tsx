@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { buildTreeSVG } from '@/lib/tree-svg';
 import { ShareImage } from './ShareImage';
@@ -37,6 +37,23 @@ export function TreeSection({ data, locale }: TreeSectionProps) {
 
   const svgString = buildTreeSVG(nodes, t('unknown'));
 
+  // Calculate stats
+  const stats = useMemo(() => {
+    const filledAncestors = data.ancestors.filter((a) => a.name.trim()).length;
+    const totalAncestors = data.ancestors.length;
+    const pct = Math.round((filledAncestors / totalAncestors) * 100);
+    const yearsSpan = filledAncestors * 25; // ~25 years per generation
+    const deepestGen = (() => {
+      // Find the deepest filled generation (ancestors are in order 1->7)
+      for (let i = totalAncestors - 1; i >= 0; i--) {
+        if (data.ancestors[i].name.trim()) return i + 1;
+      }
+      return 0;
+    })();
+
+    return { filledAncestors, totalAncestors, pct, yearsSpan, deepestGen };
+  }, [data]);
+
   return (
     <section id="tree-section" className="tree-section" ref={sectionRef}>
       <div className="container">
@@ -63,6 +80,40 @@ export function TreeSection({ data, locale }: TreeSectionProps) {
             </div>
           )}
         </div>
+
+        {/* ── Stats block ── */}
+        <div className="tree-stats">
+          <div className="tree-stat-card">
+            <span className="tree-stat-value">{stats.filledAncestors}/{stats.totalAncestors}</span>
+            <span className="tree-stat-label">{t('stats.known')}</span>
+          </div>
+          <div className="tree-stat-card">
+            <span className="tree-stat-value">{stats.deepestGen > 0 ? stats.deepestGen : '—'}</span>
+            <span className="tree-stat-label">{t('stats.deepest')}</span>
+          </div>
+          <div className="tree-stat-card">
+            <span className="tree-stat-value">~{stats.yearsSpan}</span>
+            <span className="tree-stat-label">{t('stats.years')}</span>
+          </div>
+          <div className="tree-stat-card tree-stat-accent">
+            <span className="tree-stat-value">{stats.pct}%</span>
+            <span className="tree-stat-label">{t('stats.filled')}</span>
+          </div>
+        </div>
+
+        {/* Motivational message */}
+        {stats.pct < 100 && (
+          <div className="tree-encourage">
+            {stats.pct === 0 && t('encourage.empty')}
+            {stats.pct > 0 && stats.pct < 50 && t('encourage.low')}
+            {stats.pct >= 50 && stats.pct < 100 && t('encourage.mid')}
+          </div>
+        )}
+        {stats.pct === 100 && (
+          <div className="tree-encourage tree-encourage-gold">
+            {t('encourage.full')}
+          </div>
+        )}
 
         <div className="tree-wrapper">
           <div
