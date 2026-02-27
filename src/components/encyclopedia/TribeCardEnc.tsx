@@ -1,15 +1,14 @@
-import { Link } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import type { Tribe } from '@/lib/types';
 
 interface TribeCardEncProps {
   tribe: Tribe;
   locale: string;
   zhuzId: string;
+  moreLabel: string;
 }
 
-export function TribeCardEnc({ tribe, locale, zhuzId }: TribeCardEncProps) {
-  const t = useTranslations('enc');
+export function TribeCardEnc({ tribe, locale, zhuzId, moreLabel }: TribeCardEncProps) {
   const isKk = locale === 'kk';
 
   const name = isKk ? tribe.kk : tribe.ru;
@@ -20,7 +19,7 @@ export function TribeCardEnc({ tribe, locale, zhuzId }: TribeCardEncProps) {
 
   return (
     <Link
-      href={`/encyclopedia/${zhuzId}/${tribe.id}`}
+      href={`/${locale}/encyclopedia/${zhuzId}/${tribe.id}`}
       className="tribe-card"
     >
       <div className="tribe-card-header">
@@ -36,7 +35,7 @@ export function TribeCardEnc({ tribe, locale, zhuzId }: TribeCardEncProps) {
         {region && <span>{'\uD83D\uDCCD'} {region}</span>}
         {tribe.uran && <span>{'\uD83D\uDCE3'} {tribe.uran}</span>}
       </div>
-      <div className="tribe-card-link">{t('tribeMore')}</div>
+      <div className="tribe-card-link">{moreLabel}</div>
     </Link>
   );
 }

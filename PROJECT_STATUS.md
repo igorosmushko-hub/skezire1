@@ -1,7 +1,7 @@
 # Шежіре — Статус проекта
 
 > Последнее обновление: 26 февраля 2026
-> Сессия: миграция на Next.js (завершена)
+> Сессия: миграция на Next.js + Docker (завершена)
 
 ---
 
@@ -10,7 +10,7 @@
 Казахское генеалогическое древо онлайн — skezire.kz.
 Пользователь выбирает жүз, ру, вводит имена 7 предков (жеті ата) и получает красивое генеалогическое древо.
 
-**Стек:** Next.js 15 (App Router) + TypeScript + next-intl
+**Стек:** Next.js 15 (App Router) + TypeScript + next-intl + Docker
 **Языки интерфейса:** казахский (основной), русский — URL-префиксы `/kk` и `/ru`
 **Дизайн:** Playfair Display + Inter, цвета Blue #003082 / Gold #C8A84B / Off-white #F5F0E8
 
@@ -71,7 +71,9 @@ skezire/
 │       ├── globals.css                   — основные стили (~900 строк)
 │       └── encyclopedia.css              — стили энциклопедии (~150 строк)
 ├── middleware.ts                          — определение локали + редирект
-├── next.config.ts                        — next-intl plugin
+├── next.config.ts                        — next-intl plugin + standalone output
+├── Dockerfile                            — multi-stage build (Node 24 Alpine)
+├── .dockerignore                         — исключения для Docker
 ├── tsconfig.json
 ├── package.json
 ├── public/
@@ -85,7 +87,7 @@ skezire/
 
 ## Что было сделано сегодня (26 февраля 2026)
 
-### Миграция с vanilla HTML/CSS/JS на Next.js 15
+### 1. Миграция с vanilla HTML/CSS/JS на Next.js 15
 
 Полная перезапись проекта — 117 файлов, 32 845 строк кода.
 
@@ -129,11 +131,25 @@ skezire/
 - `robots.txt` — Allow all, Disallow `/_next/` и `/agents/`
 - **Build** проходит без ошибок
 - Все 4 маршрута отвечают HTTP 200
-- Git init + первый коммит + push на GitHub
 
 #### Исправления при верификации
 - `next-intl` v4: `Link`, `useRouter`, `usePathname` через `createNavigation()` (не из `next-intl/routing`)
 - React 19: `useRef()` требует начальное значение
+
+### 2. Git + GitHub
+
+- Установлены Xcode Command Line Tools (git)
+- `git init` + первый коммит (`b055641`)
+- Репозиторий запушен на GitHub
+- Обновлён PROJECT_STATUS.md (`10f7d96`)
+
+### 3. Docker
+
+- Создан `Dockerfile` — multi-stage build (deps → build → runner) на Node 24 Alpine
+- Создан `.dockerignore` — исключает node_modules, .next, .git, _legacy, *.pen
+- `next.config.ts` — добавлен `output: 'standalone'` для оптимального Docker-образа
+- Образ собран: `skezire:latest` — 327MB
+- Контейнер запущен и проверен — все 4 маршрута HTTP 200 на `localhost:3000`
 
 ---
 
@@ -141,27 +157,55 @@ skezire/
 
 **GitHub:** https://github.com/igorosmushko-hub/skezire
 **Ветка:** `main`
-**Первый коммит:** `b055641` — "Migrate Skezire from vanilla HTML/CSS/JS to Next.js 15"
+
+### Коммиты
+| Хэш | Описание |
+|------|----------|
+| `b055641` | Migrate Skezire from vanilla HTML/CSS/JS to Next.js 15 |
+| `10f7d96` | Update PROJECT_STATUS.md to reflect Next.js migration |
+
+---
+
+## Docker
+
+```bash
+# Сборка
+docker build -t skezire .
+
+# Запуск
+docker run -d --name skezire -p 3000:3000 skezire
+
+# Проверка
+curl http://localhost:3000/kk
+```
+
+**Образ:** `skezire:latest`, 327MB, Node 24 Alpine, standalone mode
 
 ---
 
 ## Что НЕ доделано / известные задачи
 
-### Приоритет 1 — Тестирование
-- [ ] Проверить форму в браузере: жүз → ру → карточка → 7 предков → submit → SVG дерево
+### Приоритет 1 — Тестирование в браузере
+- [ ] Проверить форму: жүз → ру → карточка → 7 предков → submit → SVG дерево
 - [ ] Проверить Canvas share/download (все 4 цветовые схемы)
 - [ ] Проверить переключение языков `/kk` ↔ `/ru`
 - [ ] Проверить localStorage (жүз, ру, язык сохраняются между сессиями)
 - [ ] Responsive: 900px, 768px, 500px
 - [ ] Мобильная навигация (бургер-меню)
 
-### Приоритет 2 — Улучшения
+### Приоритет 2 — Деплой и инфраструктура
+- [ ] Деплой на Vercel (или другой хостинг) — подключить GitHub repo
+- [ ] Привязать домен skezire.kz
+- [ ] CI/CD: автодеплой при push в main
+- [ ] Закоммитить и запушить Dockerfile + .dockerignore + обновлённый next.config.ts
+
+### Приоритет 3 — Улучшения
 - [ ] OG-изображение для соцсетей
 - [ ] QR-код на PNG картинке → ссылка на skezire.kz
 - [ ] Варианты формата: Story (1080×1920), квадрат (1080×1080)
 - [ ] Удалить `_legacy/` после полной проверки
 
-### Приоритет 3 — Новые фичи
+### Приоритет 4 — Новые фичи
 - [ ] AI-функции (сейчас заглушки): стилизация фото, история рода
 - [ ] PDF-экспорт дерева
 - [ ] PWA: service worker, manifest.json, офлайн-доступ
@@ -173,8 +217,10 @@ skezire/
 
 - Пользователь общается на русском, контент проекта — казахский/русский
 - Пользователь предпочитает автономную работу без лишних подтверждений
-- Коммиты — только по явной просьбе
+- Коммиты и пуш — только по явной просьбе
 - Дизайн-система хранится в `skezire.pen` (pencil.dev)
 - Все переводы — в `messages/kk.json` и `messages/ru.json` (next-intl)
 - База родов — `TRIBES_DB` в `data/tribes.ts`
 - npm cache workaround: `--cache /tmp/npm-cache-skezire` (из-за root-owned файлов в ~/.npm)
+- GitHub token нужно передавать заново каждый раз (не сохраняется в git config)
+- Docker контейнер `skezire` может быть запущен на порту 3000

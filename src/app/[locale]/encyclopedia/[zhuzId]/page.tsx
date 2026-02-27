@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { TRIBES_DB } from '@/data/tribes';
 import { ZhuzSection } from '@/components/encyclopedia/ZhuzSection';
@@ -7,17 +7,12 @@ import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { Pager } from '@/components/encyclopedia/Pager';
 import '@/styles/encyclopedia.css';
 
-export function generateStaticParams() {
-  return TRIBES_DB.map((z) => ({ zhuzId: z.id }));
-}
-
 interface PageProps {
-  params: Promise<{ zhuzId: string }>;
+  params: Promise<{ locale: string; zhuzId: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { zhuzId } = await params;
-  const locale = await getLocale();
+  const { locale, zhuzId } = await params;
   const isKk = locale === 'kk';
   const zhuz = TRIBES_DB.find((z) => z.id === zhuzId);
   if (!zhuz) return {};
@@ -32,9 +27,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ZhuzPage({ params }: PageProps) {
-  const { zhuzId } = await params;
-  const locale = await getLocale();
-  const t = await getTranslations('enc');
+  const { locale, zhuzId } = await params;
+  const t = await getTranslations({ locale, namespace: 'enc' });
   const isKk = locale === 'kk';
 
   const zhuzIndex = TRIBES_DB.findIndex((z) => z.id === zhuzId);
@@ -44,13 +38,11 @@ export default async function ZhuzPage({ params }: PageProps) {
   const name = isKk ? zhuz.kk : zhuz.ru;
   const desc = isKk ? zhuz.desc_kk : zhuz.desc_ru;
 
-  // Pager: prev/next zhuz
   const prevZhuz = zhuzIndex > 0 ? TRIBES_DB[zhuzIndex - 1] : undefined;
   const nextZhuz = zhuzIndex < TRIBES_DB.length - 1 ? TRIBES_DB[zhuzIndex + 1] : undefined;
 
   return (
     <>
-      {/* Compact Hero */}
       <section className="enc-hero enc-hero--compact">
         <div className="enc-hero-bg" />
         <div className="enc-hero-content">
@@ -66,24 +58,21 @@ export default async function ZhuzPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Pager top */}
       <Pager
-        prev={
-          prevZhuz
-            ? { label: isKk ? prevZhuz.kk : prevZhuz.ru, href: `/encyclopedia/${prevZhuz.id}` }
-            : undefined
-        }
-        next={
-          nextZhuz
-            ? { label: isKk ? nextZhuz.kk : nextZhuz.ru, href: `/encyclopedia/${nextZhuz.id}` }
-            : undefined
-        }
+        prev={prevZhuz ? { label: isKk ? prevZhuz.kk : prevZhuz.ru, href: `/encyclopedia/${prevZhuz.id}` } : undefined}
+        next={nextZhuz ? { label: isKk ? nextZhuz.kk : nextZhuz.ru, href: `/encyclopedia/${nextZhuz.id}` } : undefined}
+        prevLabel={t('pagerPrev')}
+        nextLabel={t('pagerNext')}
+        locale={locale}
       />
 
-      {/* Tribes */}
-      <ZhuzSection zhuz={zhuz} locale={locale} />
+      <ZhuzSection
+        zhuz={zhuz}
+        locale={locale}
+        tribesHeading={t('tribesHeading')}
+        moreLabel={t('tribeMore')}
+      />
 
-      {/* CTA */}
       <section className="enc-cta">
         <div className="container">
           <h3>{t('ctaTitle')}</h3>

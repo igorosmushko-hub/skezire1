@@ -1,0 +1,7 @@
+node_modules
+.next
+.git
+.claude
+_legacy
+*.pen
+.DS_Store

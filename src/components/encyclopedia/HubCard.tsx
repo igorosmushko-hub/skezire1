@@ -1,5 +1,4 @@
-import { Link } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import type { Zhuz } from '@/lib/types';
 
 const ZHUZ_ICONS: Record<string, string> = {
@@ -12,23 +11,24 @@ const ZHUZ_ICONS: Record<string, string> = {
 interface HubCardProps {
   zhuz: Zhuz;
   locale: string;
+  tribesWord: string;
+  openLabel: string;
 }
 
-export function HubCard({ zhuz, locale }: HubCardProps) {
-  const t = useTranslations('enc');
+export function HubCard({ zhuz, locale, tribesWord, openLabel }: HubCardProps) {
   const isKk = locale === 'kk';
   const name = isKk ? zhuz.kk : zhuz.ru;
   const desc = isKk ? zhuz.desc_kk : zhuz.desc_ru;
 
   return (
-    <Link href={`/encyclopedia/${zhuz.id}`} className="hub-card">
+    <Link href={`/${locale}/encyclopedia/${zhuz.id}`} className="hub-card">
       <div className="hub-card-icon">{ZHUZ_ICONS[zhuz.id] || '\uD83D\uDCDC'}</div>
       <div className="hub-card-title">{name}</div>
       <div className="hub-card-desc">{desc}</div>
       <div className="hub-card-count">
-        {zhuz.tribes.length} {t('tribesWord')}
+        {zhuz.tribes.length} {tribesWord}
       </div>
-      <div className="hub-card-btn">{t('openZhuz')} &rarr;</div>
+      <div className="hub-card-btn">{openLabel} &rarr;</div>
     </Link>
   );
 }

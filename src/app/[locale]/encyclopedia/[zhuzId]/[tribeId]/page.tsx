@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { TRIBES_DB } from '@/data/tribes';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
@@ -7,19 +7,12 @@ import { TribeDetail } from '@/components/encyclopedia/TribeDetail';
 import { Pager } from '@/components/encyclopedia/Pager';
 import '@/styles/encyclopedia.css';
 
-export function generateStaticParams() {
-  return TRIBES_DB.flatMap((z) =>
-    z.tribes.map((t) => ({ zhuzId: z.id, tribeId: t.id }))
-  );
-}
-
 interface PageProps {
-  params: Promise<{ zhuzId: string; tribeId: string }>;
+  params: Promise<{ locale: string; zhuzId: string; tribeId: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { zhuzId, tribeId } = await params;
-  const locale = await getLocale();
+  const { locale, zhuzId, tribeId } = await params;
   const isKk = locale === 'kk';
 
   const zhuz = TRIBES_DB.find((z) => z.id === zhuzId);
@@ -36,9 +29,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function TribePage({ params }: PageProps) {
-  const { zhuzId, tribeId } = await params;
-  const locale = await getLocale();
-  const t = await getTranslations('enc');
+  const { locale, zhuzId, tribeId } = await params;
+  const t = await getTranslations({ locale, namespace: 'enc' });
   const isKk = locale === 'kk';
 
   const zhuz = TRIBES_DB.find((z) => z.id === zhuzId);
@@ -50,13 +42,11 @@ export default async function TribePage({ params }: PageProps) {
   const tribeName = isKk ? tribe.kk : tribe.ru;
   const subgroup = isKk ? tribe.subgroup_kk : tribe.subgroup_ru;
 
-  // Pager: prev/next tribe within the same zhuz
   const prevTribe = tribeIndex > 0 ? zhuz.tribes[tribeIndex - 1] : undefined;
   const nextTribe = tribeIndex < zhuz.tribes.length - 1 ? zhuz.tribes[tribeIndex + 1] : undefined;
 
   return (
     <>
-      {/* Compact Hero */}
       <section className="enc-hero enc-hero--compact">
         <div className="enc-hero-bg" />
         <div className="enc-hero-content">
@@ -73,28 +63,30 @@ export default async function TribePage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Pager top */}
       <Pager
-        prev={
-          prevTribe
-            ? { label: isKk ? prevTribe.kk : prevTribe.ru, href: `/encyclopedia/${zhuz.id}/${prevTribe.id}` }
-            : undefined
-        }
-        next={
-          nextTribe
-            ? { label: isKk ? nextTribe.kk : nextTribe.ru, href: `/encyclopedia/${zhuz.id}/${nextTribe.id}` }
-            : undefined
-        }
+        prev={prevTribe ? { label: isKk ? prevTribe.kk : prevTribe.ru, href: `/encyclopedia/${zhuz.id}/${prevTribe.id}` } : undefined}
+        next={nextTribe ? { label: isKk ? nextTribe.kk : nextTribe.ru, href: `/encyclopedia/${zhuz.id}/${nextTribe.id}` } : undefined}
+        prevLabel={t('pagerPrev')}
+        nextLabel={t('pagerNext')}
+        locale={locale}
       />
 
-      {/* Detail */}
       <main className="enc-main">
         <div className="container">
-          <TribeDetail tribe={tribe} locale={locale} />
+          <TribeDetail
+            tribe={tribe}
+            locale={locale}
+            labels={{
+              tamga: t('tribeTamga'),
+              uran: t('tribeUran'),
+              region: t('tribeRegion'),
+              subgroup: t('tribeSubgroup'),
+              notable: t('tribeNotable'),
+            }}
+          />
         </div>
       </main>
 
-      {/* CTA */}
       <section className="enc-cta">
         <div className="container">
           <h3>{t('ctaTitle')}</h3>

@@ -1,4 +1,4 @@
-import { Link } from '@/i18n/routing';
+import Link from 'next/link';
 
 interface BreadcrumbItem {
   label: string;
@@ -16,7 +16,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
         <span key={i}>
           {i > 0 && <span>&rsaquo;</span>}
           {item.href ? (
-            <a href={item.href}>{item.label}</a>
+            <Link href={item.href}>{item.label}</Link>
           ) : (
             <span className="bc-current">{item.label}</span>
           )}

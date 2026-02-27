@@ -1,12 +1,16 @@
 import type { Metadata } from 'next';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { TRIBES_DB } from '@/data/tribes';
 import { HubCard } from '@/components/encyclopedia/HubCard';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import '@/styles/encyclopedia.css';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale();
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
   const isKk = locale === 'kk';
   return {
     title: isKk
@@ -18,11 +22,13 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function EncyclopediaPage() {
-  const locale = await getLocale();
-  const t = await getTranslations('enc');
-
-  const totalTribes = TRIBES_DB.reduce((sum, z) => sum + z.tribes.length, 0);
+export default async function EncyclopediaPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'enc' });
 
   return (
     <>
@@ -37,9 +43,7 @@ export default async function EncyclopediaPage() {
             ]}
           />
           <h1 className="enc-hero-title">{t('hubTitle')}</h1>
-          <p className="enc-hero-sub">
-            {t('hubSub')}
-          </p>
+          <p className="enc-hero-sub">{t('hubSub')}</p>
         </div>
       </section>
 
@@ -48,7 +52,13 @@ export default async function EncyclopediaPage() {
         <div className="container">
           <div className="hub-grid">
             {TRIBES_DB.map((zhuz) => (
-              <HubCard key={zhuz.id} zhuz={zhuz} locale={locale} />
+              <HubCard
+                key={zhuz.id}
+                zhuz={zhuz}
+                locale={locale}
+                tribesWord={t('tribesWord')}
+                openLabel={t('openZhuz')}
+              />
             ))}
           </div>
         </div>
