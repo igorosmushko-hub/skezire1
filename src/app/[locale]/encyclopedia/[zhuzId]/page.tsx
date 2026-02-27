@@ -18,11 +18,37 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!zhuz) return {};
 
   const name = isKk ? zhuz.kk : zhuz.ru;
+  const base = 'https://skezire.kz';
+  const url = `${base}/${locale}/encyclopedia/${zhuzId}`;
+  const ogImage = `${base}/${locale}/opengraph-image`;
+
   return {
     title: isKk
       ? `${name} — ${zhuz.tribes.length} ру | Шежіре Энциклопедия`
       : `${name} — ${zhuz.tribes.length} родов | Шежіре Энциклопедия`,
     description: isKk ? zhuz.desc_kk : zhuz.desc_ru,
+    openGraph: {
+      type: 'website',
+      title: isKk
+        ? `${name} — ${zhuz.tribes.length} ру | Шежіре`
+        : `${name} — ${zhuz.tribes.length} родов | Шежіре`,
+      description: isKk ? zhuz.desc_kk : zhuz.desc_ru,
+      url,
+      siteName: 'Шежіре',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: name }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: isKk ? `${name} | Шежіре` : `${name} | Шежіре`,
+      images: [ogImage],
+    },
+    alternates: {
+      canonical: url,
+      languages: {
+        kk: `${base}/kk/encyclopedia/${zhuzId}`,
+        ru: `${base}/ru/encyclopedia/${zhuzId}`,
+      },
+    },
   };
 }
 

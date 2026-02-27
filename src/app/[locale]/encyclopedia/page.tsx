@@ -12,13 +12,40 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isKk = locale === 'kk';
+  const base = 'https://skezire.kz';
+  const url = `${base}/${locale}/encyclopedia`;
+  const ogImage = `${base}/${locale}/opengraph-image`;
+
   return {
     title: isKk
       ? 'Қазақ рулары энциклопедиясы | Шежіре'
       : 'Энциклопедия казахских родов | Шежіре',
     description: isKk
-      ? 'Ұлы, Орта, Кіші жүз және Жүзден тыс — 47 рудың толық тарихы'
-      : 'Старший, Средний, Младший жуз и Вне жузов — полная история 47 родов',
+      ? 'Ұлы, Орта, Кіші жүз және Жүзден тыс — 47 рудың толық тарихы мен шежіресі. Казақ рулары туралы толық мәлімет.'
+      : 'Старший, Средний, Младший жуз и Вне жузов — полная история 47 казахских родов. Происхождение, тамга, уран, известные люди.',
+    openGraph: {
+      type: 'website',
+      title: isKk ? 'Қазақ рулары энциклопедиясы | Шежіре' : 'Энциклопедия казахских родов | Шежіре',
+      description: isKk
+        ? 'Ұлы, Орта, Кіші жүз және Жүзден тыс — 47 рудың толық тарихы.'
+        : 'Полная история 47 казахских родов: происхождение, тамга, уран, известные люди.',
+      url,
+      siteName: 'Шежіре',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: 'Шежіре — Энциклопедия казахских родов' }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: isKk ? 'Қазақ рулары энциклопедиясы | Шежіре' : 'Энциклопедия казахских родов | Шежіре',
+      images: [ogImage],
+    },
+    alternates: {
+      canonical: url,
+      languages: {
+        kk: `${base}/kk/encyclopedia`,
+        ru: `${base}/ru/encyclopedia`,
+        'x-default': `${base}/kk/encyclopedia`,
+      },
+    },
   };
 }
 

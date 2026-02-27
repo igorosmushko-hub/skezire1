@@ -22,9 +22,33 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const tribeName = isKk ? tribe.kk : tribe.ru;
   const zhuzName = isKk ? zhuz.kk : zhuz.ru;
 
+  const base = 'https://skezire.kz';
+  const url = `${base}/${locale}/encyclopedia/${zhuzId}/${tribeId}`;
+  const ogImage = `${base}/${locale}/opengraph-image`;
+
   return {
     title: `${tribeName} — ${zhuzName} | Шежіре`,
     description: isKk ? tribe.desc_kk : tribe.desc_ru,
+    openGraph: {
+      type: 'website',
+      title: `${tribeName} — ${zhuzName} | Шежіре`,
+      description: isKk ? tribe.desc_kk : tribe.desc_ru,
+      url,
+      siteName: 'Шежіре',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: tribeName }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${tribeName} | Шежіре`,
+      images: [ogImage],
+    },
+    alternates: {
+      canonical: url,
+      languages: {
+        kk: `${base}/kk/encyclopedia/${zhuzId}/${tribeId}`,
+        ru: `${base}/ru/encyclopedia/${zhuzId}/${tribeId}`,
+      },
+    },
   };
 }
 
