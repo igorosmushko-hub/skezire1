@@ -69,8 +69,21 @@ export default async function TribePage({ params }: PageProps) {
   const prevTribe = tribeIndex > 0 ? zhuz.tribes[tribeIndex - 1] : undefined;
   const nextTribe = tribeIndex < zhuz.tribes.length - 1 ? zhuz.tribes[tribeIndex + 1] : undefined;
 
+  const base = 'https://skezire.kz';
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: isKk ? 'Басты бет' : 'Главная', item: `${base}/${locale}` },
+      { '@type': 'ListItem', position: 2, name: isKk ? 'Энциклопедия' : 'Энциклопедия', item: `${base}/${locale}/encyclopedia` },
+      { '@type': 'ListItem', position: 3, name: zhuzName, item: `${base}/${locale}/encyclopedia/${zhuzId}` },
+      { '@type': 'ListItem', position: 4, name: tribeName, item: `${base}/${locale}/encyclopedia/${zhuzId}/${tribeId}` },
+    ],
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <section className="enc-hero enc-hero--compact">
         <div className="enc-hero-bg" />
         <div className="enc-hero-content">

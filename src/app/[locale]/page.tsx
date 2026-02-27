@@ -11,7 +11,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <JsonLd />
+      <JsonLd locale={locale} />
       <Hero />
       <About />
       <OrnamentDivider />

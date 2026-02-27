@@ -56,9 +56,21 @@ export default async function EncyclopediaPage({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'enc' });
+  const isKk = locale === 'kk';
+  const base = 'https://skezire.kz';
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: isKk ? 'Басты бет' : 'Главная', item: `${base}/${locale}` },
+      { '@type': 'ListItem', position: 2, name: isKk ? 'Энциклопедия' : 'Энциклопедия', item: `${base}/${locale}/encyclopedia` },
+    ],
+  };
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* Hero */}
       <section className="enc-hero">
         <div className="enc-hero-bg" />
