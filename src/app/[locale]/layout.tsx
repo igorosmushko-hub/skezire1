@@ -64,6 +64,9 @@ export async function generateMetadata({
       canonical: 'https://skezire.kz/',
       languages: { kk: '/kk', ru: '/ru' },
     },
+    verification: {
+      google: 'No2iqR-patC5OJeOVvMagXhL2u1U1WX6FHjOxztqf1E',
+    },
   };
 }
 
