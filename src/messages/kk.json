@@ -145,6 +145,27 @@
     "subgroup": "Топ",
     "notable": "Атақты тұлғалар",
     "tribesCount": "ру тарихы",
-    "backHome": "Басты бет"
+    "backHome": "Басты бет",
+    "hubTitle": "Қазақ рулары энциклопедиясы",
+    "hubSub": "Ұлы, Орта, Кіші жүз және Жүзден тыс — 47 рудың толық тарихы",
+    "tribesWord": "ру",
+    "openZhuz": "Толығырақ",
+    "tribesHeading": "Рулар",
+    "tribeMore": "Толығырақ →",
+    "tribeRegion": "Қоныс аймақ",
+    "tribeTamga": "Тамға",
+    "tribeUran": "Ұран",
+    "tribeSubgroup": "Топ",
+    "tribeNotable": "Атақты тұлғалар",
+    "pagerPrev": "← Алдыңғы",
+    "pagerNext": "Келесі →",
+    "ctaTitle": "Шежіре жасау",
+    "ctaDesc": "Ата-тегіңіздің тарихын сақтаңыз",
+    "ctaBtn": "Шежіре жасау",
+    "notFound": "Бет табылмады",
+    "notFoundDesc": "Сілтеме қате немесе бет жоқ.",
+    "notFoundBack": "← Энциклопедияға оралу",
+    "breadcrumbHome": "Шежіре",
+    "breadcrumbEnc": "Энциклопедия"
   }
 }

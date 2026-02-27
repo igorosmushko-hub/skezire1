@@ -1,12 +1,14 @@
+import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import type { Tribe } from '@/lib/types';
 
 interface TribeCardEncProps {
   tribe: Tribe;
   locale: string;
+  zhuzId: string;
 }
 
-export function TribeCardEnc({ tribe, locale }: TribeCardEncProps) {
+export function TribeCardEnc({ tribe, locale, zhuzId }: TribeCardEncProps) {
   const t = useTranslations('enc');
   const isKk = locale === 'kk';
 
@@ -16,7 +18,11 @@ export function TribeCardEnc({ tribe, locale }: TribeCardEncProps) {
   const notable = tribe.notable;
 
   return (
-    <div className="tribe-card tc-visible" style={{ display: 'block' }}>
+    <Link
+      href={`/encyclopedia/${zhuzId}/${tribe.id}`}
+      className="tribe-card tc-visible"
+      style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
+    >
       <div className="tc-header">
         <div className="tc-tamga">{tribe.tamga}</div>
         <div>
@@ -47,6 +53,7 @@ export function TribeCardEnc({ tribe, locale }: TribeCardEncProps) {
           </ul>
         </>
       )}
-    </div>
+      <div className="tc-more">{t('tribeMore')}</div>
+    </Link>
   );
 }

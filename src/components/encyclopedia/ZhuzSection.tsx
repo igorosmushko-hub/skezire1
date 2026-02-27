@@ -49,17 +49,17 @@ export function ZhuzSection({ zhuz, locale }: ZhuzSectionProps) {
                 {sgName} ({tribes.length})
               </h3>
             )}
-            <div className="enc-tribe-grid">
+            <div className="enc-tribes-grid">
               {tribes.map((tribe) => (
-                <TribeCardEnc key={tribe.id} tribe={tribe} locale={locale} />
+                <TribeCardEnc key={tribe.id} tribe={tribe} locale={locale} zhuzId={zhuz.id} />
               ))}
             </div>
           </div>
         ))
       ) : (
-        <div className="enc-tribe-grid">
+        <div className="enc-tribes-grid">
           {zhuz.tribes.map((tribe) => (
-            <TribeCardEnc key={tribe.id} tribe={tribe} locale={locale} />
+            <TribeCardEnc key={tribe.id} tribe={tribe} locale={locale} zhuzId={zhuz.id} />
           ))}
         </div>
       )}

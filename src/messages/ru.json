@@ -145,6 +145,27 @@
     "subgroup": "Группа",
     "notable": "Известные представители",
     "tribesCount": "родов",
-    "backHome": "Главная"
+    "backHome": "Главная",
+    "hubTitle": "Энциклопедия казахских родов",
+    "hubSub": "Старший, Средний, Младший жуз и Вне жузов — полная история 47 родов",
+    "tribesWord": "родов",
+    "openZhuz": "Подробнее",
+    "tribesHeading": "Роды",
+    "tribeMore": "Подробнее →",
+    "tribeRegion": "Регион расселения",
+    "tribeTamga": "Тамга",
+    "tribeUran": "Уран (клич)",
+    "tribeSubgroup": "Группа",
+    "tribeNotable": "Известные представители",
+    "pagerPrev": "← Назад",
+    "pagerNext": "Далее →",
+    "ctaTitle": "Создать Шежіре",
+    "ctaDesc": "Сохраните историю своего рода",
+    "ctaBtn": "Создать дерево",
+    "notFound": "Страница не найдена",
+    "notFoundDesc": "Ссылка неверна или страница не существует.",
+    "notFoundBack": "← Вернуться в энциклопедию",
+    "breadcrumbHome": "Шежіре",
+    "breadcrumbEnc": "Энциклопедия"
   }
 }
