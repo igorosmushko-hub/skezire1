@@ -3,10 +3,10 @@ import { useTranslations } from 'next-intl';
 import type { Zhuz } from '@/lib/types';
 
 const ZHUZ_ICONS: Record<string, string> = {
-  uly: '\uD83C\uDFD4\uFE0F',   // mountain
-  orta: '\uD83C\uDF3E',          // grain
-  kishi: '\uD83D\uDC0E',         // horse
-  other: '\uD83D\uDC51',         // crown
+  uly: '\uD83C\uDFD4\uFE0F',
+  orta: '\uD83C\uDF3E',
+  kishi: '\uD83D\uDC0E',
+  other: '\uD83D\uDC51',
 };
 
 interface HubCardProps {
@@ -22,13 +22,13 @@ export function HubCard({ zhuz, locale }: HubCardProps) {
 
   return (
     <Link href={`/encyclopedia/${zhuz.id}`} className="hub-card">
-      <div className="hub-card-icon">{ZHUZ_ICONS[zhuz.id] || '\uD83C\uDFD4\uFE0F'}</div>
-      <h2 className="hub-card-name">{name}</h2>
+      <div className="hub-card-icon">{ZHUZ_ICONS[zhuz.id] || '\uD83D\uDCDC'}</div>
+      <div className="hub-card-title">{name}</div>
+      <div className="hub-card-desc">{desc}</div>
       <div className="hub-card-count">
         {zhuz.tribes.length} {t('tribesWord')}
       </div>
-      <p className="hub-card-desc">{desc}</p>
-      <span className="hub-card-link">{t('openZhuz')}</span>
+      <div className="hub-card-btn">{t('openZhuz')} &rarr;</div>
     </Link>
   );
 }

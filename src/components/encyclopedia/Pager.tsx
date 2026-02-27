@@ -17,20 +17,19 @@ export function Pager({ prev, next }: PagerProps) {
   return (
     <nav className="enc-pager">
       {prev ? (
-        <Link href={prev.href} className="enc-pager-link enc-pager-prev">
-          <span className="enc-pager-dir">{t('pagerPrev')}</span>
-          <span className="enc-pager-label">{prev.label}</span>
+        <Link href={prev.href}>
+          {t('pagerPrev')} {prev.label}
         </Link>
       ) : (
-        <div />
+        <span />
       )}
+      <span className="pager-spacer" />
       {next ? (
-        <Link href={next.href} className="enc-pager-link enc-pager-next">
-          <span className="enc-pager-dir">{t('pagerNext')}</span>
-          <span className="enc-pager-label">{next.label}</span>
+        <Link href={next.href}>
+          {next.label} {t('pagerNext')}
         </Link>
       ) : (
-        <div />
+        <span />
       )}
     </nav>
   );

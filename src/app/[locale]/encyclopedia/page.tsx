@@ -25,32 +25,34 @@ export default async function EncyclopediaPage() {
   const totalTribes = TRIBES_DB.reduce((sum, z) => sum + z.tribes.length, 0);
 
   return (
-    <main style={{ paddingTop: 80 }}>
-      <div className="container">
-        <Breadcrumb
-          items={[
-            { label: t('breadcrumbHome'), href: '/' },
-            { label: t('breadcrumbEnc') },
-          ]}
-        />
-
-        <div className="section-header" style={{ marginTop: 24 }}>
-          <div className="orn-line" />
-          <h1 style={{ fontFamily: 'var(--ff-head)', fontSize: '2rem', color: 'var(--blue)', whiteSpace: 'nowrap' }}>
-            {t('hubTitle')}
-          </h1>
-          <div className="orn-line" />
+    <>
+      {/* Hero */}
+      <section className="enc-hero">
+        <div className="enc-hero-bg" />
+        <div className="enc-hero-content">
+          <Breadcrumb
+            items={[
+              { label: t('breadcrumbHome'), href: `/${locale}` },
+              { label: t('breadcrumbEnc') },
+            ]}
+          />
+          <h1 className="enc-hero-title">{t('hubTitle')}</h1>
+          <p className="enc-hero-sub">
+            {t('hubSub')}
+          </p>
         </div>
-        <p className="section-desc">
-          {totalTribes} {t('tribesCount')} — {t('hubSub')}
-        </p>
+      </section>
 
-        <div className="hub-grid">
-          {TRIBES_DB.map((zhuz) => (
-            <HubCard key={zhuz.id} zhuz={zhuz} locale={locale} />
-          ))}
+      {/* Main */}
+      <main className="enc-main">
+        <div className="container">
+          <div className="hub-grid">
+            {TRIBES_DB.map((zhuz) => (
+              <HubCard key={zhuz.id} zhuz={zhuz} locale={locale} />
+            ))}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }

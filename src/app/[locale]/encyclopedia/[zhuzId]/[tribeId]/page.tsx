@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { TRIBES_DB } from '@/data/tribes';
-import { Link } from '@/i18n/routing';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { TribeDetail } from '@/components/encyclopedia/TribeDetail';
 import { Pager } from '@/components/encyclopedia/Pager';
@@ -31,9 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const zhuzName = isKk ? zhuz.kk : zhuz.ru;
 
   return {
-    title: isKk
-      ? `${tribeName} — ${zhuzName} | Шежіре Энциклопедия`
-      : `${tribeName} — ${zhuzName} | Шежіре Энциклопедия`,
+    title: `${tribeName} — ${zhuzName} | Шежіре`,
     description: isKk ? tribe.desc_kk : tribe.desc_ru,
   };
 }
@@ -50,53 +47,61 @@ export default async function TribePage({ params }: PageProps) {
   const tribe = zhuz.tribes[tribeIndex];
 
   const zhuzName = isKk ? zhuz.kk : zhuz.ru;
+  const tribeName = isKk ? tribe.kk : tribe.ru;
+  const subgroup = isKk ? tribe.subgroup_kk : tribe.subgroup_ru;
 
   // Pager: prev/next tribe within the same zhuz
   const prevTribe = tribeIndex > 0 ? zhuz.tribes[tribeIndex - 1] : undefined;
   const nextTribe = tribeIndex < zhuz.tribes.length - 1 ? zhuz.tribes[tribeIndex + 1] : undefined;
 
   return (
-    <main style={{ paddingTop: 80 }}>
-      <div className="container">
-        <Breadcrumb
-          items={[
-            { label: t('breadcrumbHome'), href: '/' },
-            { label: t('breadcrumbEnc'), href: '/encyclopedia' },
-            { label: zhuzName, href: `/encyclopedia/${zhuz.id}` },
-            { label: isKk ? tribe.kk : tribe.ru },
-          ]}
-        />
+    <>
+      {/* Compact Hero */}
+      <section className="enc-hero enc-hero--compact">
+        <div className="enc-hero-bg" />
+        <div className="enc-hero-content">
+          <Breadcrumb
+            items={[
+              { label: t('breadcrumbHome'), href: `/${locale}` },
+              { label: t('breadcrumbEnc'), href: `/${locale}/encyclopedia` },
+              { label: zhuzName, href: `/${locale}/encyclopedia/${zhuz.id}` },
+              { label: tribeName },
+            ]}
+          />
+          <h1 className="enc-hero-title" style={{ fontSize: 'clamp(1.8rem, 5vw, 3rem)' }}>{tribeName}</h1>
+          <p className="enc-hero-sub">{zhuzName}{subgroup ? ` — ${subgroup}` : ''}</p>
+        </div>
+      </section>
 
-        <TribeDetail tribe={tribe} locale={locale} />
+      {/* Pager top */}
+      <Pager
+        prev={
+          prevTribe
+            ? { label: isKk ? prevTribe.kk : prevTribe.ru, href: `/encyclopedia/${zhuz.id}/${prevTribe.id}` }
+            : undefined
+        }
+        next={
+          nextTribe
+            ? { label: isKk ? nextTribe.kk : nextTribe.ru, href: `/encyclopedia/${zhuz.id}/${nextTribe.id}` }
+            : undefined
+        }
+      />
 
-        <Pager
-          prev={
-            prevTribe
-              ? {
-                  label: isKk ? prevTribe.kk : prevTribe.ru,
-                  href: `/encyclopedia/${zhuz.id}/${prevTribe.id}`,
-                }
-              : undefined
-          }
-          next={
-            nextTribe
-              ? {
-                  label: isKk ? nextTribe.kk : nextTribe.ru,
-                  href: `/encyclopedia/${zhuz.id}/${nextTribe.id}`,
-                }
-              : undefined
-          }
-        />
+      {/* Detail */}
+      <main className="enc-main">
+        <div className="container">
+          <TribeDetail tribe={tribe} locale={locale} />
+        </div>
+      </main>
 
-        {/* CTA */}
-        <section className="enc-cta">
-          <h2 className="enc-cta-title">{t('ctaTitle')}</h2>
-          <p className="enc-cta-desc">{t('ctaDesc')}</p>
-          <Link href="/#form-section" className="btn btn-gold enc-cta-btn">
-            {t('ctaBtn')}
-          </Link>
-        </section>
-      </div>
-    </main>
+      {/* CTA */}
+      <section className="enc-cta">
+        <div className="container">
+          <h3>{t('ctaTitle')}</h3>
+          <p>{t('ctaDesc')}</p>
+          <a href={`/${locale}#form-section`} className="btn btn-primary">{t('ctaBtn')}</a>
+        </div>
+      </section>
+    </>
   );
 }

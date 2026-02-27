@@ -13,47 +13,30 @@ export function TribeCardEnc({ tribe, locale, zhuzId }: TribeCardEncProps) {
   const isKk = locale === 'kk';
 
   const name = isKk ? tribe.kk : tribe.ru;
+  const altName = isKk ? tribe.ru : tribe.kk;
   const desc = isKk ? tribe.desc_kk : tribe.desc_ru;
   const region = isKk ? tribe.region_kk : tribe.region_ru;
-  const notable = tribe.notable;
+  const subgroup = isKk ? tribe.subgroup_kk : tribe.subgroup_ru;
 
   return (
     <Link
       href={`/encyclopedia/${zhuzId}/${tribe.id}`}
-      className="tribe-card tc-visible"
-      style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
+      className="tribe-card"
     >
-      <div className="tc-header">
-        <div className="tc-tamga">{tribe.tamga}</div>
+      <div className="tribe-card-header">
+        <div className="tribe-card-tamga">{tribe.tamga}</div>
         <div>
-          <div className="tc-name">{name}</div>
-          <div className="tc-uran">{tribe.uran}</div>
+          <div className="tribe-card-name">{name}</div>
+          {altName && <div className="tribe-card-subname">{altName}</div>}
         </div>
       </div>
-      <p className="tc-desc">{desc}</p>
-      <div className="tc-meta">
-        <div className="tc-row">
-          <span className="tc-label">{t('region')}:</span>
-          <span className="tc-val">{region}</span>
-        </div>
-        <div className="tc-row">
-          <span className="tc-label">{t('uran')}:</span>
-          <span className="tc-val tc-uran-val">{tribe.uran}</span>
-        </div>
+      {subgroup && <div className="tribe-card-subgroup">{subgroup}</div>}
+      <div className="tribe-card-desc">{desc}</div>
+      <div className="tribe-card-meta">
+        {region && <span>{'\uD83D\uDCCD'} {region}</span>}
+        {tribe.uran && <span>{'\uD83D\uDCE3'} {tribe.uran}</span>}
       </div>
-      {notable.length > 0 && (
-        <>
-          <div className="tc-notable-title">{t('notable')}</div>
-          <ul className="tc-notable-list">
-            {notable.map((p) => (
-              <li key={p.name}>
-                <strong>{p.name}</strong> — {isKk ? p.role_kk : p.role_ru}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-      <div className="tc-more">{t('tribeMore')}</div>
+      <div className="tribe-card-link">{t('tribeMore')}</div>
     </Link>
   );
 }

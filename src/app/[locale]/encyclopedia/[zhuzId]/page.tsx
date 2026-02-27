@@ -42,43 +42,55 @@ export default async function ZhuzPage({ params }: PageProps) {
   const zhuz = TRIBES_DB[zhuzIndex];
 
   const name = isKk ? zhuz.kk : zhuz.ru;
+  const desc = isKk ? zhuz.desc_kk : zhuz.desc_ru;
 
   // Pager: prev/next zhuz
   const prevZhuz = zhuzIndex > 0 ? TRIBES_DB[zhuzIndex - 1] : undefined;
   const nextZhuz = zhuzIndex < TRIBES_DB.length - 1 ? TRIBES_DB[zhuzIndex + 1] : undefined;
 
   return (
-    <main style={{ paddingTop: 80 }}>
-      <div className="container">
-        <Breadcrumb
-          items={[
-            { label: t('breadcrumbHome'), href: '/' },
-            { label: t('breadcrumbEnc'), href: '/encyclopedia' },
-            { label: name },
-          ]}
-        />
+    <>
+      {/* Compact Hero */}
+      <section className="enc-hero enc-hero--compact">
+        <div className="enc-hero-bg" />
+        <div className="enc-hero-content">
+          <Breadcrumb
+            items={[
+              { label: t('breadcrumbHome'), href: `/${locale}` },
+              { label: t('breadcrumbEnc'), href: `/${locale}/encyclopedia` },
+              { label: name },
+            ]}
+          />
+          <h1 className="enc-hero-title" style={{ fontSize: 'clamp(1.8rem, 5vw, 3rem)' }}>{name}</h1>
+          <p className="enc-hero-sub">{desc}</p>
+        </div>
+      </section>
 
-        <ZhuzSection zhuz={zhuz} locale={locale} />
+      {/* Pager top */}
+      <Pager
+        prev={
+          prevZhuz
+            ? { label: isKk ? prevZhuz.kk : prevZhuz.ru, href: `/encyclopedia/${prevZhuz.id}` }
+            : undefined
+        }
+        next={
+          nextZhuz
+            ? { label: isKk ? nextZhuz.kk : nextZhuz.ru, href: `/encyclopedia/${nextZhuz.id}` }
+            : undefined
+        }
+      />
 
-        <Pager
-          prev={
-            prevZhuz
-              ? {
-                  label: isKk ? prevZhuz.kk : prevZhuz.ru,
-                  href: `/encyclopedia/${prevZhuz.id}`,
-                }
-              : undefined
-          }
-          next={
-            nextZhuz
-              ? {
-                  label: isKk ? nextZhuz.kk : nextZhuz.ru,
-                  href: `/encyclopedia/${nextZhuz.id}`,
-                }
-              : undefined
-          }
-        />
-      </div>
-    </main>
+      {/* Tribes */}
+      <ZhuzSection zhuz={zhuz} locale={locale} />
+
+      {/* CTA */}
+      <section className="enc-cta">
+        <div className="container">
+          <h3>{t('ctaTitle')}</h3>
+          <p>{t('ctaDesc')}</p>
+          <a href={`/${locale}#form-section`} className="btn btn-primary">{t('ctaBtn')}</a>
+        </div>
+      </section>
+    </>
   );
 }
