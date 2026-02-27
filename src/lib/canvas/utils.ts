@@ -38,12 +38,22 @@ export function drawTamgaWatermark(
 ): void {
   if (!tamga) return;
   ctx.save();
-  ctx.globalAlpha = 0.06;
-  ctx.fillStyle = GOLD;
-  ctx.font = '320px Georgia, serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
+  ctx.fillStyle = GOLD;
+  ctx.font = '420px Georgia, serif';
+
+  // Glow layer
+  ctx.globalAlpha = 0.04;
+  ctx.shadowColor = GOLD;
+  ctx.shadowBlur = 80;
   ctx.fillText(tamga, cx, cy);
+
+  // Main layer
+  ctx.globalAlpha = 0.09;
+  ctx.shadowBlur = 0;
+  ctx.fillText(tamga, cx, cy);
+
   ctx.restore();
 }
 

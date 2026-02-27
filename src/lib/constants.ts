@@ -66,11 +66,17 @@ export const AI_MODAL: Record<string, Record<string, { icon: string; title: stri
 
 /* ── Zhuz color palettes ───────────────────────────────────────── */
 
-export const ZHUZ_COLORS: Record<string, { bg: string; nodeTop: string; nodeBot: string }> = {
-  uly:   { bg: '#001A4A', nodeTop: '#1B4D8A', nodeBot: '#00244E' },
-  orta:  { bg: '#0A2E1A', nodeTop: '#1A5E3A', nodeBot: '#07220F' },
-  kishi: { bg: '#2E0A1A', nodeTop: '#6A1A3A', nodeBot: '#1F0612' },
-  other: { bg: '#001A4A', nodeTop: '#1B4D8A', nodeBot: '#00244E' },
+export const ZHUZ_COLORS: Record<string, {
+  bg: string;
+  bgMid: string;
+  nodeTop: string;
+  nodeBot: string;
+  accent: string;
+}> = {
+  uly:   { bg: '#00112A', bgMid: '#001E4A', nodeTop: '#0E3272', nodeBot: '#001A40', accent: '#2456B0' },
+  orta:  { bg: '#030E09', bgMid: '#071B10', nodeTop: '#155838', nodeBot: '#061508', accent: '#1E7A48' },
+  kishi: { bg: '#110308', bgMid: '#200514', nodeTop: '#781A40', nodeBot: '#35071C', accent: '#A0205A' },
+  other: { bg: '#080814', bgMid: '#101028', nodeTop: '#163068', nodeBot: '#0A1535', accent: '#1A40A0' },
 };
 
 export const GOLD = '#C8A84B';

@@ -1,6 +1,6 @@
 import { ZHUZ_COLORS, GOLD } from '@/lib/constants';
 import { roundRect, drawTamgaWatermark, ensureFontsLoaded } from '@/lib/canvas/utils';
-import { drawDiamondGrid, drawDiamondDivider } from '@/lib/canvas/diamond';
+import { drawDiamondDivider } from '@/lib/canvas/diamond';
 import { drawOrnamentalBorder } from '@/lib/canvas/ornaments';
 
 /* ── Types ─────────────────────────────────────────────────────── */
@@ -25,20 +25,169 @@ export interface TribeInfo {
   uran: string;
 }
 
-/* ── Draw tree on canvas ───────────────────────────────────────── */
+/* ── Background ─────────────────────────────────────────────────── */
+
+function drawBackground(
+  ctx: CanvasRenderingContext2D,
+  W: number,
+  H: number,
+  colors: { bg: string; bgMid: string },
+): void {
+  // Base fill
+  ctx.fillStyle = colors.bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Radial glow from upper-center
+  const topGlow = ctx.createRadialGradient(W / 2, H * 0.25, 0, W / 2, H * 0.25, W * 0.85);
+  topGlow.addColorStop(0, colors.bgMid);
+  topGlow.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = topGlow;
+  ctx.fillRect(0, 0, W, H);
+
+  // Subtle horizontal light band across center
+  const band = ctx.createLinearGradient(0, H * 0.38, 0, H * 0.62);
+  band.addColorStop(0, 'rgba(255,255,255,0)');
+  band.addColorStop(0.5, 'rgba(255,255,255,0.025)');
+  band.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = band;
+  ctx.fillRect(0, 0, W, H);
+
+  // Vignette — darken edges
+  const vignette = ctx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.85);
+  vignette.addColorStop(0, 'rgba(0,0,0,0)');
+  vignette.addColorStop(1, 'rgba(0,0,0,0.55)');
+  ctx.fillStyle = vignette;
+  ctx.fillRect(0, 0, W, H);
+}
+
+/* ── Double ornamental border ───────────────────────────────────── */
+
+function drawDoubleBorder(
+  ctx: CanvasRenderingContext2D,
+  W: number,
+  H: number,
+  color: string,
+): void {
+  ctx.save();
+  ctx.strokeStyle = color;
+
+  // Outer frame
+  ctx.globalAlpha = 0.25;
+  ctx.lineWidth = 1;
+  ctx.strokeRect(20, 20, W - 40, H - 40);
+
+  // Inner frame (main)
+  ctx.globalAlpha = 0.55;
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(36, 36, W - 72, H - 72);
+
+  // Corner accent squares
+  ctx.globalAlpha = 0.65;
+  ctx.lineWidth = 1;
+  const cs = 14; // corner square size
+  const cm = 36; // corner margin
+  const corners: [number, number][] = [
+    [cm, cm], [W - cm - cs, cm], [W - cm - cs, H - cm - cs], [cm, H - cm - cs],
+  ];
+  for (const [cx, cy] of corners) {
+    ctx.strokeRect(cx, cy, cs, cs);
+    // Diagonal line inside
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + cs, cy + cs);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(cx + cs, cy);
+    ctx.lineTo(cx, cy + cs);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+
+  // Full ornamental border (ram horns etc.)
+  drawOrnamentalBorder(ctx, W, H, color);
+}
+
+/* ── Header ─────────────────────────────────────────────────────── */
+
+function drawHeader(
+  ctx: CanvasRenderingContext2D,
+  W: number,
+  zhuzDisplay: string,
+  ruName: string,
+  locale: string,
+): void {
+  const cx = W / 2;
+
+  // "Шежіре" — large title
+  ctx.save();
+  ctx.font = '700 52px "Playfair Display", Georgia, serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = GOLD;
+  ctx.shadowColor = 'rgba(200,168,75,0.5)';
+  ctx.shadowBlur = 30;
+  ctx.fillText('Шежіре', cx, 62);
+  ctx.restore();
+
+  // Subtitle: locale label
+  const subLabel = locale === 'kk' ? 'ШЕЖІРЕ' : 'ГЕНЕАЛОГИЧЕСКОЕ ДРЕВО';
+  ctx.save();
+  ctx.font = '400 13px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = GOLD;
+  ctx.globalAlpha = 0.45;
+  ctx.letterSpacing = '4px';
+  ctx.fillText(subLabel, cx, 122);
+  ctx.restore();
+
+  // Divider
+  drawDiamondDivider(ctx, cx, 152, W - 120, GOLD);
+
+  // Zhuz name
+  if (zhuzDisplay) {
+    ctx.save();
+    ctx.font = '400 18px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = GOLD;
+    ctx.globalAlpha = 0.65;
+    ctx.fillText(zhuzDisplay.toUpperCase(), cx, 172);
+    ctx.restore();
+  }
+
+  // Ru name — prominent
+  if (ruName) {
+    ctx.save();
+    ctx.font = '700 32px "Playfair Display", Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = GOLD;
+    ctx.shadowColor = 'rgba(200,168,75,0.35)';
+    ctx.shadowBlur = 15;
+    ctx.fillText(ruName, cx, 198);
+    ctx.restore();
+  }
+
+  // Second divider
+  drawDiamondDivider(ctx, cx, 244, W - 200, GOLD);
+}
+
+/* ── Tree ────────────────────────────────────────────────────────── */
 
 export function drawTreeOnCanvas(
   ctx: CanvasRenderingContext2D,
   nodes: Array<{ kaz: string; label: string; name: string; isUser?: boolean }>,
-  colors: { nodeTop: string; nodeBot: string },
+  colors: { nodeTop: string; nodeBot: string; accent: string },
   startY: number,
   W: number,
 ): number {
-  const nodeW = 400;
-  const nodeH = 90;
-  const gap = 30;
+  const nodeW = 480;
+  const nodeH = 86;
+  const gap = 22;
   const cx = W / 2;
-  const unknownText = '\u00b7 \u00b7 \u00b7';
+  const unknownText = '· · ·';
 
   nodes.forEach((node, i) => {
     const x = cx - nodeW / 2;
@@ -47,28 +196,45 @@ export function drawTreeOnCanvas(
     const isUser = node.isUser === true;
     const hasFill = !!node.name;
 
-    // Connector to next node
+    // Connector line + arrow
     if (i < nodes.length - 1) {
       const y1 = y + nodeH;
-      const y2 = y + nodeH + gap - 10;
+      const y2 = y + nodeH + gap - 8;
       ctx.save();
       ctx.strokeStyle = GOLD;
-      ctx.lineWidth = 2;
-      ctx.globalAlpha = hasFill ? 0.75 : 0.28;
-      if (!hasFill) ctx.setLineDash([6, 4]);
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = hasFill ? 0.6 : 0.22;
+      if (!hasFill) ctx.setLineDash([5, 4]);
       ctx.beginPath();
       ctx.moveTo(cx, y1);
       ctx.lineTo(cx, y2);
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Arrow
-      ctx.fillStyle = GOLD;
-      ctx.beginPath();
-      ctx.moveTo(cx, y2 + 10);
-      ctx.lineTo(cx - 5, y2);
-      ctx.lineTo(cx + 5, y2);
-      ctx.closePath();
+      // Small diamond connector ornament
+      if (hasFill) {
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = GOLD;
+        const dm = y1 + (gap / 2) - 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, dm - 4);
+        ctx.lineTo(cx + 4, dm);
+        ctx.lineTo(cx, dm + 4);
+        ctx.lineTo(cx - 4, dm);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    // Node shadow/glow
+    if (isUser || hasFill) {
+      ctx.save();
+      ctx.shadowColor = isUser ? 'rgba(200,168,75,0.4)' : 'rgba(0,0,0,0.5)';
+      ctx.shadowBlur = isUser ? 28 : 14;
+      ctx.shadowOffsetY = 4;
+      ctx.fillStyle = 'rgba(0,0,0,0)';
+      roundRect(ctx, x, y, nodeW, nodeH, 10);
       ctx.fill();
       ctx.restore();
     }
@@ -76,112 +242,181 @@ export function drawTreeOnCanvas(
     // Node background
     ctx.save();
     if (isUser) {
-      // Gold gradient
       const grad = ctx.createLinearGradient(x, y, x + nodeW, y + nodeH);
-      grad.addColorStop(0, '#E8C96A');
-      grad.addColorStop(1, '#7A5E18');
+      grad.addColorStop(0, '#C8981A');
+      grad.addColorStop(0.35, '#ECC84A');
+      grad.addColorStop(0.65, '#F0D060');
+      grad.addColorStop(1, '#8A6010');
       ctx.fillStyle = grad;
-      // Glow
-      ctx.shadowColor = 'rgba(200,168,75,0.5)';
-      ctx.shadowBlur = 16;
     } else if (hasFill) {
       const grad = ctx.createLinearGradient(x, y, x, y + nodeH);
       grad.addColorStop(0, colors.nodeTop);
       grad.addColorStop(1, colors.nodeBot);
       ctx.fillStyle = grad;
     } else {
-      ctx.fillStyle = 'rgba(255,255,255,0.07)';
+      ctx.fillStyle = 'rgba(255,255,255,0.04)';
     }
-    roundRect(ctx, x, y, nodeW, nodeH, 12);
+    roundRect(ctx, x, y, nodeW, nodeH, 10);
     ctx.fill();
     ctx.restore();
+
+    // Left accent bar (filled non-user nodes)
+    if (hasFill && !isUser) {
+      ctx.save();
+      const barGrad = ctx.createLinearGradient(x, y, x, y + nodeH);
+      barGrad.addColorStop(0, colors.accent + 'CC');
+      barGrad.addColorStop(1, colors.accent + '30');
+      ctx.fillStyle = barGrad;
+      roundRect(ctx, x, y, 4, nodeH, 10);
+      ctx.fill();
+      ctx.restore();
+    }
 
     // Node border
     ctx.save();
     if (isUser) {
-      ctx.strokeStyle = '#E8C96A';
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#F0CC55';
+      ctx.lineWidth = 2;
+      ctx.shadowColor = 'rgba(200,168,75,0.6)';
+      ctx.shadowBlur = 12;
     } else if (hasFill) {
-      ctx.strokeStyle = 'rgba(200,168,75,0.3)';
+      ctx.strokeStyle = 'rgba(200,168,75,0.35)';
       ctx.lineWidth = 1;
     } else {
-      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
       ctx.lineWidth = 1;
-      ctx.setLineDash([5, 3]);
+      ctx.setLineDash([4, 4]);
     }
-    roundRect(ctx, x, y, nodeW, nodeH, 12);
+    roundRect(ctx, x, y, nodeW, nodeH, 10);
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.restore();
 
-    // Generation label
+    // Generation label (top-left, small caps)
     ctx.save();
-    ctx.font = '800 15px Inter, sans-serif';
-    ctx.letterSpacing = '0.5px';
-    if (isUser) {
-      ctx.fillStyle = 'rgba(60,30,0,0.7)';
-    } else if (hasFill) {
-      ctx.fillStyle = 'rgba(200,168,75,0.85)';
-    } else {
-      ctx.fillStyle = 'rgba(255,255,255,0.35)';
-    }
+    ctx.font = '700 11px Inter, sans-serif';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
-    ctx.fillText(node.kaz.toUpperCase(), x + 16, y + 14);
+    ctx.letterSpacing = '1.5px';
+    if (isUser) {
+      ctx.fillStyle = 'rgba(30,12,0,0.75)';
+    } else if (hasFill) {
+      ctx.fillStyle = 'rgba(200,168,75,0.7)';
+    } else {
+      ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    }
+    ctx.fillText(node.kaz.toUpperCase(), x + 20, y + 11);
     ctx.restore();
 
     // Name
     const nameStr = node.name || unknownText;
-    let fSize = 26;
-    if (nameStr.length > 22) fSize = 20;
-    else if (nameStr.length > 16) fSize = 23;
+    let fSize = 28;
+    if (nameStr.length > 24) fSize = 19;
+    else if (nameStr.length > 18) fSize = 22;
+    else if (nameStr.length > 14) fSize = 25;
 
     ctx.save();
-    ctx.font = `600 ${fSize}px Georgia, "Times New Roman", serif`;
+    ctx.font = `${isUser ? '700' : '600'} ${fSize}px "Playfair Display", Georgia, serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     if (isUser) {
-      ctx.fillStyle = '#1A0A00';
+      ctx.fillStyle = '#1A0800';
+      ctx.shadowColor = 'rgba(255,255,255,0.15)';
+      ctx.shadowBlur = 4;
     } else if (hasFill) {
-      ctx.fillStyle = '#FFFFFF';
+      ctx.fillStyle = '#F5F0E8';
     } else {
-      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.fillStyle = 'rgba(255,255,255,0.22)';
     }
 
-    // Truncate if too wide
     let displayName = nameStr;
-    const maxW = nodeW - 60;
+    const maxW = nodeW - 80;
     if (ctx.measureText(displayName).width > maxW) {
-      while (displayName.length > 3 && ctx.measureText(displayName + '...').width > maxW) {
+      while (displayName.length > 3 && ctx.measureText(displayName + '…').width > maxW) {
         displayName = displayName.slice(0, -1);
       }
-      displayName += '...';
+      displayName += '…';
     }
     ctx.fillText(displayName, cx, midY + 8);
     ctx.restore();
 
-    // Decorative ornament
+    // User star ornament
     if (isUser) {
       ctx.save();
-      ctx.font = '18px serif';
-      ctx.fillStyle = 'rgba(50,25,0,0.4)';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('\u2605', x + nodeW - 24, midY + 4);
-      ctx.restore();
-    } else if (hasFill) {
-      ctx.save();
+      ctx.fillStyle = 'rgba(30,12,0,0.35)';
       ctx.font = '16px serif';
-      ctx.fillStyle = 'rgba(200,168,75,0.38)';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('\u2726', x + nodeW - 24, midY + 4);
+      ctx.fillText('★', x + 30, midY + 8);
+      ctx.fillText('★', x + nodeW - 30, midY + 8);
       ctx.restore();
     }
   });
 
-  // Return the Y coordinate after the last node
   return startY + nodes.length * (nodeH + gap) - gap;
+}
+
+/* ── Info section ────────────────────────────────────────────────── */
+
+function drawInfoSection(
+  ctx: CanvasRenderingContext2D,
+  W: number,
+  afterTreeY: number,
+  uran: string,
+  locale: string,
+): void {
+  const cx = W / 2;
+  let y = afterTreeY + 28;
+
+  drawDiamondDivider(ctx, cx, y, W - 120, GOLD);
+  y += 38;
+
+  if (uran) {
+    const uranLabel = locale === 'kk' ? 'ҰРАНЫ' : 'УРАН';
+    ctx.save();
+    ctx.font = '700 11px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = GOLD;
+    ctx.globalAlpha = 0.5;
+    ctx.letterSpacing = '3px';
+    ctx.fillText(uranLabel, cx, y);
+    ctx.restore();
+    y += 22;
+
+    ctx.save();
+    ctx.font = 'italic 700 28px "Playfair Display", Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = GOLD;
+    ctx.globalAlpha = 0.9;
+    ctx.shadowColor = 'rgba(200,168,75,0.4)';
+    ctx.shadowBlur = 18;
+    ctx.fillText(`«${uran}!»`, cx, y);
+    ctx.restore();
+  }
+}
+
+/* ── Footer ──────────────────────────────────────────────────────── */
+
+function drawFooter(
+  ctx: CanvasRenderingContext2D,
+  W: number,
+  H: number,
+): void {
+  const cx = W / 2;
+
+  drawDiamondDivider(ctx, cx, H - 104, W - 120, GOLD);
+
+  ctx.save();
+  ctx.font = '300 16px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = GOLD;
+  ctx.globalAlpha = 0.4;
+  ctx.letterSpacing = '3px';
+  ctx.fillText('SKEZIRE.KZ', cx, H - 70);
+  ctx.restore();
 }
 
 /* ── Main composition ──────────────────────────────────────────── */
@@ -199,95 +434,65 @@ export async function generateShareImage(
   canvas.width = W;
   canvas.height = H;
 
-  // Gather data
   const zhuzId = data.zhuz || 'other';
   const colors = ZHUZ_COLORS[zhuzId] || ZHUZ_COLORS.other;
 
-  // Tribe info
   const tamga = tribe ? tribe.tamga : null;
   const ruName = data.ru;
   const uran = tribe ? tribe.uran : '';
 
-  // Zhuz display name
-  const zhuzDisplay = data.zhuz
-    ? (locale === 'kk'
-      ? { uly: '\u04B0\u043B\u044B \u0436\u04AF\u0437', orta: '\u041E\u0440\u0442\u0430 \u0436\u04AF\u0437', kishi: '\u041A\u0456\u0448\u0456 \u0436\u04AF\u0437', other: '\u0416\u04AF\u0437\u0434\u0435\u043D \u0442\u044B\u0441' }[data.zhuz]
-      : { uly: '\u04B0\u043B\u044B \u0436\u04AF\u0437', orta: '\u041E\u0440\u0442\u0430 \u0436\u04AF\u0437', kishi: '\u041A\u0456\u0448\u0456 \u0436\u04AF\u0437', other: '\u0412\u043D\u0435 \u0436\u0443\u0437\u043E\u0432' }[data.zhuz])
-    : '';
+  const zhuzNames: Record<string, Record<string, string>> = {
+    kk: { uly: 'Ұлы жүз', orta: 'Орта жүз', kishi: 'Кіші жүз', other: 'Жүзден тыс' },
+    ru: { uly: 'Ұлы жүз', orta: 'Орта жүз', kishi: 'Кіші жүз', other: 'Вне жузов' },
+  };
+  const zhuzDisplay = data.zhuz ? (zhuzNames[locale]?.[data.zhuz] ?? '') : '';
 
-  // Build node list: oldest -> user (same as renderTree)
-  const youLabel = locale === 'kk' ? '\u0421\u0456\u0437' : '\u0412\u044B';
+  const youLabel = locale === 'kk' ? 'Сіз' : 'Вы';
   const nodes: TreeNode[] = [
     ...data.ancestors.slice().reverse(),
     { kaz: youLabel, label: '', name: data.name, isUser: true },
   ];
 
-  // --- Layer 1: Background ---
-  ctx.fillStyle = colors.bg;
-  ctx.fillRect(0, 0, W, H);
+  // --- 1. Background ---
+  drawBackground(ctx, W, H, colors);
 
-  // --- Layer 2: Diamond grid ---
-  drawDiamondGrid(ctx, W, H, GOLD);
-
-  // --- Layer 3: Ornamental border ---
-  drawOrnamentalBorder(ctx, W, H, GOLD);
-
-  // --- Layer 4: Title "Шежіре" ---
+  // --- 2. Subtle diamond texture ---
   ctx.save();
-  ctx.fillStyle = GOLD;
-  ctx.font = '700 48px "Playfair Display", Georgia, serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.shadowColor = 'rgba(200,168,75,0.3)';
-  ctx.shadowBlur = 20;
-  ctx.fillText('\u0428\u0435\u0436\u0456\u0440\u0435', W / 2, 68);
+  ctx.strokeStyle = GOLD;
+  ctx.lineWidth = 0.4;
+  ctx.globalAlpha = 0.06;
+  const ds = 70;
+  for (let gy = 0; gy < H; gy += ds) {
+    for (let gx = 0; gx < W; gx += ds) {
+      ctx.beginPath();
+      ctx.moveTo(gx + ds / 2, gy);
+      ctx.lineTo(gx + ds, gy + ds / 2);
+      ctx.lineTo(gx + ds / 2, gy + ds);
+      ctx.lineTo(gx, gy + ds / 2);
+      ctx.closePath();
+      ctx.stroke();
+    }
+  }
   ctx.restore();
 
-  // --- Layer 5: Top divider ---
-  drawDiamondDivider(ctx, W / 2, 140, W - 120, GOLD);
-
-  // --- Layer 6: Tamga watermark ---
+  // --- 3. Tamga watermark ---
   drawTamgaWatermark(ctx, tamga || '', W / 2, H / 2);
 
-  // --- Layer 7: Tree ---
-  const treeStartY = 170;
-  drawTreeOnCanvas(ctx, nodes, colors, treeStartY, W);
+  // --- 4. Double border + ornaments ---
+  drawDoubleBorder(ctx, W, H, GOLD);
 
-  // --- Layer 8: Tribe info ---
-  const infoY = treeStartY + nodes.length * (90 + 30) - 30 + 25;
+  // --- 5. Header ---
+  drawHeader(ctx, W, zhuzDisplay, ruName, locale);
 
-  if (zhuzDisplay || ruName) {
-    ctx.save();
-    ctx.fillStyle = GOLD;
-    ctx.globalAlpha = 0.8;
-    ctx.font = '500 22px Inter, sans-serif';
-    ctx.textAlign = 'center';
-    const parts = [zhuzDisplay, ruName].filter(Boolean);
-    ctx.fillText(parts.join('  \u00b7  '), W / 2, infoY);
-    ctx.restore();
-  }
+  // --- 6. Tree ---
+  const treeStartY = 262;
+  const treeEndY = drawTreeOnCanvas(ctx, nodes, colors, treeStartY, W);
 
-  if (uran) {
-    ctx.save();
-    ctx.fillStyle = GOLD;
-    ctx.globalAlpha = 0.55;
-    ctx.font = 'italic 18px "Playfair Display", Georgia, serif';
-    ctx.textAlign = 'center';
-    const uranLabel = locale === 'kk' ? '\u04B0\u0440\u0430\u043D\u044B' : '\u0423\u0440\u0430\u043D';
-    ctx.fillText(`${uranLabel}: ${uran}`, W / 2, infoY + 32);
-    ctx.restore();
-  }
+  // --- 7. Info section ---
+  drawInfoSection(ctx, W, treeEndY, uran, locale);
 
-  // --- Layer 9: Bottom divider + branding ---
-  drawDiamondDivider(ctx, W / 2, H - 100, W - 120, GOLD);
-
-  ctx.save();
-  ctx.fillStyle = GOLD;
-  ctx.globalAlpha = 0.45;
-  ctx.font = '300 18px Inter, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('skezire.kz', W / 2, H - 60);
-  ctx.restore();
+  // --- 8. Footer ---
+  drawFooter(ctx, W, H);
 
   return canvas;
 }
