@@ -20,22 +20,22 @@ export function TribeCardEnc({ tribe, locale, zhuzId, moreLabel }: TribeCardEncP
   return (
     <Link
       href={`/${locale}/encyclopedia/${zhuzId}/${tribe.id}`}
-      className="tribe-card"
+      className="enc-tribe-card"
     >
-      <div className="tribe-card-header">
-        <div className="tribe-card-tamga">{tribe.tamga}</div>
+      <div className="enc-tribe-card-header">
+        <div className="enc-tribe-card-tamga">{tribe.tamga}</div>
         <div>
-          <div className="tribe-card-name">{name}</div>
-          {altName && <div className="tribe-card-subname">{altName}</div>}
+          <div className="enc-tribe-card-name">{name}</div>
+          {altName && <div className="enc-tribe-card-subname">{altName}</div>}
         </div>
       </div>
-      {subgroup && <div className="tribe-card-subgroup">{subgroup}</div>}
-      <div className="tribe-card-desc">{desc}</div>
-      <div className="tribe-card-meta">
+      {subgroup && <div className="enc-tribe-card-subgroup">{subgroup}</div>}
+      <div className="enc-tribe-card-desc">{desc}</div>
+      <div className="enc-tribe-card-meta">
         {region && <span>{'\uD83D\uDCCD'} {region}</span>}
         {tribe.uran && <span>{'\uD83D\uDCE3'} {tribe.uran}</span>}
       </div>
-      <div className="tribe-card-link">{moreLabel}</div>
+      <div className="enc-tribe-card-link">{moreLabel}</div>
     </Link>
   );
 }

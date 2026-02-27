@@ -71,6 +71,14 @@ export default async function ZhuzPage({ params }: PageProps) {
         locale={locale}
         tribesHeading={t('tribesHeading')}
         moreLabel={t('tribeMore')}
+        tribeTabsLabels={{
+          tamga: t('tribeTamga'),
+          uran: t('tribeUran'),
+          region: t('tribeRegion'),
+          subgroup: t('tribeSubgroup'),
+          notable: t('tribeNotable'),
+          moreLink: t('tribeMore'),
+        }}
       />
 
       <section className="enc-cta">
