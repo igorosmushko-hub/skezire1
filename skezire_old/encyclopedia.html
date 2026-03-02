@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Қазақ рулары энциклопедиясы | Шежіре</title>
+  <meta name="description" content="Қазақ рулары мен жүздердің толық энциклопедиясы. Ұлы, Орта, Кіші жүз және Жүзден тыс — 47 рудың тарихы, тамғасы, ұраны.">
+  <meta name="keywords" content="қазақ рулары, казахские роды, жүз, жуз, шежіре, генеалогия, арғын, найман, дулат, адай">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://skezire.kz/encyclopedia.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Қазақ рулары энциклопедиясы | Шежіре">
+  <meta property="og:description" content="47 рудың тарихы, тамғасы, ұраны — толық энциклопедия">
+  <meta property="og:url" content="https://skezire.kz/encyclopedia.html">
+  <meta property="og:site_name" content="Шежіре">
+  <meta property="og:locale" content="kk_KZ">
+  <meta property="og:locale:alternate" content="ru_RU">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="encyclopedia/encyclopedia.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <a href="index.html">
+        <span class="nav-orn">&#9670;</span>
+        <span>Шежіре</span>
+        <span class="nav-orn">&#9670;</span>
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" data-i18n="nav.home">Басты бет</a></li>
+      <li><a href="encyclopedia.html" class="active" data-i18n="nav.enc">Энциклопедия</a></li>
+    </ul>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="kk" onclick="setEncLang('kk')">&#1178;&#1040;&#1047;</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" data-lang="ru" onclick="setEncLang('ru')">&#1056;&#1059;&#1057;</button>
+    </div>
+    <button class="nav-burger" id="nav-burger" aria-label="Menu">&#9776;</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="enc-hero">
+    <div class="enc-hero-bg"></div>
+    <div class="enc-hero-content">
+      <div class="enc-breadcrumb">
+        <a href="index.html" data-i18n="bc.home">Шежіре</a>
+        <span>&#8250;</span>
+        <span data-i18n="bc.enc">Энциклопедия</span>
+      </div>
+      <h1 class="enc-hero-title" data-i18n="hub.title">Қазақ рулары энциклопедиясы</h1>
+      <p class="enc-hero-sub" data-i18n="hub.sub">Ұлы, Орта, Кіші жүз және Жүзден тыс — 47 рудың толық тарихы</p>
+    </div>
+  </section>
+
+  <!-- ZHUZ CARDS -->
+  <section class="enc-main">
+    <div class="container" id="hub-grid">
+      <!-- Rendered by JS -->
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="enc-footer">
+    <div class="container">
+      <p data-i18n="footer.tagline">Болашақ ұрпақтар үшін ата-тек тарихын сақтаймыз</p>
+      <p class="enc-footer-copy" data-i18n="footer.copy">&copy; 2024 Шежіре</p>
+    </div>
+  </footer>
+
+  <script src="data/tribes.js"></script>
+  <script src="encyclopedia/encyclopedia.js"></script>
+  <script>initEncyclopedia('hub');</script>
+</body>
+</html>

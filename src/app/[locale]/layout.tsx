@@ -2,28 +2,11 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
-import { getMessages } from 'next-intl/server';
-import { Playfair_Display, Inter } from 'next/font/google';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ToastProvider } from '@/components/Toast';
-import '@/styles/globals.css';
-
-const playfair = Playfair_Display({
-  subsets: ['cyrillic', 'latin'],
-  weight: ['400', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-playfair',
-  display: 'swap',
-});
-
-const inter = Inter({
-  subsets: ['cyrillic', 'latin'],
-  weight: ['300', '400', '500', '600'],
-  variable: '--font-inter',
-  display: 'swap',
-});
 
 export async function generateMetadata({
   params,
@@ -95,19 +78,16 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const messages = await getMessages();
+  setRequestLocale(locale);
+  const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale} className={`${playfair.variable} ${inter.variable}`}>
-      <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <ToastProvider>
-            <Navbar locale={locale} />
-            {children}
-            <Footer />
-          </ToastProvider>
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <ToastProvider>
+        <Navbar locale={locale} />
+        {children}
+        <Footer />
+      </ToastProvider>
+    </NextIntlClientProvider>
   );
 }

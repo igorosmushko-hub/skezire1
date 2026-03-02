@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { AiModal } from './AiModal';
+import { AiPastModal } from './AiPastModal';
 
 type AiType = 'past' | 'grandma' | 'story';
 
@@ -10,8 +11,8 @@ export function AiSection() {
   const t = useTranslations('ai');
   const [modalType, setModalType] = useState<AiType | null>(null);
 
-  const cards: { type: AiType; icon: string; h3Key: string; pKey: string; tag1Key: string; tag2Key: string; featured?: boolean }[] = [
-    { type: 'past', icon: '🕰️', h3Key: 'past.h3', pKey: 'past.p', tag1Key: 'past.tag1', tag2Key: 'past.tag2' },
+  const cards: { type: AiType; icon: string; h3Key: string; pKey: string; tag1Key: string; tag2Key: string; featured?: boolean; live?: boolean }[] = [
+    { type: 'past', icon: '🕰️', h3Key: 'past.h3', pKey: 'past.p', tag1Key: 'past.tag1', tag2Key: 'past.tag2', live: true },
     { type: 'grandma', icon: '👵', h3Key: 'gm.h3', pKey: 'gm.p', tag1Key: 'gm.tag1', tag2Key: 'gm.tag2', featured: true },
     { type: 'story', icon: '📖', h3Key: 'story.h3', pKey: 'story.p', tag1Key: 'story.tag1', tag2Key: 'story.tag2' },
   ];
@@ -41,7 +42,7 @@ export function AiSection() {
                 </div>
                 <button className="btn btn-ai" onClick={() => setModalType(card.type)}>
                   <span>{t('btn')}</span>
-                  <span className="soon-badge">{t('soon')}</span>
+                  {!card.live && <span className="soon-badge">{t('soon')}</span>}
                 </button>
               </div>
             ))}
@@ -49,7 +50,8 @@ export function AiSection() {
         </div>
       </section>
 
-      <AiModal type={modalType} onClose={() => setModalType(null)} />
+      <AiPastModal open={modalType === 'past'} onClose={() => setModalType(null)} />
+      <AiModal type={modalType === 'past' ? null : modalType} onClose={() => setModalType(null)} />
     </>
   );
 }

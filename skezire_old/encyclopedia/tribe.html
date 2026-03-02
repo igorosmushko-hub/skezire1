@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Ру | Шежіре энциклопедиясы</title>
+  <meta name="description" id="page-desc" content="">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" id="page-canonical" href="">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" id="og-title" content="">
+  <meta property="og:description" id="og-desc" content="">
+  <meta property="og:url" id="og-url" content="">
+  <meta property="og:site_name" content="Шежіре">
+  <meta property="og:locale" content="kk_KZ">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="encyclopedia.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <a href="../index.html">
+        <span class="nav-orn">&#9670;</span>
+        <span>Шежіре</span>
+        <span class="nav-orn">&#9670;</span>
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="../index.html" data-i18n="nav.home">Басты бет</a></li>
+      <li><a href="../encyclopedia.html" data-i18n="nav.enc">Энциклопедия</a></li>
+    </ul>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="kk" onclick="setEncLang('kk')">&#1178;&#1040;&#1047;</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" data-lang="ru" onclick="setEncLang('ru')">&#1056;&#1059;&#1057;</button>
+    </div>
+    <button class="nav-burger" id="nav-burger" aria-label="Menu">&#9776;</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="enc-hero enc-hero--compact">
+    <div class="enc-hero-bg"></div>
+    <div class="enc-hero-content">
+      <div class="enc-breadcrumb" id="breadcrumb">
+        <!-- Rendered by JS -->
+      </div>
+      <h1 class="enc-hero-title" id="tribe-title"></h1>
+      <p class="enc-hero-sub" id="tribe-zhuz-label"></p>
+    </div>
+  </section>
+
+  <!-- PREV/NEXT NAV -->
+  <div class="enc-pager" id="pager-top">
+    <!-- Rendered by JS -->
+  </div>
+
+  <!-- TRIBE DETAIL -->
+  <section class="enc-main">
+    <div class="container">
+      <div class="tribe-detail" id="tribe-detail">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="enc-cta">
+    <div class="container">
+      <h3 data-i18n="cta.title">Шежіре жасау</h3>
+      <p data-i18n="cta.desc">Ата-тегіңіздің тарихын сақтаңыз</p>
+      <a href="../index.html#form-section" class="btn btn-primary" data-i18n="cta.btn">Шежіре жасау</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="enc-footer">
+    <div class="container">
+      <p data-i18n="footer.tagline">Болашақ ұрпақтар үшін ата-тек тарихын сақтаймыз</p>
+      <p class="enc-footer-copy" data-i18n="footer.copy">&copy; 2024 Шежіре</p>
+    </div>
+  </footer>
+
+  <script src="../data/tribes.js"></script>
+  <script src="encyclopedia.js"></script>
+  <script>initEncyclopedia('tribe');</script>
+</body>
+</html>

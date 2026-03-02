@@ -840,6 +840,130 @@ button { cursor: pointer; font-family: inherit; }
 }
 
 /* ================================================================
+   AI PAST MODAL
+   ================================================================ */
+.ai-past-card { max-width: 560px; }
+.ai-past-step { text-align: center; }
+
+/* Dropzone */
+.ai-past-dropzone {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; padding: 48px 24px;
+  border: 2px dashed rgba(200,168,75,.4);
+  border-radius: var(--r-md);
+  background: rgba(200,168,75,.04);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  margin: 24px 0 0;
+}
+.ai-past-dropzone:hover,
+.ai-past-dropzone.dragover {
+  border-color: var(--gold);
+  background: rgba(200,168,75,.08);
+}
+.ai-past-drop-icon { font-size: 2.4rem; opacity: .6; }
+.ai-past-drop-text { color: rgba(255,255,255,.8); font-size: .95rem; font-weight: 500; }
+.ai-past-drop-hint { color: rgba(255,255,255,.4); font-size: .78rem; }
+
+/* Preview image */
+.ai-past-img {
+  width: 100%; max-height: 320px; object-fit: contain;
+  border-radius: var(--r-sm); margin: 16px 0;
+  border: 1px solid rgba(200,168,75,.2);
+}
+
+/* Gender selector */
+.ai-past-gender { display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; }
+.ai-past-gender-btn {
+  padding: 8px 20px; border-radius: 100px;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+  color: rgba(255,255,255,.6); font-size: .85rem; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+}
+.ai-past-gender-btn.active {
+  background: rgba(200,168,75,.15); border-color: var(--gold); color: var(--gold);
+}
+
+/* Generate button */
+.ai-past-generate {
+  width: 100%; justify-content: center; padding: 14px; font-size: 1rem;
+}
+.ai-past-generate:disabled { opacity: .5; pointer-events: none; }
+
+/* Back link */
+.ai-past-back {
+  display: block; width: 100%; text-align: center;
+  margin-top: 12px; padding: 8px;
+  background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,.5); font-size: .85rem;
+  transition: color .2s;
+}
+.ai-past-back:hover { color: var(--gold); }
+
+/* Loading spinner */
+.ai-past-loading { padding: 24px 0; }
+.ai-past-spinner {
+  width: 48px; height: 48px; margin: 0 auto 20px;
+  border: 3px solid rgba(200,168,75,.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Progress bar */
+.ai-past-progress-bar {
+  width: 100%; height: 6px; border-radius: 3px;
+  background: rgba(255,255,255,.1);
+  overflow: hidden; margin-top: 20px;
+}
+.ai-past-progress-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold-dark, #8B7130), var(--gold));
+  transition: width .4s ease;
+}
+
+/* Result comparison */
+.ai-past-compare {
+  display: flex; align-items: center; gap: 16px;
+  justify-content: center; margin: 20px 0;
+}
+.ai-past-img-small {
+  width: 140px; height: 140px; object-fit: cover;
+  border-radius: var(--r-sm); border: 1px solid rgba(200,168,75,.2);
+}
+.ai-past-arrow { font-size: 1.5rem; color: var(--gold); opacity: .6; }
+.ai-past-img-result {
+  width: 260px; max-height: 320px; object-fit: contain;
+  border-radius: var(--r-sm);
+  border: 2px solid var(--gold);
+  box-shadow: 0 4px 24px rgba(200,168,75,.25);
+}
+
+/* Result actions */
+.ai-past-actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
+.btn-ai-outline {
+  background: transparent; border: 1px solid rgba(200,168,75,.4);
+  color: var(--gold); padding: 10px 24px; border-radius: 100px;
+  font-size: .88rem; font-weight: 600; cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+.btn-ai-outline:hover {
+  background: rgba(200,168,75,.1); border-color: var(--gold);
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .ai-past-card { padding: 28px 16px; }
+  .ai-past-compare { flex-direction: column; }
+  .ai-past-img-small { width: 100px; height: 100px; }
+  .ai-past-img-result { width: 100%; max-height: 280px; }
+  .ai-past-actions { flex-direction: column; }
+  .ai-past-actions .btn,
+  .ai-past-actions .btn-ai-outline { width: 100%; text-align: center; }
+}
+
+/* ================================================================
    TOAST
    ================================================================ */
 .toast {
