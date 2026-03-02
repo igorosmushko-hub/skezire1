@@ -484,6 +484,17 @@
   .enc-breadcrumb { font-size: .75rem; flex-wrap: wrap; justify-content: center; }
 
   .tribe-tabs-grid { grid-template-columns: 1fr; }
-  .tribe-tabs-header { gap: 12px; }
+  .tribe-tabs-header { gap: 12px; flex-wrap: wrap; }
   .tribe-tabs-tamga-big { width: 40px; height: 40px; font-size: 1.6rem; }
+  .tribe-tabs-title { font-size: 1.1rem; }
+  .tribe-tabs-content { padding: 14px 12px; }
+
+  .enc-hero { padding: 64px 12px 28px; }
+  .enc-hero--compact { padding: 60px 12px 20px; }
+  .enc-hero-sub { font-size: .82rem; }
+
+  .enc-pager a { font-size: .75rem; padding: 3px 8px; }
+
+  .enc-cta h3 { font-size: 1.15rem; }
+  .enc-cta p { font-size: .88rem; }
 }
