@@ -8,15 +8,15 @@ export function Navbar({ locale }: { locale: string }) {
 
   return (
     <NavbarClient>
-      <div className="nav-brand">
+      <Link href="/" locale={locale} className="nav-brand">
         <span className="nav-orn">◆</span>
         <span>Шежіре</span>
         <span className="nav-orn">◆</span>
-      </div>
+      </Link>
       <ul className="nav-links">
-        <li><a href="#about">{t('about')}</a></li>
-        <li><a href="#form-section">{t('create')}</a></li>
-        <li><a href="#ai-section">{t('ai')}</a></li>
+        <li><Link href="/#about" locale={locale}>{t('about')}</Link></li>
+        <li><Link href="/#form-section" locale={locale}>{t('create')}</Link></li>
+        <li><Link href="/#ai-section" locale={locale}>{t('ai')}</Link></li>
         <li><Link href="/zheti-ata" locale={locale}>{t('zhetiAta')}</Link></li>
         <li><Link href="/glossary" locale={locale}>{t('glossary')}</Link></li>
         <li><Link href="/encyclopedia" locale={locale}>{t('enc')}</Link></li>

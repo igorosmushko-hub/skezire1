@@ -4,6 +4,11 @@ export interface NotablePerson {
   role_ru: string;
 }
 
+export interface SubTribe {
+  kk: string;
+  ru: string;
+}
+
 export interface Tribe {
   id: string;
   kk: string;
@@ -17,6 +22,10 @@ export interface Tribe {
   subgroup_kk?: string;
   subgroup_ru?: string;
   notable: NotablePerson[];
+  subtribes?: SubTribe[];
+  history_kk?: string;
+  history_ru?: string;
+  relatedTribes?: string[];
 }
 
 export interface Zhuz {

@@ -70,6 +70,8 @@ export default async function TribePage({ params }: PageProps) {
   const nextTribe = tribeIndex < zhuz.tribes.length - 1 ? zhuz.tribes[tribeIndex + 1] : undefined;
 
   const base = 'https://skezire.kz';
+  const pageUrl = `${base}/${locale}/encyclopedia/${zhuzId}/${tribeId}`;
+
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -77,13 +79,65 @@ export default async function TribePage({ params }: PageProps) {
       { '@type': 'ListItem', position: 1, name: isKk ? 'Басты бет' : 'Главная', item: `${base}/${locale}` },
       { '@type': 'ListItem', position: 2, name: isKk ? 'Энциклопедия' : 'Энциклопедия', item: `${base}/${locale}/encyclopedia` },
       { '@type': 'ListItem', position: 3, name: zhuzName, item: `${base}/${locale}/encyclopedia/${zhuzId}` },
-      { '@type': 'ListItem', position: 4, name: tribeName, item: `${base}/${locale}/encyclopedia/${zhuzId}/${tribeId}` },
+      { '@type': 'ListItem', position: 4, name: tribeName, item: pageUrl },
     ],
+  };
+
+  const region = isKk ? tribe.region_kk : tribe.region_ru;
+
+  const personJsonLd = tribe.notable.length > 0
+    ? tribe.notable.map((p) => ({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: p.name,
+        description: isKk ? p.role_kk : p.role_ru,
+        memberOf: {
+          '@type': 'Organization',
+          name: tribeName,
+        },
+      }))
+    : [];
+
+  const placeJsonLd = region
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Place',
+        name: region,
+        description: isKk
+          ? `${tribeName} руының тарихи мекені`
+          : `Историческое место проживания рода ${tribeName}`,
+      }
+    : null;
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: tribeName,
+    description: isKk ? tribe.desc_kk : tribe.desc_ru,
+    url: pageUrl,
+    inLanguage: locale === 'kk' ? 'kk-KZ' : 'ru-RU',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Шежіре',
+      url: base,
+    },
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Шежіре',
+      url: base,
+    },
   };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      {personJsonLd.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
+      )}
+      {placeJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(placeJsonLd) }} />
+      )}
       <section className="enc-hero enc-hero--compact">
         <div className="enc-hero-bg" />
         <div className="enc-hero-content">

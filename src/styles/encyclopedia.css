@@ -413,6 +413,47 @@
   font-size: 2.2rem;
 }
 
+/* ── History ───────────────────────────────────────────────────── */
+.tribe-history {
+  margin-bottom: 24px;
+}
+.tribe-history-text {
+  font-size: .95rem;
+  line-height: 1.75;
+  color: var(--text, #1A1A2E);
+}
+
+/* ── Subtribes ────────────────────────────────────────────────── */
+.tribe-subtribes {
+  margin-bottom: 24px;
+}
+.tribe-subtribes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.tribe-subtribe-tag {
+  display: inline-block;
+  padding: 6px 14px;
+  background: rgba(200,168,75,.1);
+  color: var(--gold-dark, #8B7130);
+  border: 1px solid rgba(200,168,75,.25);
+  border-radius: 100px;
+  font-size: .82rem;
+  font-weight: 600;
+}
+
+/* ── Related tribes ───────────────────────────────────────────── */
+.tribe-related {
+  margin-bottom: 24px;
+}
+.tribe-related-hint {
+  font-size: .85rem;
+  color: var(--muted, #6B7280);
+  margin-top: 6px;
+}
+
 /* ── Notable persons ───────────────────────────────────────────── */
 .tribe-notable { margin-top: 8px; }
 .tribe-notable-title {
