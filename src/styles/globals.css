@@ -987,8 +987,31 @@ button { cursor: pointer; font-family: inherit; }
 
 @media (max-width: 768px) {
   .navbar { padding: 0 20px; }
-  .nav-links { display: none; }
-  .nav-burger { display: block; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(0, 20, 60, .97);
+    backdrop-filter: blur(16px);
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 32px rgba(0,0,0,.3);
+  }
+  .nav-links li { list-style: none; }
+  .nav-links a {
+    display: block;
+    padding: 14px 24px;
+    font-size: .95rem;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .nav-links li:last-child a { border-bottom: none; }
+  .menu-open .nav-links { display: flex; }
+  .nav-burger { display: block; cursor: pointer; }
+  .lang-switcher { margin-left: auto; margin-right: 8px; }
 
   .family-form { padding: 28px 20px; }
   .form-row { grid-template-columns: 1fr; }

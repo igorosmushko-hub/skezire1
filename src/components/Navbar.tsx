@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { LangSwitcher } from './LangSwitcher';
 import { NavbarClient } from './NavbarClient';
+import { NavbarAuth } from './NavbarAuth';
 
 export function Navbar({ locale }: { locale: string }) {
   const t = useTranslations('nav');
@@ -22,8 +23,8 @@ export function Navbar({ locale }: { locale: string }) {
         <li><Link href="/encyclopedia" locale={locale}>{t('enc')}</Link></li>
         <li><Link href="/blog" locale={locale}>{t('blog')}</Link></li>
       </ul>
+      <NavbarAuth />
       <LangSwitcher locale={locale} />
-      <button className="nav-burger" aria-label="Меню">☰</button>
     </NavbarClient>
   );
 }
