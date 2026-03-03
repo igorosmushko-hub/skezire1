@@ -45,6 +45,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
+  // AI pages
+  const aiFeatures = ['', '/action-figure', '/pet-humanize', '/ghibli-style'];
+  for (const locale of locales) {
+    for (const feature of aiFeatures) {
+      entries.push({
+        url: `${baseUrl}/${locale}/ai${feature}`,
+        lastModified: lastMod,
+        changeFrequency: 'weekly',
+        priority: 0.9,
+      });
+    }
+  }
+
   // Blog
   for (const locale of locales) {
     entries.push({

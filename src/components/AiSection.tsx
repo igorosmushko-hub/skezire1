@@ -5,8 +5,11 @@ import { useTranslations } from 'next-intl';
 import { AiModal } from './AiModal';
 import { AiPastModal } from './AiPastModal';
 import { AiAncestorModal } from './AiAncestorModal';
+import { AiActionFigureModal } from './AiActionFigureModal';
+import { AiPetHumanModal } from './AiPetHumanModal';
+import { AiGhibliModal } from './AiGhibliModal';
 
-type AiType = 'past' | 'grandma' | 'story';
+type AiType = 'past' | 'grandma' | 'story' | 'figure' | 'pet' | 'ghibli';
 
 export function AiSection() {
   const t = useTranslations('ai');
@@ -15,6 +18,9 @@ export function AiSection() {
   const cards: { type: AiType; icon: string; h3Key: string; pKey: string; tag1Key: string; tag2Key: string; featured?: boolean; live?: boolean }[] = [
     { type: 'past', icon: '🕰️', h3Key: 'past.h3', pKey: 'past.p', tag1Key: 'past.tag1', tag2Key: 'past.tag2', live: true },
     { type: 'grandma', icon: '👵', h3Key: 'gm.h3', pKey: 'gm.p', tag1Key: 'gm.tag1', tag2Key: 'gm.tag2', featured: true, live: true },
+    { type: 'figure', icon: '🎯', h3Key: 'figure.h3', pKey: 'figure.p', tag1Key: 'figure.tag1', tag2Key: 'figure.tag2', live: true },
+    { type: 'pet', icon: '🐾', h3Key: 'pet.h3', pKey: 'pet.p', tag1Key: 'pet.tag1', tag2Key: 'pet.tag2', live: true },
+    { type: 'ghibli', icon: '🎌', h3Key: 'ghibli.h3', pKey: 'ghibli.p', tag1Key: 'ghibli.tag1', tag2Key: 'ghibli.tag2', live: true },
     { type: 'story', icon: '📖', h3Key: 'story.h3', pKey: 'story.p', tag1Key: 'story.tag1', tag2Key: 'story.tag2' },
   ];
 
@@ -53,7 +59,10 @@ export function AiSection() {
 
       <AiPastModal open={modalType === 'past'} onClose={() => setModalType(null)} />
       <AiAncestorModal open={modalType === 'grandma'} onClose={() => setModalType(null)} />
-      <AiModal type={modalType === 'past' || modalType === 'grandma' ? null : modalType} onClose={() => setModalType(null)} />
+      <AiActionFigureModal open={modalType === 'figure'} onClose={() => setModalType(null)} />
+      <AiPetHumanModal open={modalType === 'pet'} onClose={() => setModalType(null)} />
+      <AiGhibliModal open={modalType === 'ghibli'} onClose={() => setModalType(null)} />
+      <AiModal type={modalType === 'past' || modalType === 'grandma' || modalType === 'figure' || modalType === 'pet' || modalType === 'ghibli' ? null : modalType} onClose={() => setModalType(null)} />
     </>
   );
 }
