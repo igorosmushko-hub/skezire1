@@ -42,6 +42,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       languages: {
         kk: `${base}/kk/blog/${slug}`,
         ru: `${base}/ru/blog/${slug}`,
+        'x-default': `${base}/kk/blog/${slug}`,
       },
     },
   };
@@ -73,8 +74,11 @@ export default async function BlogPostPage({ params }: PageProps) {
     headline: isKk ? post.titleKk : post.titleRu,
     description: isKk ? post.descKk : post.descRu,
     datePublished: post.date,
+    dateModified: post.date,
     inLanguage: isKk ? 'kk' : 'ru',
+    author: { '@type': 'Organization', name: 'Шежіре', url: `${base}/` },
     publisher: { '@type': 'Organization', name: 'Шежіре', url: `${base}/` },
+    image: `${base}/${locale}/opengraph-image`,
     mainEntityOfPage: `${base}/${locale}/blog/${slug}`,
   };
 

@@ -14,6 +14,8 @@ export async function generateMetadata({
   const base = 'https://skezire.kz';
   const url = `${base}/${locale}/blog`;
 
+  const ogImage = `${base}/${locale}/opengraph-image`;
+
   return {
     title: isKk
       ? 'Блог — Қазақ тарихы мен шежіре мақалалары | Шежіре'
@@ -21,6 +23,24 @@ export async function generateMetadata({
     description: isKk
       ? 'Шежіре, жеті ата, жүз, ру, тамға, ұран туралы мақалалар. Қазақ тарихы мен мәдениетін білу.'
       : 'Статьи о шежіре, жеті ата, жузах, родах, тамгах, уранах. Казахская история и культура.',
+    keywords: isKk
+      ? 'шежіре блог, қазақ тарихы, жеті ата, жүз, ру, тамға, ұран, мақалалар'
+      : 'блог шежіре, казахская история, жеті ата, жуз, род, тамга, уран, статьи',
+    openGraph: {
+      type: 'website',
+      title: isKk ? 'Блог — Қазақ тарихы мен шежіре мақалалары' : 'Блог — Статьи о казахской истории и генеалогии',
+      description: isKk
+        ? 'Шежіре, жеті ата, жүз, ру туралы мақалалар.'
+        : 'Статьи о шежіре, жеті ата, жузах, родах.',
+      url,
+      siteName: 'Шежіре',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: isKk ? 'Шежіре Блог' : 'Блог Шежіре' }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: isKk ? 'Блог — Шежіре мақалалары' : 'Блог — Статьи Шежіре',
+      images: [ogImage],
+    },
     alternates: {
       canonical: url,
       languages: {

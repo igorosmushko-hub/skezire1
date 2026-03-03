@@ -4,7 +4,7 @@ import { BLOG_POSTS } from '@/data/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://skezire.kz';
-  const lastMod = new Date('2026-02-27');
+  const lastMod = new Date();
   const locales = ['kk', 'ru'];
 
   const entries: MetadataRoute.Sitemap = [];

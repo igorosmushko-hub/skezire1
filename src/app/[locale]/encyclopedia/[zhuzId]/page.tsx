@@ -27,6 +27,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ? `${name} — ${zhuz.tribes.length} ру | Шежіре Энциклопедия`
       : `${name} — ${zhuz.tribes.length} родов | Шежіре Энциклопедия`,
     description: isKk ? zhuz.desc_kk : zhuz.desc_ru,
+    keywords: isKk
+      ? `${name}, рулары, шежіре, тамға, ұран, қазақ рулары энциклопедия`
+      : `${name}, роды, шежіре, тамга, уран, энциклопедия казахских родов`,
     openGraph: {
       type: 'website',
       title: isKk
@@ -47,6 +50,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       languages: {
         kk: `${base}/kk/encyclopedia/${zhuzId}`,
         ru: `${base}/ru/encyclopedia/${zhuzId}`,
+        'x-default': `${base}/kk/encyclopedia/${zhuzId}`,
       },
     },
   };

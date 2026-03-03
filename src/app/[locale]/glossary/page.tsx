@@ -58,6 +58,11 @@ export async function generateMetadata({
       siteName: 'Шежіре',
       images: [{ url: ogImage, width: 1200, height: 630, alt: 'Глоссарий Шежіре' }],
     },
+    twitter: {
+      card: 'summary_large_image',
+      title: isKk ? 'Глоссарий — Қазақ шежіре терминдері' : 'Глоссарий — Термины казахской генеалогии',
+      images: [ogImage],
+    },
     alternates: {
       canonical: url,
       languages: {

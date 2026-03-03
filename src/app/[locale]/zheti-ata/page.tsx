@@ -76,8 +76,12 @@ export default async function ZhetiAtaPage({
     description: isKk
       ? 'Жеті ата деген не? Қазақ дәстүрі бойынша жеті буын бабаңызды білу.'
       : 'Что такое жеті ата? Казахская традиция знать семь поколений предков.',
+    datePublished: '2026-02-27',
+    dateModified: '2026-03-03',
     inLanguage: isKk ? 'kk' : 'ru',
+    author: { '@type': 'Organization', name: 'Шежіре', url: `${base}/` },
     publisher: { '@type': 'Organization', name: 'Шежіре', url: `${base}/` },
+    image: `${base}/${locale}/opengraph-image`,
     mainEntityOfPage: `${base}/${locale}/zheti-ata`,
   };
 

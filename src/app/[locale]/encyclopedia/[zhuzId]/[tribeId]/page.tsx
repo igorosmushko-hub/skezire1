@@ -29,6 +29,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${tribeName} — ${zhuzName} | Шежіре`,
     description: isKk ? tribe.desc_kk : tribe.desc_ru,
+    keywords: isKk
+      ? `${tribeName}, ${zhuzName}, тамға, ұран, шежіре, қазақ руы`
+      : `${tribeName}, ${zhuzName}, тамга, уран, шежіре, казахский род`,
     openGraph: {
       type: 'website',
       title: `${tribeName} — ${zhuzName} | Шежіре`,
@@ -47,6 +50,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       languages: {
         kk: `${base}/kk/encyclopedia/${zhuzId}/${tribeId}`,
         ru: `${base}/ru/encyclopedia/${zhuzId}/${tribeId}`,
+        'x-default': `${base}/kk/encyclopedia/${zhuzId}/${tribeId}`,
       },
     },
   };
@@ -115,12 +119,20 @@ export default async function TribePage({ params }: PageProps) {
     headline: tribeName,
     description: isKk ? tribe.desc_kk : tribe.desc_ru,
     url: pageUrl,
+    datePublished: '2026-02-27',
+    dateModified: '2026-03-03',
     inLanguage: locale === 'kk' ? 'kk-KZ' : 'ru-RU',
+    author: {
+      '@type': 'Organization',
+      name: 'Шежіре',
+      url: base,
+    },
     publisher: {
       '@type': 'Organization',
       name: 'Шежіре',
       url: base,
     },
+    image: `${base}/${locale}/opengraph-image`,
     isPartOf: {
       '@type': 'WebSite',
       name: 'Шежіре',
