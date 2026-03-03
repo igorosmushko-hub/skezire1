@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { AiModal } from './AiModal';
 import { AiPastModal } from './AiPastModal';
+import { AiAncestorModal } from './AiAncestorModal';
 
 type AiType = 'past' | 'grandma' | 'story';
 
@@ -13,7 +14,7 @@ export function AiSection() {
 
   const cards: { type: AiType; icon: string; h3Key: string; pKey: string; tag1Key: string; tag2Key: string; featured?: boolean; live?: boolean }[] = [
     { type: 'past', icon: '🕰️', h3Key: 'past.h3', pKey: 'past.p', tag1Key: 'past.tag1', tag2Key: 'past.tag2', live: true },
-    { type: 'grandma', icon: '👵', h3Key: 'gm.h3', pKey: 'gm.p', tag1Key: 'gm.tag1', tag2Key: 'gm.tag2', featured: true },
+    { type: 'grandma', icon: '👵', h3Key: 'gm.h3', pKey: 'gm.p', tag1Key: 'gm.tag1', tag2Key: 'gm.tag2', featured: true, live: true },
     { type: 'story', icon: '📖', h3Key: 'story.h3', pKey: 'story.p', tag1Key: 'story.tag1', tag2Key: 'story.tag2' },
   ];
 
@@ -51,7 +52,8 @@ export function AiSection() {
       </section>
 
       <AiPastModal open={modalType === 'past'} onClose={() => setModalType(null)} />
-      <AiModal type={modalType === 'past' ? null : modalType} onClose={() => setModalType(null)} />
+      <AiAncestorModal open={modalType === 'grandma'} onClose={() => setModalType(null)} />
+      <AiModal type={modalType === 'past' || modalType === 'grandma' ? null : modalType} onClose={() => setModalType(null)} />
     </>
   );
 }

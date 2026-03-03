@@ -27,14 +27,14 @@ export async function POST(req: NextRequest) {
     rateLimit.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
   }
 
-  let body: { imageBase64?: string; gender?: string };
+  let body: { imageBase64?: string; gender?: string; type?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: 'invalid_json' }, { status: 400 });
   }
 
-  const { imageBase64, gender } = body;
+  const { imageBase64, gender, type } = body;
 
   if (!imageBase64 || typeof imageBase64 !== 'string') {
     return NextResponse.json({ error: 'invalid_input' }, { status: 400 });
@@ -45,9 +45,17 @@ export async function POST(req: NextRequest) {
   }
 
   const genderWord = gender === 'female' ? 'woman' : 'man';
-  const prompt = `a kazakh ${genderWord} img, vintage 1920s portrait photograph, wearing traditional kazakh shapan coat and tymak fur hat, great steppe of Kazakhstan background, sepia tones, aged daguerreotype film grain, warm golden lighting, historical photograph, highly detailed, masterpiece, best quality`;
-  const negativePrompt =
-    'modern clothing, smartphone, car, plastic, neon, blurry, low quality, deformed, ugly, bad anatomy, watermark, text, logo, cropped, out of frame';
+
+  let prompt: string;
+  let negativePrompt: string;
+
+  if (type === 'ancestor') {
+    prompt = `a young kazakh ${genderWord} img, youthful smooth face, age 20-25, dark thick hair, bright eyes, wearing traditional kazakh national costume, embroidered chapan, steppe landscape background, natural warm sunlight, portrait photograph, highly detailed, masterpiece, best quality`;
+    negativePrompt = 'old, elderly, wrinkles, gray hair, aged, modern clothing, smartphone, car, plastic, neon, blurry, low quality, deformed, ugly, bad anatomy, watermark, text, logo, cropped, out of frame';
+  } else {
+    prompt = `a kazakh ${genderWord} img, vintage 1920s portrait photograph, wearing traditional kazakh shapan coat and tymak fur hat, great steppe of Kazakhstan background, sepia tones, aged daguerreotype film grain, warm golden lighting, historical photograph, highly detailed, masterpiece, best quality`;
+    negativePrompt = 'modern clothing, smartphone, car, plastic, neon, blurry, low quality, deformed, ugly, bad anatomy, watermark, text, logo, cropped, out of frame';
+  }
 
   try {
     const replicate = new Replicate({ auth: token });
