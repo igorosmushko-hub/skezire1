@@ -1274,3 +1274,179 @@ a.tribe-meta-val:hover { text-decoration: underline; }
   .tribe-title { font-size: 1.4rem; }
   .tribe-siblings h2 { font-size: 1.2rem; }
 }
+
+/* ================================================================
+   DONATION SECTION
+   ================================================================ */
+.donate-section {
+  padding: 80px 0;
+  background: var(--off-white);
+  border-top: 1px solid var(--border);
+}
+.donate-inner {
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.donate-orn {
+  font-size: 1.4rem;
+  color: var(--gold);
+  opacity: .55;
+  letter-spacing: .2em;
+}
+.donate-h2 {
+  font-family: var(--ff-head);
+  font-size: 1.75rem;
+  color: var(--blue);
+  margin: 0;
+}
+.donate-desc {
+  color: var(--muted);
+  font-size: .95rem;
+  line-height: 1.65;
+  max-width: 420px;
+}
+.donate-btn {
+  padding: 14px 36px;
+  font-size: 1rem;
+}
+.donate-note {
+  font-size: .82rem;
+  color: var(--muted);
+  margin-top: -4px;
+}
+.donate-note strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* ── Footer donate link ── */
+.footer-donate-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: .8rem;
+  color: var(--gold);
+  opacity: .65;
+  transition: opacity .2s;
+  letter-spacing: .04em;
+}
+.footer-donate-link:hover {
+  opacity: 1;
+}
+
+/* ── PDF modal extras ── */
+.pdf-modal-card { max-width: 480px; }
+.pdf-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  text-align: left;
+}
+.pdf-modal-label {
+  font-size: .82rem;
+  color: rgba(255,255,255,.65);
+}
+.pdf-modal-input {
+  width: 100%;
+  padding: 11px 16px;
+  border: 1.5px solid rgba(200,168,75,.3);
+  border-radius: var(--r-sm);
+  background: rgba(255,255,255,.07);
+  color: #fff;
+  font-family: var(--ff-body);
+  font-size: .95rem;
+  transition: border-color .2s;
+}
+.pdf-modal-input::placeholder {
+  color: rgba(255,255,255,.3);
+}
+.pdf-modal-input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(200,168,75,.12);
+}
+.pdf-modal-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 4px;
+}
+.btn-pdf-soon {
+  font-size: .88rem;
+  padding: 12px 22px;
+  border-style: dashed;
+  opacity: .85;
+}
+
+@media (max-width: 500px) {
+  .donate-inner { gap: 12px; }
+  .donate-h2 { font-size: 1.4rem; }
+}
+
+/* ================================================================
+   AUTH — Navbar buttons & Login Modal
+   ================================================================ */
+.nav-auth {
+  display: flex; align-items: center; gap: 10px; margin-left: 12px;
+}
+.nav-user-phone {
+  color: rgba(255,255,255,.7); font-size: .8rem; font-weight: 500;
+  letter-spacing: .03em;
+}
+.nav-login-btn, .nav-logout-btn {
+  background: rgba(200,168,75,.12); border: 1px solid rgba(200,168,75,.3);
+  color: var(--gold); padding: 5px 14px; border-radius: 6px;
+  font-size: .8rem; font-weight: 600; cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+.nav-login-btn:hover, .nav-logout-btn:hover {
+  background: rgba(200,168,75,.22); border-color: rgba(200,168,75,.5);
+}
+
+/* ── Login Modal Card ── */
+.login-card {
+  max-width: 400px; text-align: center;
+}
+.login-step {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+}
+.login-label {
+  color: rgba(255,255,255,.6); font-size: .82rem; font-weight: 600;
+  letter-spacing: .05em; text-transform: uppercase; align-self: flex-start;
+}
+.login-phone-input, .login-code-input {
+  width: 100%; padding: 14px 18px; border-radius: var(--r-sm);
+  border: 1px solid rgba(200,168,75,.3); background: rgba(255,255,255,.06);
+  color: #fff; font-size: 1.1rem; text-align: center; letter-spacing: .12em;
+  font-family: var(--ff-body);
+  transition: border-color .2s;
+}
+.login-phone-input:focus, .login-code-input:focus {
+  outline: none; border-color: var(--gold);
+}
+.login-phone-input::placeholder, .login-code-input::placeholder {
+  color: rgba(255,255,255,.25);
+}
+.login-error {
+  color: #ff6b6b; font-size: .85rem; margin-top: -8px;
+}
+.login-submit {
+  width: 100%; margin-top: 8px;
+}
+.login-back {
+  background: none; border: none; color: rgba(200,168,75,.6);
+  font-size: .85rem; cursor: pointer; padding: 8px;
+  transition: color .2s;
+}
+.login-back:hover { color: var(--gold); }
+
+@media (max-width: 768px) {
+  .nav-auth { display: none; }
+}
+@media (max-width: 500px) {
+  .login-card { padding: 28px 16px; }
+}

@@ -4,6 +4,7 @@ import { About } from '@/components/About';
 import { OrnamentDivider } from '@/components/OrnamentDivider';
 import { FormTreeContainer } from '@/components/FormTreeContainer';
 import { AiSection } from '@/components/AiSection';
+import { DonationSection } from '@/components/DonationSection';
 import { JsonLd } from '@/components/JsonLd';
 
 export default async function HomePage() {
@@ -17,6 +18,7 @@ export default async function HomePage() {
       <OrnamentDivider />
       <FormTreeContainer locale={locale} />
       <AiSection />
+      <DonationSection />
     </>
   );
 }

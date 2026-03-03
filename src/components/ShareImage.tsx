@@ -3,6 +3,7 @@
 import { useRef, useCallback, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useToast } from './Toast';
+import { PdfModal } from './PdfModal';
 import { TRIBES_DB } from '@/data/tribes';
 import type { TreeFormData } from '@/lib/types';
 
@@ -18,6 +19,7 @@ export function ShareImage({ data, locale, nodes }: ShareImageProps) {
   const showToast = useToast();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [generating, setGenerating] = useState(false);
+  const [pdfOpen, setPdfOpen] = useState(false);
 
   const generate = useCallback(async (): Promise<HTMLCanvasElement | null> => {
     const canvas = canvasRef.current;
@@ -118,7 +120,11 @@ export function ShareImage({ data, locale, nodes }: ShareImageProps) {
         <button className="btn btn-outline" onClick={scrollToForm}>
           {t('btn.edit')}
         </button>
+        <button className="btn btn-outline btn-pdf-soon" onClick={() => setPdfOpen(true)}>
+          {t('btn.pdf')}
+        </button>
       </div>
+      <PdfModal open={pdfOpen} onClose={() => setPdfOpen(false)} />
       <canvas
         ref={canvasRef}
         width={1080}
