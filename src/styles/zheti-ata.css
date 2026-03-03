@@ -1,0 +1,194 @@
+/* ================================================================
+   ZHETI-ATA — Landing page styles
+   ================================================================ */
+
+.za-main {
+  padding: 40px 0 48px;
+  background: var(--off-white, #F5F0E8);
+}
+
+.za-section {
+  max-width: 800px;
+  margin: 0 auto 40px;
+}
+.za-section:last-child {
+  margin-bottom: 0;
+}
+
+.za-h2 {
+  font-family: var(--ff-head);
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  color: var(--blue);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(200,168,75,.25);
+}
+
+.za-text {
+  font-size: .95rem;
+  line-height: 1.75;
+  color: var(--text, #1A1A2E);
+  margin-bottom: 12px;
+}
+
+/* ── 7 Generations list ──────────────────────────────────── */
+.za-gen-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+.za-gen-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--white, #fff);
+  border-radius: var(--r-md, 16px);
+  padding: 16px 20px;
+  border: 1px solid rgba(0,48,130,.1);
+  border-left: 4px solid var(--gold);
+  transition: transform .2s, box-shadow .2s;
+}
+.za-gen-item:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md, 0 6px 24px rgba(0,0,0,.08));
+}
+.za-gen-num {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue);
+  color: var(--gold);
+  font-family: var(--ff-head);
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.za-gen-info {
+  flex: 1;
+}
+.za-gen-name {
+  font-family: var(--ff-head);
+  font-size: 1.05rem;
+  color: var(--blue);
+  font-weight: 600;
+}
+.za-gen-desc {
+  font-size: .85rem;
+  color: var(--muted, #6B7280);
+  margin-top: 2px;
+}
+
+/* ── Why cards ───────────────────────────────────────────── */
+.za-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.za-card {
+  background: var(--white, #fff);
+  border-radius: var(--r-md, 16px);
+  padding: 24px 20px;
+  border: 1px solid rgba(0,48,130,.1);
+  text-align: center;
+  transition: transform .2s, box-shadow .2s;
+}
+.za-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md, 0 6px 24px rgba(0,0,0,.1));
+}
+.za-card-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+.za-card-title {
+  font-family: var(--ff-head);
+  font-size: 1rem;
+  color: var(--blue);
+  margin-bottom: 8px;
+}
+.za-card-text {
+  font-size: .85rem;
+  color: var(--muted, #6B7280);
+  line-height: 1.55;
+}
+
+/* ── Blockquote ──────────────────────────────────────────── */
+.za-quote {
+  background: linear-gradient(135deg, rgba(0,26,90,.04) 0%, rgba(200,168,75,.06) 100%);
+  border-left: 4px solid var(--gold);
+  border-radius: 0 var(--r-md, 16px) var(--r-md, 16px) 0;
+  padding: 20px 24px;
+  margin: 20px 0;
+}
+.za-quote p {
+  font-family: var(--ff-head);
+  font-size: 1.1rem;
+  color: var(--blue);
+  line-height: 1.5;
+  margin: 0 0 6px;
+  font-style: italic;
+}
+.za-quote cite {
+  font-size: .82rem;
+  color: var(--muted, #6B7280);
+  font-style: normal;
+}
+
+/* ── Steps ───────────────────────────────────────────────── */
+.za-steps {
+  list-style: none;
+  counter-reset: steps;
+  padding: 0;
+  margin-top: 16px;
+}
+.za-steps li {
+  counter-increment: steps;
+  position: relative;
+  padding: 14px 16px 14px 56px;
+  margin-bottom: 10px;
+  background: var(--white, #fff);
+  border-radius: var(--r-md, 16px);
+  border: 1px solid rgba(0,48,130,.1);
+  font-size: .92rem;
+  line-height: 1.55;
+  color: var(--text, #1A1A2E);
+}
+.za-steps li::before {
+  content: counter(steps);
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gold);
+  color: var(--blue);
+  font-family: var(--ff-head);
+  font-weight: 700;
+  font-size: .85rem;
+  border-radius: 50%;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .za-main { padding: 28px 0 36px; }
+  .za-section { margin-bottom: 32px; }
+  .za-cards { grid-template-columns: 1fr; }
+  .za-gen-item { padding: 12px 14px; gap: 12px; }
+  .za-gen-num { width: 34px; height: 34px; font-size: 1rem; }
+  .za-quote { padding: 16px 18px; }
+}
+
+@media (max-width: 480px) {
+  .za-h2 { font-size: 1.2rem; }
+  .za-steps li { padding-left: 48px; }
+  .za-steps li::before { left: 12px; width: 24px; height: 24px; font-size: .78rem; }
+}

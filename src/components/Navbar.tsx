@@ -17,7 +17,10 @@ export function Navbar({ locale }: { locale: string }) {
         <li><a href="#about">{t('about')}</a></li>
         <li><a href="#form-section">{t('create')}</a></li>
         <li><a href="#ai-section">{t('ai')}</a></li>
+        <li><Link href="/zheti-ata" locale={locale}>{t('zhetiAta')}</Link></li>
+        <li><Link href="/glossary" locale={locale}>{t('glossary')}</Link></li>
         <li><Link href="/encyclopedia" locale={locale}>{t('enc')}</Link></li>
+        <li><Link href="/blog" locale={locale}>{t('blog')}</Link></li>
       </ul>
       <LangSwitcher locale={locale} />
       <button className="nav-burger" aria-label="Меню">☰</button>

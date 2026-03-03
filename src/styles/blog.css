@@ -1,0 +1,117 @@
+/* ================================================================
+   BLOG — Listing and article styles
+   ================================================================ */
+
+.blog-main {
+  padding: 40px 0 48px;
+  background: var(--off-white, #F5F0E8);
+}
+
+/* ── Blog listing grid ──────────────────────────────────── */
+.blog-grid {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.blog-card {
+  background: var(--white, #fff);
+  border-radius: var(--r-md, 16px);
+  padding: 24px 28px;
+  border: 1px solid rgba(0,48,130,.1);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.blog-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md, 0 6px 24px rgba(0,0,0,.1));
+  border-color: var(--gold);
+}
+
+.blog-card-date {
+  font-size: .78rem;
+  color: var(--muted, #6B7280);
+  font-weight: 500;
+}
+
+.blog-card-title {
+  font-family: var(--ff-head);
+  font-size: 1.2rem;
+  color: var(--blue);
+  line-height: 1.3;
+}
+
+.blog-card-desc {
+  font-size: .88rem;
+  color: var(--muted, #6B7280);
+  line-height: 1.55;
+}
+
+.blog-card-link {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--gold-dark, #8B7130);
+  margin-top: 4px;
+}
+
+/* ── Blog article ───────────────────────────────────────── */
+.blog-article {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.blog-date {
+  display: inline-block;
+  font-size: .82rem;
+  color: rgba(255,255,255,.5);
+  margin-top: 6px;
+}
+
+.blog-h2 {
+  font-family: var(--ff-head);
+  font-size: clamp(1.15rem, 3vw, 1.5rem);
+  color: var(--blue);
+  margin: 32px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(200,168,75,.25);
+}
+.blog-h2:first-child {
+  margin-top: 0;
+}
+
+.blog-p {
+  font-size: .95rem;
+  line-height: 1.8;
+  color: var(--text, #1A1A2E);
+  margin-bottom: 16px;
+}
+
+.blog-back {
+  max-width: 720px;
+  margin: 32px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0,48,130,.1);
+}
+.blog-back-link {
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--blue);
+  text-decoration: none;
+  transition: color .2s;
+}
+.blog-back-link:hover {
+  color: var(--gold-dark, #8B7130);
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .blog-main { padding: 28px 0 36px; }
+  .blog-card { padding: 18px 20px; }
+  .blog-card-title { font-size: 1.08rem; }
+}

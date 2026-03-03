@@ -1,0 +1,53 @@
+/* ================================================================
+   GLOSSARY — Terms page styles
+   ================================================================ */
+
+.gl-main {
+  padding: 40px 0 48px;
+  background: var(--off-white, #F5F0E8);
+}
+
+.gl-grid {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.gl-term {
+  background: var(--white, #fff);
+  border-radius: var(--r-md, 16px);
+  padding: 20px 24px;
+  border: 1px solid rgba(0,48,130,.1);
+  border-left: 4px solid var(--gold);
+  scroll-margin-top: 80px;
+  transition: box-shadow .2s;
+}
+.gl-term:hover {
+  box-shadow: var(--shadow-md, 0 6px 24px rgba(0,0,0,.08));
+}
+.gl-term:target {
+  border-left-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(0,48,130,.2);
+}
+
+.gl-term-name {
+  font-family: var(--ff-head);
+  font-size: 1.15rem;
+  color: var(--blue);
+  margin: 0 0 8px;
+}
+
+.gl-term-def {
+  font-size: .9rem;
+  line-height: 1.65;
+  color: var(--text, #1A1A2E);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .gl-main { padding: 28px 0 36px; }
+  .gl-term { padding: 16px 18px; }
+  .gl-term-name { font-size: 1.05rem; }
+}
