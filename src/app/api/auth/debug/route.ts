@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   const firebaseKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
   const supabaseUrl = process.env.SUPABASE_URL;
@@ -11,18 +13,30 @@ export async function GET() {
 
   let firebaseParsed = 'not_attempted';
   if (firebaseKey) {
-    try {
-      const decoded = Buffer.from(firebaseKey, 'base64').toString();
-      const json = JSON.parse(decoded);
-      firebaseParsed = `ok, project_id=${json.project_id}`;
-    } catch (err) {
-      firebaseParsed = `parse_error: ${err instanceof Error ? err.message : String(err)}`;
+    // Try raw JSON first
+    if (firebaseKey.trimStart().startsWith('{')) {
+      try {
+        const json = JSON.parse(firebaseKey);
+        firebaseParsed = `ok_raw_json, project_id=${json.project_id}`;
+      } catch (err) {
+        firebaseParsed = `raw_json_parse_error: ${err instanceof Error ? err.message : String(err)}`;
+      }
+    } else {
+      // Try base64
+      try {
+        const decoded = Buffer.from(firebaseKey, 'base64').toString();
+        const json = JSON.parse(decoded);
+        firebaseParsed = `ok_base64, project_id=${json.project_id}`;
+      } catch (err) {
+        firebaseParsed = `base64_parse_error: ${err instanceof Error ? err.message : String(err)}`;
+      }
     }
   }
 
   return NextResponse.json({
+    _version: 'v3',
     FIREBASE_SERVICE_ACCOUNT_KEY: firebaseKey
-      ? `set (${firebaseKey.length} chars, starts with: ${firebaseKey.slice(0, 10)}...)`
+      ? `set (${firebaseKey.length} chars, first20: ${JSON.stringify(firebaseKey.slice(0, 20))})`
       : 'NOT SET',
     FIREBASE_KEY_PARSED: firebaseParsed,
     SUPABASE_URL: supabaseUrl ? `set (${supabaseUrl})` : 'NOT SET',
