@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Replicate from 'replicate';
+import { getSessionUser } from '@/lib/auth';
 
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const sessionUser = getSessionUser(_req);
+  if (!sessionUser) {
+    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  }
+
   const token = process.env.REPLICATE_API_TOKEN;
   if (!token || token === 'r8_YOUR_TOKEN_HERE') {
     return NextResponse.json({ error: 'config' }, { status: 500 });

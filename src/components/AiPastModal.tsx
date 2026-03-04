@@ -4,6 +4,8 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { useToast } from './Toast';
 import { preprocessImage, validateImageFile } from '@/lib/ai-utils';
+import { useAuth } from './AuthProvider';
+import { LoginModal } from './LoginModal';
 
 type Step = 'upload' | 'preview' | 'generating' | 'result';
 
@@ -15,6 +17,7 @@ interface Props {
 export function AiPastModal({ open, onClose }: Props) {
   const t = useTranslations('ai.past.modal');
   const showToast = useToast();
+  const { user, loading: authLoading } = useAuth();
 
   const [step, setStep] = useState<Step>('upload');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -171,6 +174,11 @@ export function AiPastModal({ open, onClose }: Props) {
       showToast(t('error'));
     }
   }, [resultUrl, showToast, t]);
+
+  /* ── Auth gate ──────────────────────────────────── */
+  if (open && !authLoading && !user) {
+    return <LoginModal open={true} onClose={onClose} />;
+  }
 
   /* ── Render ──────────────────────────────────────── */
   if (!open) return null;
