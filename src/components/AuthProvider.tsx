@@ -36,13 +36,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback(async (idToken: string) => {
+    console.log('[Auth] Calling /api/auth/verify...');
     const res = await fetch('/api/auth/verify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ idToken }),
     });
     const data = await res.json();
-    if (data.user) setUser(data.user);
+    console.log('[Auth] Verify response:', res.status, data);
+    if (data.user) {
+      setUser(data.user);
+      console.log('[Auth] User set:', data.user);
+    } else {
+      console.error('[Auth] Verify failed:', data);
+      throw new Error(data.error || 'verify_failed');
+    }
   }, []);
 
   const logout = useCallback(async () => {

@@ -138,12 +138,14 @@ export function LoginModal({ open, onClose }: Props) {
     try {
       const result = await confirmationRef.current!.confirm(code);
       const idToken = await result.user.getIdToken();
+      console.log('[Auth] Firebase code verified, calling login...');
       await login(idToken);
+      console.log('[Auth] Login complete, user set');
       setStep('success');
       setTimeout(() => handleClose(), 1500);
     } catch (err) {
-      console.error('[Auth] Code verify error:', err);
-      setError(t('codeError'));
+      console.error('[Auth] Login/verify error:', err);
+      setError(t('sendError'));
     } finally {
       setLoading(false);
     }
