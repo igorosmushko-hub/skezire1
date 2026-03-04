@@ -8,12 +8,16 @@ export function getAdminAuth(): Auth | null {
     if (getApps().length === 0) {
       const raw = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
       if (!raw) {
+        console.error('[Firebase Admin] FIREBASE_SERVICE_ACCOUNT_KEY is not set');
         return null;
       }
       try {
+        console.log('[Firebase Admin] Key length:', raw.length);
         const serviceAccount = JSON.parse(Buffer.from(raw, 'base64').toString());
+        console.log('[Firebase Admin] Parsed project_id:', serviceAccount.project_id);
         initializeApp({ credential: cert(serviceAccount) });
-      } catch {
+      } catch (err) {
+        console.error('[Firebase Admin] Init failed:', err);
         return null;
       }
     }
