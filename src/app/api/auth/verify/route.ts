@@ -18,7 +18,11 @@ export async function POST(req: NextRequest) {
 
   try {
     // 1. Verify Firebase ID token
-    const decoded = await getAdminAuth().verifyIdToken(idToken);
+    const adminAuth = getAdminAuth();
+    if (!adminAuth) {
+      return NextResponse.json({ error: 'auth_not_configured' }, { status: 503 });
+    }
+    const decoded = await adminAuth.verifyIdToken(idToken);
     const phone = decoded.phone_number;
     if (!phone) {
       return NextResponse.json({ error: 'no_phone' }, { status: 400 });
@@ -26,6 +30,9 @@ export async function POST(req: NextRequest) {
 
     // 2. Upsert user in Supabase
     const supabase = getSupabase();
+    if (!supabase) {
+      return NextResponse.json({ error: 'db_not_configured' }, { status: 503 });
+    }
     const { data: existing } = await supabase
       .from('users')
       .select('id, phone, usage_count')

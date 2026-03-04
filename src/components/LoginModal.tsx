@@ -70,6 +70,8 @@ export function LoginModal({ open, onClose }: Props) {
       recaptchaRef.current = null;
     }
 
+    if (!auth) throw new Error('Firebase auth not configured');
+
     // Create a fresh container to avoid "already rendered" error
     const wrapper = document.getElementById('recaptcha-wrapper');
     if (wrapper) {
@@ -99,7 +101,7 @@ export function LoginModal({ open, onClose }: Props) {
     try {
       const verifier = getRecaptchaVerifier();
       console.log('[Auth] Sending SMS to', phone);
-      const confirmation = await signInWithPhoneNumber(auth, phone, verifier);
+      const confirmation = await signInWithPhoneNumber(auth!, phone, verifier);
       console.log('[Auth] SMS sent successfully');
       confirmationRef.current = confirmation;
       setStep('code');
