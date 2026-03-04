@@ -13,7 +13,13 @@ export function getAdminAuth(): Auth | null {
       }
       try {
         console.log('[Firebase Admin] Key length:', raw.length);
-        const serviceAccount = JSON.parse(Buffer.from(raw, 'base64').toString());
+        // Support both raw JSON and base64-encoded JSON
+        let serviceAccount;
+        if (raw.trimStart().startsWith('{')) {
+          serviceAccount = JSON.parse(raw);
+        } else {
+          serviceAccount = JSON.parse(Buffer.from(raw, 'base64').toString());
+        }
         console.log('[Firebase Admin] Parsed project_id:', serviceAccount.project_id);
         initializeApp({ credential: cert(serviceAccount) });
       } catch (err) {
