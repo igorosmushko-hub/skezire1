@@ -116,62 +116,75 @@ function drawHeader(
   zhuzDisplay: string,
   ruName: string,
   locale: string,
-): void {
+): number {
   const cx = W / 2;
+  let y = 120; // Start below template top cartouche
 
-  // "Шежіре" — large title
+  // "Шежіре" — large title with strong glow
   ctx.save();
-  ctx.font = '700 52px "Cormorant Garamond", Georgia, serif';
+  ctx.font = '700 56px "Cormorant Garamond", Georgia, serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
   ctx.fillStyle = GOLD;
-  ctx.shadowColor = 'rgba(200,168,75,0.5)';
-  ctx.shadowBlur = 30;
-  ctx.fillText('Шежіре', cx, 62);
+  ctx.shadowColor = 'rgba(200,168,75,0.7)';
+  ctx.shadowBlur = 40;
+  ctx.fillText('Ш Е Ж І Р Е', cx, y);
+  // Double-draw for stronger glow
+  ctx.shadowBlur = 20;
+  ctx.fillText('Ш Е Ж І Р Е', cx, y);
   ctx.restore();
+  y += 72;
 
   // Subtitle: locale label
-  const subLabel = locale === 'kk' ? 'ШЕЖІРЕ' : 'ГЕНЕАЛОГИЧЕСКОЕ ДРЕВО';
+  const subLabel = locale === 'kk' ? 'ГЕНЕАЛОГИЯЛЫҚ АҒАШ' : 'ГЕНЕАЛОГИЧЕСКОЕ ДРЕВО';
   ctx.save();
-  ctx.font = '400 13px Inter, sans-serif';
+  ctx.font = '400 14px Inter, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
   ctx.fillStyle = GOLD;
-  ctx.globalAlpha = 0.45;
-  ctx.letterSpacing = '4px';
-  ctx.fillText(subLabel, cx, 122);
+  ctx.globalAlpha = 0.6;
+  ctx.letterSpacing = '5px';
+  ctx.fillText(subLabel, cx, y);
   ctx.restore();
+  y += 30;
 
   // Divider
-  drawDiamondDivider(ctx, cx, 152, W - 120, GOLD);
+  drawDiamondDivider(ctx, cx, y, W - 160, GOLD);
+  y += 28;
 
   // Zhuz name
   if (zhuzDisplay) {
     ctx.save();
-    ctx.font = '400 18px Inter, sans-serif';
+    ctx.font = '600 20px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     ctx.fillStyle = GOLD;
-    ctx.globalAlpha = 0.65;
-    ctx.fillText(zhuzDisplay.toUpperCase(), cx, 172);
+    ctx.globalAlpha = 0.8;
+    ctx.letterSpacing = '2px';
+    ctx.fillText(zhuzDisplay.toUpperCase(), cx, y);
     ctx.restore();
+    y += 30;
   }
 
   // Ru name — prominent
   if (ruName) {
     ctx.save();
-    ctx.font = '700 32px "Cormorant Garamond", Georgia, serif';
+    ctx.font = '700 36px "Cormorant Garamond", Georgia, serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     ctx.fillStyle = GOLD;
-    ctx.shadowColor = 'rgba(200,168,75,0.35)';
-    ctx.shadowBlur = 15;
-    ctx.fillText(ruName, cx, 198);
+    ctx.shadowColor = 'rgba(200,168,75,0.5)';
+    ctx.shadowBlur = 20;
+    ctx.fillText(ruName, cx, y);
     ctx.restore();
+    y += 48;
   }
 
   // Second divider
-  drawDiamondDivider(ctx, cx, 244, W - 200, GOLD);
+  drawDiamondDivider(ctx, cx, y, W - 240, GOLD);
+  y += 24;
+
+  return y;
 }
 
 /* ── Tree ────────────────────────────────────────────────────────── */
@@ -299,11 +312,12 @@ export function drawTreeOnCanvas(
     ctx.textBaseline = 'top';
     ctx.letterSpacing = '1.5px';
     if (isUser) {
-      ctx.fillStyle = 'rgba(30,12,0,0.75)';
+      ctx.fillStyle = 'rgba(30,12,0,0.85)';
     } else if (hasFill) {
-      ctx.fillStyle = 'rgba(200,168,75,0.7)';
+      ctx.fillStyle = GOLD;
+      ctx.globalAlpha = 0.85;
     } else {
-      ctx.fillStyle = 'rgba(255,255,255,0.25)';
+      ctx.fillStyle = 'rgba(255,255,255,0.35)';
     }
     ctx.fillText(node.kaz.toUpperCase(), x + 20, y + 11);
     ctx.restore();
@@ -374,24 +388,26 @@ function drawInfoSection(
   if (uran) {
     const uranLabel = locale === 'kk' ? 'ҰРАНЫ' : 'УРАН';
     ctx.save();
-    ctx.font = '700 11px Inter, sans-serif';
+    ctx.font = '700 12px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     ctx.fillStyle = GOLD;
-    ctx.globalAlpha = 0.5;
-    ctx.letterSpacing = '3px';
+    ctx.globalAlpha = 0.7;
+    ctx.letterSpacing = '4px';
     ctx.fillText(uranLabel, cx, y);
     ctx.restore();
-    y += 22;
+    y += 24;
 
     ctx.save();
-    ctx.font = 'italic 700 28px "Cormorant Garamond", Georgia, serif';
+    ctx.font = 'italic 700 32px "Cormorant Garamond", Georgia, serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     ctx.fillStyle = GOLD;
-    ctx.globalAlpha = 0.9;
-    ctx.shadowColor = 'rgba(200,168,75,0.4)';
-    ctx.shadowBlur = 18;
+    ctx.shadowColor = 'rgba(200,168,75,0.6)';
+    ctx.shadowBlur = 24;
+    ctx.fillText(`«${uran}!»`, cx, y);
+    // Double draw for glow
+    ctx.shadowBlur = 10;
     ctx.fillText(`«${uran}!»`, cx, y);
     ctx.restore();
   }
@@ -405,17 +421,20 @@ function drawFooter(
   H: number,
 ): void {
   const cx = W / 2;
+  const footerY = H - 80; // Above bottom ornament
 
-  drawDiamondDivider(ctx, cx, H - 104, W - 120, GOLD);
+  drawDiamondDivider(ctx, cx, footerY - 20, W - 160, GOLD);
 
   ctx.save();
-  ctx.font = '300 16px Inter, sans-serif';
+  ctx.font = '400 15px Inter, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
   ctx.fillStyle = GOLD;
-  ctx.globalAlpha = 0.4;
-  ctx.letterSpacing = '3px';
-  ctx.fillText('SKEZIRE.KZ', cx, H - 70);
+  ctx.globalAlpha = 0.6;
+  ctx.letterSpacing = '4px';
+  ctx.shadowColor = 'rgba(200,168,75,0.3)';
+  ctx.shadowBlur = 8;
+  ctx.fillText('SKEZIRE.KZ', cx, footerY);
   ctx.restore();
 }
 
@@ -589,18 +608,17 @@ export async function generateShareImage(
     drawDoubleBorder(ctx, W, H, GOLD);
   }
 
-  // --- 2. Tamga watermark ---
+  // --- 2. Tamga watermark (very subtle) ---
   drawTamgaWatermark(ctx, tamga || '', W / 2, H / 2);
 
-  // --- 5. Header ---
-  drawHeader(ctx, W, zhuzDisplay, ruName, locale);
+  // --- 3. Header ---
+  const headerEndY = drawHeader(ctx, W, zhuzDisplay, ruName, locale);
 
-  // --- 6. AI Portrait (if available) ---
-  let treeStartY = 262;
+  // --- 4. AI Portrait (if available) ---
+  let treeStartY = headerEndY;
   if (aiImg) {
-    const portraitY = 268;
     treeStartY = drawAiPortrait(
-      ctx, aiImg, W / 2, portraitY,
+      ctx, aiImg, W / 2, headerEndY,
       data.name, (data as unknown as { birthYear?: string }).birthYear || '',
     );
     // Divider after portrait

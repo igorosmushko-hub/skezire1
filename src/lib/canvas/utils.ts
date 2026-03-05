@@ -44,13 +44,13 @@ export function drawTamgaWatermark(
   ctx.font = '420px Georgia, serif';
 
   // Glow layer
-  ctx.globalAlpha = 0.04;
+  ctx.globalAlpha = 0.02;
   ctx.shadowColor = GOLD;
-  ctx.shadowBlur = 80;
+  ctx.shadowBlur = 60;
   ctx.fillText(tamga, cx, cy);
 
   // Main layer
-  ctx.globalAlpha = 0.09;
+  ctx.globalAlpha = 0.04;
   ctx.shadowBlur = 0;
   ctx.fillText(tamga, cx, cy);
 
