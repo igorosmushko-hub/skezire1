@@ -1,7 +1,14 @@
 import type { ReactNode } from 'react';
+import type { Viewport } from 'next';
 import Script from 'next/script';
 import { Playfair_Display, Inter } from 'next/font/google';
 import '@/styles/globals.css';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
 
 const playfair = Playfair_Display({
   subsets: ['cyrillic', 'latin'],
@@ -13,7 +20,7 @@ const playfair = Playfair_Display({
 
 const inter = Inter({
   subsets: ['cyrillic', 'latin'],
-  weight: ['300', '400', '500', '600'],
+  weight: ['300', '400', '500', '600', '700', '800'],
   variable: '--font-inter',
   display: 'swap',
 });

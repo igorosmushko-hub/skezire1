@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="140" viewBox="0 0 160 140" fill="none" stroke="#D4A843" stroke-linecap="round">
+
+  <!-- ═══ Верхний бордюр — волнистая полоса с акцентами ═══ -->
+  <path d="M0,8 Q10,0 20,8 Q30,16 40,8 Q50,0 60,8 Q70,16 80,8 Q90,0 100,8 Q110,16 120,8 Q130,0 140,8 Q150,16 160,8" stroke-width="2"/>
+  <circle cx="10" cy="2" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="30" cy="14" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="50" cy="2" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="70" cy="14" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="90" cy="2" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="110" cy="14" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="130" cy="2" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="150" cy="14" r="1.8" fill="#D4A843" stroke="none"/>
+
+  <!-- ═══ Қошқар мүйіз — главный мотив ═══ -->
+  <g transform="translate(80,74)">
+
+    <!-- Шпиль (filled teardrop) -->
+    <path d="M0,-54 C-3,-44 -3.5,-34 0,-28 C3.5,-34 3,-44 0,-54Z" fill="#D4A843" stroke="none"/>
+
+    <!-- Боковые лепестки -->
+    <path d="M-1,-31 C-12,-40 -22,-36 -15,-25" stroke-width="5.5"/>
+    <path d="M1,-31 C12,-40 22,-36 15,-25" stroke-width="5.5"/>
+
+    <!-- Левый рог — S-изгиб наружу, вниз, спираль внутрь -->
+    <path d="M0,-20 C-22,-16 -48,0 -46,24 C-44,44 -22,50 -12,34 C-4,22 -16,10 -28,16 C-36,20 -34,32 -24,30" stroke-width="9"/>
+
+    <!-- Правый рог (зеркало) -->
+    <path d="M0,-20 C22,-16 48,0 46,24 C44,44 22,50 12,34 C4,22 16,10 28,16 C36,20 34,32 24,30" stroke-width="9"/>
+  </g>
+
+  <!-- ═══ Нижний бордюр ═══ -->
+  <path d="M0,132 Q10,124 20,132 Q30,140 40,132 Q50,124 60,132 Q70,140 80,132 Q90,124 100,132 Q110,140 120,132 Q130,124 140,132 Q150,140 160,132" stroke-width="2"/>
+  <circle cx="10" cy="126" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="30" cy="138" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="50" cy="126" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="70" cy="138" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="90" cy="126" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="110" cy="138" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="130" cy="126" r="1.8" fill="#D4A843" stroke="none"/>
+  <circle cx="150" cy="138" r="1.8" fill="#D4A843" stroke="none"/>
+
+</svg>

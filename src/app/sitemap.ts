@@ -46,7 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
 
   // AI pages
-  const aiFeatures = ['', '/action-figure', '/pet-humanize', '/ghibli-style'];
+  const aiFeatures = ['', '/past', '/ancestor', '/action-figure', '/pet-humanize', '/ghibli-style'];
   for (const locale of locales) {
     for (const feature of aiFeatures) {
       entries.push({

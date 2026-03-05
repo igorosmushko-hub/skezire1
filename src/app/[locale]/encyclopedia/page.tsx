@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { TRIBES_DB } from '@/data/tribes';
-import { HubCard } from '@/components/encyclopedia/HubCard';
-import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
+import { EncTabs } from '@/components/encyclopedia/EncTabs';
 import '@/styles/encyclopedia.css';
 
 export async function generateMetadata({
@@ -71,40 +70,36 @@ export default async function EncyclopediaPage({
     ],
   };
 
+  // Filter to main 3 zhuzes for tabs (exclude "other")
+  const mainZhuzes = TRIBES_DB.filter((z) => z.id !== 'other');
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* Hero */}
-      <section className="enc-hero">
-        <div className="enc-hero-bg" />
+      <section className="enc-hero enc-hero--hub">
         <div className="enc-hero-content">
-          <Breadcrumb
-            items={[
-              { label: t('breadcrumbHome'), href: `/${locale}` },
-              { label: t('breadcrumbEnc') },
-            ]}
-          />
+          <span className="enc-overline">{isKk ? 'ҚАЗАҚ ЭНЦИКЛОПЕДИЯСЫ' : 'КАЗАҚ ЭНЦИКЛОПЕДИЯСЫ'}</span>
           <h1 className="enc-hero-title">{t('hubTitle')}</h1>
           <p className="enc-hero-sub">{t('hubSub')}</p>
         </div>
       </section>
 
-      {/* Main */}
-      <main className="enc-main">
-        <div className="container">
-          <div className="hub-grid">
-            {TRIBES_DB.map((zhuz) => (
-              <HubCard
-                key={zhuz.id}
-                zhuz={zhuz}
-                locale={locale}
-                tribesWord={t('tribesWord')}
-                openLabel={t('openZhuz')}
-              />
-            ))}
-          </div>
+      {/* Tabs + Content */}
+      <EncTabs
+        zhuzes={mainZhuzes}
+        locale={locale}
+        moreLabel={t('openZhuz')}
+      />
+
+      {/* CTA */}
+      <section className="enc-cta">
+        <div className="enc-cta-content">
+          <h2>{isKk ? 'Зерттеуді бастаңыз' : 'Начните исследование'}</h2>
+          <p>{isKk ? 'Жүзді таңдап, руыңыздың тарихын біліңіз.' : 'Выберите жуз, чтобы узнать историю рода.'}</p>
+          <a href={`/${locale}/encyclopedia`} className="btn btn-primary">{isKk ? 'Энциклопедияны ашу' : 'Открыть энциклопедию'}</a>
         </div>
-      </main>
+      </section>
     </>
   );
 }

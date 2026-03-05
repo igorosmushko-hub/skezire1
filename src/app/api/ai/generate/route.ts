@@ -1,10 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Replicate from 'replicate';
 import { getSessionUser } from '@/lib/auth';
+import { getSupabase } from '@/lib/supabase';
+
+const KIE_API_BASE = 'https://api.kie.ai/api/v1/jobs';
+const STORAGE_BUCKET = 'ai-uploads';
 
 const rateLimit = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 3;
 const RATE_WINDOW = 3600_000; // 1 hour
+
+/** Upload base64 data URI to Supabase Storage and return a public URL. */
+async function uploadToStorage(base64DataUri: string): Promise<string> {
+  const supabase = getSupabase();
+  if (!supabase) throw new Error('Supabase not configured');
+
+  // Ensure bucket exists (idempotent)
+  await supabase.storage.createBucket(STORAGE_BUCKET, { public: true });
+
+  // Parse data URI
+  const match = base64DataUri.match(/^data:image\/(\w+);base64,(.+)$/);
+  if (!match) throw new Error('Invalid base64 data URI');
+
+  const ext = match[1] === 'jpeg' ? 'jpg' : match[1];
+  const buffer = Buffer.from(match[2], 'base64');
+  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+  const { error } = await supabase.storage
+    .from(STORAGE_BUCKET)
+    .upload(fileName, buffer, { contentType: `image/${match[1]}`, upsert: false });
+
+  if (error) throw new Error(`Upload failed: ${error.message}`);
+
+  const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(fileName);
+  return data.publicUrl;
+}
 
 export async function POST(req: NextRequest) {
   // Auth check
@@ -13,10 +42,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
 
-  const token = process.env.REPLICATE_API_TOKEN;
-  if (!token || token === 'r8_YOUR_TOKEN_HERE') {
+  const apiKey = process.env.KIE_AI_API_KEY;
+  if (!apiKey) {
     return NextResponse.json(
-      { error: 'config', message: 'REPLICATE_API_TOKEN not configured' },
+      { error: 'config', message: 'KIE_AI_API_KEY not configured' },
       { status: 500 },
     );
   }
@@ -51,48 +80,62 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'file_too_large' }, { status: 400 });
   }
 
+  // Upload image to Supabase Storage to get a public URL for Kie AI
+  let imageUrl: string;
+  try {
+    imageUrl = await uploadToStorage(imageBase64);
+  } catch (err) {
+    console.error('Image upload error:', err);
+    return NextResponse.json({ error: 'upload_error' }, { status: 500 });
+  }
+
   const genderWord = gender === 'female' ? 'woman' : 'man';
 
   let prompt: string;
-  let negativePrompt: string;
 
   if (type === 'ancestor') {
-    prompt = `a young kazakh ${genderWord} img, youthful smooth face, age 20-25, dark thick hair, bright eyes, wearing traditional kazakh national costume, embroidered chapan, steppe landscape background, natural warm sunlight, portrait photograph, highly detailed, masterpiece, best quality`;
-    negativePrompt = 'old, elderly, wrinkles, gray hair, aged, modern clothing, smartphone, car, plastic, neon, blurry, low quality, deformed, ugly, bad anatomy, watermark, text, logo, cropped, out of frame';
+    prompt = `Transform this person's photo into a portrait of a young Kazakh ${genderWord} ancestor, age 20-25, with dark thick hair and bright eyes, wearing traditional Kazakh embroidered chapan costume. Place them against a steppe landscape background with natural warm sunlight. Keep facial features recognizable. Highly detailed portrait photograph, masterpiece quality.`;
   } else if (type === 'action-figure') {
-    prompt = `a collectible action figure of a kazakh ${genderWord} img inside sealed blister packaging box, wearing traditional kazakh national costume shapan and tymak hat, detailed miniature figurine with accessories (dombyra, sword, eagle), product photography on white background, dramatic studio lighting, toy packaging design, highly detailed, masterpiece, best quality`;
-    negativePrompt = 'real person, photograph, blurry, low quality, deformed, ugly, bad anatomy, watermark, text, cropped, out of frame, naked, nsfw';
+    prompt = `Turn this person into a highly detailed collectible action figure inside a sealed blister packaging box. The figure wears traditional Kazakh national costume: shapan and tymak hat. Include miniature accessories: dombyra, sword, and eagle. Product photography on white background with dramatic studio lighting. Toy packaging design, masterpiece quality.`;
   } else if (type === 'pet-humanize') {
-    prompt = `a realistic portrait photograph of a human version of this animal img, anthropomorphized as a kazakh ${genderWord}, wearing traditional kazakh national clothing embroidered chapan, professional studio portrait, detailed face features inspired by the animal, warm lighting, highly detailed, masterpiece, best quality`;
-    negativePrompt = 'animal face, furry, cartoon, blurry, low quality, deformed, ugly, bad anatomy, watermark, text, cropped, out of frame, naked, nsfw';
+    prompt = `Create a realistic portrait of a human version of this animal. Anthropomorphize it as a Kazakh ${genderWord} wearing traditional embroidered chapan. The human face should be inspired by the animal's features and expression. Professional studio portrait with warm lighting, highly detailed, masterpiece quality.`;
   } else if (type === 'ghibli') {
-    prompt = `studio ghibli anime style illustration of this person img, soft watercolor painting, kazakh steppe landscape background with yurts and wild horses, warm dreamy golden hour lighting, hayao miyazaki art style, gentle pastel colors, whimsical atmosphere, hand drawn animation style, highly detailed, masterpiece, best quality`;
-    negativePrompt = 'realistic, photograph, 3d render, dark, scary, horror, blurry, low quality, deformed, ugly, bad anatomy, watermark, text, cropped, out of frame';
+    prompt = `Transform this photo into a Studio Ghibli anime style illustration. Soft watercolor painting technique with gentle pastel colors. Place the character in a Kazakh steppe landscape background with yurts and wild horses. Warm dreamy golden hour lighting, Hayao Miyazaki art style, whimsical hand-drawn animation feel, masterpiece quality.`;
   } else {
-    prompt = `a kazakh ${genderWord} img, vintage 1920s portrait photograph, wearing traditional kazakh shapan coat and tymak fur hat, great steppe of Kazakhstan background, sepia tones, aged daguerreotype film grain, warm golden lighting, historical photograph, highly detailed, masterpiece, best quality`;
-    negativePrompt = 'modern clothing, smartphone, car, plastic, neon, blurry, low quality, deformed, ugly, bad anatomy, watermark, text, logo, cropped, out of frame';
+    prompt = `Transform this person's photo into a vintage 1920s portrait photograph of a Kazakh ${genderWord}. They should wear a traditional shapan coat and tymak fur hat. Great steppe of Kazakhstan background. Apply sepia tones, aged daguerreotype film grain, warm golden lighting. Historical photograph aesthetic, masterpiece quality.`;
   }
 
   try {
-    const replicate = new Replicate({ auth: token });
-
-    const prediction = await replicate.predictions.create({
-      version: 'ddfc2b08d209f9fa8c1eca692712918bd449f695dabb4a958da31802a9570fe4',
-      input: {
-        input_image: imageBase64,
-        prompt,
-        negative_prompt: negativePrompt,
-        style_name: '(No style)',
-        num_steps: 20,
-        style_strength_ratio: 35,
-        num_outputs: 1,
-        guidance_scale: 5,
+    const res = await fetch(`${KIE_API_BASE}/createTask`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        model: 'nano-banana-2',
+        input: {
+          prompt,
+          image_input: [imageUrl],
+          aspect_ratio: '3:4',
+          resolution: '2K',
+          output_format: 'jpg',
+          google_search: false,
+        },
+      }),
     });
 
-    return NextResponse.json({ id: prediction.id, status: prediction.status });
+    const data = await res.json();
+
+    if (data.code !== 200 || !data.data?.taskId) {
+      console.error('Kie AI create error:', data);
+      return NextResponse.json({ error: 'api_error' }, { status: 502 });
+    }
+
+    // Return in same format as before so client components work unchanged
+    return NextResponse.json({ id: data.data.taskId, status: 'starting' });
   } catch (err) {
-    console.error('Replicate create error:', err);
+    console.error('Kie AI create error:', err);
     return NextResponse.json({ error: 'api_error' }, { status: 502 });
   }
 }

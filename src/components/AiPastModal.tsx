@@ -160,7 +160,7 @@ export function AiPastModal({ open, onClose }: Props) {
   const handleDownload = useCallback(async () => {
     if (!resultUrl) return;
     try {
-      const res = await fetch(resultUrl);
+      const res = await fetch(`/api/ai/download?url=${encodeURIComponent(resultUrl)}`);
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');

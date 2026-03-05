@@ -39,12 +39,27 @@ export function NavbarClient({ children }: { children: ReactNode }) {
     return () => document.removeEventListener('keydown', onKey);
   }, [menuOpen]);
 
+  // Body scroll-lock when mobile menu is open (iOS-safe)
+  useEffect(() => {
+    if (menuOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.top = `-${scrollY}px`;
+      document.body.classList.add('scroll-lock');
+    } else {
+      const scrollY = parseInt(document.body.style.top || '0', 10);
+      document.body.classList.remove('scroll-lock');
+      document.body.style.top = '';
+      window.scrollTo(0, -scrollY);
+    }
+  }, [menuOpen]);
+
   const toggleMenu = useCallback(() => {
     setMenuOpen((prev) => !prev);
   }, []);
 
   return (
     <nav className={`navbar${menuOpen ? ' menu-open' : ''}`} id="navbar" ref={navRef}>
+      <div className="nav-ornament" />
       {children}
       <button
         className="nav-burger"

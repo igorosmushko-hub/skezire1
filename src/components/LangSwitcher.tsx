@@ -19,14 +19,14 @@ export function LangSwitcher({ locale }: { locale: string }) {
         className={`lang-btn ${locale === 'kk' ? 'active' : ''}`}
         onClick={() => switchLocale('kk')}
       >
-        ҚАЗ
+        KK
       </button>
-      <span className="lang-sep">|</span>
+      <span className="lang-sep">/</span>
       <button
         className={`lang-btn ${locale === 'ru' ? 'active' : ''}`}
         onClick={() => switchLocale('ru')}
       >
-        РУС
+        RU
       </button>
     </div>
   );

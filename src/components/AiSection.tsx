@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import Link from 'next/link';
 import { AiModal } from './AiModal';
 import { AiPastModal } from './AiPastModal';
 import { AiAncestorModal } from './AiAncestorModal';
@@ -11,8 +12,17 @@ import { AiGhibliModal } from './AiGhibliModal';
 
 type AiType = 'past' | 'grandma' | 'story' | 'figure' | 'pet' | 'ghibli';
 
+const SLUG_MAP: Record<string, string> = {
+  past: 'past',
+  grandma: 'ancestor',
+  figure: 'action-figure',
+  pet: 'pet-humanize',
+  ghibli: 'ghibli-style',
+};
+
 export function AiSection() {
   const t = useTranslations('ai');
+  const locale = useLocale();
   const [modalType, setModalType] = useState<AiType | null>(null);
 
   const cards: { type: AiType; icon: string; h3Key: string; pKey: string; tag1Key: string; tag2Key: string; featured?: boolean; live?: boolean }[] = [
@@ -29,9 +39,8 @@ export function AiSection() {
       <section id="ai-section" className="ai-section">
         <div className="container">
           <div className="section-header">
-            <div className="orn-line gold" />
-            <h2 className="gold">{t('h2')}</h2>
-            <div className="orn-line gold" />
+            <span className="section-overline">{t('overline') ?? 'AI'}</span>
+            <h2>{t('h2')}</h2>
           </div>
           <p className="section-desc dim">{t('desc')}</p>
 
@@ -51,6 +60,14 @@ export function AiSection() {
                   <span>{t('btn')}</span>
                   {!card.live && <span className="soon-badge">{t('soon')}</span>}
                 </button>
+                {card.live && SLUG_MAP[card.type] && (
+                  <Link
+                    href={`/${locale}/ai/${SLUG_MAP[card.type]}`}
+                    className="ai-card-details"
+                  >
+                    {locale === 'kk' ? 'Толығырақ' : 'Подробнее'}
+                  </Link>
+                )}
               </div>
             ))}
           </div>

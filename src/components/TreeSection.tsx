@@ -58,9 +58,8 @@ export function TreeSection({ data, locale }: TreeSectionProps) {
     <section id="tree-section" className="tree-section" ref={sectionRef}>
       <div className="container">
         <div className="section-header">
-          <div className="orn-line" />
+          <span className="section-overline">{t('overline') ?? 'Результат'}</span>
           <h2>{title}</h2>
-          <div className="orn-line" />
         </div>
 
         <div className="tree-meta" id="tree-meta">

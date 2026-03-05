@@ -143,9 +143,8 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
     <section id="form-section" className="form-section">
       <div className="container">
         <div className="section-header">
-          <div className="orn-line" />
+          <span className="section-overline">{t('overline') ?? 'Создать шежіре'}</span>
           <h2>{t('h2')}</h2>
-          <div className="orn-line" />
         </div>
         <p className="section-desc">{t('desc')}</p>
 

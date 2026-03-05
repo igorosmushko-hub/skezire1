@@ -150,9 +150,9 @@ export default async function TribePage({ params }: PageProps) {
       {placeJsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(placeJsonLd) }} />
       )}
-      <section className="enc-hero enc-hero--compact">
-        <div className="enc-hero-bg" />
-        <div className="enc-hero-content">
+      {/* Breadcrumb bar */}
+      <div className="tribe-breadcrumb-bar">
+        <div className="container">
           <Breadcrumb
             items={[
               { label: t('breadcrumbHome'), href: `/${locale}` },
@@ -161,24 +161,16 @@ export default async function TribePage({ params }: PageProps) {
               { label: tribeName },
             ]}
           />
-          <h1 className="enc-hero-title" style={{ fontSize: 'clamp(1.8rem, 5vw, 3rem)' }}>{tribeName}</h1>
-          <p className="enc-hero-sub">{zhuzName}{subgroup ? ` — ${subgroup}` : ''}</p>
         </div>
-      </section>
+      </div>
 
-      <Pager
-        prev={prevTribe ? { label: isKk ? prevTribe.kk : prevTribe.ru, href: `/encyclopedia/${zhuz.id}/${prevTribe.id}` } : undefined}
-        next={nextTribe ? { label: isKk ? nextTribe.kk : nextTribe.ru, href: `/encyclopedia/${zhuz.id}/${nextTribe.id}` } : undefined}
-        prevLabel={t('pagerPrev')}
-        nextLabel={t('pagerNext')}
-        locale={locale}
-      />
-
+      {/* Article card */}
       <main className="enc-main">
         <div className="container">
           <TribeDetail
             tribe={tribe}
             locale={locale}
+            zhuzName={zhuzName}
             labels={{
               tamga: t('tribeTamga'),
               uran: t('tribeUran'),
@@ -187,16 +179,28 @@ export default async function TribePage({ params }: PageProps) {
               notable: t('tribeNotable'),
             }}
           />
+
+          {/* Siblings — other tribes in this zhuz */}
+          {zhuz.tribes.length > 1 && (
+            <section className="tribe-siblings">
+              <h2 className="tribe-siblings-title">
+                {isKk ? `${zhuzName} — басқа рулар` : `Другие роды ${zhuzName}`}
+              </h2>
+              <div className="tribe-siblings-grid">
+                {zhuz.tribes
+                  .filter((tr) => tr.id !== tribeId)
+                  .slice(0, 5)
+                  .map((tr) => (
+                    <a key={tr.id} href={`/${locale}/encyclopedia/${zhuz.id}/${tr.id}`} className="tribe-sib-card">
+                      <span className="tribe-sib-tamga">{tr.tamga}</span>
+                      <span className="tribe-sib-name">{isKk ? tr.kk : tr.ru}</span>
+                    </a>
+                  ))}
+              </div>
+            </section>
+          )}
         </div>
       </main>
-
-      <section className="enc-cta">
-        <div className="container">
-          <h3>{t('ctaTitle')}</h3>
-          <p>{t('ctaDesc')}</p>
-          <a href={`/${locale}#form-section`} className="btn btn-primary">{t('ctaBtn')}</a>
-        </div>
-      </section>
     </>
   );
 }

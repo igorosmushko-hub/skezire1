@@ -37,3 +37,9 @@ next-env.d.ts
 
 # design files
 *.pen
+
+# one-time scripts & temp files
+scripts/stock-photos/
+FIREBASE_KEY_VALUE.txt
+vercel-env-vars.csv
+images/

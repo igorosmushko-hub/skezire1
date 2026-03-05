@@ -8,69 +8,71 @@
    ================================================================ */
 .enc-hero {
   min-height: 28vh;
-  background: linear-gradient(145deg, #001A5A 0%, #003082 55%, #0F3460 100%);
+  background: var(--surface-secondary);
   display: flex; align-items: center; justify-content: center;
-  text-align: center; padding: 80px 24px 40px;
+  text-align: center; padding: 100px 24px 48px;
   position: relative; overflow: hidden;
+}
+.enc-hero::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 30% 30%, rgba(59,110,230,.06), transparent),
+    radial-gradient(ellipse 50% 40% at 70% 70%, rgba(212,168,67,.04), transparent);
 }
 .enc-hero--compact {
   min-height: 18vh;
-  padding: 72px 24px 32px;
-}
-.enc-hero-bg {
-  position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='40,2 78,40 40,78 2,40' fill='none' stroke='%23C8A84B' stroke-width='.5' opacity='.1'/%3E%3C/svg%3E");
-  background-size: 80px 80px; pointer-events: none;
+  padding: 88px 24px 36px;
 }
 .enc-hero-content {
   position: relative; z-index: 2; max-width: 700px;
 }
 .enc-hero-title {
-  font-family: var(--ff-head); color: var(--gold);
-  font-size: clamp(1.8rem, 5vw, 3rem); line-height: 1.15;
-  margin: 8px 0 6px;
+  font-family: var(--ff-head); color: var(--text);
+  font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 800;
+  line-height: 1.15; letter-spacing: -.02em;
+  margin: 8px 0 8px;
 }
 .enc-hero-sub {
-  color: rgba(255,255,255,.6); font-size: .9rem;
-  max-width: 540px; margin: 0 auto;
+  color: var(--muted); font-size: .9rem;
+  max-width: 540px; margin: 0 auto; line-height: 1.6;
 }
 
 /* ── Breadcrumb (inside hero) ──────────────────────────────────── */
 .enc-breadcrumb {
   display: flex; align-items: center; gap: 8px;
   justify-content: center;
-  color: rgba(255,255,255,.5); font-size: .82rem;
+  color: var(--muted); font-size: .82rem;
 }
 .enc-breadcrumb a {
-  color: rgba(255,255,255,.5);
+  color: var(--muted);
   text-decoration: none;
   transition: color .2s;
 }
-.enc-breadcrumb a:hover { color: var(--gold); }
-.enc-breadcrumb span { color: rgba(255,255,255,.3); }
-.enc-breadcrumb .bc-current { color: rgba(232,201,106,.85); font-weight: 500; }
+.enc-breadcrumb a:hover { color: var(--text); }
+.enc-breadcrumb span { color: var(--border); }
+.enc-breadcrumb .bc-current { color: var(--text); font-weight: 600; }
 
 /* ================================================================
    PAGER — Prev / Next navigation
    ================================================================ */
 .enc-pager {
   display: flex; justify-content: space-between; align-items: center;
-  max-width: 1100px; margin: 0 auto;
-  padding: 10px 24px;
-  border-bottom: 1px solid rgba(0,48,130,.08);
-  background: var(--white, #fff);
+  max-width: 1200px; margin: 0 auto;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
 }
 .enc-pager a {
   display: inline-flex; align-items: center; gap: 6px;
-  font-size: .82rem; font-weight: 500; color: var(--blue);
-  padding: 5px 12px; border-radius: var(--r-sm, 8px);
-  border: 1px solid rgba(0,48,130,.15);
+  font-size: .82rem; font-weight: 500; color: var(--text);
+  padding: 6px 14px; border-radius: var(--r-pill);
+  border: 1px solid var(--border);
   text-decoration: none;
-  transition: background .18s, color .18s;
+  transition: background .18s, border-color .18s;
 }
 .enc-pager a:hover {
-  background: var(--blue); color: var(--gold);
-  border-color: var(--blue);
+  background: var(--surface-secondary);
+  border-color: var(--gold);
 }
 .pager-spacer { flex: 1; }
 
@@ -78,8 +80,8 @@
    MAIN — content area
    ================================================================ */
 .enc-main {
-  padding: 32px 0 40px;
-  background: var(--off-white, #F5F0E8);
+  padding: 40px 0 48px;
+  background: var(--surface);
 }
 
 /* ================================================================
@@ -92,60 +94,134 @@
   padding: 0;
 }
 .hub-card {
-  background: var(--white, #fff);
-  border-radius: var(--r-md, 16px);
-  padding: 28px 24px;
-  border: 1px solid rgba(0,48,130,.1);
-  transition: transform .2s, box-shadow .2s, border-color .2s;
-  display: flex; flex-direction: column; gap: 10px;
-  text-align: center; text-decoration: none; color: inherit;
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  padding: 32px 28px;
+  border: 1px solid var(--border);
+  transition: transform .2s, box-shadow .2s;
+  display: flex; flex-direction: column; gap: 12px;
+  text-align: left; text-decoration: none; color: inherit;
 }
 .hub-card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow-md, 0 6px 24px rgba(0,0,0,.12));
-  border-color: var(--gold);
+  box-shadow: var(--shadow-md);
 }
 .hub-card-icon {
-  font-size: 2.4rem; line-height: 1;
-  margin-bottom: 2px;
+  font-size: 2.2rem; line-height: 1;
+  margin-bottom: 4px;
 }
 .hub-card-title {
-  font-family: var(--ff-head); font-size: 1.35rem;
-  color: var(--blue);
+  font-family: var(--ff-head); font-size: 1.3rem; font-weight: 700;
+  color: var(--text);
 }
 .hub-card-desc {
-  font-size: .85rem; color: var(--muted, #6B7280); line-height: 1.5;
+  font-size: .85rem; color: var(--muted); line-height: 1.6;
   flex: 1;
 }
 .hub-card-count {
   display: inline-flex; align-items: center; gap: 6px;
-  justify-content: center;
   font-size: .8rem; font-weight: 600;
-  color: var(--gold-dark, #8B7130);
-  background: rgba(200,168,75,.1);
-  padding: 4px 14px; border-radius: 100px;
+  color: var(--gold-dark);
+  background: rgba(212,168,67,.08);
+  padding: 4px 14px; border-radius: var(--r-pill);
+  width: fit-content;
 }
 .hub-card-btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 8px 18px; border-radius: var(--r-sm, 8px);
-  background: var(--blue); color: var(--gold);
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px; border-radius: var(--r-pill);
+  background: var(--text); color: var(--surface);
   font-size: .85rem; font-weight: 600;
   transition: background .18s, transform .18s;
-  margin-top: 4px;
+  margin-top: 4px; width: fit-content;
 }
 .hub-card-btn:hover {
-  background: var(--blue-light, #1B5FC7);
+  background: var(--blue-light);
   transform: translateY(-1px);
+}
+
+/* ================================================================
+   OVERLINE
+   ================================================================ */
+.enc-overline {
+  display: block; font-size: 12px; font-weight: 700;
+  color: var(--blue-light); letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.enc-hero--hub {
+  background: var(--surface-secondary);
+  min-height: auto; padding: 100px 24px 60px;
+}
+.enc-hero--hub .enc-hero-title { font-size: clamp(1.8rem, 5vw, 2.6rem); }
+.enc-hero--hub .enc-hero-sub { font-size: 1.05rem; }
+
+/* ================================================================
+   TAB BAR
+   ================================================================ */
+.enc-tabs-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 64px; z-index: 50;
+}
+.enc-tabs-inner {
+  display: flex; align-items: center; gap: 8px;
+  padding-top: 14px; padding-bottom: 14px;
+}
+.enc-tab {
+  padding: 8px 20px; border-radius: var(--r-pill);
+  font-size: .88rem; font-weight: 500; cursor: pointer;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text);
+  transition: all .2s;
+}
+.enc-tab:hover { border-color: var(--muted); }
+.enc-tab--active {
+  background: var(--text); color: var(--surface);
+  border-color: var(--text);
+}
+
+/* ── Zhuz description row ──────────────────────────────────────── */
+.enc-zhuz-desc-row {
+  padding: 24px 0 32px;
+}
+.enc-zhuz-desc {
+  color: var(--muted); font-size: .95rem; line-height: 1.7;
+  max-width: 720px;
+}
+
+/* ── Tribe grid inside tabs ────────────────────────────────────── */
+.enc-tribe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+/* ================================================================
+   CTA SECTION
+   ================================================================ */
+.enc-cta {
+  background: var(--surface-dark);
+  padding: 80px 24px;
+  text-align: center;
+  border-radius: var(--r-xl);
+  max-width: 1200px; margin: 48px auto 48px;
+}
+.enc-cta-content h2 {
+  font-family: var(--ff-head); font-size: 1.6rem; font-weight: 700;
+  color: #fff; margin-bottom: 12px;
+}
+.enc-cta-content p {
+  color: rgba(255,255,255,.6); font-size: .95rem;
+  margin-bottom: 28px;
 }
 
 /* ================================================================
    ZHUZ PAGE — Section title + Tribes grid
    ================================================================ */
 .enc-section-title {
-  font-family: var(--ff-head); font-size: 1.35rem;
-  color: var(--blue); margin-bottom: 20px;
+  font-family: var(--ff-head); font-size: 1.35rem; font-weight: 700;
+  color: var(--text); margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 2px solid rgba(200,168,75,.25);
+  border-bottom: 1px solid var(--border);
 }
 .enc-tribes-grid {
   display: grid;
@@ -155,19 +231,18 @@
 
 /* ── Tribe Card ─────────────────────────────────────────────────── */
 .enc-tribe-card {
-  background: var(--white, #fff);
-  border-radius: var(--r-md, 16px);
-  padding: 20px 20px;
-  border: 1px solid rgba(0,48,130,.1);
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  padding: 22px 22px;
+  border: 1px solid var(--border);
   border-left: 4px solid var(--gold);
-  transition: transform .2s, box-shadow .2s, border-color .2s;
+  transition: transform .2s, box-shadow .2s;
   display: flex; flex-direction: column; gap: 8px;
   text-decoration: none; color: inherit;
 }
 .enc-tribe-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md, 0 6px 24px rgba(0,0,0,.12));
-  border-color: var(--gold);
+  box-shadow: var(--shadow-md);
 }
 .enc-tribe-card-header {
   display: flex; align-items: center; gap: 12px;
@@ -176,33 +251,33 @@
   font-size: 1.6rem; line-height: 1;
   width: 40px; height: 40px;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(0,48,130,.06); border-radius: var(--r-sm, 8px);
-  color: var(--blue);
+  background: var(--surface-secondary); border-radius: var(--r-sm);
+  color: var(--text);
   flex-shrink: 0;
 }
 .enc-tribe-card-name {
-  font-family: var(--ff-head); font-size: 1.1rem;
-  color: var(--blue);
+  font-family: var(--ff-head); font-size: 1.1rem; font-weight: 700;
+  color: var(--text);
 }
 .enc-tribe-card-subname {
-  font-size: .78rem; color: var(--muted, #6B7280); font-weight: 400;
+  font-size: .78rem; color: var(--muted); font-weight: 400;
 }
 .enc-tribe-card-subgroup {
   font-size: .72rem; font-weight: 600;
-  color: var(--gold-dark, #8B7130);
-  background: rgba(200,168,75,.12);
-  padding: 2px 8px; border-radius: 100px;
+  color: var(--gold-dark);
+  background: rgba(212,168,67,.08);
+  padding: 2px 8px; border-radius: var(--r-pill);
   display: inline-block; width: fit-content;
 }
 .enc-tribe-card-desc {
-  font-size: .82rem; color: var(--muted, #6B7280); line-height: 1.5;
+  font-size: .82rem; color: var(--muted); line-height: 1.55;
   flex: 1;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
   overflow: hidden;
 }
 .enc-tribe-card-meta {
   display: flex; gap: 12px; flex-wrap: wrap;
-  font-size: .75rem; color: var(--muted, #6B7280);
+  font-size: .75rem; color: var(--muted);
 }
 .enc-tribe-card-meta span {
   display: flex; align-items: center; gap: 4px;
@@ -210,16 +285,15 @@
 .enc-tribe-card-link {
   display: inline-flex; align-items: center; gap: 6px;
   font-size: .82rem; font-weight: 600;
-  color: var(--white, #fff);
-  background: var(--blue);
+  color: var(--surface);
+  background: var(--text);
   padding: 6px 14px;
-  border-radius: var(--r-sm, 8px);
-  margin-top: 4px;
+  border-radius: var(--r-pill);
+  margin-top: 4px; width: fit-content;
   transition: background .2s, transform .2s;
 }
 .enc-tribe-card:hover .enc-tribe-card-link {
-  background: var(--gold-dark, #8B7130);
-  transform: translateX(2px);
+  background: var(--blue-light);
 }
 
 /* ================================================================
@@ -228,51 +302,51 @@
 .tribe-tabs {
   margin-top: 32px;
   padding-top: 28px;
-  border-top: 2px solid rgba(200,168,75,.25);
+  border-top: 1px solid var(--border);
 }
 .tribe-tabs-bar {
   display: flex;
-  gap: 5px;
+  gap: 6px;
   overflow-x: auto;
-  padding-bottom: 10px;
+  padding-bottom: 12px;
   margin-bottom: 16px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
 }
 .tribe-tab {
   display: flex; align-items: center; gap: 6px;
-  padding: 7px 14px;
-  border: 1px solid rgba(0,48,130,.12);
-  border-radius: var(--r-sm, 8px);
-  background: var(--white, #fff);
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  background: var(--surface);
   cursor: pointer;
   white-space: nowrap;
   font-size: .8rem; font-weight: 500;
-  color: var(--text, #1A1A2E);
+  color: var(--text);
   transition: all .2s;
 }
 .tribe-tab:hover {
-  border-color: var(--gold);
-  background: rgba(200,168,75,.06);
+  border-color: var(--muted);
+  background: var(--surface-secondary);
 }
 .tribe-tab--active {
-  background: var(--blue);
-  color: var(--gold);
-  border-color: var(--blue);
+  background: var(--text);
+  color: var(--surface);
+  border-color: var(--text);
 }
 .tribe-tab-tamga {
   font-size: 1rem; line-height: 1;
 }
 .tribe-tab-name {
-  font-family: var(--ff-head);
+  font-family: var(--ff-head); font-weight: 600;
 }
 
 /* Tab content */
 .tribe-tabs-content {
-  background: var(--white, #fff);
-  border-radius: var(--r-md, 16px);
-  padding: 24px 24px;
-  border: 1px solid rgba(0,48,130,.1);
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  padding: 28px 28px;
+  border: 1px solid var(--border);
 }
 .tribe-tabs-header {
   display: flex; align-items: center; gap: 16px;
@@ -282,25 +356,25 @@
   font-size: 2.2rem; line-height: 1;
   width: 52px; height: 52px;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(0,48,130,.06);
-  border-radius: var(--r-sm, 8px);
-  color: var(--blue);
+  background: var(--surface-secondary);
+  border-radius: var(--r-sm);
+  color: var(--text);
   flex-shrink: 0;
 }
 .tribe-tabs-title {
-  font-family: var(--ff-head); font-size: 1.4rem;
-  color: var(--blue); margin: 0;
+  font-family: var(--ff-head); font-size: 1.4rem; font-weight: 700;
+  color: var(--text); margin: 0;
 }
 .tribe-tabs-subgroup {
   font-size: .75rem; font-weight: 600;
-  color: var(--gold-dark, #8B7130);
-  background: rgba(200,168,75,.12);
-  padding: 2px 8px; border-radius: 100px;
+  color: var(--gold-dark);
+  background: rgba(212,168,67,.08);
+  padding: 2px 8px; border-radius: var(--r-pill);
   display: inline-block; margin-top: 2px;
 }
 .tribe-tabs-desc {
-  font-size: .9rem; line-height: 1.6;
-  color: var(--text, #1A1A2E);
+  font-size: .9rem; line-height: 1.65;
+  color: var(--text);
   margin-bottom: 18px;
 }
 
@@ -312,21 +386,21 @@
   margin-bottom: 18px;
 }
 .tribe-tabs-card {
-  background: var(--off-white, #F5F0E8);
-  border-radius: var(--r-sm, 8px);
-  padding: 14px 12px;
+  background: var(--surface-secondary);
+  border-radius: var(--r-md);
+  padding: 16px 14px;
   text-align: center;
 }
 .tribe-tabs-card-label {
   font-size: .7rem; font-weight: 600;
-  color: var(--muted, #6B7280);
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: .08em;
   margin-bottom: 4px;
 }
 .tribe-tabs-card-value {
-  font-family: var(--ff-head); font-size: 1.15rem;
-  color: var(--blue);
+  font-family: var(--ff-head); font-size: 1.15rem; font-weight: 700;
+  color: var(--text);
 }
 .tribe-tabs-card-value--sm {
   font-size: .88rem; font-family: inherit;
@@ -337,205 +411,275 @@
   margin-bottom: 16px;
 }
 .tribe-tabs-notable-title {
-  font-family: var(--ff-head); font-size: .95rem;
-  color: var(--blue); margin: 0 0 10px;
+  font-family: var(--ff-head); font-size: .95rem; font-weight: 700;
+  color: var(--text); margin: 0 0 10px;
   padding-bottom: 6px;
-  border-bottom: 2px solid rgba(200,168,75,.2);
+  border-bottom: 1px solid var(--border);
 }
 .tribe-tabs-notable-list {
   display: flex; flex-direction: column; gap: 8px;
 }
 .tribe-tabs-notable-item {
   padding: 10px 14px;
-  background: var(--off-white, #F5F0E8);
-  border-radius: var(--r-sm, 8px);
+  background: var(--surface-secondary);
+  border-radius: var(--r-sm);
   border-left: 3px solid var(--gold);
 }
 .tribe-tabs-notable-name {
-  font-weight: 600; font-size: .85rem; color: var(--blue);
+  font-weight: 600; font-size: .85rem; color: var(--text);
   margin-bottom: 1px;
 }
 .tribe-tabs-notable-role {
-  font-size: .78rem; color: var(--muted, #6B7280); line-height: 1.45;
+  font-size: .78rem; color: var(--muted); line-height: 1.45;
 }
 
 /* Link to full tribe page */
 .tribe-tabs-link {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 8px 18px;
-  border-radius: var(--r-sm, 8px);
-  background: var(--blue);
-  color: var(--gold);
+  border-radius: var(--r-pill);
+  background: var(--text);
+  color: var(--surface);
   font-size: .82rem; font-weight: 600;
   text-decoration: none;
   transition: background .18s, transform .18s;
 }
 .tribe-tabs-link:hover {
-  background: var(--blue-light, #1B5FC7);
+  background: var(--blue-light);
   transform: translateY(-1px);
 }
 
 /* ================================================================
-   TRIBE PAGE — Detail view
+   TRIBE BREADCRUMB BAR
    ================================================================ */
-.tribe-detail {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 24px 0 40px;
+.tribe-breadcrumb-bar {
+  background: var(--surface-secondary);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
 }
-.tribe-detail-desc {
-  font-size: 1rem; line-height: 1.7; color: var(--text, #1A1A2E);
-  margin-bottom: 24px;
-}
-.tribe-detail-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
-  margin-bottom: 28px;
-}
-.tribe-detail-card {
-  background: var(--white, #fff);
-  border-radius: var(--r-md, 16px);
-  padding: 18px 16px;
-  border: 1px solid rgba(0,48,130,.1);
-  text-align: center;
-}
-.tribe-detail-card-label {
-  font-size: .72rem; font-weight: 600;
-  color: var(--muted, #6B7280); text-transform: uppercase;
-  letter-spacing: .08em; margin-bottom: 6px;
-}
-.tribe-detail-card-value {
-  font-family: var(--ff-head); font-size: 1.4rem;
-  color: var(--blue);
-}
-.tribe-detail-card-value.tamga-big {
-  font-size: 2.2rem;
+.tribe-breadcrumb-bar .enc-breadcrumb { justify-content: flex-start; }
+
+/* ================================================================
+   TRIBE PAGE — Article Card layout
+   ================================================================ */
+.tribe-article-card {
+  max-width: 800px; margin: 0 auto;
+  border-radius: var(--r-xl); border: 1px solid var(--border);
+  background: var(--surface); overflow: hidden;
 }
 
-/* ── History ───────────────────────────────────────────────────── */
-.tribe-history {
-  margin-bottom: 24px;
+/* ── Dark hero header ──────────────────────────────────────────── */
+.tribe-card-hero {
+  background: var(--surface-dark);
+  padding: 36px 40px;
+  display: flex; align-items: center; gap: 20px;
 }
-.tribe-history-text {
-  font-size: .95rem;
-  line-height: 1.75;
-  color: var(--text, #1A1A2E);
+.tribe-card-tamga-icon {
+  width: 80px; height: 80px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.4rem;
+  background: var(--gold); border-radius: var(--r-lg);
+  color: var(--surface-dark); flex-shrink: 0;
+}
+.tribe-card-hero-text { flex: 1; }
+.tribe-card-name {
+  font-family: var(--ff-head); font-size: 2.2rem; font-weight: 800;
+  color: #fff; margin: 0; line-height: 1.2;
+}
+.tribe-card-uran {
+  font-style: italic; color: var(--gold); font-size: 1rem;
+  margin: 6px 0 0;
+}
+
+/* ── Meta row ──────────────────────────────────────────────────── */
+.tribe-card-meta-row {
+  display: flex; border-bottom: 1px solid var(--border);
+}
+.tribe-card-meta-item {
+  flex: 1; padding: 16px 20px;
+  border-right: 1px solid var(--border);
+}
+.tribe-card-meta-item:last-child { border-right: none; }
+.tribe-card-meta-label {
+  display: block; font-size: .68rem; font-weight: 600;
+  color: var(--muted); letter-spacing: .08em;
+  margin-bottom: 4px;
+}
+.tribe-card-meta-value {
+  font-family: var(--ff-head); font-size: .95rem; font-weight: 600;
+  color: var(--text);
+}
+.tribe-card-meta-value.tamga-big { font-size: 1.6rem; }
+
+/* ── Card sections ─────────────────────────────────────────────── */
+.tribe-card-section {
+  padding: 24px 40px;
+  border-bottom: 1px solid var(--border);
+}
+.tribe-card-section--last { border-bottom: none; }
+.tribe-card-section-title {
+  font-family: var(--ff-head); font-size: 1.05rem; font-weight: 700;
+  color: var(--text); margin: 0 0 14px;
+}
+.tribe-card-desc {
+  font-size: .95rem; line-height: 1.75; color: var(--text); margin: 0;
 }
 
 /* ── Subtribes ────────────────────────────────────────────────── */
-.tribe-subtribes {
-  margin-bottom: 24px;
-}
-.tribe-subtribes-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
+.tribe-card-subtribes {
+  display: flex; flex-wrap: wrap; gap: 8px;
 }
 .tribe-subtribe-tag {
-  display: inline-block;
-  padding: 6px 14px;
-  background: rgba(200,168,75,.1);
-  color: var(--gold-dark, #8B7130);
-  border: 1px solid rgba(200,168,75,.25);
-  border-radius: 100px;
-  font-size: .82rem;
-  font-weight: 600;
+  display: inline-block; padding: 6px 14px;
+  background: rgba(212,168,67,.08);
+  color: var(--gold-dark);
+  border: 1px solid rgba(212,168,67,.15);
+  border-radius: var(--r-pill);
+  font-size: .82rem; font-weight: 600;
 }
 
-/* ── Related tribes ───────────────────────────────────────────── */
-.tribe-related {
-  margin-bottom: 24px;
+/* ── Notable people ────────────────────────────────────────────── */
+.tribe-card-notable-list {
+  display: flex; flex-direction: column; gap: 0;
 }
-.tribe-related-hint {
-  font-size: .85rem;
-  color: var(--muted, #6B7280);
-  margin-top: 6px;
+.tribe-card-notable-item {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: .9rem; line-height: 1.5;
 }
+.tribe-card-notable-item:last-child { border-bottom: none; }
+.tribe-card-notable-star {
+  color: var(--gold); font-size: .85rem; flex-shrink: 0;
+}
+.tribe-card-notable-name { font-weight: 600; color: var(--text); }
+.tribe-card-notable-role { color: var(--muted); }
 
-/* ── Notable persons ───────────────────────────────────────────── */
-.tribe-notable { margin-top: 8px; }
-.tribe-notable-title {
-  font-family: var(--ff-head); font-size: 1.1rem;
-  color: var(--blue); margin-bottom: 12px;
-  padding-bottom: 6px;
-  border-bottom: 2px solid rgba(200,168,75,.25);
+/* ================================================================
+   SIBLINGS — Other tribes in same zhuz
+   ================================================================ */
+.tribe-siblings {
+  margin-top: 48px; padding-bottom: 48px;
 }
-.notable-list {
-  display: flex; flex-direction: column; gap: 10px;
+.tribe-siblings-title {
+  font-family: var(--ff-head); font-size: 1.35rem; font-weight: 700;
+  color: var(--text); margin-bottom: 20px;
 }
-.notable-item {
-  background: var(--white, #fff);
-  border-radius: var(--r-md, 16px);
-  padding: 16px 20px;
-  border: 1px solid rgba(0,48,130,.1);
-  border-left: 4px solid var(--gold);
+.tribe-siblings-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
 }
-.notable-item-name {
-  font-weight: 600; font-size: .95rem; color: var(--blue);
-  margin-bottom: 2px;
+.tribe-sib-card {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 16px 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  text-decoration: none; color: inherit;
+  transition: transform .2s, box-shadow .2s;
 }
-.notable-item-role {
-  font-size: .85rem; color: var(--muted, #6B7280); line-height: 1.45;
+.tribe-sib-card:hover {
+  transform: translateY(-2px); box-shadow: var(--shadow-sm);
+}
+.tribe-sib-tamga {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface-secondary); border-radius: var(--r-sm);
+  font-size: 1.4rem;
+}
+.tribe-sib-name {
+  font-size: .82rem; font-weight: 600; color: var(--text); text-align: center;
 }
 
 /* ================================================================
    CTA section
    ================================================================ */
 .enc-cta {
-  background: linear-gradient(135deg, var(--blue) 0%, #0B3D91 100%);
-  text-align: center; padding: 36px 24px;
+  background: var(--surface-dark);
+  text-align: center; padding: 40px 24px;
 }
 .enc-cta h3 {
-  font-family: var(--ff-head); color: var(--gold);
-  font-size: 1.5rem; margin-bottom: 6px;
+  font-family: var(--ff-head); font-weight: 700;
+  color: var(--surface);
+  font-size: 1.5rem; margin-bottom: 8px;
 }
 .enc-cta p {
-  color: rgba(255,255,255,.6); margin-bottom: 16px;
+  color: rgba(255,255,255,.5); margin-bottom: 16px;
 }
 
 /* ================================================================
    RESPONSIVE
    ================================================================ */
 @media (max-width: 768px) {
-  .enc-hero { min-height: 22vh; padding: 68px 16px 32px; }
-  .enc-hero--compact { min-height: 14vh; padding: 64px 16px 24px; }
+  .enc-hero { min-height: 22vh; padding: calc(68px + env(safe-area-inset-top, 0px)) 16px 32px; }
+  .enc-hero--compact { min-height: 14vh; padding: calc(64px + env(safe-area-inset-top, 0px)) 16px 24px; }
+  .enc-hero--hub { padding: calc(68px + env(safe-area-inset-top, 0px)) 16px 40px; }
   .enc-hero-title { font-size: clamp(1.5rem, 7vw, 2.2rem); }
 
   .hub-grid { grid-template-columns: 1fr; gap: 14px; }
   .enc-tribes-grid { grid-template-columns: 1fr; }
+  .enc-tribe-grid { grid-template-columns: 1fr; }
+
+  /* Tab bar mobile */
+  .enc-tabs-inner { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .enc-tabs-inner::-webkit-scrollbar { display: none; }
+  .enc-tab { white-space: nowrap; min-height: 44px; }
 
   .enc-pager { flex-wrap: wrap; gap: 6px; }
-  .enc-pager a { font-size: .78rem; padding: 4px 10px; }
+  .enc-pager a { font-size: .78rem; padding: 6px 14px; min-height: 44px; display: inline-flex; align-items: center; }
 
-  .tribe-detail-grid { grid-template-columns: 1fr 1fr; }
+  /* Tribe article card mobile */
+  .tribe-card-hero { padding: 24px 20px; gap: 14px; }
+  .tribe-card-tamga-icon { width: 56px; height: 56px; font-size: 1.8rem; }
+  .tribe-card-name { font-size: 1.6rem; }
+  .tribe-card-meta-row { flex-direction: column; }
+  .tribe-card-meta-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .tribe-card-meta-item:last-child { border-bottom: none; }
+  .tribe-card-section { padding: 20px; }
+
+  .tribe-siblings-grid { grid-template-columns: repeat(3, 1fr); }
 
   .tribe-tabs-content { padding: 18px 16px; }
   .tribe-tabs-tamga-big { width: 44px; height: 44px; font-size: 1.8rem; }
   .tribe-tabs-title { font-size: 1.2rem; }
   .tribe-tabs-grid { grid-template-columns: 1fr 1fr; }
+  .tribe-tab { min-height: 44px; }
+  .tribe-tabs-bar { scrollbar-width: none; }
+  .tribe-tabs-bar::-webkit-scrollbar { display: none; }
 
-  .enc-cta { padding: 28px 16px; }
-  .enc-cta h3 { font-size: 1.3rem; }
+  .enc-cta { padding: 48px 20px; margin: 32px 16px; border-radius: var(--r-lg); }
+  .enc-cta-content h2 { font-size: 1.3rem; }
 }
 
 @media (max-width: 480px) {
-  .tribe-detail-grid { grid-template-columns: 1fr; }
   .enc-breadcrumb { font-size: .75rem; flex-wrap: wrap; justify-content: center; }
+
+  .tribe-card-hero { padding: 20px 16px; }
+  .tribe-card-tamga-icon { width: 48px; height: 48px; font-size: 1.5rem; }
+  .tribe-card-name { font-size: 1.3rem; }
+  .tribe-card-section { padding: 16px; }
+  .tribe-siblings-grid { grid-template-columns: repeat(2, 1fr); }
+  .tribe-article-card { border-radius: var(--r-lg); }
 
   .tribe-tabs-grid { grid-template-columns: 1fr; }
   .tribe-tabs-header { gap: 12px; flex-wrap: wrap; }
   .tribe-tabs-tamga-big { width: 40px; height: 40px; font-size: 1.6rem; }
   .tribe-tabs-title { font-size: 1.1rem; }
   .tribe-tabs-content { padding: 14px 12px; }
+  .enc-tribes-grid { gap: 12px; }
 
-  .enc-hero { padding: 64px 12px 28px; }
-  .enc-hero--compact { padding: 60px 12px 20px; }
+  .enc-hero { padding: calc(64px + env(safe-area-inset-top, 0px)) 12px 28px; }
+  .enc-hero--compact { padding: calc(60px + env(safe-area-inset-top, 0px)) 12px 20px; }
   .enc-hero-sub { font-size: .82rem; }
 
   .enc-pager a { font-size: .75rem; padding: 3px 8px; }
 
-  .enc-cta h3 { font-size: 1.15rem; }
-  .enc-cta p { font-size: .88rem; }
+  .enc-cta-content h2 { font-size: 1.15rem; }
+  .enc-cta-content p { font-size: .88rem; }
+}
+
+@media (max-width: 375px) {
+  .hub-card { padding: 24px 20px; }
+  .hub-card-title { font-size: 1.15rem; }
+  .enc-tribe-card { padding: 18px 16px; }
+  .tribe-tabs-content { padding: 12px 10px; }
+  .enc-main { padding: 28px 0 36px; }
 }

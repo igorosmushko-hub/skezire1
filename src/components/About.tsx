@@ -5,11 +5,13 @@ export function About() {
 
   return (
     <section id="about" className="about">
+      <div className="about-ornament" />
       <div className="container">
         <div className="section-header">
-          <div className="orn-line" />
-          <h2>{t('h2')}</h2>
-          <div className="orn-line" />
+          <div className="about-header-wrap">
+            <span className="section-overline">{t('overline') ?? 'О платформе'}</span>
+            <h2>{t('h2')}</h2>
+          </div>
         </div>
         <div className="about-grid">
           <div className="about-card">

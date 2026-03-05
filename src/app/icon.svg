@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#1A1A2E"/>
+
+  <!-- Trunk -->
+  <path d="M14.5,28 L14.5,18 Q14.5,16 16,15 Q17.5,16 17.5,18 L17.5,28 Z" fill="#B8860B"/>
+
+  <!-- Roots -->
+  <path d="M14.5,28 Q12,29 10,28" stroke="#B8860B" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M17.5,28 Q20,29 22,28" stroke="#B8860B" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Crown — layered circles for lush tree canopy -->
+  <circle cx="16" cy="12" r="8" fill="#D4A843" opacity="0.9"/>
+  <circle cx="11" cy="14" r="5.5" fill="#D4A843"/>
+  <circle cx="21" cy="14" r="5.5" fill="#D4A843"/>
+  <circle cx="13" cy="9" r="5" fill="#C9952E"/>
+  <circle cx="19" cy="9" r="5" fill="#C9952E"/>
+  <circle cx="16" cy="7" r="5" fill="#D4A843"/>
+
+  <!-- Highlight spots for depth -->
+  <circle cx="14" cy="8" r="2" fill="#E0B84D" opacity="0.6"/>
+  <circle cx="19" cy="11" r="1.5" fill="#E0B84D" opacity="0.5"/>
+</svg>
