@@ -5,6 +5,7 @@ import { getSupabase } from '@/lib/supabase';
 const KIE_API_BASE = 'https://api.kie.ai/api/v1/jobs';
 const STORAGE_BUCKET = 'ai-uploads';
 const FREE_LIMIT = 3;
+const UNLIMITED_PHONES = ['+77756006661'];
 
 /** Upload base64 data URI to Supabase Storage and return a public URL. */
 async function uploadToStorage(base64DataUri: string): Promise<string> {
@@ -60,7 +61,8 @@ export async function POST(req: NextRequest) {
     .single();
 
   const usageCount = userData?.usage_count ?? 0;
-  if (usageCount >= FREE_LIMIT) {
+  const isUnlimited = UNLIMITED_PHONES.includes(sessionUser.phone);
+  if (!isUnlimited && usageCount >= FREE_LIMIT) {
     return NextResponse.json(
       { error: 'limit_reached', usage_count: usageCount, limit: FREE_LIMIT },
       { status: 403 },
