@@ -6,8 +6,8 @@ import Link from 'next/link';
 
 const DEMOS = [
   { before: '/ai-examples/before-woman.webp', after: '/ai-examples/past-1.webp', slug: 'past', keyH3: 'past.h3' },
-  { before: '/ai-examples/before-woman.webp', after: '/ai-examples/ghibli-style-1.webp', slug: 'ghibli-style', keyH3: 'ghibli.h3' },
-  { before: '/ai-examples/before-woman.webp', after: '/ai-examples/action-figure-1.webp', slug: 'action-figure', keyH3: 'figure.h3' },
+  { before: '/ai-examples/before-elderly-woman.webp', after: '/ai-examples/ancestor-rejuvenated.webp', slug: 'ancestor', keyH3: 'gm.h3' },
+  { before: '/ai-examples/before-cat.webp', after: '/ai-examples/pet-humanize-1.webp', slug: 'pet-humanize', keyH3: 'pet.h3' },
 ];
 
 export function AiShowcase() {
