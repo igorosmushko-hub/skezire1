@@ -4,10 +4,7 @@ import { getSupabase } from '@/lib/supabase';
 
 const KIE_API_BASE = 'https://api.kie.ai/api/v1/jobs';
 const STORAGE_BUCKET = 'ai-uploads';
-
-const rateLimit = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 3;
-const RATE_WINDOW = 3600_000; // 1 hour
+const FREE_LIMIT = 3;
 
 /** Upload base64 data URI to Supabase Storage and return a public URL. */
 async function uploadToStorage(base64DataUri: string): Promise<string> {
@@ -50,17 +47,24 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Rate limit by IP
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
-  const now = Date.now();
-  const entry = rateLimit.get(ip);
-  if (entry && now < entry.resetAt) {
-    if (entry.count >= RATE_LIMIT) {
-      return NextResponse.json({ error: 'rate_limit' }, { status: 429 });
-    }
-    entry.count++;
-  } else {
-    rateLimit.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
+  // Check free usage limit per user
+  const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ error: 'db_not_configured' }, { status: 503 });
+  }
+
+  const { data: userData } = await supabase
+    .from('users')
+    .select('usage_count')
+    .eq('id', sessionUser.userId)
+    .single();
+
+  const usageCount = userData?.usage_count ?? 0;
+  if (usageCount >= FREE_LIMIT) {
+    return NextResponse.json(
+      { error: 'limit_reached', usage_count: usageCount, limit: FREE_LIMIT },
+      { status: 403 },
+    );
   }
 
   let body: { imageBase64?: string; gender?: string; type?: string };
@@ -132,8 +136,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'api_error' }, { status: 502 });
     }
 
-    // Return in same format as before so client components work unchanged
-    return NextResponse.json({ id: data.data.taskId, status: 'starting' });
+    // Increment usage count
+    await supabase
+      .from('users')
+      .update({ usage_count: usageCount + 1 })
+      .eq('id', sessionUser.userId);
+
+    const remaining = FREE_LIMIT - usageCount - 1;
+    return NextResponse.json({ id: data.data.taskId, status: 'starting', remaining });
   } catch (err) {
     console.error('Kie AI create error:', err);
     return NextResponse.json({ error: 'api_error' }, { status: 502 });

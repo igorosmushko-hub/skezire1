@@ -111,7 +111,7 @@ export function AiAncestorModal({ open, onClose }: Props) {
 
       if (!createRes.ok) {
         const data = await createRes.json().catch(() => ({}));
-        showToast(t(data.error === 'rate_limit' ? 'rate_limit' : 'error'));
+        const errKey = data.error === 'limit_reached' ? 'limit_reached' : data.error === 'rate_limit' ? 'rate_limit' : 'error'; showToast(t(errKey));
         setStep('preview');
         return;
       }
