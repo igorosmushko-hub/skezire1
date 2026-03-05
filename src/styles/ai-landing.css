@@ -440,6 +440,21 @@
   color: var(--muted);
   line-height: 1.5;
 }
+.ai-related-all {
+  text-align: center;
+  margin-top: 28px;
+}
+.ai-related-all-link {
+  color: var(--gold);
+  font-family: var(--ff-head);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+.ai-related-all-link:hover {
+  opacity: .8;
+}
 
 /* ── SEO Content Section ───────────────────────────────────────── */
 .ai-seo-section {

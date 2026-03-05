@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
+import { HeroCtaButton } from './HeroCtaButton';
 import type { AiFeature } from '@/data/ai-features';
 
 interface Props {
@@ -24,9 +24,7 @@ export function AiLandingHero({ feature, locale }: Props) {
         <span className="ai-landing-hero-icon">{feature.icon}</span>
         <h1>{hero.h1}</h1>
         <p className="ai-landing-hero-sub">{hero.subtitle}</p>
-        <Link href="#try-now" className="btn-hero">
-          {hero.cta}
-        </Link>
+        <HeroCtaButton featureSlug={feature.slug} label={hero.cta} />
       </div>
     </section>
   );

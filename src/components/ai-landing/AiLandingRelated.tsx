@@ -31,6 +31,11 @@ export function AiLandingRelated({ features, locale }: Props) {
           );
         })}
       </div>
+      <div className="ai-related-all">
+        <Link href={`/${locale}/ai`} className="ai-related-all-link">
+          {isKk ? 'Барлық AI мүмкіндіктерді көру' : 'Смотреть все AI функции'} &rarr;
+        </Link>
+      </div>
     </section>
   );
 }

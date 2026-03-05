@@ -7,7 +7,6 @@ import { AiLandingHowItWorks } from '@/components/ai-landing/AiLandingHowItWorks
 import { AiLandingFaq } from '@/components/ai-landing/AiLandingFaq';
 import { AiLandingRelated } from '@/components/ai-landing/AiLandingRelated';
 import { AiLandingCta } from '@/components/ai-landing/AiLandingCta';
-import Link from 'next/link';
 import '@/styles/ai-landing.css';
 
 export function generateStaticParams() {
@@ -116,23 +115,13 @@ export default async function AiFeaturePage({
 
       <main className="ai-landing-main">
         <div className="container">
-          <AiLandingCta featureSlug={feature.slug} locale={locale} />
           <AiLandingFeatures feature={feature} locale={locale} />
           <AiLandingHowItWorks feature={feature} locale={locale} />
+          <AiLandingCta featureSlug={feature.slug} locale={locale} />
           <AiLandingFaq feature={feature} locale={locale} />
           <AiLandingRelated features={related} locale={locale} />
         </div>
       </main>
-
-      <section className="ai-bottom-cta">
-        <div className="container">
-          <h3>{isKk ? 'Барлық AI мүмкіндіктер' : 'Все AI функции'}</h3>
-          <p>{isKk ? 'Басқа AI құралдарды көріңіз' : 'Посмотрите другие AI инструменты'}</p>
-          <Link href={`/${locale}/ai`} className="btn-hero">
-            {isKk ? 'AI каталог' : 'AI каталог'}
-          </Link>
-        </div>
-      </section>
     </>
   );
 }
