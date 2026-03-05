@@ -6,6 +6,7 @@ import { useToast } from './Toast';
 import { preprocessImage, validateImageFile } from '@/lib/ai-utils';
 import { useAuth } from './AuthProvider';
 import { LoginModal } from './LoginModal';
+import { applyWatermark } from '@/lib/watermark';
 
 type Step = 'upload' | 'preview' | 'generating' | 'result';
 
@@ -151,11 +152,20 @@ export function AiAncestorModal({ open, onClose }: Props) {
     }
   }, [imageBase64, gender, showToast, t]);
 
+  const getWatermarkedBlob = useCallback(async (): Promise<Blob | null> => {
+    if (!resultUrl) return null;
+    try {
+      const proxyUrl = `/api/ai/download?url=${encodeURIComponent(resultUrl)}`;
+      return await applyWatermark(proxyUrl);
+    } catch {
+      return null;
+    }
+  }, [resultUrl]);
+
   const handleDownload = useCallback(async () => {
     if (!resultUrl) return;
     try {
-      const res = await fetch(`/api/ai/download?url=${encodeURIComponent(resultUrl)}`);
-      const blob = await res.blob();
+      const blob = await getWatermarkedBlob() ?? (await (await fetch(`/api/ai/download?url=${encodeURIComponent(resultUrl)}`)).blob());
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -167,7 +177,20 @@ export function AiAncestorModal({ open, onClose }: Props) {
     } catch {
       showToast(t('error'));
     }
-  }, [resultUrl, showToast, t]);
+  }, [resultUrl, getWatermarkedBlob, showToast, t]);
+
+  const handleShare = useCallback(async () => {
+    if (!resultUrl) return;
+    try {
+      const blob = await getWatermarkedBlob();
+      if (blob && navigator.share) {
+        const file = new File([blob], 'shezhire-ancestor-young.jpg', { type: 'image/jpeg' });
+        await navigator.share({ files: [file], title: 'Шежіре — AI фото', url: 'https://skezire.kz' });
+      }
+    } catch {
+      /* user cancelled or share not supported */
+    }
+  }, [resultUrl, getWatermarkedBlob]);
 
   /* Auth gate */
   if (open && !authLoading && !user) {
@@ -275,6 +298,11 @@ export function AiAncestorModal({ open, onClose }: Props) {
               <img src={resultUrl} alt="" className="ai-past-img-result" />
             </div>
             <div className="ai-past-actions">
+              {typeof navigator !== 'undefined' && !!navigator.share && (
+                <button className="btn btn-ai" onClick={handleShare}>
+                  {t('share')}
+                </button>
+              )}
               <button className="btn btn-ai" onClick={handleDownload}>
                 {t('download')}
               </button>

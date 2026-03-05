@@ -15,7 +15,7 @@ export function Hero() {
         <p className="hero-desc">{t('desc')}</p>
         <div className="hero-btns">
           <a href="#form-section" className="btn btn-primary">{t('btn.create')}</a>
-          <a href="#about" className="btn btn-outline">{t('btn.learn')}</a>
+          <a href="#ai-section" className="btn btn-ai-hero">{t('btn.ai')}</a>
         </div>
       </div>
 

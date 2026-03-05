@@ -1,8 +1,23 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback, type ReactNode } from 'react';
+import { Link } from '@/i18n/routing';
 
-export function NavbarClient({ children }: { children: ReactNode }) {
+interface NavLink {
+  href: string;
+  label: string;
+  className?: string;
+}
+
+interface NavbarClientProps {
+  locale: string;
+  links: NavLink[];
+  brand: ReactNode;
+  auth: ReactNode;
+  langSwitcher: ReactNode;
+}
+
+export function NavbarClient({ locale, links, brand, auth, langSwitcher }: NavbarClientProps) {
   const navRef = useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -13,21 +28,6 @@ export function NavbarClient({ children }: { children: ReactNode }) {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Close menu on route change (anchor click)
-  const handleNavClick = useCallback((e: MouseEvent) => {
-    const target = e.target as HTMLElement;
-    if (target.closest('.nav-links a')) {
-      setMenuOpen(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    const nav = navRef.current;
-    if (!nav) return;
-    nav.addEventListener('click', handleNavClick);
-    return () => nav.removeEventListener('click', handleNavClick);
-  }, [handleNavClick]);
 
   // Close on ESC
   useEffect(() => {
@@ -57,19 +57,56 @@ export function NavbarClient({ children }: { children: ReactNode }) {
     setMenuOpen((prev) => !prev);
   }, []);
 
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+  }, []);
+
   return (
-    <nav className={`navbar${menuOpen ? ' menu-open' : ''}`} id="navbar" ref={navRef}>
-      <div className="nav-ornament" />
-      {children}
-      <button
-        className="nav-burger"
-        aria-label="Menu"
-        aria-expanded={menuOpen}
-        onClick={toggleMenu}
-        style={{ display: undefined }}
-      >
-        {menuOpen ? '\u2715' : '\u2630'}
-      </button>
-    </nav>
+    <>
+      <nav className={`navbar${menuOpen ? ' menu-open' : ''}`} id="navbar" ref={navRef}>
+        <div className="nav-ornament" />
+        {brand}
+        <ul className="nav-links">
+          {links.map((link) => (
+            <li key={link.href}>
+              <Link href={link.href as '/'} locale={locale} className={link.className}>
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        {auth}
+        {langSwitcher}
+        <button
+          className="nav-burger"
+          aria-label="Menu"
+          aria-expanded={menuOpen}
+          onClick={toggleMenu}
+        >
+          {menuOpen ? '\u2715' : '\u2630'}
+        </button>
+      </nav>
+
+      {/* Mobile menu — rendered OUTSIDE nav to avoid backdrop-filter containing block */}
+      <div className={`mobile-menu${menuOpen ? ' open' : ''}`}>
+        <div className="mobile-menu-overlay" onClick={closeMenu} />
+        <div className="mobile-menu-content">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href as '/'}
+              locale={locale}
+              className={`mobile-menu-link${link.className ? ` ${link.className}` : ''}`}
+              onClick={closeMenu}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <div className="mobile-menu-auth">
+            {auth}
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

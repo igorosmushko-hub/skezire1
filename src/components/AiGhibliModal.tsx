@@ -6,6 +6,7 @@ import { useToast } from './Toast';
 import { preprocessImage, validateImageFile } from '@/lib/ai-utils';
 import { useAuth } from './AuthProvider';
 import { LoginModal } from './LoginModal';
+import { applyWatermark } from '@/lib/watermark';
 
 type Step = 'upload' | 'preview' | 'generating' | 'result';
 
@@ -149,11 +150,20 @@ export function AiGhibliModal({ open, onClose }: Props) {
     }
   }, [imageBase64, showToast, t]);
 
+  const getWatermarkedBlob = useCallback(async (): Promise<Blob | null> => {
+    if (!resultUrl) return null;
+    try {
+      const proxyUrl = `/api/ai/download?url=${encodeURIComponent(resultUrl)}`;
+      return await applyWatermark(proxyUrl);
+    } catch {
+      return null;
+    }
+  }, [resultUrl]);
+
   const handleDownload = useCallback(async () => {
     if (!resultUrl) return;
     try {
-      const res = await fetch(`/api/ai/download?url=${encodeURIComponent(resultUrl)}`);
-      const blob = await res.blob();
+      const blob = await getWatermarkedBlob() ?? (await (await fetch(`/api/ai/download?url=${encodeURIComponent(resultUrl)}`)).blob());
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;

@@ -65,7 +65,7 @@ export function ShareImage({ data, locale, nodes }: ShareImageProps) {
 
       const file = new File([blob], 'shezhire.png', { type: 'image/png' });
 
-      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+      if (!!navigator.share && navigator.canShare?.({ files: [file] })) {
         await navigator.share({
           title: 'Шежіре',
           text: locale === 'kk' ? 'Менің шежірем' : 'Моё шежіре',
