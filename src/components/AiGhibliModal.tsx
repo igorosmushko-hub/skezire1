@@ -175,7 +175,20 @@ export function AiGhibliModal({ open, onClose }: Props) {
     } catch {
       showToast(t('error'));
     }
-  }, [resultUrl, showToast, t]);
+  }, [resultUrl, getWatermarkedBlob, showToast, t]);
+
+  const handleShare = useCallback(async () => {
+    if (!resultUrl) return;
+    try {
+      const blob = await getWatermarkedBlob();
+      if (blob && navigator.share) {
+        const file = new File([blob], 'shezhire-ghibli.jpg', { type: 'image/jpeg' });
+        await navigator.share({ files: [file], title: 'Шежіре — AI фото', url: 'https://skezire.kz' });
+      }
+    } catch {
+      /* user cancelled or share not supported */
+    }
+  }, [resultUrl, getWatermarkedBlob]);
 
   if (open && !authLoading && !user) {
     return <LoginModal open={true} onClose={onClose} />;
@@ -267,6 +280,11 @@ export function AiGhibliModal({ open, onClose }: Props) {
               <img src={resultUrl} alt="" className="ai-past-img-result" />
             </div>
             <div className="ai-past-actions">
+              {typeof navigator !== 'undefined' && !!navigator.share && (
+                <button className="btn btn-ai" onClick={handleShare}>
+                  {t('share')}
+                </button>
+              )}
               <button className="btn btn-ai" onClick={handleDownload}>
                 {t('download')}
               </button>

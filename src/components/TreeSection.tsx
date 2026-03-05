@@ -137,6 +137,23 @@ export function TreeSection({ data, locale }: TreeSectionProps) {
         </div>
 
         <ShareImage data={data} locale={locale} nodes={nodes} />
+
+        {/* AI Cross-promotion */}
+        <div className="tree-ai-promo">
+          <h3>{locale === 'kk' ? 'AI фото қолданып көріңіз' : 'Попробуйте AI фото'}</h3>
+          <p>{locale === 'kk' ? 'Ата-тегіңіздің тарихын AI арқылы жандандырыңыз' : 'Оживите историю рода с помощью AI'}</p>
+          <div className="tree-ai-promo-btns">
+            <a href="#ai-section" className="btn btn-ai-sm">
+              {locale === 'kk' ? '🕰️ 100 жыл бұрын' : '🕰️ 100 лет назад'}
+            </a>
+            <a href="#ai-section" className="btn btn-ai-sm">
+              {locale === 'kk' ? '👵 Бабаңды жасарту' : '👵 Омолодить предка'}
+            </a>
+            <a href="#ai-section" className="btn btn-ai-sm-outline">
+              {locale === 'kk' ? 'Барлық AI →' : 'Все AI →'}
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
