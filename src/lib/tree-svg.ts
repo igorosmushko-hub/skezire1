@@ -89,7 +89,7 @@ export function buildTreeSVG(nodes: TreeSVGNode[], unknownLabel: string): string
     shapes += `
       <text x="${cx}" y="${midY+7}" text-anchor="middle"
             font-size="${fSize}" font-weight="${nameW}"
-            fill="${nameColor}" font-family="Inter,system-ui,sans-serif">
+            fill="${nameColor}" font-family="Cormorant Garamond,Georgia,serif">
         ${escapeXML(nameStr)}
       </text>
     `;

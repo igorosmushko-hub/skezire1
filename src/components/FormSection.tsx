@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { TRIBES_DB } from '@/data/tribes';
 import { ANCESTOR_DEFS } from '@/lib/constants';
 import { useToast } from './Toast';
 import { TribeCard } from './TribeCard';
+import { validateImageFile, preprocessImage } from '@/lib/ai-utils';
 import type { Tribe, TreeFormData } from '@/lib/types';
 
 interface FormSectionProps {
@@ -25,6 +26,11 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
   const [ancestorValues, setAncestorValues] = useState<string[]>(Array(7).fill(''));
   const [nameValue, setNameValue] = useState('');
   const [birthYear, setBirthYear] = useState('');
+  const [gender, setGender] = useState<'male' | 'female'>('male');
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoBase64, setPhotoBase64] = useState<string | null>(null);
+  const [photoDragOver, setPhotoDragOver] = useState(false);
+  const photoInputRef = useRef<HTMLInputElement>(null);
   const [focusedAnc, setFocusedAnc] = useState<number | null>(null);
 
   // Restore from localStorage
@@ -64,6 +70,32 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
     }
   }, [zhuzId]);
 
+  const handlePhotoSelect = useCallback(async (file: File) => {
+    const err = validateImageFile(file);
+    if (err) { showToast(t(err)); return; }
+    setPhotoPreview(URL.createObjectURL(file));
+    try {
+      const base64 = await preprocessImage(file);
+      setPhotoBase64(base64);
+    } catch {
+      showToast(tErr('photo'));
+      setPhotoPreview(null);
+    }
+  }, [showToast, t, tErr]);
+
+  const handlePhotoDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setPhotoDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handlePhotoSelect(file);
+  }, [handlePhotoSelect]);
+
+  const handlePhotoInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handlePhotoSelect(file);
+    e.target.value = '';
+  }, [handlePhotoSelect]);
+
   const handleAncestorChange = useCallback((index: number, value: string) => {
     setAncestorValues((prev) => {
       const next = [...prev];
@@ -77,14 +109,15 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
   const progress = useMemo(() => {
     let total = 0;
     if (nameValue.trim()) total += 1;
+    if (photoBase64) total += 1;
     if (zhuzId) total += 1;
     if (tribeId) total += 1;
     total += filledAncestors;
-    return Math.round((total / 10) * 100);
-  }, [nameValue, zhuzId, tribeId, filledAncestors]);
+    return Math.round((total / 11) * 100);
+  }, [nameValue, photoBase64, zhuzId, tribeId, filledAncestors]);
 
   // Step completion
-  const step1Done = !!nameValue.trim();
+  const step1Done = !!nameValue.trim() && !!photoBase64;
   const step2Done = !!zhuzId && !!tribeId;
   const step3Done = filledAncestors >= 1;
 
@@ -92,6 +125,10 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
     e.preventDefault();
     if (!nameValue.trim()) {
       showToast(tErr('name'));
+      return;
+    }
+    if (!photoBase64) {
+      showToast(isKk ? 'Фото жүктеңіз' : 'Загрузите фото');
       return;
     }
 
@@ -111,6 +148,8 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
         label: def.label,
         name: ancestorValues[i] || '',
       })),
+      photoBase64,
+      gender,
     });
   };
 
@@ -215,6 +254,72 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
                 value={birthYear}
                 onChange={(e) => setBirthYear(e.target.value)}
               />
+            </div>
+          </div>
+
+          {/* ── Photo upload + gender ── */}
+          <div className="form-photo-section">
+            <label className="form-photo-label">
+              {isKk ? 'Сіздің фотоңыз' : 'Ваше фото'}
+              <span className="form-photo-required">*</span>
+            </label>
+            <p className="form-photo-hint">
+              {isKk
+                ? 'AI арқылы «100 жыл бұрын» стилінде өңделеді'
+                : 'Будет AI-обработано в стиле «100 лет назад»'}
+            </p>
+
+            {photoPreview ? (
+              <div className="form-photo-preview">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={photoPreview} alt="" />
+                <button
+                  type="button"
+                  className="form-photo-remove"
+                  onClick={() => { setPhotoPreview(null); setPhotoBase64(null); }}
+                >
+                  ✕
+                </button>
+              </div>
+            ) : (
+              <div
+                className={`form-photo-drop${photoDragOver ? ' dragover' : ''}`}
+                onClick={() => photoInputRef.current?.click()}
+                onDrop={handlePhotoDrop}
+                onDragOver={(e) => { e.preventDefault(); setPhotoDragOver(true); }}
+                onDragLeave={() => setPhotoDragOver(false)}
+              >
+                <span className="form-photo-drop-icon">📷</span>
+                <span className="form-photo-drop-text">
+                  {isKk ? 'Фото жүктеңіз немесе басыңыз' : 'Перетащите фото или нажмите'}
+                </span>
+                <span className="form-photo-drop-hint">JPG, PNG, WEBP — макс. 5 МБ</span>
+              </div>
+            )}
+
+            <input
+              ref={photoInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              hidden
+              onChange={handlePhotoInput}
+            />
+
+            <div className="form-gender">
+              <button
+                type="button"
+                className={`form-gender-btn${gender === 'male' ? ' active' : ''}`}
+                onClick={() => setGender('male')}
+              >
+                {isKk ? 'Ер' : 'Мужчина'}
+              </button>
+              <button
+                type="button"
+                className={`form-gender-btn${gender === 'female' ? ' active' : ''}`}
+                onClick={() => setGender('female')}
+              >
+                {isKk ? 'Әйел' : 'Женщина'}
+              </button>
             </div>
           </div>
 

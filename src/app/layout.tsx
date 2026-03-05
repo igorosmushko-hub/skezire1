@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Viewport } from 'next';
 import Script from 'next/script';
-import { Playfair_Display, Inter } from 'next/font/google';
+import { Cormorant_Garamond, Inter } from 'next/font/google';
 import '@/styles/globals.css';
 
 export const viewport: Viewport = {
@@ -10,11 +10,11 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 };
 
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   subsets: ['cyrillic', 'latin'],
-  weight: ['400', '700'],
+  weight: ['400', '600', '700'],
   style: ['normal', 'italic'],
-  variable: '--font-playfair',
+  variable: '--font-display',
   display: 'swap',
 });
 
@@ -27,7 +27,7 @@ const inter = Inter({
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html className={`${playfair.variable} ${inter.variable}`}>
+    <html className={`${cormorant.variable} ${inter.variable}`}>
       <body>
         {children}
         <Script id="yandex-metrika" strategy="afterInteractive">{`

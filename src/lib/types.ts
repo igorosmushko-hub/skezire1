@@ -56,4 +56,6 @@ export interface TreeFormData {
   zhuzLabel: string;
   ru: string;
   ancestors: AncestorNode[];
+  photoBase64: string;
+  gender: 'male' | 'female';
 }

@@ -9,9 +9,11 @@ import type { TreeFormData } from '@/lib/types';
 interface TreeSectionProps {
   data: TreeFormData;
   locale: string;
+  aiPhotoUrl?: string | null;
+  aiPhotoLoading?: boolean;
 }
 
-export function TreeSection({ data, locale }: TreeSectionProps) {
+export function TreeSection({ data, locale, aiPhotoUrl, aiPhotoLoading }: TreeSectionProps) {
   const t = useTranslations('tree');
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -114,6 +116,26 @@ export function TreeSection({ data, locale }: TreeSectionProps) {
           </div>
         )}
 
+        {/* ── AI Portrait ── */}
+        <div className="tree-portrait-wrap">
+          {aiPhotoLoading && (
+            <div className="tree-portrait-loading">
+              <div className="tree-portrait-spinner" />
+              <span>{locale === 'kk' ? 'AI фото жасалуда...' : 'AI создаёт фото...'}</span>
+            </div>
+          )}
+          {aiPhotoUrl && !aiPhotoLoading && (
+            <div className="tree-portrait">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`/api/ai/download?url=${encodeURIComponent(aiPhotoUrl)}`}
+                alt={data.name}
+                className="tree-portrait-img"
+              />
+            </div>
+          )}
+        </div>
+
         <div className="tree-wrapper">
           <div
             className="tree-container"
@@ -136,7 +158,7 @@ export function TreeSection({ data, locale }: TreeSectionProps) {
           </div>
         </div>
 
-        <ShareImage data={data} locale={locale} nodes={nodes} />
+        <ShareImage data={data} locale={locale} nodes={nodes} aiPhotoUrl={aiPhotoUrl} />
 
         {/* AI Cross-promotion */}
         <div className="tree-ai-promo">

@@ -11,9 +11,10 @@ interface ShareImageProps {
   data: TreeFormData;
   locale: string;
   nodes: Array<{ kaz: string; label: string; name: string; isUser?: boolean }>;
+  aiPhotoUrl?: string | null;
 }
 
-export function ShareImage({ data, locale, nodes }: ShareImageProps) {
+export function ShareImage({ data, locale, nodes, aiPhotoUrl }: ShareImageProps) {
   const t = useTranslations('tree');
   const tShare = useTranslations('share');
   const showToast = useToast();
@@ -34,9 +35,9 @@ export function ShareImage({ data, locale, nodes }: ShareImageProps) {
       (locale === 'kk' ? tr.kk : tr.ru) === data.ru
     ) ?? null;
 
-    await generateShareImage(canvas, data, locale, tribe);
+    await generateShareImage(canvas, data, locale, tribe, aiPhotoUrl ?? undefined);
     return canvas;
-  }, [data, locale]);
+  }, [data, locale, aiPhotoUrl]);
 
   const toBlob = (canvas: HTMLCanvasElement): Promise<Blob | null> =>
     new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
@@ -128,7 +129,7 @@ export function ShareImage({ data, locale, nodes }: ShareImageProps) {
       <canvas
         ref={canvasRef}
         width={1080}
-        height={1350}
+        height={aiPhotoUrl ? 1620 : 1350}
         style={{ display: 'none' }}
       />
     </>

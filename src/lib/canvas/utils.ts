@@ -64,7 +64,7 @@ export async function ensureFontsLoaded(): Promise<void> {
     await document.fonts.ready;
   }
   // Trigger loading of needed fonts
-  const families = ['Playfair Display', 'Inter'];
+  const families = ['Cormorant Garamond', 'Inter'];
   for (const f of families) {
     try { await document.fonts.load(`400 48px "${f}"`); } catch (_) { /* ok */ }
     try { await document.fonts.load(`700 48px "${f}"`); } catch (_) { /* ok */ }

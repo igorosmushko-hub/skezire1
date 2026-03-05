@@ -121,7 +121,7 @@ function drawHeader(
 
   // "Шежіре" — large title
   ctx.save();
-  ctx.font = '700 52px "Playfair Display", Georgia, serif';
+  ctx.font = '700 52px "Cormorant Garamond", Georgia, serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
   ctx.fillStyle = GOLD;
@@ -160,7 +160,7 @@ function drawHeader(
   // Ru name — prominent
   if (ruName) {
     ctx.save();
-    ctx.font = '700 32px "Playfair Display", Georgia, serif';
+    ctx.font = '700 32px "Cormorant Garamond", Georgia, serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     ctx.fillStyle = GOLD;
@@ -316,7 +316,7 @@ export function drawTreeOnCanvas(
     else if (nameStr.length > 14) fSize = 25;
 
     ctx.save();
-    ctx.font = `${isUser ? '700' : '600'} ${fSize}px "Playfair Display", Georgia, serif`;
+    ctx.font = `${isUser ? '700' : '600'} ${fSize}px "Cormorant Garamond", Georgia, serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     if (isUser) {
@@ -385,7 +385,7 @@ function drawInfoSection(
     y += 22;
 
     ctx.save();
-    ctx.font = 'italic 700 28px "Playfair Display", Georgia, serif';
+    ctx.font = 'italic 700 28px "Cormorant Garamond", Georgia, serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     ctx.fillStyle = GOLD;
@@ -421,18 +421,115 @@ function drawFooter(
 
 /* ── Main composition ──────────────────────────────────────────── */
 
+/* ── Load image helper ─────────────────────────────────────────── */
+
+async function loadImage(src: string): Promise<HTMLImageElement> {
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  return new Promise((resolve, reject) => {
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
+/* ── AI Portrait in oval frame ─────────────────────────────────── */
+
+function drawAiPortrait(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  cx: number,
+  y: number,
+  name: string,
+  birthYear: string,
+): number {
+  const pw = 220, ph = 280;
+  const px = cx - pw / 2;
+
+  // Oval clip
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(cx, y + ph / 2, pw / 2, ph / 2, 0, 0, Math.PI * 2);
+  ctx.clip();
+  ctx.drawImage(img, px, y, pw, ph);
+  ctx.restore();
+
+  // Oval border — outer glow
+  ctx.save();
+  ctx.strokeStyle = GOLD;
+  ctx.lineWidth = 3;
+  ctx.shadowColor = 'rgba(200,168,75,0.5)';
+  ctx.shadowBlur = 16;
+  ctx.beginPath();
+  ctx.ellipse(cx, y + ph / 2, pw / 2, ph / 2, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.restore();
+
+  // Thin inner border
+  ctx.save();
+  ctx.strokeStyle = GOLD;
+  ctx.lineWidth = 1;
+  ctx.globalAlpha = 0.4;
+  ctx.beginPath();
+  ctx.ellipse(cx, y + ph / 2, pw / 2 - 6, ph / 2 - 6, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.restore();
+
+  // Name below portrait
+  let labelY = y + ph + 16;
+  ctx.save();
+  ctx.font = '700 28px "Cormorant Garamond", Georgia, serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = GOLD;
+  ctx.shadowColor = 'rgba(200,168,75,0.3)';
+  ctx.shadowBlur = 10;
+  ctx.fillText(name, cx, labelY);
+  ctx.restore();
+  labelY += 36;
+
+  // Birth year
+  if (birthYear) {
+    ctx.save();
+    ctx.font = '400 16px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = GOLD;
+    ctx.globalAlpha = 0.5;
+    ctx.fillText(birthYear, cx, labelY);
+    ctx.restore();
+    labelY += 28;
+  }
+
+  return labelY + 8;
+}
+
 export async function generateShareImage(
   canvas: HTMLCanvasElement,
   data: ShareImageData,
   locale: string,
   tribe: TribeInfo | null,
+  aiPhotoUrl?: string,
 ): Promise<HTMLCanvasElement> {
   await ensureFontsLoaded();
 
+  const hasPhoto = !!aiPhotoUrl;
   const ctx = canvas.getContext('2d')!;
-  const W = 1080, H = 1350;
+  const W = 1080;
+  const H = hasPhoto ? 1620 : 1350;
   canvas.width = W;
   canvas.height = H;
+
+  // Pre-load template background & AI photo in parallel
+  const loadPromises: Promise<HTMLImageElement | null>[] = [
+    loadImage('/tree-template-bg.webp').catch(() => null),
+  ];
+  if (aiPhotoUrl) {
+    loadPromises.push(
+      loadImage(`/api/ai/download?url=${encodeURIComponent(aiPhotoUrl)}`).catch(() => null),
+    );
+  }
+  const [templateBg, aiImg] = await Promise.all(loadPromises);
 
   const zhuzId = data.zhuz || 'other';
   const colors = ZHUZ_COLORS[zhuzId] || ZHUZ_COLORS.other;
@@ -454,44 +551,70 @@ export async function generateShareImage(
   ];
 
   // --- 1. Background ---
-  drawBackground(ctx, W, H, colors);
-
-  // --- 2. Subtle diamond texture ---
-  ctx.save();
-  ctx.strokeStyle = GOLD;
-  ctx.lineWidth = 0.4;
-  ctx.globalAlpha = 0.06;
-  const ds = 70;
-  for (let gy = 0; gy < H; gy += ds) {
-    for (let gx = 0; gx < W; gx += ds) {
-      ctx.beginPath();
-      ctx.moveTo(gx + ds / 2, gy);
-      ctx.lineTo(gx + ds, gy + ds / 2);
-      ctx.lineTo(gx + ds / 2, gy + ds);
-      ctx.lineTo(gx, gy + ds / 2);
-      ctx.closePath();
-      ctx.stroke();
+  if (templateBg) {
+    // Draw AI-generated ornamental template as base layer
+    ctx.drawImage(templateBg, 0, 0, W, H);
+    // Add subtle color tint matching zhuz colors
+    ctx.save();
+    ctx.globalAlpha = 0.15;
+    ctx.fillStyle = colors.bg;
+    ctx.fillRect(0, 0, W, H);
+    ctx.restore();
+    // Vignette for depth
+    const vignette = ctx.createRadialGradient(W / 2, H / 2, H * 0.2, W / 2, H / 2, H * 0.85);
+    vignette.addColorStop(0, 'rgba(0,0,0,0)');
+    vignette.addColorStop(1, 'rgba(0,0,0,0.35)');
+    ctx.fillStyle = vignette;
+    ctx.fillRect(0, 0, W, H);
+  } else {
+    // Fallback: programmatic background + texture + border
+    drawBackground(ctx, W, H, colors);
+    ctx.save();
+    ctx.strokeStyle = GOLD;
+    ctx.lineWidth = 0.4;
+    ctx.globalAlpha = 0.06;
+    const ds = 70;
+    for (let gy = 0; gy < H; gy += ds) {
+      for (let gx = 0; gx < W; gx += ds) {
+        ctx.beginPath();
+        ctx.moveTo(gx + ds / 2, gy);
+        ctx.lineTo(gx + ds, gy + ds / 2);
+        ctx.lineTo(gx + ds / 2, gy + ds);
+        ctx.lineTo(gx, gy + ds / 2);
+        ctx.closePath();
+        ctx.stroke();
+      }
     }
+    ctx.restore();
+    drawDoubleBorder(ctx, W, H, GOLD);
   }
-  ctx.restore();
 
-  // --- 3. Tamga watermark ---
+  // --- 2. Tamga watermark ---
   drawTamgaWatermark(ctx, tamga || '', W / 2, H / 2);
-
-  // --- 4. Double border + ornaments ---
-  drawDoubleBorder(ctx, W, H, GOLD);
 
   // --- 5. Header ---
   drawHeader(ctx, W, zhuzDisplay, ruName, locale);
 
-  // --- 6. Tree ---
-  const treeStartY = 262;
+  // --- 6. AI Portrait (if available) ---
+  let treeStartY = 262;
+  if (aiImg) {
+    const portraitY = 268;
+    treeStartY = drawAiPortrait(
+      ctx, aiImg, W / 2, portraitY,
+      data.name, (data as unknown as { birthYear?: string }).birthYear || '',
+    );
+    // Divider after portrait
+    drawDiamondDivider(ctx, W / 2, treeStartY, W - 200, GOLD);
+    treeStartY += 28;
+  }
+
+  // --- 7. Tree ---
   const treeEndY = drawTreeOnCanvas(ctx, nodes, colors, treeStartY, W);
 
-  // --- 7. Info section ---
+  // --- 8. Info section ---
   drawInfoSection(ctx, W, treeEndY, uran, locale);
 
-  // --- 8. Footer ---
+  // --- 9. Footer ---
   drawFooter(ctx, W, H);
 
   return canvas;
