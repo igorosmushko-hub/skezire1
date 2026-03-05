@@ -110,6 +110,7 @@ button { cursor: pointer; font-family: inherit; }
   background: var(--gold-gradient);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
+  white-space: nowrap; flex-shrink: 0;
 }
 
 .nav-links { display: flex; gap: 28px; }
@@ -132,6 +133,7 @@ button { cursor: pointer; font-family: inherit; }
   border: 1px solid var(--border);
   border-radius: var(--r-pill);
   padding: 6px 14px;
+  flex-shrink: 0; white-space: nowrap;
 }
 .lang-btn {
   background: none; border: none;
