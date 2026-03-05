@@ -1122,7 +1122,13 @@ button { cursor: pointer; font-family: inherit; }
   .nav-links a:hover { background: var(--surface-secondary); }
   .nav-links li:last-child a { border-bottom: none; }
   .menu-open .nav-links { visibility: visible; opacity: 1; pointer-events: auto; }
+  .menu-open {
+    overflow: visible;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
   .nav-burger { display: flex; cursor: pointer; z-index: 1000; }
+  .nav-login-btn { display: none; }
   .lang-switcher { margin-left: auto; margin-right: 8px; }
 
   .family-form { padding: 28px 20px; }
@@ -1618,11 +1624,11 @@ a.tribe-meta-val:hover { text-decoration: underline; }
 .login-back:hover { color: var(--gold); }
 
 @media (max-width: 768px) {
-  .nav-auth {
+  .nav-auth, .nav-login-btn {
     display: none;
   }
-  .menu-open ~ .nav-auth,
-  .menu-open .nav-auth {
+  .menu-open .nav-auth,
+  .menu-open .nav-login-btn {
     display: flex;
     position: fixed;
     bottom: 0;
