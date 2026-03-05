@@ -73,24 +73,25 @@
   padding: 48px 0 0;
 }
 
-/* ── CTA Section (inline on page) ──────────────────────────────── */
+/* ── CTA Section (inline banner) ───────────────────────────────── */
 .ai-landing-cta-section {
-  text-align: center;
-  padding: 48px 32px;
-  background: var(--surface-secondary);
-  border-radius: var(--r-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 32px 24px;
   margin: 0 auto 48px;
-  max-width: 600px;
+  max-width: 960px;
 }
 .ai-landing-cta-section h2 {
   font-family: var(--ff-head);
-  font-size: 1.5rem; font-weight: 700;
+  font-size: 1.3rem; font-weight: 700;
   color: var(--text);
-  margin-bottom: 12px;
+  margin: 0;
+  white-space: nowrap;
 }
 .ai-landing-cta-section p {
-  color: var(--muted);
-  margin-bottom: 20px;
+  display: none;
 }
 .btn-cta-lg {
   display: inline-block;
@@ -599,8 +600,14 @@
     font-size: 1rem;
   }
   .ai-landing-cta-section {
-    padding: 36px 24px;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 16px;
     margin: 0 16px 36px;
+  }
+  .ai-landing-cta-section h2 {
+    white-space: normal;
+    text-align: center;
   }
   .ai-landing-hero h1 { font-size: clamp(1.5rem, 6vw, 2rem); }
   .ai-hiw-step { padding: 24px 16px; }
