@@ -166,6 +166,11 @@ export function AiAncestorModal({ open, onClose }: Props) {
     if (!resultUrl) return;
     try {
       const blob = await getWatermarkedBlob() ?? (await (await fetch(`/api/ai/download?url=${encodeURIComponent(resultUrl)}`)).blob());
+      const file = new File([blob], 'shezhire-ancestor-young.jpg', { type: 'image/jpeg' });
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'Шежіре — AI фото' });
+        return;
+      }
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -174,8 +179,11 @@ export function AiAncestorModal({ open, onClose }: Props) {
       a.click();
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(url), 5000);
-    } catch {
-      showToast(t('error'));
+      if (/iPhone|iPad/i.test(navigator.userAgent)) {
+        showToast('Зажмите фото и выберите «Сохранить изображение»');
+      }
+    } catch (e) {
+      if ((e as DOMException)?.name !== 'AbortError') showToast(t('error'));
     }
   }, [resultUrl, getWatermarkedBlob, showToast, t]);
 
