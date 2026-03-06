@@ -181,6 +181,9 @@ button { cursor: pointer; font-family: inherit; }
   border-top: 1px solid var(--border);
   display: flex; justify-content: center;
 }
+.mobile-menu-auth .nav-auth {
+  display: flex;
+}
 
 /* Language switcher */
 .lang-switcher {

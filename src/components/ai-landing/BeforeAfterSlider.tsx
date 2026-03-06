@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface Props {
   before: string;
@@ -16,11 +17,11 @@ export function BeforeAfterSlider({ before, after, alt, locale }: Props) {
   return (
     <div className="ba-slider">
       {/* After (bottom layer) */}
-      <img className="ba-slider-after" src={after} alt={`${alt} — ${isKk ? 'кейін' : 'после'}`} loading="lazy" />
+      <Image className="ba-slider-after" src={after} alt={`${alt} — ${isKk ? 'кейін' : 'после'}`} width={540} height={540} sizes="(max-width: 768px) 100vw, 50vw" />
 
       {/* Before (top layer, clipped) */}
       <div className="ba-slider-before" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-        <img src={before} alt={`${alt} — ${isKk ? 'бұрын' : 'до'}`} loading="lazy" />
+        <Image src={before} alt={`${alt} — ${isKk ? 'бұрын' : 'до'}`} width={540} height={540} sizes="(max-width: 768px) 100vw, 50vw" />
       </div>
 
       {/* Divider line + handle */}

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import type { AiFeature } from '@/data/ai-features';
 import { BeforeAfterSlider } from './BeforeAfterSlider';
 
@@ -33,7 +34,7 @@ export function AiLandingFeatures({ feature, locale }: Props) {
               />
             ) : (
               <div className="ai-feature-image">
-                <img src={f.image} alt={text.h2} loading="lazy" />
+                <Image src={f.image} alt={text.h2} width={540} height={540} sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
             )}
           </div>
