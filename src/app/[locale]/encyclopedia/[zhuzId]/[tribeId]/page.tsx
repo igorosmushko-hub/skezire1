@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation';
 import { TRIBES_DB } from '@/data/tribes';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { TribeDetail } from '@/components/encyclopedia/TribeDetail';
-import { Pager } from '@/components/encyclopedia/Pager';
+import { AiPromoBanner } from '@/components/AiPromoBanner';
+import { AiInlineHint } from '@/components/AiInlineHint';
 import '@/styles/encyclopedia.css';
 
 interface PageProps {
@@ -180,6 +181,8 @@ export default async function TribePage({ params }: PageProps) {
             }}
           />
 
+          <AiInlineHint slug="ancestor" locale={locale} />
+
           {/* Siblings — other tribes in this zhuz */}
           {zhuz.tribes.length > 1 && (
             <section className="tribe-siblings">
@@ -201,6 +204,8 @@ export default async function TribePage({ params }: PageProps) {
           )}
         </div>
       </main>
+
+      <AiPromoBanner locale={locale} features={['ancestor', 'past']} variant="history" />
     </>
   );
 }

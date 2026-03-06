@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { TRIBES_DB } from '@/data/tribes';
 import { EncTabs } from '@/components/encyclopedia/EncTabs';
+import { AiPromoBanner } from '@/components/AiPromoBanner';
 import '@/styles/encyclopedia.css';
 
 export async function generateMetadata({
@@ -92,14 +93,7 @@ export default async function EncyclopediaPage({
         moreLabel={t('openZhuz')}
       />
 
-      {/* CTA */}
-      <section className="enc-cta">
-        <div className="enc-cta-content">
-          <h2>{isKk ? 'Зерттеуді бастаңыз' : 'Начните исследование'}</h2>
-          <p>{isKk ? 'Жүзді таңдап, руыңыздың тарихын біліңіз.' : 'Выберите жуз, чтобы узнать историю рода.'}</p>
-          <a href={`/${locale}/encyclopedia`} className="btn btn-primary">{isKk ? 'Энциклопедияны ашу' : 'Открыть энциклопедию'}</a>
-        </div>
-      </section>
+      <AiPromoBanner locale={locale} features={['past', 'ancestor']} variant="history" />
     </>
   );
 }

@@ -5,6 +5,7 @@ import { TRIBES_DB } from '@/data/tribes';
 import { ZhuzSection } from '@/components/encyclopedia/ZhuzSection';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { Pager } from '@/components/encyclopedia/Pager';
+import { AiPromoBanner } from '@/components/AiPromoBanner';
 import '@/styles/encyclopedia.css';
 
 interface PageProps {
@@ -123,13 +124,7 @@ export default async function ZhuzPage({ params }: PageProps) {
         }}
       />
 
-      <section className="enc-cta">
-        <div className="container">
-          <h3>{t('ctaTitle')}</h3>
-          <p>{t('ctaDesc')}</p>
-          <a href={`/${locale}#form-section`} className="btn btn-primary">{t('ctaBtn')}</a>
-        </div>
-      </section>
+      <AiPromoBanner locale={locale} features={['past', 'ancestor', 'action-figure']} variant="history" />
     </>
   );
 }

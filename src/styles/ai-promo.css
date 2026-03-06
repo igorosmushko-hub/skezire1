@@ -1,0 +1,193 @@
+/* ================================================================
+   AI PROMO — CTA components for content pages
+   ================================================================ */
+
+/* ── AiPromoBanner ────────────────────────────────────────────── */
+.ai-promo-banner {
+  background: var(--surface-dark);
+  padding: 56px 24px;
+  text-align: center;
+  border-radius: var(--r-xl);
+  max-width: 1200px;
+  margin: 48px auto;
+}
+
+.ai-promo-banner-title {
+  font-family: var(--ff-head);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.ai-promo-banner-sub {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  margin-bottom: 32px;
+}
+
+.ai-promo-banner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  max-width: 800px;
+  margin: 0 auto 32px;
+}
+
+.ai-promo-banner-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-lg);
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.ai-promo-banner-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(212, 168, 67, 0.3);
+  transform: translateY(-2px);
+}
+
+.ai-promo-banner-card-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.ai-promo-banner-card-name {
+  font-family: var(--ff-head);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ai-promo-banner-card-desc {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.4;
+}
+
+.ai-promo-banner-card-btn {
+  margin-top: auto;
+  padding: 6px 18px;
+  background: var(--gold-gradient);
+  color: var(--surface-dark);
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.ai-promo-banner-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.ai-promo-banner-secondary {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.ai-promo-banner-secondary:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.ai-promo-banner-all {
+  color: var(--gold);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.ai-promo-banner-all:hover {
+  opacity: 0.8;
+}
+
+/* ── AiInlineHint ─────────────────────────────────────────────── */
+.ai-inline-hint {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: rgba(212, 168, 67, 0.04);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  margin: 24px 0;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.ai-inline-hint:hover {
+  background: rgba(212, 168, 67, 0.08);
+}
+
+.ai-inline-hint-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.ai-inline-hint-text {
+  flex: 1;
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.ai-inline-hint-arrow {
+  flex-shrink: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gold-dark);
+  white-space: nowrap;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .ai-promo-banner {
+    padding: 40px 16px;
+    margin: 32px 16px;
+    border-radius: var(--r-lg);
+  }
+
+  .ai-promo-banner-title {
+    font-size: 1.25rem;
+  }
+
+  .ai-promo-banner-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .ai-promo-banner-card {
+    flex-direction: row;
+    text-align: left;
+    padding: 16px;
+  }
+
+  .ai-promo-banner-card-icon {
+    font-size: 1.6rem;
+  }
+
+  .ai-promo-banner-card-desc {
+    display: none;
+  }
+
+  .ai-inline-hint {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .ai-inline-hint-text {
+    font-size: 0.82rem;
+  }
+}

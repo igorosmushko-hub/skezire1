@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { BLOG_POSTS } from '@/data/blog';
+import { AiPromoBanner } from '@/components/AiPromoBanner';
 import '@/styles/blog.css';
 
 export async function generateMetadata({
@@ -112,6 +113,8 @@ export default async function BlogPage({
           </div>
         </div>
       </main>
+
+      <AiPromoBanner locale={locale} features={['past', 'ancestor', 'ghibli-style']} variant="blog" />
     </>
   );
 }

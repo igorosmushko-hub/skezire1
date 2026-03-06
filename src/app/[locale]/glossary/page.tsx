@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
+import { AiPromoBanner } from '@/components/AiPromoBanner';
+import { AiInlineHint } from '@/components/AiInlineHint';
 import '@/styles/glossary.css';
 
 interface Term {
@@ -130,25 +132,20 @@ export default async function GlossaryPage({
       <main className="gl-main">
         <div className="container">
           <div className="gl-grid">
-            {TERMS.map((term) => (
-              <div key={term.id} id={term.id} className="gl-term">
-                <h2 className="gl-term-name">{isKk ? term.kk : term.ru}</h2>
-                <p className="gl-term-def">{isKk ? term.defKk : term.defRu}</p>
+            {TERMS.map((term, i) => (
+              <div key={term.id}>
+                <div id={term.id} className="gl-term">
+                  <h2 className="gl-term-name">{isKk ? term.kk : term.ru}</h2>
+                  <p className="gl-term-def">{isKk ? term.defKk : term.defRu}</p>
+                </div>
+                {i === 7 && <AiInlineHint slug="past" locale={locale} />}
               </div>
             ))}
           </div>
         </div>
       </main>
 
-      <section className="enc-cta">
-        <div className="container">
-          <h3>{isKk ? 'Шежіреңізді жасаңыз' : 'Создайте своё шежіре'}</h3>
-          <p>{isKk ? 'Ата-тегіңіздің тарихын сақтаңыз' : 'Сохраните историю своего рода'}</p>
-          <a href={`/${locale}#form-section`} className="btn btn-primary">
-            {isKk ? 'Шежіре жасау' : 'Создать шежіре'}
-          </a>
-        </div>
-      </section>
+      <AiPromoBanner locale={locale} features={['past', 'ancestor', 'ghibli-style']} />
     </>
   );
 }

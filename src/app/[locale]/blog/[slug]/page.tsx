@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { BLOG_POSTS } from '@/data/blog';
+import { AiPromoBanner } from '@/components/AiPromoBanner';
+import { AiInlineHint } from '@/components/AiInlineHint';
 import '@/styles/blog.css';
 
 interface PageProps {
@@ -111,6 +113,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               <div key={i}>
                 {headings[i] && <h2 className="blog-h2">{headings[i]}</h2>}
                 <p className="blog-p">{paragraph}</p>
+                {i === 1 && <AiInlineHint slug="past" locale={locale} />}
               </div>
             ))}
           </article>
@@ -123,15 +126,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
       </main>
 
-      <section className="enc-cta">
-        <div className="container">
-          <h3>{isKk ? 'Шежіреңізді жасаңыз' : 'Создайте своё шежіре'}</h3>
-          <p>{isKk ? 'Ата-тегіңіздің тарихын сақтаңыз' : 'Сохраните историю своего рода'}</p>
-          <a href={`/${locale}#form-section`} className="btn btn-primary">
-            {isKk ? 'Шежіре жасау' : 'Создать шежіре'}
-          </a>
-        </div>
-      </section>
+      <AiPromoBanner locale={locale} features={['past', 'ancestor', 'ghibli-style']} variant="blog" />
     </>
   );
 }
