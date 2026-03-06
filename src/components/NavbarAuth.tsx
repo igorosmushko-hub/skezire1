@@ -7,7 +7,8 @@ import { LoginModal } from './LoginModal';
 
 function formatPhone(phone: string): string {
   if (phone.length < 6) return phone;
-  return phone.slice(0, 6) + '***' + phone.slice(-2);
+  // Show ••1234 format — compact, fits mobile
+  return '••' + phone.slice(-4);
 }
 
 export function NavbarAuth() {
