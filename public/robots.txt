@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /_next/
-Disallow: /agents/
-
-Sitemap: https://skezire.kz/sitemap.xml

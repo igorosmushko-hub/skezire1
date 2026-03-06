@@ -71,9 +71,26 @@ export default async function BlogPage({
     ],
   };
 
+  const itemListJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: isKk ? 'Қазақ тарихы мен шежіре — Блог' : 'Казахская история и генеалогия — Блог',
+    url: `${base}/${locale}/blog`,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: BLOG_POSTS.map((post, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: isKk ? post.titleKk : post.titleRu,
+        url: `${base}/${locale}/blog/${post.slug}`,
+      })),
+    },
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
 
       <section className="enc-hero">
         <div className="enc-hero-bg" />
@@ -84,7 +101,7 @@ export default async function BlogPage({
               { label: isKk ? 'Блог' : 'Блог' },
             ]}
           />
-          <h1 className="enc-hero-title">{isKk ? 'Блог' : 'Блог'}</h1>
+          <h1 className="enc-hero-title">{isKk ? 'Қазақ тарихы мен шежіре — Блог' : 'Казахская история и генеалогия — Блог'}</h1>
           <p className="enc-hero-sub">
             {isKk
               ? 'Қазақ тарихы, шежіре және мәдениет туралы мақалалар'

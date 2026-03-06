@@ -31,8 +31,18 @@ export async function generateMetadata({
     keywords: isKk
       ? 'шежіре, қазақ руы, жеті ата, жүз, ру, генеалогия, ата-тек, AI фото, жасанды интеллект, гибли стилі'
       : 'шежіре, шежире, казахское генеалогическое дерево, казахские роды, жузы, жеті ата, генеалогия казахов, AI фото, нейросеть, стиль гибли',
-    authors: [{ name: 'Шежіре' }],
-    robots: 'index, follow',
+    authors: [{ name: 'Шежіре', url: 'https://skezire.kz' }],
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+        'max-video-preview': -1,
+      },
+    },
     openGraph: {
       type: 'website',
       title: isKk ? 'Шежіре — Қазақша шежіре ағашы' : 'Шежіре — Казахское генеалогическое дерево',

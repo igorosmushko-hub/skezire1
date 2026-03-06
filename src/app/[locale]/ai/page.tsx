@@ -69,6 +69,21 @@ export default async function AiHubPage({
     ],
   };
 
+  const itemListJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: isKk ? 'AI фото трансформация құралдары' : 'AI инструменты фото трансформации',
+    itemListElement: AI_FEATURES.map((f, i) => {
+      const hero = isKk ? f.hero.kk : f.hero.ru;
+      return {
+        '@type': 'ListItem',
+        position: i + 1,
+        name: hero.h1,
+        url: `${base}/${locale}/ai/${f.slug}`,
+      };
+    }),
+  };
+
   const webAppJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
@@ -86,6 +101,7 @@ export default async function AiHubPage({
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }} />
 
       <section className="ai-landing-hero">
@@ -96,7 +112,7 @@ export default async function AiHubPage({
               { label: isKk ? 'AI Мүмкіндіктері' : 'AI Функции' },
             ]}
           />
-          <h1>{isKk ? 'AI Мүмкіндіктері' : 'AI Функции'}</h1>
+          <h1>{isKk ? 'AI фото трансформация — тегін онлайн' : 'AI фото трансформация — бесплатно онлайн'}</h1>
           <p className="ai-landing-hero-sub">
             {isKk
               ? 'Жасанды интеллект арқылы суретіңізді трансформациялаңыз — тегін, онлайн'

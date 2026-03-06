@@ -28,6 +28,9 @@ const inter = Inter({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html className={`${cormorant.variable} ${inter.variable}`}>
+      <head>
+        <link rel="alternate" type="application/rss+xml" title="Шежіре — Блог" href="/feed.xml" />
+      </head>
       <body>
         {children}
         <Script id="yandex-metrika" strategy="afterInteractive">{`

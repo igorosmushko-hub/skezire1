@@ -120,7 +120,7 @@ export default async function GlossaryPage({
               { label: isKk ? 'Глоссарий' : 'Глоссарий' },
             ]}
           />
-          <h1 className="enc-hero-title">{isKk ? 'Глоссарий' : 'Глоссарий'}</h1>
+          <h1 className="enc-hero-title">{isKk ? 'Қазақ шежіре терминдері — Глоссарий' : 'Термины казахской генеалогии — Глоссарий'}</h1>
           <p className="enc-hero-sub">
             {isKk
               ? 'Қазақ тарихы мен шежіренің негізгі терминдері'

@@ -71,12 +71,33 @@ export default async function EncyclopediaPage({
     ],
   };
 
+  // ItemList schema for hub page — helps Google display rich snippets
+  let position = 0;
+  const itemListJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: isKk ? 'Қазақ рулары энциклопедиясы' : 'Энциклопедия казахских родов',
+    url: `${base}/${locale}/encyclopedia`,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: TRIBES_DB.flatMap((zhuz) =>
+        zhuz.tribes.map((tribe) => ({
+          '@type': 'ListItem',
+          position: ++position,
+          name: isKk ? tribe.kk : tribe.ru,
+          url: `${base}/${locale}/encyclopedia/${zhuz.id}/${tribe.id}`,
+        })),
+      ),
+    },
+  };
+
   // Filter to main 3 zhuzes for tabs (exclude "other")
   const mainZhuzes = TRIBES_DB.filter((z) => z.id !== 'other');
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       {/* Hero */}
       <section className="enc-hero enc-hero--hub">
         <div className="enc-hero-content">

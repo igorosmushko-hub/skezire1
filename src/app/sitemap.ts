@@ -4,15 +4,24 @@ import { BLOG_POSTS } from '@/data/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://skezire.kz';
-  const lastMod = new Date();
   const locales = ['kk', 'ru'];
+
+  // Meaningful dates per section (updated when content actually changes)
+  const DATES = {
+    home: new Date('2026-03-06'),
+    ai: new Date('2026-03-06'),
+    encyclopedia: new Date('2026-03-01'),
+    glossary: new Date('2026-02-28'),
+    zhetiAta: new Date('2026-02-28'),
+    blog: new Date('2026-03-03'),
+  };
 
   const entries: MetadataRoute.Sitemap = [];
 
   // Root — redirects to /kk
   entries.push({
     url: `${baseUrl}/`,
-    lastModified: lastMod,
+    lastModified: DATES.home,
     changeFrequency: 'weekly',
     priority: 1.0,
   });
@@ -21,25 +30,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const locale of locales) {
     entries.push({
       url: `${baseUrl}/${locale}`,
-      lastModified: lastMod,
+      lastModified: DATES.home,
       changeFrequency: 'weekly',
       priority: 1.0,
     });
     entries.push({
       url: `${baseUrl}/${locale}/glossary`,
-      lastModified: lastMod,
+      lastModified: DATES.glossary,
       changeFrequency: 'monthly',
       priority: 0.8,
     });
     entries.push({
       url: `${baseUrl}/${locale}/zheti-ata`,
-      lastModified: lastMod,
+      lastModified: DATES.zhetiAta,
       changeFrequency: 'monthly',
       priority: 0.9,
     });
     entries.push({
       url: `${baseUrl}/${locale}/encyclopedia`,
-      lastModified: lastMod,
+      lastModified: DATES.encyclopedia,
       changeFrequency: 'monthly',
       priority: 0.9,
     });
@@ -51,7 +60,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const feature of aiFeatures) {
       entries.push({
         url: `${baseUrl}/${locale}/ai${feature}`,
-        lastModified: lastMod,
+        lastModified: DATES.ai,
         changeFrequency: 'weekly',
         priority: 0.9,
       });
@@ -60,9 +69,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Blog
   for (const locale of locales) {
+    // Blog hub uses the latest post date
+    const latestPostDate = BLOG_POSTS.reduce((latest, post) => {
+      const d = new Date(post.date);
+      return d > latest ? d : latest;
+    }, new Date('2026-01-01'));
+
     entries.push({
       url: `${baseUrl}/${locale}/blog`,
-      lastModified: lastMod,
+      lastModified: latestPostDate,
       changeFrequency: 'weekly',
       priority: 0.8,
     });
@@ -81,14 +96,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const zhuz of TRIBES_DB) {
       entries.push({
         url: `${baseUrl}/${locale}/encyclopedia/${zhuz.id}`,
-        lastModified: lastMod,
+        lastModified: DATES.encyclopedia,
         changeFrequency: 'monthly',
         priority: 0.9,
       });
       for (const tribe of zhuz.tribes) {
         entries.push({
           url: `${baseUrl}/${locale}/encyclopedia/${zhuz.id}/${tribe.id}`,
-          lastModified: lastMod,
+          lastModified: DATES.encyclopedia,
           changeFrequency: 'monthly',
           priority: 0.8,
         });
