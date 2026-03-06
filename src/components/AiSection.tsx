@@ -39,7 +39,6 @@ export function AiSection() {
       <section id="ai-section" className="ai-section">
         <div className="container">
           <div className="section-header">
-            <span className="section-overline">{t('overline') ?? 'AI'}</span>
             <h2>{t('h2')}</h2>
           </div>
           <p className="section-desc dim">{t('desc')}</p>

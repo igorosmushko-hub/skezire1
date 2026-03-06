@@ -361,10 +361,10 @@ button { cursor: pointer; font-family: inherit; }
   margin-bottom: 40px;
 }
 .ai-showcase-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  max-width: 960px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 720px;
   margin: 0 auto;
 }
 .ai-showcase-card {
@@ -373,11 +373,6 @@ button { cursor: pointer; font-family: inherit; }
   transition: transform .2s;
 }
 .ai-showcase-card:hover { transform: translateY(-3px); }
-.ai-showcase-card .ba-slider {
-  border-radius: var(--r-lg);
-  aspect-ratio: 3/4;
-  min-height: 0;
-}
 .ai-showcase-label {
   text-align: center;
   font-size: .9rem; font-weight: 600;
@@ -397,10 +392,70 @@ button { cursor: pointer; font-family: inherit; }
 @media (max-width: 768px) {
   .ai-showcase { padding: 48px 16px; }
   .ai-showcase-grid {
-    grid-template-columns: 1fr;
-    max-width: 320px;
     gap: 28px;
   }
+}
+
+/* ── Before/After Static Infographic ──────────────────────────── */
+.ba-static {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: var(--surface-secondary);
+  padding: 12px;
+  overflow: hidden;
+}
+.ba-static-side {
+  flex: 1;
+  position: relative;
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+.ba-static-side img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: var(--r-md);
+}
+.ba-static-tag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 3px 10px;
+  background: rgba(0, 0, 0, .55);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-family: var(--ff-head);
+  font-size: .65rem;
+  font-weight: 600;
+  border-radius: var(--r-pill);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.ba-static-tag--after {
+  background: rgba(26, 115, 82, .75);
+}
+.ba-static-arrow {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent, #c8a456);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+}
+
+@media (max-width: 768px) {
+  .ba-static { gap: 8px; padding: 8px; }
+  .ba-static-arrow { width: 32px; height: 32px; }
+  .ba-static-arrow svg { width: 20px; height: 20px; }
 }
 
 /* ── Before/After Slider (used on homepage + AI pages) ────────── */
@@ -1149,17 +1204,17 @@ button { cursor: pointer; font-family: inherit; }
 }
 
 .ai-card {
-  background: var(--glass-dark);
+  background: rgba(30, 45, 70, .85);
   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: var(--r-lg); padding: 32px;
   position: relative; overflow: hidden;
   transition: transform .2s, border-color .2s, box-shadow .2s;
 }
-.ai-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,.15); box-shadow: var(--shadow-xl); }
+.ai-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,.22); box-shadow: var(--shadow-xl); }
 .ai-card.featured {
-  border-color: rgba(212,168,67,.25);
-  background: rgba(212,168,67,.05);
+  border-color: rgba(212,168,67,.35);
+  background: rgba(50, 55, 45, .85);
 }
 
 .ai-glow {
@@ -1191,12 +1246,12 @@ button { cursor: pointer; font-family: inherit; }
 }
 .ai-icon  { font-size: 2.4rem; margin-bottom: 16px; }
 .ai-card-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.ai-card-micro { font-size: .75rem; color: rgba(255,255,255,.35); }
+.ai-card-micro { font-size: .75rem; color: rgba(255,255,255,.5); }
 .ai-card h3 {
   font-family: var(--ff-head); font-size: 1.15rem; font-weight: 700; color: #fff;
   margin-bottom: 10px; line-height: 1.35;
 }
-.ai-card p { color: rgba(255,255,255,.55); font-size: .9rem; line-height: 1.65; margin-bottom: 16px; }
+.ai-card p { color: rgba(255,255,255,.7); font-size: .9rem; line-height: 1.65; margin-bottom: 16px; }
 
 .ai-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
 .ai-card-details {
