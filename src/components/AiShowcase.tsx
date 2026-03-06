@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations, useLocale } from 'next-intl';
+import { BeforeAfterStatic } from './ai-landing/BeforeAfterStatic';
 import { BeforeAfterSlider } from './ai-landing/BeforeAfterSlider';
 import Link from 'next/link';
 
@@ -23,12 +24,24 @@ export function AiShowcase() {
         <div className="ai-showcase-grid">
           {DEMOS.map((d) => (
             <Link key={d.slug} href={`/${locale}/ai/${d.slug}`} className="ai-showcase-card">
-              <BeforeAfterSlider
-                before={d.before}
-                after={d.after}
-                alt={t(d.keyH3)}
-                locale={locale}
-              />
+              {/* Desktop: static infographic */}
+              <div className="ai-showcase-desktop">
+                <BeforeAfterStatic
+                  before={d.before}
+                  after={d.after}
+                  alt={t(d.keyH3)}
+                  locale={locale}
+                />
+              </div>
+              {/* Mobile: interactive slider */}
+              <div className="ai-showcase-mobile">
+                <BeforeAfterSlider
+                  before={d.before}
+                  after={d.after}
+                  alt={t(d.keyH3)}
+                  locale={locale}
+                />
+              </div>
               <span className="ai-showcase-label">{t(d.keyH3)}</span>
             </Link>
           ))}

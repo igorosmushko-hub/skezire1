@@ -364,7 +364,7 @@ button { cursor: pointer; font-family: inherit; }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  max-width: 900px;
+  max-width: 1140px;
   margin: 0 auto;
 }
 .ai-showcase-card {
