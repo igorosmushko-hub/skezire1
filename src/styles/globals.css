@@ -403,6 +403,89 @@ button { cursor: pointer; font-family: inherit; }
   }
 }
 
+/* ── Before/After Slider (used on homepage + AI pages) ────────── */
+.ba-slider {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  background: var(--surface-secondary);
+  min-height: 280px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+}
+.ba-slider-after {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ba-slider-before {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.ba-slider-before img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ba-slider-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #fff;
+  transform: translateX(-50%);
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(0, 0, 0, .3);
+}
+.ba-slider-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+  color: var(--text);
+}
+.ba-slider-label {
+  position: absolute;
+  top: 10px;
+  padding: 4px 10px;
+  background: rgba(0, 0, 0, .5);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-family: var(--ff-head);
+  font-size: .7rem;
+  font-weight: 600;
+  border-radius: var(--r-pill);
+  pointer-events: none;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+.ba-slider-label--before { left: 10px; }
+.ba-slider-label--after { right: 10px; }
+.ba-slider-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: col-resize;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 /* ================================================================
    ABOUT
    ================================================================ */
