@@ -98,17 +98,23 @@ export async function POST(req: NextRequest) {
   const genderWord = gender === 'female' ? 'woman' : 'man';
 
   let prompt: string;
+  let promptStrength = 0.35; // Default: preserve face well
 
   if (type === 'ancestor') {
-    prompt = `Transform this person's photo into a portrait of a young Kazakh ${genderWord} ancestor, age 20-25, with dark thick hair and bright eyes, wearing traditional Kazakh embroidered chapan costume. Place them against a steppe landscape background with natural warm sunlight. Keep facial features recognizable. Highly detailed portrait photograph, masterpiece quality.`;
+    prompt = `Portrait of this exact person as a young Kazakh ${genderWord} ancestor, age 20-25, with dark thick hair and bright eyes, wearing traditional Kazakh embroidered chapan costume. Steppe landscape background with natural warm sunlight. Keep the same face and facial features. Highly detailed portrait photograph, masterpiece quality.`;
+    promptStrength = 0.4;
   } else if (type === 'action-figure') {
     prompt = `Turn this person into a highly detailed collectible action figure inside a sealed blister packaging box. The figure wears traditional Kazakh national costume: shapan and tymak hat. Include miniature accessories: dombyra, sword, and eagle. Product photography on white background with dramatic studio lighting. Toy packaging design, masterpiece quality.`;
+    promptStrength = 0.55;
   } else if (type === 'pet-humanize') {
     prompt = `Create a realistic portrait of a human version of this animal. Anthropomorphize it as a Kazakh ${genderWord} wearing traditional embroidered chapan. The human face should be inspired by the animal's features and expression. Professional studio portrait with warm lighting, highly detailed, masterpiece quality.`;
+    promptStrength = 0.6;
   } else if (type === 'ghibli') {
-    prompt = `Transform this photo into a Studio Ghibli anime style illustration. Soft watercolor painting technique with gentle pastel colors. Place the character in a Kazakh steppe landscape background with yurts and wild horses. Warm dreamy golden hour lighting, Hayao Miyazaki art style, whimsical hand-drawn animation feel, masterpiece quality.`;
+    prompt = `This exact person in Studio Ghibli anime style illustration. Soft watercolor painting technique with gentle pastel colors. Kazakh steppe landscape background with yurts and wild horses. Warm dreamy golden hour lighting, Hayao Miyazaki art style, whimsical hand-drawn animation feel, masterpiece quality.`;
+    promptStrength = 0.45;
   } else {
-    prompt = `Transform this person's photo into a vintage 1920s portrait photograph of a Kazakh ${genderWord}. They should wear a traditional shapan coat and tymak fur hat. Great steppe of Kazakhstan background. Apply sepia tones, aged daguerreotype film grain, warm golden lighting. Historical photograph aesthetic, masterpiece quality.`;
+    prompt = `Vintage 1920s sepia portrait photograph of this exact person as a Kazakh ${genderWord} wearing traditional shapan coat and tymak fur hat. Keep the same face and facial features. Aged daguerreotype film grain, warm golden lighting, historical studio backdrop. Masterpiece quality.`;
+    promptStrength = 0.35;
   }
 
   try {
@@ -123,10 +129,8 @@ export async function POST(req: NextRequest) {
         input: {
           prompt,
           image_input: [imageUrl],
+          prompt_strength: promptStrength,
           aspect_ratio: '3:4',
-          resolution: '2K',
-          output_format: 'jpg',
-          google_search: false,
         },
       }),
     });
