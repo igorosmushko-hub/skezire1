@@ -348,51 +348,64 @@ button { cursor: pointer; font-family: inherit; }
    AI SHOWCASE (compact before/after preview below hero)
    ================================================================ */
 .ai-showcase {
-  padding: 80px 0;
+  padding: 48px 0;
   background: var(--surface);
   position: relative;
 }
 .ai-showcase-title {
   text-align: center;
   font-family: var(--ff-head);
-  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
 .ai-showcase-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  max-width: 720px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 900px;
   margin: 0 auto;
 }
 .ai-showcase-card {
   text-decoration: none;
-  display: flex; flex-direction: column; gap: 12px;
+  display: flex; flex-direction: column; gap: 8px;
   transition: transform .2s;
 }
 .ai-showcase-card:hover { transform: translateY(-3px); }
+.ai-showcase-desktop { display: block; }
+.ai-showcase-mobile { display: none; }
+@media (max-width: 768px) {
+  .ai-showcase-desktop { display: none; }
+  .ai-showcase-mobile { display: block; }
+}
+.ai-showcase-mobile .ba-slider {
+  border-radius: var(--r-lg);
+  aspect-ratio: 3/4;
+  min-height: 0;
+}
 .ai-showcase-label {
   text-align: center;
-  font-size: .9rem; font-weight: 600;
+  font-size: .78rem; font-weight: 600;
   color: var(--text-secondary);
 }
 .ai-showcase-cta {
   text-align: center;
-  margin-top: 36px;
+  margin-top: 24px;
 }
 .ai-showcase-micro {
-  margin-top: 12px;
-  font-size: .82rem;
+  margin-top: 8px;
+  font-size: .8rem;
   color: var(--text-tertiary);
   letter-spacing: .04em;
 }
 
 @media (max-width: 768px) {
-  .ai-showcase { padding: 48px 16px; }
+  .ai-showcase { padding: 32px 16px; }
   .ai-showcase-grid {
-    gap: 28px;
+    grid-template-columns: 1fr;
+    max-width: 340px;
+    gap: 16px;
   }
 }
 
@@ -400,17 +413,17 @@ button { cursor: pointer; font-family: inherit; }
 .ba-static {
   display: flex;
   align-items: center;
-  gap: 12px;
-  border-radius: var(--r-lg);
+  gap: 6px;
+  border-radius: var(--r-md);
   border: 1px solid var(--border);
   background: var(--surface-secondary);
-  padding: 12px;
+  padding: 6px;
   overflow: hidden;
 }
 .ba-static-side {
   flex: 1;
   position: relative;
-  border-radius: var(--r-md);
+  border-radius: 6px;
   overflow: hidden;
 }
 .ba-static-side img {
@@ -419,43 +432,43 @@ button { cursor: pointer; font-family: inherit; }
   height: auto;
   aspect-ratio: 3/4;
   object-fit: cover;
-  border-radius: var(--r-md);
+  border-radius: 6px;
 }
 .ba-static-tag {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  padding: 3px 10px;
+  top: 4px;
+  left: 4px;
+  padding: 2px 7px;
   background: rgba(0, 0, 0, .55);
   backdrop-filter: blur(6px);
   color: #fff;
   font-family: var(--ff-head);
-  font-size: .65rem;
+  font-size: .55rem;
   font-weight: 600;
   border-radius: var(--r-pill);
   text-transform: uppercase;
-  letter-spacing: .04em;
+  letter-spacing: .03em;
 }
 .ba-static-tag--after {
   background: rgba(26, 115, 82, .75);
 }
 .ba-static-arrow {
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   background: var(--accent, #c8a456);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
 }
+.ba-static-arrow svg { width: 18px; height: 18px; }
 
 @media (max-width: 768px) {
-  .ba-static { gap: 8px; padding: 8px; }
-  .ba-static-arrow { width: 32px; height: 32px; }
-  .ba-static-arrow svg { width: 20px; height: 20px; }
+  .ba-static { gap: 6px; padding: 6px; }
+  .ba-static-arrow { width: 24px; height: 24px; }
+  .ba-static-arrow svg { width: 14px; height: 14px; }
 }
 
 /* ── Before/After Slider (used on homepage + AI pages) ────────── */
@@ -1187,7 +1200,7 @@ button { cursor: pointer; font-family: inherit; }
    AI SECTION
    ================================================================ */
 .ai-section {
-  padding: 160px 0;
+  padding: 80px 0 100px;
   background: linear-gradient(145deg, var(--surface-dark) 0%, var(--surface-dark-mid) 50%, var(--blue-mid) 100%);
   position: relative; overflow: hidden;
 }
@@ -1196,6 +1209,12 @@ button { cursor: pointer; font-family: inherit; }
   background:
     radial-gradient(ellipse 50% 40% at 30% 20%, rgba(59,110,230,.08), transparent),
     radial-gradient(ellipse 40% 50% at 70% 80%, rgba(212,168,67,.06), transparent);
+}
+.ai-section .section-header h2 {
+  color: #fff;
+}
+.ai-section .section-desc {
+  color: rgba(255,255,255,.6);
 }
 
 .ai-grid {
