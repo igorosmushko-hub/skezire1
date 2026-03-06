@@ -118,7 +118,7 @@ function drawHeader(
   locale: string,
 ): number {
   const cx = W / 2;
-  let y = 120; // Start below template top cartouche
+  let y = 180; // Start below ornamental top border
 
   // "Шежіре" — large title with strong glow
   ctx.save();
@@ -535,7 +535,18 @@ export async function generateShareImage(
   const hasPhoto = !!aiPhotoUrl;
   const ctx = canvas.getContext('2d')!;
   const W = 1080;
-  const H = hasPhoto ? 1620 : 1350;
+
+  // Calculate height dynamically based on content
+  const topMargin = 180;
+  const headerHeight = 200; // title + subtitle + dividers + zhuz
+  const portraitHeight = hasPhoto ? 400 : 0; // oval + name + year + divider
+  const nodeH = 86;
+  const nodeGap = 22;
+  const nodeCount = data.ancestors.length + 1; // ancestors + user
+  const treeHeight = nodeCount * (nodeH + nodeGap) - nodeGap;
+  const bottomContent = 200; // info + footer + bottom margin
+  const H = topMargin + headerHeight + portraitHeight + treeHeight + bottomContent;
+
   canvas.width = W;
   canvas.height = H;
 
