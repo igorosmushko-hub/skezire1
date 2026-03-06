@@ -8,7 +8,6 @@ export function Navbar({ locale }: { locale: string }) {
   const t = useTranslations('nav');
 
   const links = [
-    { href: '/#about' as const, label: t('about') },
     { href: '/#form-section' as const, label: t('create') },
     { href: '/ai' as const, label: t('ai'), className: 'nav-ai-link' },
     { href: '/zheti-ata' as const, label: t('zhetiAta') },
