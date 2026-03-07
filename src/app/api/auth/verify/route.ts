@@ -33,26 +33,14 @@ export async function POST(req: NextRequest) {
     if (!supabase) {
       return NextResponse.json({ error: 'db_not_configured' }, { status: 503 });
     }
-    const { data: existing } = await supabase
+    const { data: user, error: dbError } = await supabase
       .from('users')
+      .upsert({ phone }, { onConflict: 'phone' })
       .select('id, phone, usage_count, paid_generations')
-      .eq('phone', phone)
       .single();
-
-    let user;
-    if (existing) {
-      user = existing;
-    } else {
-      const { data: created, error } = await supabase
-        .from('users')
-        .insert({ phone })
-        .select('id, phone, usage_count, paid_generations')
-        .single();
-      if (error) {
-        console.error('Supabase insert error:', error);
-        return NextResponse.json({ error: 'db_error' }, { status: 500 });
-      }
-      user = created;
+    if (dbError || !user) {
+      console.error('Supabase upsert error:', dbError);
+      return NextResponse.json({ error: 'db_error' }, { status: 500 });
     }
 
     // 3. Sign JWT session token
