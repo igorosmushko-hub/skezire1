@@ -327,7 +327,7 @@ export function AiAncestorModal({ open, onClose }: Props) {
               </button>
               <a
                 className="btn btn-ai-outline ai-order-btn"
-                href={`/order/canvas?image=${encodeURIComponent(resultUrl)}&type=ancestor`}
+                href={`/${locale}/order/canvas?image=${encodeURIComponent(resultUrl)}&type=ancestor`}
               >
                 🖼 {locale === 'kk' ? 'Картина тапсырыс беру' : 'Заказать картину'}
               </a>

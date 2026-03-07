@@ -325,7 +325,7 @@ export function AiActionFigureModal({ open, onClose }: Props) {
               </button>
               <a
                 className="btn btn-ai-outline ai-order-btn"
-                href={`/order/canvas?image=${encodeURIComponent(resultUrl)}&type=action-figure`}
+                href={`/${locale}/order/canvas?image=${encodeURIComponent(resultUrl)}&type=action-figure`}
               >
                 🖼 {locale === 'kk' ? 'Картина тапсырыс беру' : 'Заказать картину'}
               </a>

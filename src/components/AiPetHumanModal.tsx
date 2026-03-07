@@ -325,7 +325,7 @@ export function AiPetHumanModal({ open, onClose }: Props) {
               </button>
               <a
                 className="btn btn-ai-outline ai-order-btn"
-                href={`/order/canvas?image=${encodeURIComponent(resultUrl)}&type=pet-humanize`}
+                href={`/${locale}/order/canvas?image=${encodeURIComponent(resultUrl)}&type=pet-humanize`}
               >
                 🖼 {locale === 'kk' ? 'Картина тапсырыс беру' : 'Заказать картину'}
               </a>

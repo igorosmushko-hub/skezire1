@@ -338,7 +338,7 @@ export function AiPastModal({ open, onClose }: Props) {
               </button>
               <a
                 className="btn btn-ai-outline ai-order-btn"
-                href={`/order/canvas?image=${encodeURIComponent(resultUrl)}&type=past`}
+                href={`/${locale}/order/canvas?image=${encodeURIComponent(resultUrl)}&type=past`}
               >
                 🖼 {locale === 'kk' ? 'Картина тапсырыс беру' : 'Заказать картину'}
               </a>
