@@ -1539,6 +1539,130 @@ button { cursor: pointer; font-family: inherit; }
   .ai-past-actions { grid-template-columns: 1fr; }
 }
 
+/* ── Family Portrait Modal ── */
+.ai-portrait-modal { max-width: 620px; }
+
+.ai-portrait-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  margin: 20px 0 12px;
+}
+
+.ai-portrait-thumb {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.1);
+}
+
+.ai-portrait-thumb img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+.ai-portrait-thumb-loading {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.5);
+  display: flex; align-items: center; justify-content: center;
+}
+.ai-portrait-thumb-loading::after {
+  content: ''; width: 24px; height: 24px;
+  border: 2px solid rgba(255,255,255,.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+.ai-portrait-remove {
+  position: absolute; top: 4px; right: 4px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.6);
+  border: none; color: #fff;
+  font-size: .7rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.ai-portrait-remove:hover { background: rgba(239,68,68,.8); }
+
+.ai-portrait-add {
+  aspect-ratio: 1;
+  border: 2px dashed rgba(212,168,67,.3);
+  border-radius: var(--r-md);
+  background: rgba(212,168,67,.04);
+  cursor: pointer;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px;
+  transition: border-color .2s, background .2s;
+  color: rgba(255,255,255,.5);
+}
+.ai-portrait-add:hover {
+  border-color: var(--gold);
+  background: rgba(212,168,67,.08);
+}
+.ai-portrait-add span:first-child { font-size: 1.5rem; }
+.ai-portrait-add-text { font-size: .7rem; }
+
+.ai-portrait-hint {
+  color: rgba(255,255,255,.5); font-size: .85rem; margin: 4px 0;
+}
+.ai-portrait-warn { color: #fbbf24; }
+.ai-portrait-formats {
+  color: rgba(255,255,255,.3); font-size: .75rem; margin-bottom: 16px;
+}
+
+/* Background selection */
+.ai-portrait-bg-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 16px 0 20px;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.ai-portrait-bg-card {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px;
+  border: 2px solid rgba(255,255,255,.08);
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,.03);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  color: rgba(255,255,255,.7);
+  text-align: left;
+}
+.ai-portrait-bg-card:hover {
+  border-color: rgba(212,168,67,.4);
+  background: rgba(212,168,67,.04);
+}
+.ai-portrait-bg-card.active {
+  border-color: var(--gold);
+  background: rgba(212,168,67,.08);
+  color: var(--gold);
+}
+.ai-portrait-bg-icon { font-size: 1.3rem; flex-shrink: 0; }
+.ai-portrait-bg-name { font-size: .85rem; font-weight: 600; }
+
+/* Result image (wide 16:9) */
+.ai-portrait-result {
+  width: 100%;
+  max-height: 340px;
+  object-fit: contain;
+  border-radius: var(--r-md);
+  border: 2px solid var(--gold);
+  box-shadow: 0 4px 24px rgba(212,168,67,.2);
+  margin: 16px 0;
+}
+
+@media (max-width: 600px) {
+  .ai-portrait-modal { max-width: 100%; }
+  .ai-portrait-grid { grid-template-columns: repeat(3, 1fr); }
+  .ai-portrait-bg-grid { grid-template-columns: 1fr; max-height: 260px; }
+}
+
 /* ================================================================
    TOAST
    ================================================================ */

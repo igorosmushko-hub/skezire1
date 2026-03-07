@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSessionUser } from '@/lib/auth';
 import { getSupabase } from '@/lib/supabase';
+import { getBackgroundByKey } from '@/data/portrait-backgrounds';
 
 const KIE_API_BASE = 'https://api.kie.ai/api/v1/jobs';
 const STORAGE_BUCKET = 'ai-uploads';
@@ -71,15 +72,82 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: { imageBase64?: string; gender?: string; type?: string };
+  let body: { imageBase64?: string; images?: string[]; gender?: string; type?: string; background?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: 'invalid_json' }, { status: 400 });
   }
 
-  const { imageBase64, gender, type } = body;
+  const { imageBase64, images, gender, type, background } = body;
 
+  // Family portrait: multiple images + background
+  if (type === 'family-portrait') {
+    if (!Array.isArray(images) || images.length < 2) {
+      return NextResponse.json({ error: 'min_2_photos' }, { status: 400 });
+    }
+    if (images.length > 10) {
+      return NextResponse.json({ error: 'max_10_photos' }, { status: 400 });
+    }
+    const totalSize = images.reduce((sum, img) => sum + img.length, 0);
+    if (totalSize > 15_000_000) {
+      return NextResponse.json({ error: 'file_too_large' }, { status: 400 });
+    }
+
+    const bg = getBackgroundByKey(background ?? 'yurt');
+    if (!bg) {
+      return NextResponse.json({ error: 'invalid_background' }, { status: 400 });
+    }
+
+    let imageUrls: string[];
+    try {
+      imageUrls = await Promise.all(images.map(uploadToStorage));
+    } catch (err) {
+      console.error('Multi-image upload error:', err);
+      return NextResponse.json({ error: 'upload_error' }, { status: 500 });
+    }
+
+    const prompt = bg.prompt.replace('{count}', String(images.length));
+    const promptStrength = 0.42;
+
+    try {
+      const res = await fetch(`${KIE_API_BASE}/createTask`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'nano-banana-2',
+          input: {
+            prompt,
+            image_input: imageUrls,
+            prompt_strength: promptStrength,
+            aspect_ratio: '16:9',
+          },
+        }),
+      });
+
+      const data = await res.json();
+      if (data.code !== 200 || !data.data?.taskId) {
+        console.error('Kie AI create error:', data);
+        return NextResponse.json({ error: 'api_error' }, { status: 502 });
+      }
+
+      await supabase
+        .from('users')
+        .update({ usage_count: usageCount + 1 })
+        .eq('id', sessionUser.userId);
+
+      const remaining = totalAvailable - usageCount - 1;
+      return NextResponse.json({ id: data.data.taskId, status: 'starting', remaining });
+    } catch (err) {
+      console.error('Kie AI create error:', err);
+      return NextResponse.json({ error: 'api_error' }, { status: 502 });
+    }
+  }
+
+  // Single-image features
   if (!imageBase64 || typeof imageBase64 !== 'string') {
     return NextResponse.json({ error: 'invalid_input' }, { status: 400 });
   }
@@ -88,7 +156,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'file_too_large' }, { status: 400 });
   }
 
-  // Upload image to Supabase Storage to get a public URL for Kie AI
   let imageUrl: string;
   try {
     imageUrl = await uploadToStorage(imageBase64);
@@ -100,7 +167,7 @@ export async function POST(req: NextRequest) {
   const genderWord = gender === 'female' ? 'woman' : 'man';
 
   let prompt: string;
-  let promptStrength = 0.35; // Default: preserve face well
+  let promptStrength = 0.35;
 
   if (type === 'ancestor') {
     prompt = `Portrait of this exact person as a young Kazakh ${genderWord} ancestor, age 20-25, with dark thick hair and bright eyes, wearing traditional Kazakh embroidered chapan costume. Steppe landscape background with natural warm sunlight. Keep the same face and facial features. Highly detailed portrait photograph, masterpiece quality.`;
