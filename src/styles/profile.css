@@ -1,13 +1,13 @@
 /* ── Profile / Personal cabinet ── */
 
 .profile-page {
-  padding: 2rem 0 4rem;
+  padding: 5rem 0 4rem;
   min-height: 60vh;
 }
 
 .profile-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .profile-header h1 {
@@ -236,5 +236,10 @@
   .profile-tabs {
     margin-left: 1rem;
     margin-right: 1rem;
+  }
+
+  .profile-tab {
+    font-size: .8rem;
+    padding: 10px 10px;
   }
 }
