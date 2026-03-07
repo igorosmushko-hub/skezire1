@@ -50,8 +50,6 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
   const [showLogin, setShowLogin] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const activeSlotRef = useRef<string>('');
   const abortRef = useRef(false);
 
   const t = (key: string) => {
@@ -113,16 +111,9 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
     }
   }, []);
 
-  const triggerUpload = useCallback((slotKey: string) => {
-    activeSlotRef.current = slotKey;
-    fileInputRef.current?.click();
-  }, []);
-
-  const onFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const onFileChange = useCallback((slotKey: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && activeSlotRef.current) {
-      handleFileForSlot(activeSlotRef.current, file);
-    }
+    if (file) handleFileForSlot(slotKey, file);
     e.target.value = '';
   }, [handleFileForSlot]);
 
@@ -307,7 +298,6 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
     <>
       {showLogin && <LoginModal open={true} onClose={() => setShowLogin(false)} />}
       <PricingModal open={showPricing} onClose={() => setShowPricing(false)} />
-      <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={onFileInput} />
 
       <main className="fp-page">
         <div className="container">
@@ -322,75 +312,83 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
             <div className="fp-roles-grid">
               {slots.map((slot) => {
                 const role = ROLES.find((r) => r.key === slot.roleKey)!;
+                const inputId = `fp-input-${slot.roleKey}`;
                 return (
                   <div key={slot.roleKey} className="fp-role-card">
-                    <div
+                    <input
+                      id={inputId}
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      hidden
+                      onChange={(e) => onFileChange(slot.roleKey, e)}
+                    />
+                    <label
+                      htmlFor={inputId}
                       className={`fp-role-photo${slot.previewUrl ? ' has-photo' : ''}`}
-                      onClick={() => triggerUpload(slot.roleKey)}
                     >
                       {slot.previewUrl ? (
                         <>
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={slot.previewUrl} alt="" />
                           {slot.processing && <div className="fp-role-loading" />}
-                          <button
-                            className="fp-role-remove"
-                            onClick={(e) => { e.stopPropagation(); removeSlot(slot.roleKey); }}
-                          >&#x2715;</button>
                         </>
                       ) : (
                         <span className="fp-role-icon">{role.icon}</span>
                       )}
-                    </div>
-                    <span className="fp-role-label">{isKk ? role.kk : role.ru}</span>
-                    {!slot.previewUrl && (
-                      <button className="fp-role-upload-btn" onClick={() => triggerUpload(slot.roleKey)}>
-                        {t('uploadHint')}
-                      </button>
-                    )}
+                    </label>
                     {slot.previewUrl && (
-                      <button className="fp-role-upload-btn" onClick={() => triggerUpload(slot.roleKey)}>
-                        {t('change')}
-                      </button>
+                      <button
+                        className="fp-role-remove"
+                        onClick={() => removeSlot(slot.roleKey)}
+                      >&#x2715;</button>
                     )}
+                    <span className="fp-role-label">{isKk ? role.kk : role.ru}</span>
+                    <label htmlFor={inputId} className="fp-role-upload-btn">
+                      {slot.previewUrl ? t('change') : t('uploadHint')}
+                    </label>
                   </div>
                 );
               })}
 
               {/* Extra slots */}
-              {extraSlots.map((slot, i) => (
-                <div key={slot.roleKey} className="fp-role-card">
-                  <div
-                    className={`fp-role-photo${slot.previewUrl ? ' has-photo' : ''}`}
-                    onClick={() => triggerUpload(slot.roleKey)}
-                  >
-                    {slot.previewUrl ? (
-                      <>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={slot.previewUrl} alt="" />
-                        {slot.processing && <div className="fp-role-loading" />}
-                        <button
-                          className="fp-role-remove"
-                          onClick={(e) => { e.stopPropagation(); removeSlot(slot.roleKey); }}
-                        >&#x2715;</button>
-                      </>
-                    ) : (
-                      <span className="fp-role-icon">{'\uD83D\uDC64'}</span>
+              {extraSlots.map((slot, i) => {
+                const inputId = `fp-input-${slot.roleKey}`;
+                return (
+                  <div key={slot.roleKey} className="fp-role-card">
+                    <input
+                      id={inputId}
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      hidden
+                      onChange={(e) => onFileChange(slot.roleKey, e)}
+                    />
+                    <label
+                      htmlFor={inputId}
+                      className={`fp-role-photo${slot.previewUrl ? ' has-photo' : ''}`}
+                    >
+                      {slot.previewUrl ? (
+                        <>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={slot.previewUrl} alt="" />
+                          {slot.processing && <div className="fp-role-loading" />}
+                        </>
+                      ) : (
+                        <span className="fp-role-icon">{'\uD83D\uDC64'}</span>
+                      )}
+                    </label>
+                    {slot.previewUrl && (
+                      <button
+                        className="fp-role-remove"
+                        onClick={() => removeSlot(slot.roleKey)}
+                      >&#x2715;</button>
                     )}
+                    <span className="fp-role-label">{t('extraPerson')} {i + 1}</span>
+                    <label htmlFor={inputId} className="fp-role-upload-btn">
+                      {slot.previewUrl ? t('change') : t('uploadHint')}
+                    </label>
                   </div>
-                  <span className="fp-role-label">{t('extraPerson')} {i + 1}</span>
-                  {!slot.previewUrl && (
-                    <button className="fp-role-upload-btn" onClick={() => triggerUpload(slot.roleKey)}>
-                      {t('uploadHint')}
-                    </button>
-                  )}
-                  {slot.previewUrl && (
-                    <button className="fp-role-upload-btn" onClick={() => triggerUpload(slot.roleKey)}>
-                      {t('change')}
-                    </button>
-                  )}
-                </div>
-              ))}
+                );
+              })}
 
               {/* Add more button */}
               <div className="fp-role-card fp-add-card">
