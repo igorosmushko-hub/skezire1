@@ -177,6 +177,37 @@
   font-size: 1rem !important;
 }
 
+/* Promo block (no image) */
+.order-promo {
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, .06), rgba(168, 85, 247, .06));
+  border: 1px solid rgba(99, 102, 241, .15);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.order-promo h2 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.order-promo p {
+  color: var(--muted, #6b7280);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.order-promo-btn {
+  display: inline-flex !important;
+  text-decoration: none !important;
+}
+
 /* Order button in AI modals */
 .ai-order-btn {
   text-decoration: none !important;

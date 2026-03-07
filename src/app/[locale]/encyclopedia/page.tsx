@@ -114,6 +114,24 @@ export default async function EncyclopediaPage({
         moreLabel={t('openZhuz')}
       />
 
+      {/* Related sections */}
+      <section className="enc-related">
+        <div className="container">
+          <div className="enc-related-grid">
+            <a href={`/${locale}/glossary`} className="enc-related-card">
+              <span className="enc-related-icon">&#128214;</span>
+              <h3>{isKk ? 'Глоссарий' : 'Глоссарий'}</h3>
+              <p>{isKk ? 'Шежіре, жүз, ру, тамға, ұран — негізгі терминдер' : 'Шежіре, жуз, ру, тамга, уран — основные термины'}</p>
+            </a>
+            <a href={`/${locale}/blog`} className="enc-related-card">
+              <span className="enc-related-icon">&#128240;</span>
+              <h3>{isKk ? 'Блог' : 'Блог'}</h3>
+              <p>{isKk ? 'Қазақ тарихы мен мәдениеті туралы мақалалар' : 'Статьи о казахской истории и культуре'}</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <AiPromoBanner locale={locale} features={['past', 'ancestor']} variant="history" />
     </>
   );

@@ -11,9 +11,8 @@ export function Navbar({ locale }: { locale: string }) {
     { href: '/#form-section' as const, label: t('create') },
     { href: '/ai' as const, label: t('ai'), className: 'nav-ai-link' },
     { href: '/zheti-ata' as const, label: t('zhetiAta') },
-    { href: '/glossary' as const, label: t('glossary') },
     { href: '/encyclopedia' as const, label: t('enc') },
-    { href: '/blog' as const, label: t('blog') },
+    { href: '/order/canvas' as const, label: t('orderCanvas'), className: 'nav-order-link' },
   ];
 
   return (

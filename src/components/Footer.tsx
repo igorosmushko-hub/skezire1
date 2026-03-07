@@ -24,8 +24,8 @@ export function Footer() {
             <Link href={`/${locale}/zheti-ata`} className="footer-link">
               {locale === 'kk' ? 'Жеті ата' : 'Жеті ата'}
             </Link>
-            <Link href={`/${locale}/blog`} className="footer-link">
-              {locale === 'kk' ? 'Блог' : 'Блог'}
+            <Link href={`/${locale}/order/canvas`} className="footer-link">
+              {locale === 'kk' ? 'Картина тапсырыс беру' : 'Заказать картину'}
             </Link>
           </nav>
           <blockquote className="footer-quote">

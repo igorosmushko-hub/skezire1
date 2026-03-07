@@ -92,9 +92,7 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
     }
   }, [user, selectedProduct, recipientName, recipientPhone, city, address, postalCode, imageUrl, aiType, locale, t]);
 
-  if (!authLoading && !user) {
-    return <LoginModal open={true} onClose={() => setShowLogin(false)} />;
-  }
+  const hasImage = !!imageUrl;
 
   return (
     <>
@@ -106,6 +104,22 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
             <p>{t('subtitle')}</p>
           </div>
 
+          {!hasImage && (
+            <div className="order-promo">
+              <div className="order-promo-content">
+                <h2>{isKk ? 'AI фотоңызды картинаға айналдырыңыз' : 'Превратите AI-фото в картину'}</h2>
+                <p>
+                  {isKk
+                    ? 'Алдымен AI фото жасаңыз — 100 жыл бұрынғы бейне, бабаңызды жасарту, экшн-фигурка немесе Гибли стилі. Содан кейін холстқа немесе постерге басып алыңыз.'
+                    : 'Сначала создайте AI-фото — образ 100 лет назад, портрет предка, экшн-фигурка или стиль Гибли. Затем закажите печать на холсте или постере.'}
+                </p>
+                <a href={`/${locale}/ai`} className="btn btn-ai order-promo-btn">
+                  {isKk ? 'AI фото жасау' : 'Создать AI-фото'}
+                </a>
+              </div>
+            </div>
+          )}
+
           <div className="order-layout">
             {/* Preview */}
             <div className="order-preview">
@@ -114,7 +128,9 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img src={imageUrl} alt="AI result" className="order-preview-img" />
               ) : (
-                <div className="order-preview-placeholder">No image</div>
+                <div className="order-preview-placeholder">
+                  {isKk ? 'AI фото жасағаннан кейін мұнда көрінеді' : 'Здесь появится ваше AI-фото'}
+                </div>
               )}
             </div>
 

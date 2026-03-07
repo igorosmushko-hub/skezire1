@@ -683,3 +683,55 @@
   .tribe-tabs-content { padding: 12px 10px; }
   .enc-main { padding: 28px 0 36px; }
 }
+
+/* ── Related sections (glossary, blog links) ── */
+.enc-related {
+  padding: 2rem 0 3rem;
+}
+
+.enc-related-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.enc-related-card {
+  display: block;
+  padding: 1.5rem;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.enc-related-card:hover {
+  border-color: var(--gold, #c9a84c);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .06);
+}
+
+.enc-related-icon {
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.enc-related-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.enc-related-card p {
+  font-size: .85rem;
+  color: var(--muted, #6b7280);
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .enc-related-grid {
+    grid-template-columns: 1fr;
+  }
+}

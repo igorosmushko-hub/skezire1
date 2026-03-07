@@ -126,6 +126,15 @@ button { cursor: pointer; font-family: inherit; }
 }
 .nav-ai-link.nav-ai-link:hover { color: var(--gold-dark); }
 
+.nav-order-link.nav-order-link {
+  color: var(--gold); font-weight: 600; font-size: .85rem;
+  border: 1px solid var(--gold); border-radius: 6px; padding: 4px 10px;
+  transition: background .2s, color .2s;
+}
+.nav-order-link.nav-order-link:hover {
+  background: var(--gold); color: var(--blue);
+}
+
 .nav-burger {
   display: none; background: none; border: none; color: var(--text); font-size: 1.4rem;
   min-width: 44px; min-height: 44px;
@@ -175,6 +184,7 @@ button { cursor: pointer; font-family: inherit; }
 .mobile-menu-link:active { background: var(--surface-secondary); }
 .mobile-menu-link:last-of-type { border-bottom: none; }
 .mobile-menu-link.nav-ai-link { color: var(--gold); font-weight: 700; }
+.mobile-menu-link.nav-order-link { color: var(--gold); font-weight: 700; }
 .mobile-menu-auth {
   margin-top: auto;
   padding: 20px 28px calc(20px + env(safe-area-inset-bottom, 0px));
