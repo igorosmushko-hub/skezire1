@@ -884,7 +884,7 @@ button { cursor: pointer; font-family: inherit; }
   white-space: nowrap;
 }
 .anc-input {
-  width: 100%; padding: 12px 14px 12px 64px;
+  width: 100%; padding: 12px 14px 12px 84px;
   border: 2px solid rgba(0,48,130,.1); border-radius: var(--r-sm);
   font-size: 16px; font-family: var(--ff-body); background: #FAFAFA;
   color: var(--text); transition: border-color .2s, box-shadow .2s, background .2s;
