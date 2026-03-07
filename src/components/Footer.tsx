@@ -33,7 +33,34 @@ export function Footer() {
             <cite>{t('cite')}</cite>
           </blockquote>
         </div>
+
         <hr className="footer-divider" />
+
+        <div className="footer-legal">
+          <nav className="footer-legal-nav">
+            <Link href={`/${locale}/oferta`} className="footer-legal-link">
+              {locale === 'kk' ? 'Оферта' : 'Оферта'}
+            </Link>
+            <Link href={`/${locale}/privacy`} className="footer-legal-link">
+              {locale === 'kk' ? 'Құпиялылық' : 'Конфиденциальность'}
+            </Link>
+            <Link href={`/${locale}/delivery`} className="footer-legal-link">
+              {locale === 'kk' ? 'Жеткізу' : 'Доставка'}
+            </Link>
+            <Link href={`/${locale}/refund`} className="footer-legal-link">
+              {locale === 'kk' ? 'Қайтару' : 'Возврат'}
+            </Link>
+            <Link href={`/${locale}/contacts`} className="footer-legal-link">
+              {locale === 'kk' ? 'Байланыс' : 'Контакты'}
+            </Link>
+          </nav>
+          <p className="footer-requisites">
+            {locale === 'kk'
+              ? 'ЖК "ГЕНРИ МОРГАН" · ЖСН 870706300216 · Алматы қ.'
+              : 'ИП "ГЕНРИ МОРГАН" · ИИН 870706300216 · г. Алматы'}
+          </p>
+        </div>
+
         <p className="footer-copy">{t('copy')}</p>
       </div>
     </footer>

@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     glossary: new Date('2026-02-28'),
     zhetiAta: new Date('2026-02-28'),
     blog: new Date('2026-03-03'),
+    legal: new Date('2026-03-07'),
   };
 
   const entries: MetadataRoute.Sitemap = [];
@@ -52,6 +53,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.9,
     });
+  }
+
+  // Legal pages
+  const legalPages = ['oferta', 'privacy', 'delivery', 'refund', 'contacts'];
+  for (const locale of locales) {
+    for (const page of legalPages) {
+      entries.push({
+        url: `${baseUrl}/${locale}/${page}`,
+        lastModified: DATES.legal,
+        changeFrequency: 'yearly',
+        priority: 0.3,
+      });
+    }
   }
 
   // AI pages
