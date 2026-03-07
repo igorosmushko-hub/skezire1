@@ -30,11 +30,11 @@ export interface TribeInfo {
 const W = 1080;
 const H = 1620; // Matches tree-template-bg.webp exactly
 
-// Safe area inside ornamental border
-const SAFE_TOP = 110;
-const SAFE_BOTTOM = 100;
-const SAFE_X = 90;
-const SAFE_W = W - SAFE_X * 2; // ~900px
+// Safe area inside ornamental border (measured from template)
+const SAFE_TOP = 230;
+const SAFE_BOTTOM = 225;
+const SAFE_X = 170;
+const SAFE_W = W - SAFE_X * 2; // ~740px
 
 /* ── Unified dark navy + gold palette ──────────────────────────── */
 
@@ -83,22 +83,9 @@ function drawHeader(
   zhuzDisplay: string,
   ruName: string,
   locale: string,
-  hasTemplate: boolean,
   startY: number,
 ): number {
   const cx = W / 2;
-
-  // Cover coat of arms area with dark overlay
-  if (hasTemplate) {
-    ctx.save();
-    const coverGrad = ctx.createRadialGradient(cx, 75, 10, cx, 75, 180);
-    coverGrad.addColorStop(0, 'rgba(10,20,40,0.92)');
-    coverGrad.addColorStop(1, 'rgba(10,20,40,0)');
-    ctx.fillStyle = coverGrad;
-    ctx.fillRect(220, 0, W - 440, 160);
-    ctx.restore();
-  }
-
   let y = startY;
 
   // "Шежіре" title
@@ -436,7 +423,7 @@ function drawInfoSection(
 
 function drawFooter(ctx: CanvasRenderingContext2D): void {
   const cx = W / 2;
-  const footerY = H - SAFE_BOTTOM + 10;
+  const footerY = H - SAFE_BOTTOM - 30;
   drawDiamondDivider(ctx, cx, footerY - 16, SAFE_W - 80, GOLD);
   ctx.save();
   ctx.font = '400 13px Inter, sans-serif';
@@ -529,12 +516,12 @@ export async function generateShareImage(
 
   // --- 3. Calculate layout to fit safe area ---
   // Available space: from SAFE_TOP to H - SAFE_BOTTOM - footerSpace
-  const footerSpace = 60;
+  const footerSpace = 50;
   const totalAvailable = H - SAFE_TOP - SAFE_BOTTOM - footerSpace;
 
-  // Header takes ~160px, info section ~70px
-  const headerBudget = 160;
-  const infoBudget = uran ? 70 : 30;
+  // Header takes ~150px, info section ~65px
+  const headerBudget = 150;
+  const infoBudget = uran ? 65 : 25;
   const treeBudget = totalAvailable - headerBudget - infoBudget - (hasPhoto ? 0 : 0);
 
   // Calculate node sizes to fit
@@ -551,7 +538,7 @@ export async function generateShareImage(
   const nodeH = Math.max(40, Math.min(60, Math.round(rawNodeStep - gap)));
 
   // --- 4. Header ---
-  const headerEndY = drawHeader(ctx, zhuzDisplay, ruName, locale, !!templateBg, SAFE_TOP);
+  const headerEndY = drawHeader(ctx, zhuzDisplay, ruName, locale, SAFE_TOP);
 
   // --- 5. Portrait ---
   let treeStartY = headerEndY;
