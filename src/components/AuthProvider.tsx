@@ -5,6 +5,7 @@ import { createContext, useContext, useState, useEffect, useCallback, type React
 interface User {
   id: string;
   phone: string;
+  remaining?: number;
 }
 
 interface AuthContextType {
@@ -12,6 +13,7 @@ interface AuthContextType {
   loading: boolean;
   login: (idToken: string) => Promise<void>;
   logout: () => Promise<void>;
+  refreshBalance: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -19,6 +21,7 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   login: async () => {},
   logout: async () => {},
+  refreshBalance: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -53,13 +56,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const refreshBalance = useCallback(async () => {
+    try {
+      const res = await fetch('/api/auth/me');
+      const d = await res.json();
+      if (d.user) setUser(d.user);
+    } catch { /* ignore */ }
+  }, []);
+
   const logout = useCallback(async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
     setUser(null);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, refreshBalance }}>
       {children}
     </AuthContext.Provider>
   );

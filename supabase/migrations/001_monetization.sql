@@ -119,3 +119,9 @@ CREATE INDEX IF NOT EXISTS idx_order_log_order ON order_status_log(order_id);
 
 -- Set order_number to start from 1001
 SELECT setval(pg_get_serial_sequence('orders', 'order_number'), 1000, false);
+
+-- Function: atomically increment paid_generations
+CREATE OR REPLACE FUNCTION increment_paid_generations(p_user_id uuid, p_amount int)
+RETURNS void AS $$
+  UPDATE users SET paid_generations = paid_generations + p_amount WHERE id = p_user_id;
+$$ LANGUAGE sql;

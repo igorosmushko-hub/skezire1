@@ -7,6 +7,7 @@ import { preprocessImage, validateImageFile } from '@/lib/ai-utils';
 import { useAuth } from './AuthProvider';
 import { LoginModal } from './LoginModal';
 import { applyWatermark } from '@/lib/watermark';
+import { PricingModal } from './PricingModal';
 
 type Step = 'upload' | 'preview' | 'generating' | 'result';
 
@@ -27,6 +28,7 @@ export function AiPetHumanModal({ open, onClose }: Props) {
   const [resultUrl, setResultUrl] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [dragOver, setDragOver] = useState(false);
+  const [showPricing, setShowPricing] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef(false);
@@ -111,7 +113,13 @@ export function AiPetHumanModal({ open, onClose }: Props) {
 
       if (!createRes.ok) {
         const data = await createRes.json().catch(() => ({}));
-        const errKey = data.error === 'limit_reached' ? 'limit_reached' : data.error === 'rate_limit' ? 'rate_limit' : 'error'; showToast(t(errKey));
+        if (data.error === 'limit_reached') {
+          setShowPricing(true);
+          setStep('preview');
+          return;
+        }
+        const errKey = data.error === 'rate_limit' ? 'rate_limit' : 'error';
+        showToast(t(errKey));
         setStep('preview');
         return;
       }
@@ -206,6 +214,8 @@ export function AiPetHumanModal({ open, onClose }: Props) {
   if (!open) return null;
 
   return (
+    <>
+    <PricingModal open={showPricing} onClose={() => setShowPricing(false)} />
     <div
       className="modal open"
       role="dialog"
@@ -323,5 +333,6 @@ export function AiPetHumanModal({ open, onClose }: Props) {
         )}
       </div>
     </div>
+    </>
   );
 }
