@@ -2349,3 +2349,71 @@ a.tribe-meta-val:hover { text-decoration: underline; }
   color: var(--blue-light);
   margin-bottom: 12px;
 }
+
+/* ── Family Portrait CTA (main page) ──────────────────────── */
+.fp-cta {
+  padding: 64px 0;
+  background: linear-gradient(180deg, var(--surface-dark) 0%, var(--surface-dark-mid) 100%);
+}
+.fp-cta-inner {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.fp-cta-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(135deg, rgba(59,110,230,.2), rgba(212,168,67,.2));
+  color: var(--gold);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  margin-bottom: 16px;
+}
+.fp-cta-inner h2 {
+  font-family: var(--ff-display);
+  font-size: 2rem;
+  font-weight: 700;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+.fp-cta-inner p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+.fp-cta-preview {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.fp-cta-img {
+  width: 180px;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+  border-radius: var(--r-md);
+  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  transition: transform .3s;
+}
+.fp-cta-img--2 { transform: translateY(-8px); }
+.fp-cta-preview:hover .fp-cta-img--1 { transform: rotate(-3deg) scale(1.03); }
+.fp-cta-preview:hover .fp-cta-img--2 { transform: translateY(-12px) scale(1.05); }
+.fp-cta-preview:hover .fp-cta-img--3 { transform: rotate(3deg) scale(1.03); }
+.fp-cta-btn {
+  display: inline-flex;
+  padding: 16px 40px;
+  font-size: 1rem;
+  border-radius: var(--r-pill);
+}
+@media (max-width: 640px) {
+  .fp-cta { padding: 48px 0; }
+  .fp-cta-inner h2 { font-size: 1.5rem; }
+  .fp-cta-img { width: 110px; }
+  .fp-cta-btn { width: 100%; justify-content: center; }
+}
