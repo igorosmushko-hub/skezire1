@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslations } from 'next-intl';
 import { auth } from '@/lib/firebase';
 import { RecaptchaVerifier, signInWithPhoneNumber, type ConfirmationResult } from 'firebase/auth';
@@ -153,7 +154,7 @@ export function LoginModal({ open, onClose }: Props) {
 
   if (!open) return null;
 
-  return (
+  const modal = (
     <div
       className="modal open"
       role="dialog"
@@ -240,4 +241,6 @@ export function LoginModal({ open, onClose }: Props) {
       </div>
     </div>
   );
+
+  return createPortal(modal, document.body);
 }
