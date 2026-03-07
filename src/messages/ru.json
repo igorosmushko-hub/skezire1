@@ -391,6 +391,44 @@
     "breadcrumbHome": "Шежіре",
     "breadcrumbEnc": "Энциклопедия"
   },
+  "order": {
+    "title": "Заказать картину",
+    "subtitle": "Ваше AI-фото на холсте — с доставкой по Казахстану",
+    "preview": "Ваше изображение",
+    "selectProduct": "Выберите формат",
+    "poster": "Постер",
+    "canvas": "Холст",
+    "canvasFramed": "Холст в рамке",
+    "deliveryTitle": "Данные доставки",
+    "recipientName": "ФИО получателя",
+    "recipientPhone": "Телефон получателя",
+    "city": "Город",
+    "address": "Адрес (улица, дом, квартира)",
+    "postalCode": "Индекс (необязательно)",
+    "total": "Итого",
+    "delivery": "Доставка",
+    "deliveryFree": "Бесплатно",
+    "pay": "Оплатить",
+    "processing": "Оформляем заказ...",
+    "errorFillAll": "Заполните все обязательные поля",
+    "errorCreate": "Не удалось создать заказ, попробуйте ещё раз"
+  },
+  "orders": {
+    "title": "Мои заказы",
+    "empty": "У вас пока нет заказов",
+    "orderNum": "Заказ",
+    "status": {
+      "new": "Новый",
+      "paid": "Оплачен",
+      "in_production": "В печати",
+      "shipped": "Отправлен",
+      "delivered": "Доставлен",
+      "cancelled": "Отменён"
+    },
+    "tracking": "Трек-номер",
+    "created": "Создан",
+    "goToAi": "Создать AI-фото"
+  },
   "pricing": {
     "title": "Тарифы AI генераций",
     "subtitle": "Выберите пакет генераций",

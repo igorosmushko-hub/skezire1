@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { useToast } from './Toast';
 import { preprocessImage, validateImageFile } from '@/lib/ai-utils';
 import { useAuth } from './AuthProvider';
@@ -18,6 +18,7 @@ interface Props {
 
 export function AiActionFigureModal({ open, onClose }: Props) {
   const t = useTranslations('ai.figure.modal');
+  const locale = useLocale();
   const showToast = useToast();
   const { user, loading: authLoading } = useAuth();
 
@@ -322,6 +323,12 @@ export function AiActionFigureModal({ open, onClose }: Props) {
               <button className="btn btn-ai" onClick={handleDownload}>
                 {t('download')}
               </button>
+              <a
+                className="btn btn-ai-outline ai-order-btn"
+                href={`/order/canvas?image=${encodeURIComponent(resultUrl)}&type=action-figure`}
+              >
+                🖼 {locale === 'kk' ? 'Картина тапсырыс беру' : 'Заказать картину'}
+              </a>
               <button
                 className="btn btn-ai-outline"
                 onClick={() => { setStep('upload'); setPreviewUrl(null); setResultUrl(null); setImageBase64(null); }}
