@@ -139,6 +139,17 @@ export async function POST(req: NextRequest) {
         .update({ usage_count: usageCount + 1 })
         .eq('id', sessionUser.userId);
 
+      // Save generation record
+      try {
+        await supabase.from('generations').insert({
+          user_id: sessionUser.userId,
+          type: 'family-portrait',
+          image_url: imageUrls[0],
+          task_id: data.data.taskId,
+          status: 'pending',
+        });
+      } catch { /* ignore */ }
+
       const remaining = totalAvailable - usageCount - 1;
       return NextResponse.json({ id: data.data.taskId, status: 'starting', remaining });
     } catch (err) {
@@ -216,6 +227,17 @@ export async function POST(req: NextRequest) {
       .from('users')
       .update({ usage_count: usageCount + 1 })
       .eq('id', sessionUser.userId);
+
+    // Save generation record
+    try {
+      await supabase.from('generations').insert({
+        user_id: sessionUser.userId,
+        type: type ?? 'past',
+        image_url: imageUrl,
+        task_id: data.data.taskId,
+        status: 'pending',
+      });
+    } catch { /* ignore */ }
 
     const remaining = totalAvailable - usageCount - 1;
     return NextResponse.json({ id: data.data.taskId, status: 'starting', remaining });

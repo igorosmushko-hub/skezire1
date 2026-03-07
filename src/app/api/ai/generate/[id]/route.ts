@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSessionUser } from '@/lib/auth';
+import { getSupabase } from '@/lib/supabase';
 
 const KIE_API_BASE = 'https://api.kie.ai/api/v1/jobs';
 
@@ -59,6 +60,24 @@ export async function GET(
         console.error('Failed to parse resultJson:', task.resultJson);
       }
     }
+
+    // Update generation record with result
+    try {
+      const supabase = getSupabase();
+      if (supabase) {
+        if (output && output.length > 0) {
+          await supabase
+            .from('generations')
+            .update({ status: 'completed', result_url: output[0] })
+            .eq('task_id', id);
+        } else if (task.state === 'fail') {
+          await supabase
+            .from('generations')
+            .update({ status: 'failed' })
+            .eq('task_id', id);
+        }
+      }
+    } catch { /* ignore */ }
 
     return NextResponse.json({
       id: task.taskId,

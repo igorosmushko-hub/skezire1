@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { useAuth } from './AuthProvider';
 import { LoginModal } from './LoginModal';
 
@@ -13,6 +14,7 @@ function formatPhone(phone: string): string {
 export function NavbarAuth() {
   const { user, loading, logout } = useAuth();
   const t = useTranslations('auth');
+  const locale = useLocale();
   const [showLogin, setShowLogin] = useState(false);
 
   if (loading) return null;
@@ -25,7 +27,9 @@ export function NavbarAuth() {
             &#9889; {user.remaining}
           </span>
         )}
-        <span className="nav-user-phone">{formatPhone(user.phone)}</span>
+        <Link href="/profile" locale={locale} className="nav-user-phone nav-profile-link">
+          {formatPhone(user.phone)}
+        </Link>
         <button className="nav-logout-btn" onClick={logout}>{t('logout')}</button>
       </div>
     );

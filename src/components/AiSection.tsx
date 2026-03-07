@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AiModal } from './AiModal';
 import { AiPastModal } from './AiPastModal';
@@ -10,9 +11,10 @@ import { AiActionFigureModal } from './AiActionFigureModal';
 import { AiPetHumanModal } from './AiPetHumanModal';
 import { AiGhibliModal } from './AiGhibliModal';
 
-type AiType = 'past' | 'grandma' | 'story' | 'figure' | 'pet' | 'ghibli';
+type AiType = 'fp' | 'past' | 'grandma' | 'story' | 'figure' | 'pet' | 'ghibli';
 
 const SLUG_MAP: Record<string, string> = {
+  fp: 'family-portrait',
   past: 'past',
   grandma: 'ancestor',
   figure: 'action-figure',
@@ -20,12 +22,24 @@ const SLUG_MAP: Record<string, string> = {
   ghibli: 'ghibli-style',
 };
 
+const PAGE_TYPES = new Set(['fp']);
+
 export function AiSection() {
   const t = useTranslations('ai');
   const locale = useLocale();
+  const router = useRouter();
   const [modalType, setModalType] = useState<AiType | null>(null);
 
+  const handleCardClick = (type: AiType) => {
+    if (PAGE_TYPES.has(type) && SLUG_MAP[type]) {
+      router.push(`/${locale}/ai/${SLUG_MAP[type]}/create`);
+    } else {
+      setModalType(type);
+    }
+  };
+
   const cards: { type: AiType; icon: string; h3Key: string; pKey: string; tag1Key: string; tag2Key: string; featured?: boolean; live?: boolean; thumb?: string; popular?: boolean }[] = [
+    { type: 'fp', icon: '👨‍👩‍👧‍👦', h3Key: 'fp.h3', pKey: 'fp.p', tag1Key: 'fp.tag1', tag2Key: 'fp.tag2', featured: true, live: true, thumb: '/ai-backgrounds/yurt.jpg', popular: true },
     { type: 'past', icon: '🕰️', h3Key: 'past.h3', pKey: 'past.p', tag1Key: 'past.tag1', tag2Key: 'past.tag2', live: true, thumb: '/ai-examples/past-1.webp', popular: true },
     { type: 'grandma', icon: '👵', h3Key: 'gm.h3', pKey: 'gm.p', tag1Key: 'gm.tag1', tag2Key: 'gm.tag2', featured: true, live: true, thumb: '/ai-examples/ancestor-rejuvenated.webp' },
     { type: 'figure', icon: '🎯', h3Key: 'figure.h3', pKey: 'figure.p', tag1Key: 'figure.tag1', tag2Key: 'figure.tag2', live: true, thumb: '/ai-examples/action-figure-1.webp', popular: true },
@@ -65,7 +79,7 @@ export function AiSection() {
                   <span className="tag">{t(card.tag2Key)}</span>
                 </div>
                 <div className="ai-card-actions">
-                  <button className="btn btn-ai" onClick={() => setModalType(card.type)}>
+                  <button className="btn btn-ai" onClick={() => handleCardClick(card.type)}>
                     <span>{t('btn')}</span>
                     {!card.live && <span className="soon-badge">{t('soon')}</span>}
                   </button>
@@ -90,7 +104,7 @@ export function AiSection() {
       <AiActionFigureModal open={modalType === 'figure'} onClose={() => setModalType(null)} />
       <AiPetHumanModal open={modalType === 'pet'} onClose={() => setModalType(null)} />
       <AiGhibliModal open={modalType === 'ghibli'} onClose={() => setModalType(null)} />
-      <AiModal type={modalType === 'past' || modalType === 'grandma' || modalType === 'figure' || modalType === 'pet' || modalType === 'ghibli' ? null : modalType} onClose={() => setModalType(null)} />
+      <AiModal type={modalType === 'past' || modalType === 'grandma' || modalType === 'figure' || modalType === 'pet' || modalType === 'ghibli' || modalType === 'fp' ? null : modalType} onClose={() => setModalType(null)} />
     </>
   );
 }

@@ -2133,6 +2133,13 @@ a.tribe-meta-val:hover { text-decoration: underline; }
   color: var(--muted); font-size: .8rem; font-weight: 500;
   letter-spacing: .03em; white-space: nowrap;
 }
+.nav-profile-link {
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-profile-link:hover {
+  color: var(--text, #1a1a2e);
+}
 .nav-login-btn, .nav-logout-btn {
   background: var(--surface-secondary); border: 1px solid var(--border);
   color: var(--text); padding: 5px 14px; border-radius: var(--r-pill);
