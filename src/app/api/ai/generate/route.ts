@@ -56,15 +56,17 @@ export async function POST(req: NextRequest) {
 
   const { data: userData } = await supabase
     .from('users')
-    .select('usage_count')
+    .select('usage_count, paid_generations')
     .eq('id', sessionUser.userId)
     .single();
 
   const usageCount = userData?.usage_count ?? 0;
+  const paidGenerations = userData?.paid_generations ?? 0;
+  const totalAvailable = FREE_LIMIT + paidGenerations;
   const isUnlimited = UNLIMITED_PHONES.includes(sessionUser.phone);
-  if (!isUnlimited && usageCount >= FREE_LIMIT) {
+  if (!isUnlimited && usageCount >= totalAvailable) {
     return NextResponse.json(
-      { error: 'limit_reached', usage_count: usageCount, limit: FREE_LIMIT },
+      { error: 'limit_reached', usage_count: usageCount, limit: totalAvailable },
       { status: 403 },
     );
   }
@@ -148,7 +150,7 @@ export async function POST(req: NextRequest) {
       .update({ usage_count: usageCount + 1 })
       .eq('id', sessionUser.userId);
 
-    const remaining = FREE_LIMIT - usageCount - 1;
+    const remaining = totalAvailable - usageCount - 1;
     return NextResponse.json({ id: data.data.taskId, status: 'starting', remaining });
   } catch (err) {
     console.error('Kie AI create error:', err);

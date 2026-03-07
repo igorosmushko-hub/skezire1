@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     }
     const { data: existing } = await supabase
       .from('users')
-      .select('id, phone, usage_count')
+      .select('id, phone, usage_count, paid_generations')
       .eq('phone', phone)
       .single();
 
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       const { data: created, error } = await supabase
         .from('users')
         .insert({ phone })
-        .select('id, phone, usage_count')
+        .select('id, phone, usage_count, paid_generations')
         .single();
       if (error) {
         console.error('Supabase insert error:', error);
