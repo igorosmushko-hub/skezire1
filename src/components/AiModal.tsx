@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { AI_MODAL } from '@/lib/constants';
 
 interface AiModalProps {
-  type: 'past' | 'grandma' | 'story' | null;
+  type: 'past' | 'grandma' | null;
   onClose: () => void;
 }
 

@@ -50,6 +50,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+/* Per-post AI inline hints (shown after paragraph index) and banner features */
+const POST_AI_CONFIG: Record<string, { inlineHints: { after: number; slug: string }[]; bannerFeatures: string[] }> = {
+  'what-is-shezhire':          { inlineHints: [{ after: 1, slug: 'past' }, { after: 3, slug: 'ancestor' }],                         bannerFeatures: ['past', 'ancestor', 'family-portrait'] },
+  'three-zhuz':                { inlineHints: [{ after: 1, slug: 'past' }, { after: 3, slug: 'ghibli-style' }],                     bannerFeatures: ['past', 'ghibli-style', 'action-figure'] },
+  'tamga-symbol':              { inlineHints: [{ after: 1, slug: 'past' }, { after: 2, slug: 'action-figure' }],                    bannerFeatures: ['past', 'action-figure', 'ancestor'] },
+  'uran-war-cry':              { inlineHints: [{ after: 1, slug: 'ancestor' }, { after: 3, slug: 'past' }],                         bannerFeatures: ['ancestor', 'past', 'pet-humanize'] },
+  'how-to-create-shezhire':    { inlineHints: [{ after: 1, slug: 'past' }, { after: 2, slug: 'ancestor' }],                         bannerFeatures: ['past', 'ancestor', 'ghibli-style'] },
+  'ai-action-figure':          { inlineHints: [{ after: 0, slug: 'action-figure' }, { after: 2, slug: 'pet-humanize' }],            bannerFeatures: ['action-figure', 'pet-humanize', 'ghibli-style'] },
+  'ai-photo-trends-2026':      { inlineHints: [{ after: 1, slug: 'pet-humanize' }, { after: 2, slug: 'ghibli-style' }],             bannerFeatures: ['pet-humanize', 'ghibli-style', 'past'] },
+  'ai-preserving-shezhire':    { inlineHints: [{ after: 1, slug: 'past' }, { after: 2, slug: 'action-figure' }],                    bannerFeatures: ['past', 'ancestor', 'action-figure'] },
+  'zheti-ata-seven-ancestors': { inlineHints: [{ after: 1, slug: 'past' }, { after: 2, slug: 'ancestor' }],                         bannerFeatures: ['past', 'ancestor', 'ghibli-style'] },
+  'guide-kazakh-tribes':       { inlineHints: [{ after: 0, slug: 'past' }, { after: 2, slug: 'action-figure' }],                    bannerFeatures: ['past', 'action-figure', 'pet-humanize'] },
+};
+
+const DEFAULT_AI_CONFIG = { inlineHints: [{ after: 1, slug: 'past' }], bannerFeatures: ['past', 'ancestor', 'ghibli-style'] };
+
 export default async function BlogPostPage({ params }: PageProps) {
   const { locale, slug } = await params;
   const isKk = locale === 'kk';
@@ -59,6 +75,8 @@ export default async function BlogPostPage({ params }: PageProps) {
   const base = 'https://skezire.kz';
   const headings = isKk ? post.headingsKk : post.headingsRu;
   const content = isKk ? post.contentKk : post.contentRu;
+  const aiConfig = POST_AI_CONFIG[slug] || DEFAULT_AI_CONFIG;
+  const hintAfterMap = new Map(aiConfig.inlineHints.map((h) => [h.after, h.slug]));
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -113,7 +131,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               <div key={i}>
                 {headings[i] && <h2 className="blog-h2">{headings[i]}</h2>}
                 <p className="blog-p">{paragraph}</p>
-                {i === 1 && <AiInlineHint slug="past" locale={locale} />}
+                {hintAfterMap.has(i) && <AiInlineHint slug={hintAfterMap.get(i)!} locale={locale} />}
               </div>
             ))}
           </article>
@@ -126,7 +144,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
       </main>
 
-      <AiPromoBanner locale={locale} features={['past', 'ancestor', 'ghibli-style']} variant="blog" />
+      <AiPromoBanner locale={locale} features={aiConfig.bannerFeatures} variant="blog" />
     </>
   );
 }
