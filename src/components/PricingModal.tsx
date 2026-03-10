@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslations } from 'next-intl';
+import { pricingBuy } from '@/lib/analytics';
 
 interface Package {
   id: string;
@@ -58,6 +59,7 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
   }, [open, handleClose]);
 
   const handleBuy = useCallback(async (pkg: Package) => {
+    pricingBuy(pkg.slug);
     setBuying(pkg.id);
     try {
       const res = await fetch('/api/payments/create', {

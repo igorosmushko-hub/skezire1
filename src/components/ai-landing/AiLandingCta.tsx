@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MODAL_MAP } from './modal-map';
+import { aiLandingCta } from '@/lib/analytics';
 
 const PAGE_FEATURES = ['family-portrait'];
 
@@ -18,6 +19,7 @@ export function AiLandingCta({ featureSlug, locale }: Props) {
   const ModalComponent = MODAL_MAP[featureSlug];
 
   const handleClick = () => {
+    aiLandingCta(featureSlug);
     if (PAGE_FEATURES.includes(featureSlug)) {
       router.push(`/${locale}/ai/${featureSlug}/create`);
     } else {

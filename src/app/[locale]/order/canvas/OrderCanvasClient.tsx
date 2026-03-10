@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import { LoginModal } from '@/components/LoginModal';
 import '@/styles/order.css';
+import { orderSubmit, orderPromoAi, orderSelectProduct } from '@/lib/analytics';
 
 interface Product {
   id: string;
@@ -49,6 +50,7 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
   const selectedProductData = products.find((p) => p.id === selectedProduct);
 
   const handleSubmit = useCallback(async () => {
+    orderSubmit();
     if (!user) {
       setShowLogin(true);
       return;
@@ -113,7 +115,7 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
                     ? 'Алдымен AI фото жасаңыз — 100 жыл бұрынғы бейне, бабаңызды жасарту, экшн-фигурка немесе Гибли стилі. Содан кейін холстқа немесе постерге басып алыңыз.'
                     : 'Сначала создайте AI-фото — образ 100 лет назад, портрет предка, экшн-фигурка или стиль Гибли. Затем закажите печать на холсте или постере.'}
                 </p>
-                <a href={`/${locale}/ai`} className="btn btn-ai order-promo-btn">
+                <a href={`/${locale}/ai`} className="btn btn-ai order-promo-btn" onClick={orderPromoAi}>
                   {isKk ? 'AI фото жасау' : 'Создать AI-фото'}
                 </a>
               </div>

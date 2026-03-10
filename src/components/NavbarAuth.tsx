@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { useAuth } from './AuthProvider';
 import { LoginModal } from './LoginModal';
+import { authLoginOpen, authLogout } from '@/lib/analytics';
 
 function formatPhone(phone: string): string {
   if (phone.length < 6) return phone;
@@ -30,14 +31,14 @@ export function NavbarAuth() {
         <Link href="/profile" locale={locale} className="nav-user-phone nav-profile-link">
           {formatPhone(user.phone)}
         </Link>
-        <button className="nav-logout-btn" onClick={logout}>{t('logout')}</button>
+        <button className="nav-logout-btn" onClick={() => { authLogout(); logout(); }}>{t('logout')}</button>
       </div>
     );
   }
 
   return (
     <>
-      <button className="nav-login-btn" onClick={() => setShowLogin(true)}>
+      <button className="nav-login-btn" onClick={() => { authLoginOpen(); setShowLogin(true); }}>
         {t('login')}
       </button>
       <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />

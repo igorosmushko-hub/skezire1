@@ -7,6 +7,7 @@ import { PricingModal } from '@/components/PricingModal';
 import { preprocessImage, validateImageFile } from '@/lib/ai-utils';
 import { applyWatermark } from '@/lib/watermark';
 import { PORTRAIT_BACKGROUNDS } from '@/data/portrait-backgrounds';
+import { aiGenerate, aiGenerateSuccess, aiGenerateError, aiDownload, aiShare, aiTryAgain, aiOrderCanvas, fpAddPerson, fpRemovePerson, fpSelectBg, fpUploadPhoto } from '@/lib/analytics';
 
 type Step = 'upload' | 'background' | 'generating' | 'result';
 
@@ -83,6 +84,7 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
   const canGenerate = filledCount >= 2 && allSlots.every((s) => !s.processing);
 
   const handleFileForSlot = useCallback(async (slotKey: string, file: File) => {
+    fpUploadPhoto(slotKey);
     const err = validateImageFile(file);
     if (err) {
       setError(err);
@@ -118,6 +120,7 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
   }, [handleFileForSlot]);
 
   const removeSlot = useCallback((slotKey: string) => {
+    fpRemovePerson(slotKey);
     // For default roles, just clear the photo
     setSlots((prev) => prev.map((s) =>
       s.roleKey === slotKey ? { ...s, file: null, previewUrl: null, base64: null, processing: false } : s,
@@ -127,6 +130,7 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
   }, []);
 
   const addExtraPerson = useCallback(() => {
+    fpAddPerson();
     const id = `extra-${Date.now()}`;
     setExtraSlots((prev) => [...prev, { roleKey: id, file: null, previewUrl: null, base64: null, processing: false }]);
   }, []);
@@ -142,6 +146,7 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
     setStep('generating');
     setProgress(0);
     setError('');
+    aiGenerate('family-portrait');
 
     const images = filledSlots.map((s) => s.base64!);
 
@@ -187,12 +192,15 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
         setResultUrl(output[0]);
         setProgress(100);
         setStep('result');
+        aiGenerateSuccess('family-portrait');
       } else {
+        aiGenerateError('family-portrait');
         setError(t('error'));
         setStep('upload');
       }
     } catch {
       if (!abortRef.current) {
+        aiGenerateError('family-portrait');
         setError(t('error'));
         setStep('upload');
       }
@@ -200,6 +208,7 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
   }, [user, canGenerate, filledSlots, selectedBg]);
 
   const handleDownload = useCallback(async () => {
+    aiDownload('family-portrait');
     if (!resultUrl) return;
     try {
       const proxyUrl = `/api/ai/download?url=${encodeURIComponent(resultUrl)}`;
@@ -223,6 +232,7 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
   }, [resultUrl]);
 
   const handleShare = useCallback(async () => {
+    aiShare('family-portrait');
     if (!resultUrl) return;
     try {
       const proxyUrl = `/api/ai/download?url=${encodeURIComponent(resultUrl)}`;
@@ -273,12 +283,14 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
               <a
                 className="btn btn-ai-outline fp-order-btn"
                 href={`/${locale}/order/canvas?image=${encodeURIComponent(resultUrl)}&type=family-portrait`}
+                onClick={() => aiOrderCanvas('family-portrait')}
               >
                 {t('orderCanvas')}
               </a>
               <button
                 className="btn btn-ai-outline"
                 onClick={() => {
+                  aiTryAgain('family-portrait');
                   setStep('upload');
                   setResultUrl(null);
                   setProgress(0);
@@ -413,7 +425,7 @@ export function FamilyPortraitClient({ locale }: { locale: string }) {
                 <button
                   key={bg.key}
                   className={`fp-bg-card${selectedBg === bg.key ? ' active' : ''}`}
-                  onClick={() => setSelectedBg(bg.key)}
+                  onClick={() => { fpSelectBg(bg.key); setSelectedBg(bg.key); }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={`/ai-backgrounds/${bg.key}.jpg`} alt="" className="fp-bg-preview" />

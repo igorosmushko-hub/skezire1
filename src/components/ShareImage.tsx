@@ -6,6 +6,7 @@ import { useToast } from './Toast';
 import { PdfModal } from './PdfModal';
 import { TRIBES_DB } from '@/data/tribes';
 import type { TreeFormData } from '@/lib/types';
+import { treeShare, treeDownload, treePdf } from '@/lib/analytics';
 
 interface ShareImageProps {
   data: TreeFormData;
@@ -54,6 +55,7 @@ export function ShareImage({ data, locale, nodes, aiPhotoUrl }: ShareImageProps)
   };
 
   const handleShare = async () => {
+    treeShare();
     if (generating) return;
     setGenerating(true);
     try {
@@ -86,6 +88,7 @@ export function ShareImage({ data, locale, nodes, aiPhotoUrl }: ShareImageProps)
   };
 
   const handleDownload = async () => {
+    treeDownload();
     if (generating) return;
     setGenerating(true);
     try {
@@ -121,7 +124,7 @@ export function ShareImage({ data, locale, nodes, aiPhotoUrl }: ShareImageProps)
         <button className="btn btn-outline" onClick={scrollToForm}>
           {t('btn.edit')}
         </button>
-        <button className="btn btn-outline btn-pdf-soon" onClick={() => setPdfOpen(true)}>
+        <button className="btn btn-outline btn-pdf-soon" onClick={() => { treePdf(); setPdfOpen(true); }}>
           {t('btn.pdf')}
         </button>
       </div>

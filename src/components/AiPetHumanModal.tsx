@@ -8,6 +8,7 @@ import { useAuth } from './AuthProvider';
 import { LoginModal } from './LoginModal';
 import { applyWatermark } from '@/lib/watermark';
 import { PricingModal } from './PricingModal';
+import { aiGenerate, aiGenerateSuccess, aiGenerateError, aiDownload, aiShare, aiTryAgain, aiOrderCanvas, aiChangePhoto, aiSelectGender, aiUploadPhoto } from '@/lib/analytics';
 
 type Step = 'upload' | 'preview' | 'generating' | 'result';
 
@@ -103,6 +104,7 @@ export function AiPetHumanModal({ open, onClose }: Props) {
     if (!imageBase64) return;
     abortRef.current = false;
     setStep('generating');
+    aiGenerate('pet-humanize');
     setProgress(0);
 
     try {
@@ -148,6 +150,7 @@ export function AiPetHumanModal({ open, onClose }: Props) {
         setResultUrl(output[0]);
         setProgress(100);
         setStep('result');
+        aiGenerateSuccess('pet-humanize');
       } else {
         showToast(t('error'));
         setStep('preview');
@@ -171,6 +174,7 @@ export function AiPetHumanModal({ open, onClose }: Props) {
   }, [resultUrl]);
 
   const handleDownload = useCallback(async () => {
+    aiDownload('pet-humanize');
     if (!resultUrl) return;
     try {
       const blob = await getWatermarkedBlob() ?? (await (await fetch(`/api/ai/download?url=${encodeURIComponent(resultUrl)}`)).blob());
@@ -196,6 +200,7 @@ export function AiPetHumanModal({ open, onClose }: Props) {
   }, [resultUrl, getWatermarkedBlob, showToast, t]);
 
   const handleShare = useCallback(async () => {
+    aiShare('pet-humanize');
     if (!resultUrl) return;
     try {
       const blob = await getWatermarkedBlob();

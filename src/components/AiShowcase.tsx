@@ -4,6 +4,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { BeforeAfterStatic } from './ai-landing/BeforeAfterStatic';
 import { BeforeAfterSlider } from './ai-landing/BeforeAfterSlider';
 import Link from 'next/link';
+import { aiShowcaseClick } from '@/lib/analytics';
 
 const DEMOS = [
   { before: '/ai-examples/before-woman.webp', after: '/ai-examples/past-1.webp', slug: 'past', keyH3: 'past.h3' },
@@ -23,7 +24,7 @@ export function AiShowcase() {
 
         <div className="ai-showcase-grid">
           {DEMOS.map((d) => (
-            <Link key={d.slug} href={`/${locale}/ai/${d.slug}`} className="ai-showcase-card">
+            <Link key={d.slug} href={`/${locale}/ai/${d.slug}`} className="ai-showcase-card" onClick={() => aiShowcaseClick(d.slug)}>
               {/* Desktop: static infographic */}
               <div className="ai-showcase-desktop">
                 <BeforeAfterStatic

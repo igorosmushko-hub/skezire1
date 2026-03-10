@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { fpCtaClick } from '@/lib/analytics';
 
 export function FamilyPortraitCta() {
   const locale = useLocale();
@@ -25,6 +26,7 @@ export function FamilyPortraitCta() {
           <Link
             href={`/${locale}/ai/family-portrait/create`}
             className="btn btn-ai fp-cta-btn"
+            onClick={fpCtaClick}
           >
             {isKk ? 'Отбасылық портрет жасау' : 'Создать семейный портрет'}
           </Link>

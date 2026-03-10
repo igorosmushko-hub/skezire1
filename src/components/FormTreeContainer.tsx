@@ -7,6 +7,7 @@ import { LoginModal } from './LoginModal';
 import { useAuth } from './AuthProvider';
 import { useToast } from './Toast';
 import type { TreeFormData } from '@/lib/types';
+import { treeFormSubmit } from '@/lib/analytics';
 
 export function FormTreeContainer({ locale }: { locale: string }) {
   const { user, loading: authLoading } = useAuth();
@@ -89,6 +90,7 @@ export function FormTreeContainer({ locale }: { locale: string }) {
   }, [user, pendingData, proceedWithGeneration]);
 
   const handleSubmit = useCallback((data: TreeFormData) => {
+    treeFormSubmit();
     if (!user && !authLoading) {
       setPendingData(data);
       setShowLogin(true);

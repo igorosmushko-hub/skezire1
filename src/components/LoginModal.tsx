@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { auth } from '@/lib/firebase';
 import { RecaptchaVerifier, signInWithPhoneNumber, type ConfirmationResult } from 'firebase/auth';
 import { useAuth } from './AuthProvider';
+import { authSendCode, authVerifyCode } from '@/lib/analytics';
 
 type Step = 'phone' | 'code' | 'success';
 
@@ -92,6 +93,7 @@ export function LoginModal({ open, onClose }: Props) {
 
   /* ── Send SMS ── */
   const handleSendCode = useCallback(async () => {
+    authSendCode();
     if (phone.length < 10) {
       setError(t('sendError'));
       return;
@@ -133,6 +135,7 @@ export function LoginModal({ open, onClose }: Props) {
 
   /* ── Verify code ── */
   const handleVerifyCode = useCallback(async () => {
+    authVerifyCode();
     if (code.length !== 6) return;
     setLoading(true);
     setError('');

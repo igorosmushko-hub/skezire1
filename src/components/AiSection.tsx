@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { aiCardTry, aiCardDetails } from '@/lib/analytics';
 import { AiModal } from './AiModal';
 import { AiPastModal } from './AiPastModal';
 import { AiAncestorModal } from './AiAncestorModal';
@@ -31,6 +32,7 @@ export function AiSection() {
   const [modalType, setModalType] = useState<AiType | null>(null);
 
   const handleCardClick = (type: AiType) => {
+    aiCardTry(type);
     if (PAGE_TYPES.has(type) && SLUG_MAP[type]) {
       router.push(`/${locale}/ai/${SLUG_MAP[type]}/create`);
     } else {
@@ -89,6 +91,7 @@ export function AiSection() {
                   <Link
                     href={`/${locale}/ai/${SLUG_MAP[card.type]}`}
                     className="ai-card-details"
+                    onClick={() => aiCardDetails(SLUG_MAP[card.type])}
                   >
                     {locale === 'kk' ? 'Толығырақ' : 'Подробнее'}
                   </Link>

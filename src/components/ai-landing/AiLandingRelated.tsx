@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import type { AiFeature } from '@/data/ai-features';
+import { aiLandingRelated } from '@/lib/analytics';
 
 interface Props {
   features: AiFeature[];
@@ -23,6 +26,7 @@ export function AiLandingRelated({ features, locale }: Props) {
               key={f.slug}
               href={`/${locale}/ai/${f.slug}`}
               className="ai-related-card"
+              onClick={() => aiLandingRelated(f.slug)}
             >
               <div className="ai-related-card-icon">{f.icon}</div>
               <h3>{hero.h1}</h3>

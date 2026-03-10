@@ -1,4 +1,7 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
+import { heroCreateTree, heroAiFeatures } from '@/lib/analytics';
 
 export function Hero() {
   const t = useTranslations('hero');
@@ -14,8 +17,8 @@ export function Hero() {
         </h1>
         <p className="hero-desc">{t('desc')}</p>
         <div className="hero-btns">
-          <a href="#form-section" className="btn btn-primary">{t('btn.create')}</a>
-          <a href="#ai-section" className="btn btn-ai-hero">{t('btn.ai')}</a>
+          <a href="#form-section" className="btn btn-primary" onClick={heroCreateTree}>{t('btn.create')}</a>
+          <a href="#ai-section" className="btn btn-ai-hero" onClick={heroAiFeatures}>{t('btn.ai')}</a>
         </div>
       </div>
 
