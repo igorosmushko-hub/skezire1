@@ -19,11 +19,11 @@ export default async function HomePage() {
       <JsonLd locale={locale} />
       <Hero />
       <AiShowcase />
+      <TribeRaceSection locale={locale} />
       <About />
       <OrnamentDivider />
       <FormTreeContainer locale={locale} />
       <AiSection />
-      <TribeRaceSection locale={locale} />
       <FamilyPortraitCta />
     </>
   );
