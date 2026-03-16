@@ -6,6 +6,8 @@ interface User {
   id: string;
   phone: string;
   remaining?: number;
+  zhuzId?: string;
+  tribeId?: string;
 }
 
 interface AuthContextType {

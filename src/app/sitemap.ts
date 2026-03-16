@@ -55,8 +55,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
+  // Tribe race pages
+  for (const locale of locales) {
+    entries.push({
+      url: `${baseUrl}/${locale}/leaderboard`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    });
+    entries.push({
+      url: `${baseUrl}/${locale}/shezhire-tree`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    });
+  }
+
   // Legal pages
-  const legalPages = ['oferta', 'privacy', 'delivery', 'refund', 'contacts'];
+  const legalPages = ['oferta', 'privacy', 'delivery', 'refund', 'contacts', 'payment-policy'];
   for (const locale of locales) {
     for (const page of legalPages) {
       entries.push({

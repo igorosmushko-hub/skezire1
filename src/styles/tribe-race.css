@@ -1,0 +1,723 @@
+/* ================================================================
+   TRIBE RACE — Interactive tree, leaderboard, join modal
+   ================================================================ */
+
+/* ── Shared ───────────────────────────────────────────────────── */
+.tr-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFFBF0 0%, var(--white) 40%);
+  padding: 100px 0 80px;
+}
+.tr-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.tr-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.tr-header h1 {
+  font-family: var(--ff-head);
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+.tr-header p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* ================================================================
+   INTERACTIVE TREE
+   ================================================================ */
+
+/* Alash root */
+.tree-root {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.tree-root-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--blue);
+  color: var(--white);
+  padding: 14px 28px;
+  border-radius: 50px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-family: var(--ff-head);
+  box-shadow: 0 4px 20px rgba(10, 22, 40, .2);
+}
+.tree-root-count {
+  background: rgba(255,255,255,.15);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: .85rem;
+  font-weight: 600;
+}
+.tree-root-line {
+  width: 2px;
+  height: 32px;
+  background: var(--border);
+  margin: 0 auto;
+}
+
+/* Zhuz cards */
+.tree-zhuzs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.tree-zhuz {
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 16px;
+  background: var(--white);
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  transition: box-shadow .2s;
+}
+.tree-zhuz:hover {
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+.tree-zhuz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: background .15s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+}
+.tree-zhuz-header:hover {
+  background: var(--surface-secondary);
+}
+.tree-zhuz-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.tree-zhuz-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-weight: 800;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.tree-zhuz-icon--uly   { background: linear-gradient(135deg, #F59E0B, #D97706); }
+.tree-zhuz-icon--orta  { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+.tree-zhuz-icon--kishi { background: linear-gradient(135deg, #10B981, #059669); }
+.tree-zhuz-icon--other { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+
+.tree-zhuz-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+.tree-zhuz-meta {
+  font-size: .85rem;
+  color: var(--muted);
+  margin: 2px 0 0;
+}
+.tree-zhuz-arrow {
+  width: 20px;
+  height: 20px;
+  color: var(--muted);
+  transition: transform .25s;
+  flex-shrink: 0;
+}
+.tree-zhuz-arrow--open {
+  transform: rotate(180deg);
+}
+
+/* Expanded tribes grid */
+.tree-zhuz-body {
+  padding: 4px 20px 20px;
+  border-top: 1px solid rgba(0,0,0,.04);
+}
+.tree-subgroup-label {
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin: 16px 0 8px;
+  padding: 0;
+}
+.tree-subgroup-label--uly   { color: #D97706; }
+.tree-subgroup-label--orta  { color: #2563EB; }
+.tree-subgroup-label--kishi { color: #059669; }
+.tree-subgroup-label--other { color: #7C3AED; }
+
+.tree-tribes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+@media (min-width: 640px) {
+  .tree-tribes-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.tree-tribe-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 12px;
+  background: none;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+  font: inherit;
+  width: 100%;
+}
+.tree-tribe-card:hover {
+  border-color: rgba(0,0,0,.12);
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  transform: translateY(-1px);
+}
+.tree-tribe-card--highlighted {
+  border-width: 2px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+}
+.tree-tribe-card--highlighted.tree-tribe-card--uly   { border-color: #F59E0B; background: #FFFBEB; }
+.tree-tribe-card--highlighted.tree-tribe-card--orta  { border-color: #3B82F6; background: #EFF6FF; }
+.tree-tribe-card--highlighted.tree-tribe-card--kishi { border-color: #10B981; background: #ECFDF5; }
+.tree-tribe-card--highlighted.tree-tribe-card--other { border-color: #8B5CF6; background: #F5F3FF; }
+
+.tree-tribe-tamga {
+  font-size: 1.6rem;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.tree-tribe-name {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.tree-tribe-count {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: .75rem;
+  font-weight: 600;
+}
+.tree-tribe-count--uly   { background: #FFFBEB; color: #B45309; }
+.tree-tribe-count--orta  { background: #EFF6FF; color: #1D4ED8; }
+.tree-tribe-count--kishi { background: #ECFDF5; color: #047857; }
+.tree-tribe-count--other { background: #F5F3FF; color: #6D28D9; }
+
+/* ================================================================
+   JOIN MODAL
+   ================================================================ */
+.join-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.55);
+  padding: 16px;
+  animation: fadeIn .2s;
+}
+@keyframes fadeIn { from { opacity: 0; } }
+
+.join-modal {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: var(--white);
+  border-radius: 20px;
+  padding: 32px 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  animation: slideUp .25s;
+}
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } }
+
+.join-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1;
+}
+.join-close:hover { color: var(--text); }
+
+.join-tamga {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #FFFBEB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  margin: 0 auto 16px;
+}
+.join-tribe-name {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 4px;
+}
+.join-zhuz-name {
+  text-align: center;
+  font-size: .9rem;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+.join-info {
+  background: var(--surface-secondary);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.join-info p {
+  font-size: .9rem;
+  color: #374151;
+  line-height: 1.5;
+  margin: 0 0 6px;
+}
+.join-info p:last-child { margin: 0; }
+.join-info-label {
+  font-weight: 600;
+}
+.join-error {
+  background: #FEF2F2;
+  color: #DC2626;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: .85rem;
+  margin-bottom: 12px;
+}
+.join-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: var(--gold-gradient);
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .2s;
+  text-align: center;
+}
+.join-btn:hover { opacity: .9; }
+.join-btn:disabled { opacity: .5; cursor: default; }
+.join-msg {
+  text-align: center;
+  font-size: .9rem;
+  color: var(--muted);
+}
+.join-msg--ok {
+  color: #059669;
+  font-weight: 600;
+}
+
+/* ================================================================
+   LEADERBOARD
+   ================================================================ */
+
+/* Hero counter */
+.lb-hero {
+  background: linear-gradient(135deg, #F59E0B, #EA580C);
+  border-radius: 20px;
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--white);
+  margin-bottom: 32px;
+  box-shadow: 0 4px 24px rgba(234, 88, 12, .2);
+}
+.lb-hero-label {
+  font-size: 1rem;
+  opacity: .9;
+  margin: 0 0 8px;
+}
+.lb-hero-count {
+  font-size: clamp(3rem, 8vw, 4rem);
+  font-weight: 900;
+  font-family: var(--ff-head);
+  letter-spacing: -.02em;
+  line-height: 1;
+}
+.lb-hero-sub {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 8px 0 0;
+}
+
+/* User tribe badge */
+.lb-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #FFFBEB;
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+.lb-user-badge-tamga {
+  font-size: 2rem;
+}
+.lb-user-badge-info {
+  flex: 1;
+}
+.lb-user-badge-name {
+  font-weight: 700;
+  color: #92400E;
+  margin: 0;
+}
+.lb-user-badge-rank {
+  font-size: .85rem;
+  color: #B45309;
+  margin: 2px 0 0;
+}
+
+/* CTA block */
+.lb-cta {
+  border: 2px dashed #FCD34D;
+  background: rgba(255,251,235,.5);
+  border-radius: 14px;
+  padding: 28px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.lb-cta h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+.lb-cta p {
+  color: var(--muted);
+  margin: 0 0 16px;
+  font-size: .95rem;
+}
+.lb-cta-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  background: var(--gold-gradient);
+  color: var(--white);
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+.lb-cta-btn:hover { opacity: .9; }
+
+/* Zhuz race cards */
+.lb-zhuz-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+.lb-zhuz-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+@media (min-width: 640px) {
+  .lb-zhuz-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.lb-zhuz-card {
+  border-radius: 14px;
+  padding: 16px;
+  transition: box-shadow .2s;
+}
+.lb-zhuz-card:hover {
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+.lb-zhuz-card--uly   { background: #FFFBEB; }
+.lb-zhuz-card--orta  { background: #EFF6FF; }
+.lb-zhuz-card--kishi { background: #ECFDF5; }
+.lb-zhuz-card--other { background: #F5F3FF; }
+
+.lb-zhuz-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.lb-zhuz-card-name {
+  font-weight: 700;
+  color: var(--text);
+  font-size: .95rem;
+}
+.lb-zhuz-card-pct {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #1F2937;
+}
+.lb-zhuz-bar {
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.lb-zhuz-bar--uly   { background: rgba(245,158,11,.15); }
+.lb-zhuz-bar--orta  { background: rgba(59,130,246,.12); }
+.lb-zhuz-bar--kishi { background: rgba(16,185,129,.12); }
+.lb-zhuz-bar--other { background: rgba(139,92,246,.12); }
+
+.lb-zhuz-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 1s ease;
+}
+.lb-zhuz-bar-fill--uly   { background: linear-gradient(90deg, #F59E0B, #D97706); }
+.lb-zhuz-bar-fill--orta  { background: linear-gradient(90deg, #3B82F6, #2563EB); }
+.lb-zhuz-bar-fill--kishi { background: linear-gradient(90deg, #10B981, #059669); }
+.lb-zhuz-bar-fill--other { background: linear-gradient(90deg, #8B5CF6, #7C3AED); }
+
+.lb-zhuz-card-count {
+  font-size: .85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* Tribe ranking table */
+.lb-rank-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+.lb-rank-table {
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 16px;
+  background: var(--white);
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.lb-rank-header {
+  display: none;
+}
+@media (min-width: 640px) {
+  .lb-rank-header {
+    display: grid;
+    grid-template-columns: 3rem 1fr 6rem 5rem 5rem;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--surface-secondary);
+    font-size: .75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: .04em;
+  }
+  .lb-rank-header span:nth-child(n+3) { text-align: right; }
+}
+.lb-rank-row {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0,0,0,.03);
+  font-size: .9rem;
+  transition: background .15s;
+}
+.lb-rank-row:hover {
+  background: var(--surface-secondary);
+}
+.lb-rank-row:last-child {
+  border-bottom: none;
+}
+.lb-rank-row--mine {
+  background: #FFFBEB;
+}
+@media (min-width: 640px) {
+  .lb-rank-row {
+    grid-template-columns: 3rem 1fr 6rem 5rem 5rem;
+  }
+}
+.lb-rank-pos {
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 1rem;
+}
+.lb-rank-tribe {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lb-rank-tamga {
+  font-size: 1.15rem;
+}
+.lb-rank-name {
+  font-weight: 600;
+  color: var(--text);
+}
+.lb-rank-you {
+  font-size: .75rem;
+  color: #D97706;
+  margin-left: 4px;
+}
+.lb-rank-zhuz {
+  display: none;
+  text-align: right;
+  font-size: .8rem;
+  color: var(--muted);
+}
+@media (min-width: 640px) {
+  .lb-rank-zhuz { display: block; }
+}
+.lb-rank-members {
+  text-align: right;
+  font-weight: 700;
+  color: var(--text);
+}
+.lb-rank-today {
+  display: none;
+  text-align: right;
+  font-size: .85rem;
+}
+@media (min-width: 640px) {
+  .lb-rank-today { display: block; }
+}
+.lb-rank-today--plus {
+  color: #059669;
+}
+.lb-rank-today--zero {
+  color: var(--border);
+}
+
+/* Invite section */
+.lb-invite {
+  background: linear-gradient(135deg, var(--blue), var(--blue-mid));
+  border-radius: 20px;
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--white);
+}
+.lb-invite h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+.lb-invite p {
+  opacity: .7;
+  margin: 0 0 20px;
+}
+.lb-invite-btn {
+  display: inline-block;
+  padding: 14px 28px;
+  background: var(--white);
+  color: var(--text);
+  border-radius: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background .2s;
+}
+.lb-invite-btn:hover {
+  background: var(--surface-secondary);
+}
+
+/* Share button */
+.lb-share-btn {
+  margin-left: auto;
+  padding: 8px 18px;
+  background: var(--gold-gradient);
+  color: var(--white);
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+.lb-share-btn:hover { opacity: .9; }
+
+/* Leaderboard teaser (homepage) */
+.lb-teaser {
+  padding: 64px 0;
+  background: var(--surface-secondary);
+}
+.lb-teaser-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.lb-teaser-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.lb-teaser-header h2 {
+  font-family: var(--ff-head);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+.lb-teaser-header p {
+  color: var(--muted);
+  font-size: .95rem;
+}
+.lb-teaser-list {
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 16px;
+  background: var(--white);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.lb-teaser-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(0,0,0,.03);
+}
+.lb-teaser-row:last-child {
+  border-bottom: none;
+}
+.lb-teaser-pos {
+  width: 32px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+.lb-teaser-tamga {
+  font-size: 1.3rem;
+}
+.lb-teaser-name {
+  flex: 1;
+  font-weight: 600;
+  color: var(--text);
+}
+.lb-teaser-count {
+  font-weight: 800;
+  color: #374151;
+}
+.lb-teaser-cta {
+  text-align: center;
+}

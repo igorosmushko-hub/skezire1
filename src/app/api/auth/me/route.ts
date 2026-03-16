@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
 
   const { data } = await supabase
     .from('users')
-    .select('usage_count, paid_generations')
+    .select('usage_count, paid_generations, zhuz_id, tribe_id')
     .eq('id', session.userId)
     .single();
 
@@ -25,6 +25,12 @@ export async function GET(req: NextRequest) {
   const remaining = Math.max(0, totalAvailable - usageCount);
 
   return NextResponse.json({
-    user: { id: session.userId, phone: session.phone, remaining },
+    user: {
+      id: session.userId,
+      phone: session.phone,
+      remaining,
+      zhuzId: data?.zhuz_id ?? undefined,
+      tribeId: data?.tribe_id ?? undefined,
+    },
   });
 }

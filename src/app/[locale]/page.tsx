@@ -6,6 +6,7 @@ import { FormTreeContainer } from '@/components/FormTreeContainer';
 import { AiSection } from '@/components/AiSection';
 import { AiShowcase } from '@/components/AiShowcase';
 import { FamilyPortraitCta } from '@/components/FamilyPortraitCta';
+import { LeaderboardTeaser } from '@/components/LeaderboardTeaser';
 
 import { JsonLd } from '@/components/JsonLd';
 
@@ -21,6 +22,7 @@ export default async function HomePage() {
       <OrnamentDivider />
       <FormTreeContainer locale={locale} />
       <AiSection />
+      <LeaderboardTeaser locale={locale} />
       <FamilyPortraitCta />
     </>
   );
