@@ -1,0 +1,416 @@
+/* ================================================================
+   TRIBE RACE SECTION — Homepage CTA block
+   ================================================================ */
+
+.race-section {
+  padding: 80px 0;
+  background: linear-gradient(180deg, #FFFBF0 0%, var(--white) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.race-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 3px;
+  background: var(--gold-gradient);
+  border-radius: 2px;
+}
+
+.race-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ── Hero counter ────────────────────────────────── */
+.race-hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.race-hero-icon {
+  font-size: 3rem;
+  margin-bottom: 8px;
+  animation: raceHeroBounce 2s ease infinite;
+}
+@keyframes raceHeroBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.race-hero-title {
+  font-family: var(--ff-head);
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 900;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+.race-hero-counter {
+  font-size: clamp(3rem, 8vw, 4.5rem);
+  font-weight: 900;
+  font-family: var(--ff-head);
+  background: linear-gradient(135deg, #F59E0B, #EA580C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+.race-hero-label {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin: 4px 0 0;
+  font-weight: 500;
+}
+.race-hero-today {
+  margin-top: 16px;
+  padding: 10px 20px;
+  background: rgba(16, 185, 129, .08);
+  border-radius: 50px;
+  display: inline-block;
+  font-size: .9rem;
+  color: #059669;
+}
+.race-today-item strong {
+  font-weight: 700;
+}
+
+/* ── User badge ──────────────────────────────────── */
+.race-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+  border: 2px solid #FCD34D;
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 32px;
+  animation: racePulse 3s ease infinite;
+}
+@keyframes racePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(252, 211, 77, .3); }
+  50% { box-shadow: 0 0 0 8px rgba(252, 211, 77, 0); }
+}
+.race-user-tamga {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+.race-user-info {
+  flex: 1;
+}
+.race-user-name {
+  font-weight: 700;
+  color: #92400E;
+  margin: 0;
+  font-size: 1.05rem;
+}
+.race-user-rank {
+  font-size: .85rem;
+  color: #B45309;
+  margin: 2px 0 0;
+}
+.race-user-pos {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #D97706;
+}
+
+/* ── Section titles ──────────────────────────────── */
+.race-section-title {
+  font-family: var(--ff-head);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+
+/* ── Top 5 tribes ────────────────────────────────── */
+.race-top {
+  margin-bottom: 36px;
+}
+.race-top-list {
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 18px;
+  background: var(--white);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.04);
+}
+.race-top-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0,0,0,.04);
+  transition: background .15s;
+}
+.race-top-row:last-child {
+  border-bottom: none;
+}
+.race-top-row:hover {
+  background: rgba(0,0,0,.015);
+}
+.race-top-row--mine {
+  background: #FFFBEB;
+}
+.race-top-pos {
+  width: 32px;
+  text-align: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.race-top-tamga {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.race-top-info {
+  flex: 1;
+  min-width: 0;
+}
+.race-top-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.race-top-name {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 1rem;
+}
+.race-top-you {
+  font-size: .75rem;
+  color: #D97706;
+  font-weight: 600;
+}
+.race-top-count {
+  margin-left: auto;
+  font-weight: 800;
+  color: #374151;
+  font-size: .95rem;
+}
+.race-top-bar {
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.race-top-bar--gold   { background: rgba(245,158,11,.1); }
+.race-top-bar--blue   { background: rgba(59,130,246,.08); }
+.race-top-bar--green  { background: rgba(16,185,129,.08); }
+.race-top-bar--purple { background: rgba(139,92,246,.08); }
+
+.race-top-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1.2s cubic-bezier(.4,0,.2,1);
+}
+.race-top-bar-fill--gold   { background: linear-gradient(90deg, #F59E0B, #D97706); }
+.race-top-bar-fill--blue   { background: linear-gradient(90deg, #3B82F6, #2563EB); }
+.race-top-bar-fill--green  { background: linear-gradient(90deg, #10B981, #059669); }
+.race-top-bar-fill--purple { background: linear-gradient(90deg, #8B5CF6, #7C3AED); }
+
+.race-top-today {
+  flex-shrink: 0;
+  background: rgba(16, 185, 129, .1);
+  color: #059669;
+  font-size: .8rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ── Zhuz race ───────────────────────────────────── */
+.race-zhuz {
+  margin-bottom: 40px;
+}
+.race-zhuz-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+@media (min-width: 640px) {
+  .race-zhuz-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.race-zhuz-card {
+  position: relative;
+  border-radius: 16px;
+  padding: 20px 16px;
+  text-align: center;
+  transition: transform .2s, box-shadow .2s;
+}
+.race-zhuz-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+}
+.race-zhuz-card--gold   { background: #FFFBEB; }
+.race-zhuz-card--blue   { background: #EFF6FF; }
+.race-zhuz-card--green  { background: #ECFDF5; }
+.race-zhuz-card--purple { background: #F5F3FF; }
+
+.race-zhuz-leader {
+  position: absolute;
+  top: -10px;
+  right: -6px;
+  font-size: 1.5rem;
+  animation: raceLeaderBounce 1.5s ease infinite;
+}
+@keyframes raceLeaderBounce {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+}
+.race-zhuz-name {
+  display: block;
+  font-weight: 700;
+  color: var(--text);
+  font-size: .95rem;
+  margin-bottom: 6px;
+}
+.race-zhuz-pct {
+  display: block;
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.race-zhuz-card--gold .race-zhuz-pct   { color: #D97706; }
+.race-zhuz-card--blue .race-zhuz-pct   { color: #2563EB; }
+.race-zhuz-card--green .race-zhuz-pct  { color: #059669; }
+.race-zhuz-card--purple .race-zhuz-pct { color: #7C3AED; }
+
+.race-zhuz-bar {
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.race-zhuz-bar--gold   { background: rgba(245,158,11,.15); }
+.race-zhuz-bar--blue   { background: rgba(59,130,246,.12); }
+.race-zhuz-bar--green  { background: rgba(16,185,129,.12); }
+.race-zhuz-bar--purple { background: rgba(139,92,246,.12); }
+
+.race-zhuz-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1.2s cubic-bezier(.4,0,.2,1);
+}
+.race-zhuz-bar-fill--gold   { background: linear-gradient(90deg, #F59E0B, #D97706); }
+.race-zhuz-bar-fill--blue   { background: linear-gradient(90deg, #3B82F6, #2563EB); }
+.race-zhuz-bar-fill--green  { background: linear-gradient(90deg, #10B981, #059669); }
+.race-zhuz-bar-fill--purple { background: linear-gradient(90deg, #8B5CF6, #7C3AED); }
+
+.race-zhuz-count {
+  font-size: .85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* ── CTA block ───────────────────────────────────── */
+.race-cta {
+  text-align: center;
+  background: linear-gradient(135deg, #1E3A5F, #0F2744);
+  border-radius: 24px;
+  padding: 48px 32px;
+  color: var(--white);
+  box-shadow: 0 8px 32px rgba(15, 39, 68, .3);
+}
+.race-cta-title {
+  font-family: var(--ff-head);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 900;
+  margin: 0 0 12px;
+}
+.race-cta-desc {
+  opacity: .8;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0 0 28px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.race-cta-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.race-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 28px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+  cursor: pointer;
+  border: none;
+}
+.race-cta-btn:hover {
+  transform: translateY(-2px);
+}
+.race-cta-btn--primary {
+  background: var(--gold-gradient);
+  color: var(--white);
+  box-shadow: 0 4px 16px rgba(200, 168, 75, .4);
+}
+.race-cta-btn--primary:hover {
+  box-shadow: 0 6px 24px rgba(200, 168, 75, .5);
+}
+.race-cta-btn--secondary {
+  background: rgba(255,255,255,.12);
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,.2);
+}
+.race-cta-btn--secondary:hover {
+  background: rgba(255,255,255,.18);
+}
+.race-share-btn {
+  background: none;
+  border: 1px solid rgba(255,255,255,.25);
+  color: rgba(255,255,255,.8);
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+.race-share-btn:hover {
+  background: rgba(255,255,255,.1);
+  color: var(--white);
+  border-color: rgba(255,255,255,.4);
+}
+
+/* ── Mobile tweaks ───────────────────────────────── */
+@media (max-width: 480px) {
+  .race-section {
+    padding: 60px 0;
+  }
+  .race-hero-icon {
+    font-size: 2.4rem;
+  }
+  .race-top-row {
+    padding: 12px 14px;
+    gap: 8px;
+  }
+  .race-top-tamga {
+    font-size: 1.1rem;
+  }
+  .race-cta {
+    padding: 36px 20px;
+  }
+  .race-cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  .race-cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
