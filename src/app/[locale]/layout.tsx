@@ -8,6 +8,8 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ToastProvider } from '@/components/Toast';
 import { AuthProvider } from '@/components/AuthProvider';
+import { FeedbackButton } from '@/components/FeedbackButton';
+import '@/styles/feedback.css';
 
 export async function generateMetadata({
   params,
@@ -99,6 +101,7 @@ export default async function LocaleLayout({
           <Navbar locale={locale} />
           {children}
           <Footer />
+          <FeedbackButton />
         </ToastProvider>
       </AuthProvider>
     </NextIntlClientProvider>
