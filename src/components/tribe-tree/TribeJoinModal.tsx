@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/components/AuthProvider';
+import { LoginModal } from '@/components/LoginModal';
 import type { Tribe, Zhuz } from '@/lib/types';
 
 interface Props {
@@ -16,6 +17,7 @@ export function TribeJoinModal({ tribe, zhuz, locale, onClose, onJoined }: Props
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showLogin, setShowLogin] = useState(false);
 
   const isKk = locale === 'kk';
   const tribeName = isKk ? tribe.kk : tribe.ru;
@@ -79,10 +81,12 @@ export function TribeJoinModal({ tribe, zhuz, locale, onClose, onJoined }: Props
 
         {error && <p className="join-error">{error}</p>}
 
+        {showLogin && <LoginModal open={true} onClose={() => setShowLogin(false)} />}
+
         {!user ? (
-          <p className="join-msg">
-            {isKk ? 'Руға қосылу үшін кіріңіз' : 'Войдите, чтобы присоединиться к роду'}
-          </p>
+          <button onClick={() => setShowLogin(true)} className="join-btn">
+            {isKk ? 'Деректерді толтыру' : 'Заполнить данные'}
+          </button>
         ) : user.tribeId === tribe.id ? (
           <p className="join-msg join-msg--ok">
             {isKk ? 'Сіз осы руда тіркелгенсіз ✓' : 'Вы уже в этом роду ✓'}
