@@ -14,12 +14,6 @@ export async function GET() {
     .select('tribe_id, zhuz_id, member_count, today_count, today_date')
     .order('member_count', { ascending: false });
 
-  // Get total users with tribe
-  const { count: totalUsers } = await supabase
-    .from('users')
-    .select('id', { count: 'exact', head: true })
-    .not('tribe_id', 'is', null);
-
   // Build zhuz aggregates
   type StatRow = NonNullable<typeof stats>[number];
   const zhuzMap: Record<string, { memberCount: number; tribes: StatRow[] }> = {};
@@ -48,8 +42,11 @@ export async function GET() {
     tribes: zhuzMap[zhuz.id]?.tribes ?? [],
   }));
 
+  // Total = sum of all member_count from tribe_stats
+  const totalUsers = (stats ?? []).reduce((sum, s) => sum + (s.member_count ?? 0), 0);
+
   const res = NextResponse.json({
-    totalUsers: totalUsers ?? 0,
+    totalUsers,
     zhuzStats,
     tribes: stats ?? [],
   });
