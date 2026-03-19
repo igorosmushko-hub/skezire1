@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import { LoginModal } from '@/components/LoginModal';
 import '@/styles/order.css';
+import { RobokassaWidget } from '@/components/RobokassaWidget';
 import { orderSubmit, orderPromoAi, orderSelectProduct } from '@/lib/analytics';
 
 interface Product {
@@ -36,6 +37,7 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
   const [postalCode, setPostalCode] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/products')
@@ -83,7 +85,8 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
 
       const data = await res.json();
       if (data.url) {
-        window.location.href = data.url;
+        setPaymentUrl(data.url);
+        setSubmitting(false);
       } else {
         setError(t('errorCreate'));
         setSubmitting(false);
@@ -99,6 +102,15 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
   return (
     <>
       {showLogin && <LoginModal open={true} onClose={() => setShowLogin(false)} />}
+      {paymentUrl && (
+        <RobokassaWidget
+          url={paymentUrl}
+          onClose={() => {
+            setPaymentUrl(null);
+            setSubmitting(false);
+          }}
+        />
+      )}
       <main className="order-page">
         <div className="container">
           <div className="order-header">

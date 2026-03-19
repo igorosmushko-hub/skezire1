@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
+import { RobokassaWidget } from '@/components/RobokassaWidget';
 import '@/styles/pricing-page.css';
 
 interface Package {
@@ -19,6 +20,7 @@ export function PricingPageClient({ locale }: { locale: string }) {
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [buying, setBuying] = useState<string | null>(null);
+  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/packages')
@@ -38,9 +40,8 @@ export function PricingPageClient({ locale }: { locale: string }) {
       });
       const data = await res.json();
       if (data.url) {
-        window.location.href = data.url;
+        setPaymentUrl(data.url);
       } else if (data.error === 'unauthorized') {
-        // Could show login modal
         setBuying(null);
       }
     } catch {
@@ -86,6 +87,16 @@ export function PricingPageClient({ locale }: { locale: string }) {
 
         <p className="pricing-page-free">{t('free')}</p>
       </div>
+
+      {paymentUrl && (
+        <RobokassaWidget
+          url={paymentUrl}
+          onClose={() => {
+            setPaymentUrl(null);
+            setBuying(null);
+          }}
+        />
+      )}
     </main>
   );
 }

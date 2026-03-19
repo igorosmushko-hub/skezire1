@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslations } from 'next-intl';
 import { pricingBuy } from '@/lib/analytics';
+import { RobokassaWidget } from '@/components/RobokassaWidget';
 
 interface Package {
   id: string;
@@ -27,6 +28,7 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
   const [packages, setPackages] = useState<Package[]>(PACKAGES_CACHE.data ?? []);
   const [loading, setLoading] = useState(!PACKAGES_CACHE.data);
   const [buying, setBuying] = useState<string | null>(null);
+  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open || PACKAGES_CACHE.data) return;
@@ -69,7 +71,7 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
       });
       const data = await res.json();
       if (data.url) {
-        window.location.href = data.url;
+        setPaymentUrl(data.url);
       }
     } catch {
       setBuying(null);
@@ -130,5 +132,18 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
     </div>
   );
 
-  return createPortal(modal, document.body);
+  return (
+    <>
+      {createPortal(modal, document.body)}
+      {paymentUrl && (
+        <RobokassaWidget
+          url={paymentUrl}
+          onClose={() => {
+            setPaymentUrl(null);
+            setBuying(null);
+          }}
+        />
+      )}
+    </>
+  );
 }
