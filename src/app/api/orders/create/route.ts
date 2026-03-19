@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSessionUser } from '@/lib/auth';
 import { getSupabase } from '@/lib/supabase';
-import { createPaymentUrl } from '@/lib/robokassa';
+import { createPaymentUrl, createPaymentParams } from '@/lib/robokassa';
 
 export async function POST(req: NextRequest) {
   const user = getSessionUser(req);
@@ -128,11 +128,10 @@ export async function POST(req: NextRequest) {
   // Generate RoboCassa payment URL
   const productName = locale === 'kk' ? product.name_kk : product.name_ru;
   const description = `Skezire: ${productName}`;
+  const opts = { culture: locale, shpParams: { Shp_orderId: order.id } };
 
-  const url = createPaymentUrl(order.inv_id, amountKzt, description, {
-    culture: locale,
-    shpParams: { Shp_orderId: order.id },
-  });
+  const url = createPaymentUrl(order.inv_id, amountKzt, description, opts);
+  const params = createPaymentParams(order.inv_id, amountKzt, description, opts);
 
-  return NextResponse.json({ url, orderId: order.id });
+  return NextResponse.json({ url, params, orderId: order.id });
 }

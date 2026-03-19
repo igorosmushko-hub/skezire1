@@ -14,24 +14,21 @@ function md5(str: string): string {
 }
 
 /**
- * Generate a RoboCassa payment URL.
- * @param invId  - unique invoice ID (from payments or orders table)
- * @param amount - amount in KZT (integer)
- * @param description - payment description
- * @param options - optional: email, culture (kk/ru), receipt data
+ * Build payment parameters for Robokassa.
+ * Returns an object with all params needed for both URL redirect and iframe SDK.
  */
-export function createPaymentUrl(
+export function createPaymentParams(
   invId: number,
   amount: number,
   description: string,
   options?: {
     email?: string;
     culture?: string;
-    /** Extra user params: Shp_type=package, Shp_id=uuid */
     shpParams?: Record<string, string>;
   },
-): string {
-  const outSum = amount.toFixed(2);
+) {
+  // Robokassa.kz: production requires 6 decimal places, test mode — integers
+  const outSum = IS_TEST ? String(Math.round(amount)) : amount.toFixed(6);
 
   // Shp_ params must be sorted alphabetically in signature
   const shpParams = options?.shpParams ?? {};
@@ -43,19 +40,54 @@ export function createPaymentUrl(
   if (shpString) sigParts.push(shpString);
   const signature = md5(sigParts.join(':'));
 
-  const params = new URLSearchParams({
+  // Culture: Robokassa only supports 'ru' and 'en'
+  const culture = options?.culture === 'en' ? 'en' : 'ru';
+
+  return {
     MerchantLogin: MERCHANT_LOGIN,
     OutSum: outSum,
-    InvId: String(invId),
-    Description: description,
+    InvId: invId,
+    Description: description.slice(0, 100),
     SignatureValue: signature,
+    Culture: culture,
+    Encoding: 'utf-8',
+    IsTest: IS_TEST ? 1 : undefined,
+    Email: options?.email,
+    ...shpParams,
+  };
+}
+
+/**
+ * Generate a Robokassa payment URL (for redirect fallback).
+ */
+export function createPaymentUrl(
+  invId: number,
+  amount: number,
+  description: string,
+  options?: {
+    email?: string;
+    culture?: string;
+    shpParams?: Record<string, string>;
+  },
+): string {
+  const p = createPaymentParams(invId, amount, description, options);
+
+  const params = new URLSearchParams({
+    MerchantLogin: p.MerchantLogin,
+    OutSum: p.OutSum,
+    InvId: String(p.InvId),
+    Description: p.Description,
+    SignatureValue: p.SignatureValue,
+    Culture: p.Culture,
+    Encoding: p.Encoding,
   });
 
-  if (IS_TEST) params.set('IsTest', '1');
-  if (options?.email) params.set('Email', options.email);
-  if (options?.culture) params.set('Culture', options.culture === 'kk' ? 'kk' : 'ru');
+  if (p.IsTest) params.set('IsTest', '1');
+  if (p.Email) params.set('Email', p.Email);
 
-  for (const k of shpKeys) {
+  // Add Shp_ params
+  const shpParams = options?.shpParams ?? {};
+  for (const k of Object.keys(shpParams).sort()) {
     params.set(k, shpParams[k]);
   }
 

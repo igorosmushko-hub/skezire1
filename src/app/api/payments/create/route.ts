@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSessionUser } from '@/lib/auth';
 import { getSupabase } from '@/lib/supabase';
-import { createPaymentUrl } from '@/lib/robokassa';
+import { createPaymentUrl, createPaymentParams } from '@/lib/robokassa';
 
 export async function POST(req: NextRequest) {
   const user = getSessionUser(req);
@@ -53,11 +53,10 @@ export async function POST(req: NextRequest) {
   }
 
   const description = `Skezire: ${pkg.slug} (${pkg.generations} gen)`;
+  const opts = { culture: locale, shpParams: { Shp_paymentId: payment.id } };
 
-  const url = createPaymentUrl(payment.inv_id, pkg.price_kzt, description, {
-    culture: locale,
-    shpParams: { Shp_paymentId: payment.id },
-  });
+  const url = createPaymentUrl(payment.inv_id, pkg.price_kzt, description, opts);
+  const params = createPaymentParams(payment.inv_id, pkg.price_kzt, description, opts);
 
-  return NextResponse.json({ url });
+  return NextResponse.json({ url, params });
 }

@@ -28,7 +28,7 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
   const [packages, setPackages] = useState<Package[]>(PACKAGES_CACHE.data ?? []);
   const [loading, setLoading] = useState(!PACKAGES_CACHE.data);
   const [buying, setBuying] = useState<string | null>(null);
-  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+  const [paymentData, setPaymentData] = useState<{ url: string; params: Record<string, unknown> } | null>(null);
 
   useEffect(() => {
     if (!open || PACKAGES_CACHE.data) return;
@@ -70,8 +70,8 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
         body: JSON.stringify({ packageId: pkg.id, locale }),
       });
       const data = await res.json();
-      if (data.url) {
-        setPaymentUrl(data.url);
+      if (data.url && data.params) {
+        setPaymentData({ url: data.url, params: data.params });
       }
     } catch {
       setBuying(null);
@@ -135,11 +135,12 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
   return (
     <>
       {createPortal(modal, document.body)}
-      {paymentUrl && (
+      {paymentData && (
         <RobokassaWidget
-          url={paymentUrl}
+          params={paymentData.params as never}
+          fallbackUrl={paymentData.url}
           onClose={() => {
-            setPaymentUrl(null);
+            setPaymentData(null);
             setBuying(null);
           }}
         />

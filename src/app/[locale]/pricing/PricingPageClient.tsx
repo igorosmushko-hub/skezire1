@@ -20,7 +20,7 @@ export function PricingPageClient({ locale }: { locale: string }) {
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [buying, setBuying] = useState<string | null>(null);
-  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+  const [paymentData, setPaymentData] = useState<{ url: string; params: Record<string, unknown> } | null>(null);
 
   useEffect(() => {
     fetch('/api/packages')
@@ -39,8 +39,8 @@ export function PricingPageClient({ locale }: { locale: string }) {
         body: JSON.stringify({ packageId: pkg.id, locale }),
       });
       const data = await res.json();
-      if (data.url) {
-        setPaymentUrl(data.url);
+      if (data.url && data.params) {
+        setPaymentData({ url: data.url, params: data.params });
       } else if (data.error === 'unauthorized') {
         setBuying(null);
       }
@@ -88,11 +88,12 @@ export function PricingPageClient({ locale }: { locale: string }) {
         <p className="pricing-page-free">{t('free')}</p>
       </div>
 
-      {paymentUrl && (
+      {paymentData && (
         <RobokassaWidget
-          url={paymentUrl}
+          params={paymentData.params as never}
+          fallbackUrl={paymentData.url}
           onClose={() => {
-            setPaymentUrl(null);
+            setPaymentData(null);
             setBuying(null);
           }}
         />

@@ -37,7 +37,7 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
   const [postalCode, setPostalCode] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+  const [paymentData, setPaymentData] = useState<{ url: string; params: Record<string, unknown> } | null>(null);
 
   useEffect(() => {
     fetch('/api/products')
@@ -84,8 +84,8 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
       });
 
       const data = await res.json();
-      if (data.url) {
-        setPaymentUrl(data.url);
+      if (data.url && data.params) {
+        setPaymentData({ url: data.url, params: data.params });
         setSubmitting(false);
       } else {
         setError(t('errorCreate'));
@@ -102,11 +102,12 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
   return (
     <>
       {showLogin && <LoginModal open={true} onClose={() => setShowLogin(false)} />}
-      {paymentUrl && (
+      {paymentData && (
         <RobokassaWidget
-          url={paymentUrl}
+          params={paymentData.params as never}
+          fallbackUrl={paymentData.url}
           onClose={() => {
-            setPaymentUrl(null);
+            setPaymentData(null);
             setSubmitting(false);
           }}
         />

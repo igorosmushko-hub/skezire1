@@ -1,49 +1,90 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+
+interface RobokassaParams {
+  MerchantLogin: string;
+  OutSum: string;
+  InvId: number;
+  Description: string;
+  SignatureValue: string;
+  Culture: string;
+  Encoding: string;
+  IsTest?: number;
+  Email?: string;
+  [key: string]: string | number | undefined;
+}
 
 interface Props {
-  url: string;
+  params: RobokassaParams;
+  /** Fallback URL if iframe SDK fails to load */
+  fallbackUrl: string;
   onClose: () => void;
 }
 
+declare global {
+  interface Window {
+    Robokassa?: {
+      StartPayment: (params: Record<string, unknown>) => void;
+    };
+  }
+}
+
 /**
- * Opens Robokassa payment in a popup window.
- * Robokassa blocks iframe embedding (error 30), so popup is the reliable approach.
- * When the popup is closed, onClose fires to reset the UI state.
+ * Robokassa payment widget using their official iframe SDK.
+ * Opens a modal payment form via Robokassa.StartPayment().
+ * Falls back to redirect if SDK fails to load.
  */
-export function RobokassaWidget({ url, onClose }: Props) {
+export function RobokassaWidget({ params, fallbackUrl, onClose }: Props) {
+  const initiated = useRef(false);
+
   useEffect(() => {
-    const width = 500;
-    const height = 700;
-    const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2;
+    if (initiated.current) return;
+    initiated.current = true;
 
-    const popup = window.open(
-      url,
-      'robokassa_payment',
-      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`,
-    );
+    // Build clean params object (remove undefined values)
+    const paymentParams: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) {
+        paymentParams[key] = value;
+      }
+    }
 
-    // If popup was blocked by browser, fall back to redirect
-    if (!popup || popup.closed) {
-      window.location.href = url;
+    // If SDK already loaded, start payment immediately
+    if (window.Robokassa) {
+      window.Robokassa.StartPayment(paymentParams);
       return;
     }
 
-    // Poll to detect when popup is closed
-    const timer = setInterval(() => {
-      if (popup.closed) {
-        clearInterval(timer);
-        onClose();
+    // Load the official Robokassa iframe SDK
+    const script = document.createElement('script');
+    script.src = 'https://auth.robokassa.kz/Merchant/bundle/robokassa_iframe.js';
+    script.async = true;
+
+    script.onload = () => {
+      if (window.Robokassa) {
+        window.Robokassa.StartPayment(paymentParams);
+      } else {
+        // SDK loaded but Robokassa object not available — fallback
+        window.location.href = fallbackUrl;
       }
-    }, 500);
+    };
+
+    script.onerror = () => {
+      // Script failed to load — fallback to redirect
+      window.location.href = fallbackUrl;
+    };
+
+    document.body.appendChild(script);
 
     return () => {
-      clearInterval(timer);
+      // Cleanup: remove script if component unmounts before load
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
     };
-  }, [url, onClose]);
+  }, [params, fallbackUrl, onClose]);
 
-  // No visual render — payment happens in the popup window
+  // The SDK renders its own modal overlay — no visual render needed
   return null;
 }
