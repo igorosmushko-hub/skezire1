@@ -41,7 +41,7 @@ export function PricingPageClient({ locale }: { locale: string }) {
       const data = await res.json();
       if (data.url && data.params) {
         setPaymentData({ url: data.url, params: data.params });
-      } else if (data.error === 'unauthorized') {
+      } else {
         setBuying(null);
       }
     } catch {
