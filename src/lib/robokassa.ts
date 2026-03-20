@@ -27,8 +27,8 @@ export function createPaymentParams(
     shpParams?: Record<string, string>;
   },
 ) {
-  // Robokassa.kz: production requires 6 decimal places, test mode — integers
-  const outSum = IS_TEST ? String(Math.round(amount)) : amount.toFixed(6);
+  // Robokassa.kz: KZT amounts — use 2 decimal places (standard format)
+  const outSum = amount.toFixed(2);
 
   // Shp_ params must be sorted alphabetically in signature
   const shpParams = options?.shpParams ?? {};

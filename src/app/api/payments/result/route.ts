@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 import { verifyResultSignature, resultOkResponse } from '@/lib/robokassa';
+import { sendMessage, getAdminChatId, isBotConfigured } from '@/lib/telegram-bot';
+
+/** Send debug info to Telegram admin */
+async function notify(text: string) {
+  if (!isBotConfigured()) return;
+  try {
+    await sendMessage({ chatId: getAdminChatId(), text, parseMode: 'HTML' });
+  } catch { /* ignore */ }
+}
 
 /**
  * Parse Robokassa callback params from either POST form data or GET query string.
@@ -24,16 +33,23 @@ function getParams(req: NextRequest, formData?: FormData) {
 async function handleResult(req: NextRequest, formData?: FormData) {
   const supabase = getSupabase();
   if (!supabase) {
+    await notify('❌ Result callback: Supabase unavailable');
     return new NextResponse('Service unavailable', { status: 503 });
   }
 
   const { OutSum, InvId, SignatureValue, Shp_paymentId, Shp_orderId } = getParams(req, formData);
 
+  await notify(
+    `🔔 <b>Robokassa callback</b>\nOutSum: ${OutSum}\nInvId: ${InvId}\nSignature: ${SignatureValue}\nShp_paymentId: ${Shp_paymentId}\nShp_orderId: ${Shp_orderId}\nMethod: ${req.method}`,
+  );
+
   if (!OutSum || !InvId || !SignatureValue) {
+    await notify('❌ Missing required params');
     return new NextResponse('Bad request: missing OutSum, InvId, or SignatureValue', { status: 400 });
   }
 
   if (!Shp_paymentId && !Shp_orderId) {
+    await notify('❌ Missing Shp_paymentId and Shp_orderId');
     return new NextResponse('Bad request: missing Shp_paymentId or Shp_orderId', { status: 400 });
   }
 
@@ -44,6 +60,7 @@ async function handleResult(req: NextRequest, formData?: FormData) {
 
   const valid = verifyResultSignature(OutSum, InvId, SignatureValue, shpParams);
   if (!valid) {
+    await notify(`❌ Invalid signature!\nExpected hash for: ${OutSum}:${InvId}:Password2:${Object.entries(shpParams).map(([k, v]) => `${k}=${v}`).join(':')}`);
     return new NextResponse('Invalid signature', { status: 400 });
   }
 
@@ -58,6 +75,7 @@ async function handleResult(req: NextRequest, formData?: FormData) {
       .single();
 
     if (payErr || !payment) {
+      await notify(`❌ Payment not found: id=${Shp_paymentId}, inv_id=${InvId}, error=${payErr?.message}`);
       return new NextResponse('Payment not found', { status: 400 });
     }
 
@@ -69,10 +87,16 @@ async function handleResult(req: NextRequest, formData?: FormData) {
       .single();
 
     if (pkg) {
-      await supabase.rpc('increment_paid_generations', {
+      const { error: rpcErr } = await supabase.rpc('increment_paid_generations', {
         p_user_id: payment.user_id,
         p_amount: pkg.generations,
       });
+
+      if (rpcErr) {
+        await notify(`❌ Failed to credit generations: ${rpcErr.message}`);
+      } else {
+        await notify(`✅ Payment OK! InvId=${InvId}, +${pkg.generations} generations`);
+      }
     }
   }
 
@@ -85,8 +109,11 @@ async function handleResult(req: NextRequest, formData?: FormData) {
       .eq('inv_id', Number(InvId));
 
     if (orderErr) {
+      await notify(`❌ Order not found: id=${Shp_orderId}, inv_id=${InvId}, error=${orderErr.message}`);
       return new NextResponse('Order not found', { status: 400 });
     }
+
+    await notify(`✅ Order paid! InvId=${InvId}, orderId=${Shp_orderId}`);
   }
 
   return new NextResponse(resultOkResponse(InvId), {
