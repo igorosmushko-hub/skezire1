@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { PaymentIframeNotifier } from '@/components/PaymentIframeNotifier';
 import '@/styles/legal.css';
 
 export async function generateMetadata({
@@ -26,6 +27,7 @@ export default async function PaymentFailPage({
 
   return (
     <main className="legal-main" style={{ textAlign: 'center', paddingTop: '4rem' }}>
+      <PaymentIframeNotifier status="fail" />
       <div className="container">
         <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>&#10007;</div>
         <h1>{isKk ? 'Төлем өтпеді' : 'Оплата не прошла'}</h1>

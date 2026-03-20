@@ -38,6 +38,21 @@ declare global {
 export function RobokassaWidget({ params, fallbackUrl, onClose }: Props) {
   const initiated = useRef(false);
 
+  // Listen for postMessage from success/fail pages loaded inside iframe
+  useEffect(() => {
+    const handler = (e: MessageEvent) => {
+      if (e.data?.type === 'robokassa-payment') {
+        onClose();
+        // If payment succeeded, reload to update user balance
+        if (e.data.status === 'success') {
+          window.location.reload();
+        }
+      }
+    };
+    window.addEventListener('message', handler);
+    return () => window.removeEventListener('message', handler);
+  }, [onClose]);
+
   useEffect(() => {
     if (initiated.current) return;
     initiated.current = true;
