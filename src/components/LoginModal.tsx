@@ -3,8 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslations } from 'next-intl';
-import { auth } from '@/lib/firebase';
-import { RecaptchaVerifier, signInWithPhoneNumber, type ConfirmationResult } from 'firebase/auth';
+import type { ConfirmationResult, RecaptchaVerifier as RecaptchaVerifierType } from 'firebase/auth';
 import { useAuth } from './AuthProvider';
 import { authSendCode, authVerifyCode } from '@/lib/analytics';
 
@@ -26,7 +25,7 @@ export function LoginModal({ open, onClose }: Props) {
   const [loading, setLoading] = useState(false);
 
   const confirmationRef = useRef<ConfirmationResult | null>(null);
-  const recaptchaRef = useRef<RecaptchaVerifier | null>(null);
+  const recaptchaRef = useRef<RecaptchaVerifierType | null>(null);
   const containerIdRef = useRef(0);
 
   /* ── Reset on close ── */
@@ -65,14 +64,18 @@ export function LoginModal({ open, onClose }: Props) {
   }, []);
 
   /* ── Get or create reCAPTCHA verifier ── */
-  const getRecaptchaVerifier = useCallback(() => {
+  const getRecaptchaVerifier = useCallback(async () => {
     // Clear old verifier
     if (recaptchaRef.current) {
       try { recaptchaRef.current.clear(); } catch { /* ignore */ }
       recaptchaRef.current = null;
     }
 
+    const { getFirebaseAuth } = await import('@/lib/firebase');
+    const auth = await getFirebaseAuth();
     if (!auth) throw new Error('Firebase auth not configured');
+
+    const { RecaptchaVerifier } = await import('firebase/auth');
 
     // Create a fresh container to avoid "already rendered" error
     const wrapper = document.getElementById('recaptcha-wrapper');
@@ -85,7 +88,7 @@ export function LoginModal({ open, onClose }: Props) {
         size: 'invisible',
       });
       recaptchaRef.current = verifier;
-      return verifier;
+      return { auth, verifier };
     }
 
     throw new Error('reCAPTCHA wrapper not found');
@@ -102,16 +105,16 @@ export function LoginModal({ open, onClose }: Props) {
     setError('');
 
     try {
-      const verifier = getRecaptchaVerifier();
+      const { auth, verifier } = await getRecaptchaVerifier();
+      const { signInWithPhoneNumber } = await import('firebase/auth');
       console.log('[Auth] Sending SMS to', phone);
-      const confirmation = await signInWithPhoneNumber(auth!, phone, verifier);
+      const confirmation = await signInWithPhoneNumber(auth, phone, verifier);
       console.log('[Auth] SMS sent successfully');
       confirmationRef.current = confirmation;
       setStep('code');
     } catch (err: unknown) {
       console.error('[Auth] SMS send error:', err);
 
-      // Show specific error messages for known Firebase errors
       const firebaseError = err as { code?: string; message?: string };
       const code = firebaseError.code || '';
 

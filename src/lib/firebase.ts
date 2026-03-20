@@ -1,22 +1,36 @@
-import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
-import { getAuth, type Auth } from 'firebase/auth';
-
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-};
+import type { FirebaseApp } from 'firebase/app';
+import type { Auth } from 'firebase/auth';
 
 let app: FirebaseApp | null = null;
 let auth: Auth | null = null;
+let initialized = false;
 
-if (firebaseConfig.apiKey) {
+/**
+ * Lazily initialize Firebase only when needed (login modal).
+ * This keeps ~218KB of Firebase JS out of the initial page bundle.
+ */
+export async function getFirebaseAuth(): Promise<Auth | null> {
+  if (initialized) return auth;
+  initialized = true;
+
+  const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+  if (!apiKey) return null;
+
   try {
-    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+    const { initializeApp, getApps } = await import('firebase/app');
+    const { getAuth } = await import('firebase/auth');
+
+    app = getApps().length === 0
+      ? initializeApp({
+          apiKey,
+          authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+          projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+        })
+      : getApps()[0];
+
     auth = getAuth(app);
+    return auth;
   } catch {
-    // Firebase not configured — auth features disabled
+    return null;
   }
 }
-
-export { auth };
