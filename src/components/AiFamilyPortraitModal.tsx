@@ -9,6 +9,7 @@ import { LoginModal } from './LoginModal';
 import { applyWatermark } from '@/lib/watermark';
 import { PricingModal } from './PricingModal';
 import { PORTRAIT_BACKGROUNDS, type PortraitBackground } from '@/data/portrait-backgrounds';
+import { RatioPicker, FAMILY_OPTIONS } from './RatioPicker';
 
 type Step = 'upload_photos' | 'select_background' | 'generating' | 'result';
 
@@ -34,6 +35,7 @@ export function AiFamilyPortraitModal({ open, onClose }: Props) {
   const [step, setStep] = useState<Step>('upload_photos');
   const [photos, setPhotos] = useState<PhotoItem[]>([]);
   const [selectedBg, setSelectedBg] = useState<string>('yurt');
+  const [aspectRatio, setAspectRatio] = useState('16:9');
   const [resultUrl, setResultUrl] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [showPricing, setShowPricing] = useState(false);
@@ -69,6 +71,7 @@ export function AiFamilyPortraitModal({ open, onClose }: Props) {
     setStep('upload_photos');
     setPhotos([]);
     setSelectedBg('yurt');
+    setAspectRatio('16:9');
     setResultUrl(null);
     setProgress(0);
     onClose();
@@ -141,7 +144,7 @@ export function AiFamilyPortraitModal({ open, onClose }: Props) {
       const createRes = await fetch('/api/ai/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ images, type: 'family-portrait', background: selectedBg }),
+        body: JSON.stringify({ images, type: 'family-portrait', background: selectedBg, aspectRatio }),
       });
 
       if (!createRes.ok) {
@@ -329,6 +332,8 @@ export function AiFamilyPortraitModal({ open, onClose }: Props) {
                 </button>
               ))}
             </div>
+
+            <RatioPicker value={aspectRatio} onChange={setAspectRatio} options={FAMILY_OPTIONS} />
 
             <button
               className="btn btn-ai ai-past-generate"

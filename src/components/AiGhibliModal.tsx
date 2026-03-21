@@ -8,6 +8,7 @@ import { useAuth } from './AuthProvider';
 import { LoginModal } from './LoginModal';
 import { applyWatermark } from '@/lib/watermark';
 import { PricingModal } from './PricingModal';
+import { RatioPicker } from './RatioPicker';
 import { aiGenerate, aiGenerateSuccess, aiGenerateError, aiDownload, aiShare, aiTryAgain, aiOrderCanvas, aiChangePhoto, aiSelectGender, aiUploadPhoto } from '@/lib/analytics';
 
 type Step = 'upload' | 'preview' | 'generating' | 'result';
@@ -26,6 +27,7 @@ export function AiGhibliModal({ open, onClose }: Props) {
   const [step, setStep] = useState<Step>('upload');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
+  const [aspectRatio, setAspectRatio] = useState('9:16');
   const [resultUrl, setResultUrl] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [dragOver, setDragOver] = useState(false);
@@ -110,7 +112,7 @@ export function AiGhibliModal({ open, onClose }: Props) {
       const createRes = await fetch('/api/ai/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageBase64, type: 'ghibli' }),
+        body: JSON.stringify({ imageBase64, type: 'ghibli', aspectRatio }),
       });
 
       if (!createRes.ok) {
@@ -265,6 +267,8 @@ export function AiGhibliModal({ open, onClose }: Props) {
             <h2 className="modal-title">{t('preview_title')}</h2>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={previewUrl} alt="" className="ai-past-img" />
+
+            <RatioPicker value={aspectRatio} onChange={setAspectRatio} />
 
             <button
               className="btn btn-ai ai-past-generate"

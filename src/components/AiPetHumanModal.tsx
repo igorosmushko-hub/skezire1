@@ -8,6 +8,7 @@ import { useAuth } from './AuthProvider';
 import { LoginModal } from './LoginModal';
 import { applyWatermark } from '@/lib/watermark';
 import { PricingModal } from './PricingModal';
+import { RatioPicker } from './RatioPicker';
 import { aiGenerate, aiGenerateSuccess, aiGenerateError, aiDownload, aiShare, aiTryAgain, aiOrderCanvas, aiChangePhoto, aiSelectGender, aiUploadPhoto } from '@/lib/analytics';
 
 type Step = 'upload' | 'preview' | 'generating' | 'result';
@@ -27,6 +28,7 @@ export function AiPetHumanModal({ open, onClose }: Props) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [gender, setGender] = useState<'male' | 'female'>('male');
+  const [aspectRatio, setAspectRatio] = useState('9:16');
   const [resultUrl, setResultUrl] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [dragOver, setDragOver] = useState(false);
@@ -111,7 +113,7 @@ export function AiPetHumanModal({ open, onClose }: Props) {
       const createRes = await fetch('/api/ai/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageBase64, gender, type: 'pet-humanize' }),
+        body: JSON.stringify({ imageBase64, gender, type: 'pet-humanize', aspectRatio }),
       });
 
       if (!createRes.ok) {
@@ -281,6 +283,8 @@ export function AiPetHumanModal({ open, onClose }: Props) {
                 {t('female')}
               </button>
             </div>
+
+            <RatioPicker value={aspectRatio} onChange={setAspectRatio} />
 
             <button
               className="btn btn-ai ai-past-generate"

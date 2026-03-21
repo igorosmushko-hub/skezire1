@@ -1460,6 +1460,25 @@ button { cursor: pointer; font-family: inherit; }
   background: rgba(212,168,67,.12); border-color: var(--gold); color: var(--gold);
 }
 
+/* Aspect ratio picker */
+.ai-ratio-picker { display: flex; gap: 6px; justify-content: center; margin-bottom: 16px; }
+.ai-ratio-btn {
+  padding: 6px 14px; border-radius: var(--r-pill);
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  color: rgba(255,255,255,.5); font-size: .78rem; font-weight: 600;
+  cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 4px;
+}
+.ai-ratio-btn.active {
+  background: rgba(212,168,67,.12); border-color: var(--gold); color: var(--gold);
+}
+.ai-ratio-icon {
+  display: inline-block; border: 1.5px solid currentColor; border-radius: 2px;
+}
+.ai-ratio-icon[data-ratio="9:16"] { width: 9px; height: 14px; }
+.ai-ratio-icon[data-ratio="1:1"] { width: 11px; height: 11px; }
+.ai-ratio-icon[data-ratio="3:4"] { width: 10px; height: 13px; }
+.ai-ratio-icon[data-ratio="16:9"] { width: 14px; height: 9px; }
+
 /* Generate button */
 .ai-past-generate {
   width: 100%; justify-content: center; padding: 14px; font-size: 1rem;

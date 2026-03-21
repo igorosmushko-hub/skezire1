@@ -72,14 +72,16 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: { imageBase64?: string; images?: string[]; gender?: string; type?: string; background?: string };
+  let body: { imageBase64?: string; images?: string[]; gender?: string; type?: string; background?: string; aspectRatio?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: 'invalid_json' }, { status: 400 });
   }
 
-  const { imageBase64, images, gender, type, background } = body;
+  const { imageBase64, images, gender, type, background, aspectRatio } = body;
+  const VALID_RATIOS = ['9:16', '1:1', '3:4', '16:9'];
+
 
   // Family portrait: multiple images + background
   if (type === 'family-portrait') {
@@ -123,7 +125,7 @@ export async function POST(req: NextRequest) {
             prompt,
             image_input: imageUrls,
             prompt_strength: promptStrength,
-            aspect_ratio: '16:9',
+            aspect_ratio: (aspectRatio && VALID_RATIOS.includes(aspectRatio)) ? aspectRatio : '16:9',
           },
         }),
       });
@@ -210,7 +212,7 @@ export async function POST(req: NextRequest) {
           prompt,
           image_input: [imageUrl],
           prompt_strength: promptStrength,
-          aspect_ratio: '3:4',
+          aspect_ratio: (aspectRatio && VALID_RATIOS.includes(aspectRatio)) ? aspectRatio : '9:16',
         },
       }),
     });
