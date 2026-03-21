@@ -5,6 +5,10 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { Navbar } from '@/components/Navbar';
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 import { Footer } from '@/components/Footer';
 import { ToastProvider } from '@/components/Toast';
 import { AuthProvider } from '@/components/AuthProvider';
