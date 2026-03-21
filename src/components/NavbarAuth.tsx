@@ -24,12 +24,12 @@ export function NavbarAuth() {
     return (
       <div className="nav-auth">
         {typeof user.remaining === 'number' && (
-          <span className="nav-balance" title={t('login')}>
+          <span className={`nav-balance ${user.remaining === 0 ? 'nav-balance-empty' : ''}`} title={t('login')}>
             &#9889; {user.remaining}
           </span>
         )}
         <Link href="/profile" locale={locale} className="nav-user-phone nav-profile-link">
-          {formatPhone(user.phone)}
+          {user.firstName || formatPhone(user.phone)}
         </Link>
         <button className="nav-logout-btn" onClick={() => { authLogout(); logout(); }}>{t('logout')}</button>
       </div>

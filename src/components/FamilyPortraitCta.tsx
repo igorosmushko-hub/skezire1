@@ -1,6 +1,7 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
+import Image from 'next/image';
 import Link from 'next/link';
 import { fpCtaClick } from '@/lib/analytics';
 
@@ -19,9 +20,9 @@ export function FamilyPortraitCta() {
             <p>{t('fp.p')}</p>
           </div>
           <div className="fp-cta-preview">
-            <img src="/ai-backgrounds/yurt.jpg" alt="" className="fp-cta-img fp-cta-img--1" loading="lazy" />
-            <img src="/ai-backgrounds/steppe.jpg" alt="" className="fp-cta-img fp-cta-img--2" loading="lazy" />
-            <img src="/ai-backgrounds/newyear.jpg" alt="" className="fp-cta-img fp-cta-img--3" loading="lazy" />
+            <Image src="/ai-backgrounds/yurt.jpg" alt={isKk ? 'Юрта — AI фон' : 'Юрта — AI фон'} width={300} height={200} className="fp-cta-img fp-cta-img--1" loading="lazy" />
+            <Image src="/ai-backgrounds/steppe.jpg" alt={isKk ? 'Дала — AI фон' : 'Степь — AI фон'} width={300} height={200} className="fp-cta-img fp-cta-img--2" loading="lazy" />
+            <Image src="/ai-backgrounds/newyear.jpg" alt={isKk ? 'Жаңа жыл — AI фон' : 'Новый год — AI фон'} width={300} height={200} className="fp-cta-img fp-cta-img--3" loading="lazy" />
           </div>
           <Link
             href={`/${locale}/ai/family-portrait/create`}

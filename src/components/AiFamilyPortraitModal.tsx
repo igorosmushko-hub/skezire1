@@ -272,7 +272,7 @@ export function AiFamilyPortraitModal({ open, onClose }: Props) {
               {photos.map((photo) => (
                 <div key={photo.id} className="ai-portrait-thumb">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={photo.previewUrl} alt="" />
+                  <img src={photo.previewUrl} alt={isKk ? 'Жүктелген фото' : 'Загруженное фото'} />
                   {photo.processing && <div className="ai-portrait-thumb-loading" />}
                   <button
                     className="ai-portrait-remove"
@@ -367,7 +367,7 @@ export function AiFamilyPortraitModal({ open, onClose }: Props) {
           <div className="ai-past-step">
             <h2 className="modal-title">{t('result_title')}</h2>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={resultUrl} alt="" className="ai-portrait-result" />
+            <img src={resultUrl} alt={isKk ? 'AI нәтиже — отбасылық портрет' : 'AI результат — семейный портрет'} className="ai-portrait-result" />
             <div className="ai-past-actions">
               {typeof navigator !== 'undefined' && !!navigator.share && (
                 <button className="btn btn-ai" onClick={handleShare}>

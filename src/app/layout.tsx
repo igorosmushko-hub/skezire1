@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { Viewport } from 'next';
 import Script from 'next/script';
 import { Cormorant_Garamond, Inter } from 'next/font/google';
+import { getLocale } from 'next-intl/server';
 import '@/styles/globals.css';
 import '@/styles/tribe-race.css';
 
@@ -26,10 +27,18 @@ const inter = Inter({
   display: 'swap',
 });
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const locale = await getLocale();
+
   return (
-    <html className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang={locale} className={`${cormorant.variable} ${inter.variable}`}>
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="alternate" type="application/rss+xml" title="Шежіре — Блог" href="/feed.xml" />
       </head>
       <body>

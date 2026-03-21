@@ -43,3 +43,4 @@ scripts/stock-photos/
 FIREBASE_KEY_VALUE.txt
 vercel-env-vars.csv
 images/
+.vercel

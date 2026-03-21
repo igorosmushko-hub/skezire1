@@ -21,6 +21,7 @@ interface Props {
 export function AiPastModal({ open, onClose }: Props) {
   const t = useTranslations('ai.past.modal');
   const locale = useLocale();
+  const isKk = locale === 'kk';
   const showToast = useToast();
   const { user, loading: authLoading } = useAuth();
 
@@ -278,7 +279,7 @@ export function AiPastModal({ open, onClose }: Props) {
           <div className="ai-past-step">
             <h2 className="modal-title">{t('preview_title')}</h2>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={previewUrl} alt="" className="ai-past-img" />
+            <img src={previewUrl} alt={isKk ? 'Жүктелген фото' : 'Загруженное фото'} className="ai-past-img" />
 
             <div className="ai-past-gender">
               <button
@@ -331,10 +332,10 @@ export function AiPastModal({ open, onClose }: Props) {
             <h2 className="modal-title">{t('result_title')}</h2>
             <div className="ai-past-compare">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={previewUrl!} alt="" className="ai-past-img-small" />
+              <img src={previewUrl!} alt={isKk ? 'Бастапқы фото' : 'Исходное фото'} className="ai-past-img-small" />
               <span className="ai-past-arrow">→</span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={resultUrl} alt="" className="ai-past-img-result" />
+              <img src={resultUrl} alt={isKk ? 'AI нәтиже — 100 жыл бұрынғы фото' : 'AI результат — фото 100 лет назад'} className="ai-past-img-result" />
             </div>
             <div className="ai-past-actions">
               {typeof navigator !== 'undefined' && !!navigator.share && (

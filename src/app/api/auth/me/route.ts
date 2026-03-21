@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
 
   const { data } = await supabase
     .from('users')
-    .select('usage_count, paid_generations, zhuz_id, tribe_id')
+    .select('usage_count, paid_generations, zhuz_id, tribe_id, first_name')
     .eq('id', session.userId)
     .single();
 
@@ -29,6 +29,7 @@ export async function GET(req: NextRequest) {
       id: session.userId,
       phone: session.phone,
       remaining,
+      firstName: data?.first_name ?? undefined,
       zhuzId: data?.zhuz_id ?? undefined,
       tribeId: data?.tribe_id ?? undefined,
     },

@@ -21,6 +21,7 @@ interface Props {
 export function AiGhibliModal({ open, onClose }: Props) {
   const t = useTranslations('ai.ghibli.modal');
   const locale = useLocale();
+  const isKk = locale === 'kk';
   const showToast = useToast();
   const { user, loading: authLoading } = useAuth();
 
@@ -266,7 +267,7 @@ export function AiGhibliModal({ open, onClose }: Props) {
           <div className="ai-past-step">
             <h2 className="modal-title">{t('preview_title')}</h2>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={previewUrl} alt="" className="ai-past-img" />
+            <img src={previewUrl} alt={isKk ? 'Жүктелген фото' : 'Загруженное фото'} className="ai-past-img" />
 
             <RatioPicker value={aspectRatio} onChange={setAspectRatio} />
 
@@ -302,10 +303,10 @@ export function AiGhibliModal({ open, onClose }: Props) {
             <h2 className="modal-title">{t('result_title')}</h2>
             <div className="ai-past-compare">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={previewUrl!} alt="" className="ai-past-img-small" />
+              <img src={previewUrl!} alt={isKk ? 'Бастапқы фото' : 'Исходное фото'} className="ai-past-img-small" />
               <span className="ai-past-arrow">{'\u2192'}</span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={resultUrl} alt="" className="ai-past-img-result" />
+              <img src={resultUrl} alt={isKk ? 'AI нәтиже — Гибли стилі' : 'AI результат — стиль Гибли'} className="ai-past-img-result" />
             </div>
             <div className="ai-past-actions">
               {typeof navigator !== 'undefined' && !!navigator.share && (

@@ -75,7 +75,7 @@ export default async function DeliveryPage({
 
           <h2>Төлем тәсілдері</h2>
           <p>
-            Төлем RoboCassa жүйесі арқылы қабылданады. Қолдау көрсетілетін тәсілдер:
+            Төлем Robokassa жүйесі арқылы қабылданады. Қолдау көрсетілетін тәсілдер:
           </p>
           <ul>
             <li>Банк карталары (Visa, Mastercard)</li>
@@ -137,7 +137,7 @@ export default async function DeliveryPage({
 
         <h2>Способы оплаты</h2>
         <p>
-          Оплата принимается через платёжную систему RoboCassa. Поддерживаемые способы:
+          Оплата принимается через платёжную систему Robokassa. Поддерживаемые способы:
         </p>
         <ul>
           <li>Банковские карты (Visa, Mastercard)</li>

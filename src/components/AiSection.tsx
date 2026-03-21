@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { aiCardTry, aiCardDetails } from '@/lib/analytics';
 import { AiModal } from './AiModal';
 import { AiPastModal } from './AiPastModal';
@@ -68,7 +69,7 @@ export function AiSection() {
                 </div>
                 {card.thumb ? (
                   <div className="ai-card-thumb">
-                    <img src={card.thumb} alt={t(card.h3Key)} loading="lazy" />
+                    <Image src={card.thumb} alt={t(card.h3Key)} width={400} height={300} loading="lazy" />
                   </div>
                 ) : (
                   <div className="ai-icon">{card.icon}</div>

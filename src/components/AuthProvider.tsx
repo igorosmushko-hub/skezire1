@@ -5,6 +5,7 @@ import { createContext, useContext, useState, useEffect, useCallback, type React
 interface User {
   id: string;
   phone: string;
+  firstName?: string;
   remaining?: number;
   zhuzId?: string;
   tribeId?: string;

@@ -50,6 +50,9 @@ export function Footer() {
             <Link href={`/${locale}/refund`} className="footer-legal-link">
               {locale === 'kk' ? 'Қайтару' : 'Возврат'}
             </Link>
+            <Link href={`/${locale}/payment-policy`} className="footer-legal-link">
+              {locale === 'kk' ? 'Төлем саясаты' : 'Политика платежей'}
+            </Link>
             <Link href={`/${locale}/contacts`} className="footer-legal-link">
               {locale === 'kk' ? 'Байланыс' : 'Контакты'}
             </Link>
