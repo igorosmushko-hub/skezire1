@@ -7,6 +7,7 @@ import { PdfModal } from './PdfModal';
 import { TRIBES_DB } from '@/data/tribes';
 import type { TreeFormData } from '@/lib/types';
 import { treeShare, treeDownload, treePdf } from '@/lib/analytics';
+import { WhatsAppShareButton } from './WhatsAppShareButton';
 
 interface ShareImageProps {
   data: TreeFormData;
@@ -127,6 +128,7 @@ export function ShareImage({ data, locale, nodes, aiPhotoUrl }: ShareImageProps)
         <button className="btn btn-outline btn-pdf-soon" onClick={() => { treePdf(); setPdfOpen(true); }}>
           {t('btn.pdf')}
         </button>
+        <WhatsAppShareButton locale={locale} className="btn btn-outline" />
       </div>
       <PdfModal open={pdfOpen} onClose={() => setPdfOpen(false)} />
       <canvas

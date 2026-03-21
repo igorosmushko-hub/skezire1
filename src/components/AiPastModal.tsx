@@ -352,6 +352,14 @@ export function AiPastModal({ open, onClose }: Props) {
               >
                 🖼 {locale === 'kk' ? 'Картина тапсырыс беру' : 'Заказать картину'}
               </a>
+              <a
+                className="btn btn-ai-outline"
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(isKk ? 'AI фото — 100 жыл бұрынғы өзіңді жасат! https://skezire.kz/kk/ai/past' : 'AI фото — создай себя 100 лет назад! https://skezire.kz/ru/ai/past')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {isKk ? 'WhatsApp-та бөлісу' : 'Поделиться в WhatsApp'}
+              </a>
               <button
                 className="btn btn-ai-outline"
                 onClick={() => { setStep('upload'); setPreviewUrl(null); setResultUrl(null); setImageBase64(null); }}

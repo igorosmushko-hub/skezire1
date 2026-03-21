@@ -5,6 +5,7 @@ import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { BLOG_POSTS } from '@/data/blog';
 import { AiPromoBanner } from '@/components/AiPromoBanner';
 import { AiInlineHint } from '@/components/AiInlineHint';
+import { LinkedText } from '@/components/LinkedText';
 import '@/styles/blog.css';
 
 interface PageProps {
@@ -62,6 +63,7 @@ const POST_AI_CONFIG: Record<string, { inlineHints: { after: number; slug: strin
   'ai-preserving-shezhire':    { inlineHints: [{ after: 1, slug: 'past' }, { after: 2, slug: 'action-figure' }],                    bannerFeatures: ['past', 'ancestor', 'action-figure'] },
   'zheti-ata-seven-ancestors': { inlineHints: [{ after: 1, slug: 'past' }, { after: 2, slug: 'ancestor' }],                         bannerFeatures: ['past', 'ancestor', 'ghibli-style'] },
   'guide-kazakh-tribes':       { inlineHints: [{ after: 0, slug: 'past' }, { after: 2, slug: 'action-figure' }],                    bannerFeatures: ['past', 'action-figure', 'pet-humanize'] },
+  'how-to-find-your-tribe':    { inlineHints: [{ after: 1, slug: 'past' }, { after: 3, slug: 'action-figure' }],                    bannerFeatures: ['past', 'ancestor', 'action-figure'] },
 };
 
 const DEFAULT_AI_CONFIG = { inlineHints: [{ after: 1, slug: 'past' }], bannerFeatures: ['past', 'ancestor', 'ghibli-style'] };
@@ -130,11 +132,41 @@ export default async function BlogPostPage({ params }: PageProps) {
             {content.map((paragraph, i) => (
               <div key={i}>
                 {headings[i] && <h2 className="blog-h2">{headings[i]}</h2>}
-                <p className="blog-p">{paragraph}</p>
+                <LinkedText text={paragraph} locale={locale} className="blog-p" />
                 {hintAfterMap.has(i) && <AiInlineHint slug={hintAfterMap.get(i)!} locale={locale} />}
               </div>
             ))}
           </article>
+
+          <section className="blog-related-posts" style={{ marginTop: 40 }}>
+            <h3 className="blog-h2" style={{ fontSize: '1.2rem' }}>{isKk ? 'Басқа мақалалар' : 'Другие статьи'}</h3>
+            <div style={{ display: 'grid', gap: 16, gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', marginTop: 12 }}>
+              {BLOG_POSTS.filter((p) => p.slug !== slug).slice(0, 3).map((p) => (
+                <Link
+                  key={p.slug}
+                  href={`/${locale}/blog/${p.slug}`}
+                  style={{ display: 'block', padding: '16px', background: '#f8f6f0', borderRadius: 8, textDecoration: 'none', color: '#003082' }}
+                >
+                  <strong style={{ fontSize: '0.95rem', lineHeight: 1.4, display: 'block', marginBottom: 6 }}>
+                    {isKk ? p.titleKk : p.titleRu}
+                  </strong>
+                  <span style={{ fontSize: '0.85rem', color: '#666', lineHeight: 1.5 }}>
+                    {(isKk ? p.descKk : p.descRu).slice(0, 100)}...
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <nav className="blog-related" aria-label={isKk ? 'Пайдалы сілтемелер' : 'Полезные ссылки'}>
+            <h3 className="blog-h2" style={{ fontSize: '1.1rem', marginTop: 32 }}>{isKk ? 'Пайдалы сілтемелер' : 'Полезные ссылки'}</h3>
+            <ul style={{ lineHeight: 1.8, paddingLeft: 20 }}>
+              <li><Link href={`/${locale}/encyclopedia`}>{isKk ? 'Қазақ руларының энциклопедиясы — 47 ру' : 'Энциклопедия казахских родов — 47 родов'}</Link></li>
+              <li><Link href={`/${locale}/glossary`}>{isKk ? 'Глоссарий — шежіре терминдері' : 'Глоссарий — термины шежіре'}</Link></li>
+              <li><Link href={`/${locale}/ai`}>{isKk ? 'AI фото генерация — 6 стиль' : 'AI фото-генерация — 6 стилей'}</Link></li>
+              <li><Link href={`/${locale}`}>{isKk ? 'Шежіре ағашын жасау — тегін' : 'Создать генеалогическое дерево — бесплатно'}</Link></li>
+            </ul>
+          </nav>
 
           <div className="blog-back">
             <Link href={`/${locale}/blog`} className="blog-back-link">

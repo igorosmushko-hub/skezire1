@@ -341,6 +341,14 @@ export function AiAncestorModal({ open, onClose }: Props) {
               >
                 🖼 {locale === 'kk' ? 'Картина тапсырыс беру' : 'Заказать картину'}
               </a>
+              <a
+                className="btn btn-ai-outline"
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(isKk ? 'AI фото — бабаңның жас кезі! https://skezire.kz/kk/ai/ancestor' : 'AI фото — предок в молодости! https://skezire.kz/ru/ai/ancestor')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {isKk ? 'WhatsApp-та бөлісу' : 'Поделиться в WhatsApp'}
+              </a>
               <button
                 className="btn btn-ai-outline"
                 onClick={() => { setStep('upload'); setPreviewUrl(null); setResultUrl(null); setImageBase64(null); }}

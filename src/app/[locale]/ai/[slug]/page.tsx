@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { AI_FEATURES, getFeatureBySlug, getOtherFeatures } from '@/data/ai-features';
 import { AiLandingHero } from '@/components/ai-landing/AiLandingHero';
@@ -120,6 +121,18 @@ export default async function AiFeaturePage({
           <AiLandingCta featureSlug={feature.slug} locale={locale} />
           <AiLandingFaq feature={feature} locale={locale} />
           <AiLandingRelated features={related} locale={locale} />
+
+          <section style={{ maxWidth: 700, margin: '40px auto 0', padding: '0 0 20px' }}>
+            <h3 style={{ fontSize: '1.1rem', color: '#003082', marginBottom: 12 }}>
+              {isKk ? 'Пайдалы сілтемелер' : 'Полезные ссылки'}
+            </h3>
+            <ul style={{ lineHeight: 1.8, paddingLeft: 20, color: '#444' }}>
+              <li><Link href={`/${locale}/blog/ai-photo-trends-2026`} style={{ color: '#003082' }}>{isKk ? 'AI фото трендтері 2026' : 'Тренды AI фото 2026'}</Link></li>
+              <li><Link href={`/${locale}/blog/ai-preserving-shezhire`} style={{ color: '#003082' }}>{isKk ? 'AI шежірені сақтауға қалай көмектеседі' : 'Как AI помогает сохранять шежіре'}</Link></li>
+              <li><Link href={`/${locale}/encyclopedia`} style={{ color: '#003082' }}>{isKk ? 'Энциклопедия — 47 қазақ руы' : 'Энциклопедия — 47 казахских родов'}</Link></li>
+              <li><Link href={`/${locale}`} style={{ color: '#003082' }}>{isKk ? 'Шежіре ағашын жасау — тегін' : 'Создать генеалогическое дерево — бесплатно'}</Link></li>
+            </ul>
+          </section>
         </div>
       </main>
     </>

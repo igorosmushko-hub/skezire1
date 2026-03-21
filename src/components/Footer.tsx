@@ -27,6 +27,12 @@ export function Footer() {
             <Link href={`/${locale}/order/canvas`} className="footer-link">
               {locale === 'kk' ? 'Картина тапсырыс беру' : 'Заказать картину'}
             </Link>
+            <Link href={`/${locale}/blog`} className="footer-link">
+              {locale === 'kk' ? 'Блог' : 'Блог'}
+            </Link>
+            <Link href={`/${locale}/glossary`} className="footer-link">
+              {locale === 'kk' ? 'Глоссарий' : 'Глоссарий'}
+            </Link>
           </nav>
           <blockquote className="footer-quote">
             <p>{t('quote')}</p>

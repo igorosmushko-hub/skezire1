@@ -14,6 +14,7 @@ export function Navbar({ locale }: { locale: string }) {
     { href: '/encyclopedia' as const, label: t('enc') },
     { href: '/leaderboard' as const, label: t('race'), className: 'nav-race-link' },
     { href: '/order/canvas' as const, label: t('orderCanvas'), className: 'nav-order-link' },
+    { href: '/blog' as const, label: t('blog') },
   ];
 
   return (

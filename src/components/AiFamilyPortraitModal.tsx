@@ -383,6 +383,14 @@ export function AiFamilyPortraitModal({ open, onClose }: Props) {
               >
                 {isKk ? '\uD83D\uDDBC Картина тапсырыс беру' : '\uD83D\uDDBC Заказать картину'}
               </a>
+              <a
+                className="btn btn-ai-outline"
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(isKk ? 'AI отбасылық портрет — Skezire.kz! https://skezire.kz/kk/ai/family-portrait' : 'AI семейный портрет — Skezire.kz! https://skezire.kz/ru/ai/family-portrait')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {isKk ? 'WhatsApp-та бөлісу' : 'Поделиться в WhatsApp'}
+              </a>
               <button
                 className="btn btn-ai-outline"
                 onClick={() => {

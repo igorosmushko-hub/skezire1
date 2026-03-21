@@ -339,6 +339,14 @@ export function AiPetHumanModal({ open, onClose }: Props) {
               >
                 🖼 {locale === 'kk' ? 'Картина тапсырыс беру' : 'Заказать картину'}
               </a>
+              <a
+                className="btn btn-ai-outline"
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(isKk ? 'AI фото — питомецті адамға айналдыр! https://skezire.kz/kk/ai/pet-humanize' : 'AI фото — превращение питомца в человека! https://skezire.kz/ru/ai/pet-humanize')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {isKk ? 'WhatsApp-та бөлісу' : 'Поделиться в WhatsApp'}
+              </a>
               <button
                 className="btn btn-ai-outline"
                 onClick={() => { setStep('upload'); setPreviewUrl(null); setResultUrl(null); setImageBase64(null); }}

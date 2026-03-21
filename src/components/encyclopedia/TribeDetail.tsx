@@ -1,4 +1,5 @@
 import type { Tribe } from '@/lib/types';
+import { LinkedText } from '@/components/LinkedText';
 
 interface TribeDetailTranslations {
   tamga: string;
@@ -12,10 +13,11 @@ interface TribeDetailProps {
   tribe: Tribe;
   locale: string;
   zhuzName: string;
+  zhuzId: string;
   labels: TribeDetailTranslations;
 }
 
-export function TribeDetail({ tribe, locale, zhuzName, labels }: TribeDetailProps) {
+export function TribeDetail({ tribe, locale, zhuzName, zhuzId, labels }: TribeDetailProps) {
   const isKk = locale === 'kk';
 
   const desc = isKk ? tribe.desc_kk : tribe.desc_ru;
@@ -59,14 +61,14 @@ export function TribeDetail({ tribe, locale, zhuzName, labels }: TribeDetailProp
 
       {/* Description */}
       <div className="tribe-card-section">
-        <p className="tribe-card-desc">{desc}</p>
+        <LinkedText text={desc} locale={locale} className="tribe-card-desc" selfPath={`/encyclopedia/${zhuzId}/${tribe.id}`} />
       </div>
 
       {/* History */}
       {history && (
         <div className="tribe-card-section">
           <h3 className="tribe-card-section-title">{isKk ? 'Тарихы' : 'История'}</h3>
-          <p className="tribe-card-desc">{history}</p>
+          <LinkedText text={history} locale={locale} className="tribe-card-desc" selfPath={`/encyclopedia/${zhuzId}/${tribe.id}`} />
         </div>
       )}
 

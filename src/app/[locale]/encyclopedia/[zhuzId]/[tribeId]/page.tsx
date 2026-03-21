@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import { TRIBES_DB } from '@/data/tribes';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { TribeDetail } from '@/components/encyclopedia/TribeDetail';
@@ -172,6 +173,7 @@ export default async function TribePage({ params }: PageProps) {
             tribe={tribe}
             locale={locale}
             zhuzName={zhuzName}
+            zhuzId={zhuzId}
             labels={{
               tamga: t('tribeTamga'),
               uran: t('tribeUran'),
@@ -204,6 +206,50 @@ export default async function TribePage({ params }: PageProps) {
           )}
         </div>
       </main>
+
+      {/* Related tribes from relatedTribes field */}
+      {tribe.relatedTribes && tribe.relatedTribes.length > 0 && (() => {
+        const related = tribe.relatedTribes!.map((relId) => {
+          for (const z of TRIBES_DB) {
+            const tr = z.tribes.find((t) => t.id === relId);
+            if (tr) return { tribe: tr, zhuzId: z.id };
+          }
+          return null;
+        }).filter(Boolean) as { tribe: typeof tribe; zhuzId: string }[];
+        if (related.length === 0) return null;
+        return (
+          <section style={{ maxWidth: 800, margin: '0 auto', padding: '0 20px 24px' }}>
+            <h3 style={{ fontSize: '1.1rem', color: '#003082', marginBottom: 12 }}>
+              {isKk ? 'Тарихи байланысты рулар' : 'Исторически связанные роды'}
+            </h3>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              {related.map((r) => (
+                <Link
+                  key={r.tribe.id}
+                  href={`/${locale}/encyclopedia/${r.zhuzId}/${r.tribe.id}`}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px', background: '#f8f6f0', borderRadius: 8, textDecoration: 'none', color: '#003082' }}
+                >
+                  <span style={{ fontSize: '1.2rem' }}>{r.tribe.tamga}</span>
+                  <span>{isKk ? r.tribe.kk : r.tribe.ru}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* Useful links */}
+      <section style={{ maxWidth: 800, margin: '0 auto', padding: '0 20px 40px' }}>
+        <h3 style={{ fontSize: '1.1rem', color: '#003082', marginBottom: 12 }}>
+          {isKk ? 'Пайдалы сілтемелер' : 'Полезные ссылки'}
+        </h3>
+        <ul style={{ lineHeight: 1.8, paddingLeft: 20, color: '#444' }}>
+          <li><Link href={`/${locale}/glossary`} style={{ color: '#003082' }}>{isKk ? 'Глоссарий — шежіре терминдері' : 'Глоссарий — термины шежіре'}</Link></li>
+          <li><Link href={`/${locale}/blog/how-to-find-your-tribe`} style={{ color: '#003082' }}>{isKk ? 'Руыңды қалай білуге болады?' : 'Как узнать свой род?'}</Link></li>
+          <li><Link href={`/${locale}/blog/zheti-ata-seven-ancestors`} style={{ color: '#003082' }}>{isKk ? 'Жеті ата — 7 буын дәстүрі' : 'Жеті ата — традиция 7 поколений'}</Link></li>
+          <li><Link href={`/${locale}`} style={{ color: '#003082' }}>{isKk ? 'Шежіре ағашын жасау — тегін' : 'Создать генеалогическое дерево — бесплатно'}</Link></li>
+        </ul>
+      </section>
 
       <AiPromoBanner locale={locale} features={['ancestor', 'past']} variant="history" />
     </>

@@ -5,6 +5,7 @@ import { TRIBES_DB } from '@/data/tribes';
 import { ZhuzSection } from '@/components/encyclopedia/ZhuzSection';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { Pager } from '@/components/encyclopedia/Pager';
+import Link from 'next/link';
 import { AiPromoBanner } from '@/components/AiPromoBanner';
 import '@/styles/encyclopedia.css';
 
@@ -123,6 +124,18 @@ export default async function ZhuzPage({ params }: PageProps) {
           moreLink: t('tribeMore'),
         }}
       />
+
+      <section style={{ maxWidth: 800, margin: '0 auto', padding: '24px 20px 40px' }}>
+        <h3 style={{ fontSize: '1.1rem', color: '#003082', marginBottom: 12 }}>
+          {isKk ? 'Пайдалы сілтемелер' : 'Полезные ссылки'}
+        </h3>
+        <ul style={{ lineHeight: 1.8, paddingLeft: 20, color: '#444' }}>
+          <li><Link href={`/${locale}/glossary`} style={{ color: '#003082' }}>{isKk ? 'Глоссарий — шежіре терминдері' : 'Глоссарий — термины шежіре'}</Link></li>
+          <li><Link href={`/${locale}/blog/how-to-find-your-tribe`} style={{ color: '#003082' }}>{isKk ? 'Руыңды қалай білуге болады?' : 'Как узнать свой род?'}</Link></li>
+          <li><Link href={`/${locale}/blog/zheti-ata-seven-ancestors`} style={{ color: '#003082' }}>{isKk ? 'Жеті ата — 7 буын дәстүрі' : 'Жеті ата — традиция 7 поколений'}</Link></li>
+          <li><Link href={`/${locale}`} style={{ color: '#003082' }}>{isKk ? 'Шежіре ағашын жасау — тегін' : 'Создать генеалогическое дерево — бесплатно'}</Link></li>
+        </ul>
+      </section>
 
       <AiPromoBanner locale={locale} features={['past', 'ancestor', 'action-figure']} variant="history" />
     </>

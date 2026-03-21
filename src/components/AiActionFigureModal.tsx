@@ -339,6 +339,14 @@ export function AiActionFigureModal({ open, onClose }: Props) {
               >
                 🖼 {locale === 'kk' ? 'Картина тапсырыс беру' : 'Заказать картину'}
               </a>
+              <a
+                className="btn btn-ai-outline"
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(isKk ? 'AI экшн-фигурка — өзіңді ойыншыққа айналдыр! https://skezire.kz/kk/ai/action-figure' : 'AI экшн-фигурка — превращение в игрушку! https://skezire.kz/ru/ai/action-figure')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {isKk ? 'WhatsApp-та бөлісу' : 'Поделиться в WhatsApp'}
+              </a>
               <button
                 className="btn btn-ai-outline"
                 onClick={() => { setStep('upload'); setPreviewUrl(null); setResultUrl(null); setImageBase64(null); }}
