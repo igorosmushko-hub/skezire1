@@ -194,6 +194,9 @@ export async function POST(req: NextRequest) {
   } else if (type === 'ghibli') {
     prompt = `This exact person in Studio Ghibli anime style illustration. Soft watercolor painting technique with gentle pastel colors. Kazakh steppe landscape background with yurts and wild horses. Warm dreamy golden hour lighting, Hayao Miyazaki art style, whimsical hand-drawn animation feel, masterpiece quality.`;
     promptStrength = 0.45;
+  } else if (type === 'national') {
+    prompt = `Ultra realistic cinematic portrait photograph of this exact person as a proud Kazakh ${genderWord} wearing luxurious traditional Kazakh national costume: richly embroidered ${gender === 'female' ? 'saukele headdress and silk dress with golden ornaments' : 'shapan coat with intricate golden embroidery, tymak hat and ornate belt'}. Standing among white yurts at a festive Kazakh celebration on the open steppe. Other people in traditional costumes in the soft background, colorful ribbons and decorations. Golden hour warm natural sunlight, shallow depth of field, 85mm lens, National Geographic quality photograph, hyper detailed, masterpiece.`;
+    promptStrength = 0.38;
   } else {
     prompt = `Vintage 1920s sepia portrait photograph of this exact person as a Kazakh ${genderWord} wearing traditional shapan coat and tymak fur hat. Keep the same face and facial features. Aged daguerreotype film grain, warm golden lighting, historical studio backdrop. Masterpiece quality.`;
     promptStrength = 0.35;

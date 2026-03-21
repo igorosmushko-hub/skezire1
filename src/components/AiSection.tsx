@@ -12,8 +12,9 @@ import { AiAncestorModal } from './AiAncestorModal';
 import { AiActionFigureModal } from './AiActionFigureModal';
 import { AiPetHumanModal } from './AiPetHumanModal';
 import { AiGhibliModal } from './AiGhibliModal';
+import { AiNationalModal } from './AiNationalModal';
 
-type AiType = 'fp' | 'past' | 'grandma' | 'figure' | 'pet' | 'ghibli';
+type AiType = 'fp' | 'past' | 'grandma' | 'figure' | 'pet' | 'ghibli' | 'national';
 
 const SLUG_MAP: Record<string, string> = {
   fp: 'family-portrait',
@@ -22,6 +23,7 @@ const SLUG_MAP: Record<string, string> = {
   figure: 'action-figure',
   pet: 'pet-humanize',
   ghibli: 'ghibli-style',
+  national: 'national-costume',
 };
 
 const PAGE_TYPES = new Set(['fp']);
@@ -48,6 +50,7 @@ export function AiSection() {
     { type: 'figure', icon: '🎯', h3Key: 'figure.h3', pKey: 'figure.p', tag1Key: 'figure.tag1', tag2Key: 'figure.tag2', live: true, thumb: '/ai-examples/action-figure-1.webp', popular: true },
     { type: 'pet', icon: '🐾', h3Key: 'pet.h3', pKey: 'pet.p', tag1Key: 'pet.tag1', tag2Key: 'pet.tag2', live: true, thumb: '/ai-examples/pet-humanize-1.webp' },
     { type: 'ghibli', icon: '🎌', h3Key: 'ghibli.h3', pKey: 'ghibli.p', tag1Key: 'ghibli.tag1', tag2Key: 'ghibli.tag2', live: true, thumb: '/ai-examples/ghibli-style-1.webp' },
+    { type: 'national', icon: '🏕️', h3Key: 'national.h3', pKey: 'national.p', tag1Key: 'national.tag1', tag2Key: 'national.tag2', live: true, popular: true },
   ];
 
   return (
@@ -107,6 +110,7 @@ export function AiSection() {
       <AiActionFigureModal open={modalType === 'figure'} onClose={() => setModalType(null)} />
       <AiPetHumanModal open={modalType === 'pet'} onClose={() => setModalType(null)} />
       <AiGhibliModal open={modalType === 'ghibli'} onClose={() => setModalType(null)} />
+      <AiNationalModal open={modalType === 'national'} onClose={() => setModalType(null)} />
       <AiModal type={modalType === 'past' || modalType === 'grandma' || modalType === 'figure' || modalType === 'pet' || modalType === 'ghibli' || modalType === 'fp' ? null : modalType as 'past' | 'grandma' | null} onClose={() => setModalType(null)} />
     </>
   );

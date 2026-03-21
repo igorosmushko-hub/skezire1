@@ -72,6 +72,7 @@ const TYPE_LABELS: Record<string, Record<string, string>> = {
     'pet-humanize': 'Питомец',
     ghibli: 'Гибли',
     'family-portrait': 'Отбасы',
+    national: 'Ұлттық киім',
   },
   ru: {
     past: '100 лет назад',
@@ -80,6 +81,7 @@ const TYPE_LABELS: Record<string, Record<string, string>> = {
     'pet-humanize': 'Питомец',
     ghibli: 'Гибли',
     'family-portrait': 'Семейный',
+    national: 'Нац. костюм',
   },
 };
 
