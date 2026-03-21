@@ -6,6 +6,7 @@ const AiActionFigureModal = dynamic(() => import('../AiActionFigureModal').then(
 const AiPetHumanModal = dynamic(() => import('../AiPetHumanModal').then((m) => m.AiPetHumanModal));
 const AiGhibliModal = dynamic(() => import('../AiGhibliModal').then((m) => m.AiGhibliModal));
 const AiFamilyPortraitModal = dynamic(() => import('../AiFamilyPortraitModal').then((m) => m.AiFamilyPortraitModal));
+const AiNationalModal = dynamic(() => import('../AiNationalModal').then((m) => m.AiNationalModal));
 
 export const MODAL_MAP: Record<string, React.ComponentType<{ open: boolean; onClose: () => void }>> = {
   past: AiPastModal,
@@ -14,4 +15,5 @@ export const MODAL_MAP: Record<string, React.ComponentType<{ open: boolean; onCl
   'pet-humanize': AiPetHumanModal,
   'ghibli-style': AiGhibliModal,
   'family-portrait': AiFamilyPortraitModal,
+  'national-costume': AiNationalModal,
 };
