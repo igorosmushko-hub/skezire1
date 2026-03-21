@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useTranslations } from 'next-intl';
-import { TRIBES_DB } from '@/data/tribes';
+import { ZHUZ_INDEX } from '@/data/tribes-index';
 import { ANCESTOR_DEFS } from '@/lib/constants';
 import { useToast } from './Toast';
 import { TribeCard } from './TribeCard';
@@ -33,6 +33,14 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
   const photoInputRef = useRef<HTMLInputElement>(null);
   const [focusedAnc, setFocusedAnc] = useState<number | null>(null);
 
+  // Load full tribe data lazily (only when tribe is selected)
+  const loadFullTribe = useCallback(async (zId: string, tId: string) => {
+    const { TRIBES_DB } = await import('@/data/tribes');
+    const zhuz = TRIBES_DB.find((z) => z.id === zId);
+    const tribe = zhuz?.tribes.find((t) => t.id === tId);
+    if (tribe) setCurrentTribe(tribe);
+  }, []);
+
   // Restore from localStorage
   useEffect(() => {
     const savedZhuz = localStorage.getItem('shejire-zhuz');
@@ -41,12 +49,10 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
       setZhuzId(savedZhuz);
       if (savedRu) {
         setTribeId(savedRu);
-        const zhuz = TRIBES_DB.find((z) => z.id === savedZhuz);
-        const tribe = zhuz?.tribes.find((t) => t.id === savedRu);
-        if (tribe) setCurrentTribe(tribe);
+        loadFullTribe(savedZhuz, savedRu);
       }
     }
-  }, []);
+  }, [loadFullTribe]);
 
   const handleZhuzChange = useCallback((newZhuzId: string) => {
     setZhuzId(newZhuzId);
@@ -62,13 +68,9 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
       setCurrentTribe(null);
       return;
     }
-    const zhuz = TRIBES_DB.find((z) => z.id === zhuzId);
-    const tribe = zhuz?.tribes.find((t) => t.id === newTribeId);
-    if (tribe) {
-      setCurrentTribe(tribe);
-      localStorage.setItem('shejire-ru', newTribeId);
-    }
-  }, [zhuzId]);
+    localStorage.setItem('shejire-ru', newTribeId);
+    loadFullTribe(zhuzId, newTribeId);
+  }, [zhuzId, loadFullTribe]);
 
   const handlePhotoSelect = useCallback(async (file: File) => {
     const err = validateImageFile(file);
@@ -133,7 +135,7 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
     }
 
     const defs = ANCESTOR_DEFS[isKk ? 'kk' : 'ru'];
-    const zhuz = TRIBES_DB.find((z) => z.id === zhuzId);
+    const zhuz = ZHUZ_INDEX.find((z) => z.id === zhuzId);
     const zhuzLabel = zhuz ? (isKk ? zhuz.kk : zhuz.ru) : '';
     const ruName = currentTribe ? (isKk ? currentTribe.kk : currentTribe.ru) : '';
 
@@ -153,7 +155,7 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
     });
   };
 
-  const selectedZhuz = TRIBES_DB.find((z) => z.id === zhuzId);
+  const selectedZhuz = ZHUZ_INDEX.find((z) => z.id === zhuzId);
   const tribes = selectedZhuz?.tribes || [];
   const defs = ANCESTOR_DEFS[isKk ? 'kk' : 'ru'];
 

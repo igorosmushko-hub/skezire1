@@ -4,7 +4,6 @@ import Script from 'next/script';
 import { Cormorant_Garamond, Inter } from 'next/font/google';
 import { getLocale } from 'next-intl/server';
 import '@/styles/globals.css';
-import '@/styles/tribe-race.css';
 
 export const viewport: Viewport = {
   width: 'device-width',

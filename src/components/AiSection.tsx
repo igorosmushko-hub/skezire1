@@ -5,14 +5,16 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { aiCardTry, aiCardDetails } from '@/lib/analytics';
 import { AiModal } from './AiModal';
-import { AiPastModal } from './AiPastModal';
-import { AiAncestorModal } from './AiAncestorModal';
-import { AiActionFigureModal } from './AiActionFigureModal';
-import { AiPetHumanModal } from './AiPetHumanModal';
-import { AiGhibliModal } from './AiGhibliModal';
-import { AiNationalModal } from './AiNationalModal';
+
+const AiPastModal = dynamic(() => import('./AiPastModal').then((m) => m.AiPastModal));
+const AiAncestorModal = dynamic(() => import('./AiAncestorModal').then((m) => m.AiAncestorModal));
+const AiActionFigureModal = dynamic(() => import('./AiActionFigureModal').then((m) => m.AiActionFigureModal));
+const AiPetHumanModal = dynamic(() => import('./AiPetHumanModal').then((m) => m.AiPetHumanModal));
+const AiGhibliModal = dynamic(() => import('./AiGhibliModal').then((m) => m.AiGhibliModal));
+const AiNationalModal = dynamic(() => import('./AiNationalModal').then((m) => m.AiNationalModal));
 
 type AiType = 'fp' | 'past' | 'grandma' | 'figure' | 'pet' | 'ghibli' | 'national';
 
