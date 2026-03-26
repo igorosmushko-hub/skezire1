@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import { LoginModal } from '@/components/LoginModal';
 import { TRIBES_DB } from '@/data/tribes';
@@ -102,6 +103,7 @@ export function ProfilePageClient({ locale }: { locale: string }) {
   const tOrders = useTranslations('orders');
   const isKk = locale === 'kk';
   const { user, loading: authLoading, logout } = useAuth();
+  const router = useRouter();
 
   const [tab, setTab] = useState<Tab>('profile');
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -115,6 +117,22 @@ export function ProfilePageClient({ locale }: { locale: string }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [genFilter, setGenFilter] = useState<string | null>(null);
+
+  // Tribe info lookup (must be before any conditional return to satisfy Rules of Hooks)
+  const tribeInfo = useMemo(
+    () => findTribeInfo(profile?.tribeId ?? user?.tribeId ?? null),
+    [profile?.tribeId, user?.tribeId]
+  );
+
+  // Gallery filter: unique types present
+  const genTypes = useMemo(() => {
+    const types = new Set(generations.map((g) => g.type));
+    return Array.from(types);
+  }, [generations]);
+
+  const filteredGenerations = genFilter
+    ? generations.filter((g) => g.type === genFilter)
+    : generations;
 
   const fetchProfile = useCallback(async () => {
     try {
@@ -208,8 +226,14 @@ export function ProfilePageClient({ locale }: { locale: string }) {
     }
   };
 
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace(`/${locale}`);
+    }
+  }, [authLoading, user, router, locale]);
+
   if (!authLoading && !user) {
-    return <LoginModal open={true} onClose={() => {}} />;
+    return null;
   }
 
   const statusKey = (s: string) => {
@@ -229,22 +253,6 @@ export function ProfilePageClient({ locale }: { locale: string }) {
   };
 
   const typeLabels = TYPE_LABELS[isKk ? 'kk' : 'ru'] ?? TYPE_LABELS.ru;
-
-  // Tribe info lookup
-  const tribeInfo = useMemo(
-    () => findTribeInfo(profile?.tribeId ?? user?.tribeId ?? null),
-    [profile?.tribeId, user?.tribeId]
-  );
-
-  // Gallery filter: unique types present
-  const genTypes = useMemo(() => {
-    const types = new Set(generations.map((g) => g.type));
-    return Array.from(types);
-  }, [generations]);
-
-  const filteredGenerations = genFilter
-    ? generations.filter((g) => g.type === genFilter)
-    : generations;
 
   const nameChanged =
     firstName !== (profile?.firstName ?? '') ||
