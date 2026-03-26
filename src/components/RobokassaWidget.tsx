@@ -38,12 +38,11 @@ declare global {
 export function RobokassaWidget({ params, fallbackUrl, onClose }: Props) {
   const initiated = useRef(false);
 
-  // Listen for postMessage from success/fail pages loaded inside iframe
+  // Listen for postMessage from success/fail pages loaded inside iframe (fallback)
   useEffect(() => {
     const handler = (e: MessageEvent) => {
       if (e.data?.type === 'robokassa-payment') {
         onClose();
-        // If payment succeeded, reload to update user balance
         if (e.data.status === 'success') {
           window.location.reload();
         }
@@ -65,6 +64,18 @@ export function RobokassaWidget({ params, fallbackUrl, onClose }: Props) {
       }
     }
 
+    // Robokassa SDK callbacks for payment completion
+    paymentParams.onSuccess = () => {
+      onClose();
+      window.location.reload();
+    };
+    paymentParams.onFail = () => {
+      onClose();
+    };
+    paymentParams.onClose = () => {
+      onClose();
+    };
+
     // If SDK already loaded, start payment immediately
     if (window.Robokassa) {
       window.Robokassa.StartPayment(paymentParams);
@@ -80,20 +91,17 @@ export function RobokassaWidget({ params, fallbackUrl, onClose }: Props) {
       if (window.Robokassa) {
         window.Robokassa.StartPayment(paymentParams);
       } else {
-        // SDK loaded but Robokassa object not available — fallback
         window.location.href = fallbackUrl;
       }
     };
 
     script.onerror = () => {
-      // Script failed to load — fallback to redirect
       window.location.href = fallbackUrl;
     };
 
     document.body.appendChild(script);
 
     return () => {
-      // Cleanup: remove script if component unmounts before load
       if (script.parentNode) {
         script.parentNode.removeChild(script);
       }
