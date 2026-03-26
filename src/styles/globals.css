@@ -113,10 +113,10 @@ button { cursor: pointer; font-family: inherit; }
   white-space: nowrap; flex-shrink: 0;
 }
 
-.nav-links { display: flex; gap: 28px; }
+.nav-links { display: flex; gap: 18px; flex-shrink: 1; min-width: 0; }
 .nav-links a {
-  color: var(--muted); font-size: .88rem; font-weight: 500;
-  transition: color .2s;
+  color: var(--muted); font-size: .84rem; font-weight: 500;
+  transition: color .2s; white-space: nowrap;
 }
 .nav-links a:hover { color: var(--text); }
 
