@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export async function GET() {
   const supabase = getSupabase();
@@ -17,6 +17,6 @@ export async function GET() {
 
   return NextResponse.json(
     { products: data ?? [] },
-    { headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400' } },
+    { headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' } },
   );
 }
