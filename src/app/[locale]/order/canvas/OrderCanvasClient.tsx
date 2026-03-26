@@ -88,7 +88,8 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
         setPaymentData({ url: data.url, params: data.params });
         setSubmitting(false);
       } else {
-        setError(t('errorCreate'));
+        console.error('[Order] API response:', res.status, data);
+        setError(data.error || t('errorCreate'));
         setSubmitting(false);
       }
     } catch {

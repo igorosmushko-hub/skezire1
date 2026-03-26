@@ -38,9 +38,10 @@ export async function POST(req: NextRequest) {
   };
 
   // Validate required fields
-  if (!productId || !imageUrl || !aiType || !recipientName || !recipientPhone || !city || !address) {
+  if (!productId || !imageUrl || !recipientName || !recipientPhone || !city || !address) {
+    console.error('[Order] Missing fields:', { productId: !!productId, imageUrl: !!imageUrl, recipientName: !!recipientName, recipientPhone: !!recipientPhone, city: !!city, address: !!address });
     return NextResponse.json(
-      { error: 'Missing required fields: productId, imageUrl, aiType, recipientName, recipientPhone, city, address' },
+      { error: 'Missing required fields: productId, imageUrl, recipientName, recipientPhone, city, address' },
       { status: 400 },
     );
   }
@@ -53,10 +54,12 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (prodErr || !product) {
+    console.error('[Order] Product not found:', productId, prodErr?.message);
     return NextResponse.json({ error: 'Product not found' }, { status: 404 });
   }
 
   if (!product.active) {
+    console.error('[Order] Product not active:', productId);
     return NextResponse.json({ error: 'Product is not available' }, { status: 400 });
   }
 
@@ -77,6 +80,7 @@ export async function POST(req: NextRequest) {
       .upload(storagePath, imgBuffer, { contentType, upsert: false });
 
     if (uploadErr) {
+      console.error('[Order] Upload error:', uploadErr.message);
       return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });
     }
     imageStored = storagePath;
@@ -122,6 +126,7 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (orderErr || !order) {
+    console.error('[Order] Insert error:', orderErr?.message);
     return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
   }
 
