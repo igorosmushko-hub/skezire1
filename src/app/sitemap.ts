@@ -8,12 +8,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Meaningful dates per section (updated when content actually changes)
   const DATES = {
-    home: new Date('2026-03-06'),
-    ai: new Date('2026-03-06'),
+    home: new Date('2026-03-30'),
+    ai: new Date('2026-03-30'),
     encyclopedia: new Date('2026-03-01'),
     glossary: new Date('2026-02-28'),
     zhetiAta: new Date('2026-02-28'),
-    blog: new Date('2026-03-03'),
+    blog: new Date('2026-03-21'),
     legal: new Date('2026-03-07'),
   };
 
@@ -85,7 +85,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
 
   // AI pages
-  const aiFeatures = ['', '/past', '/ancestor', '/action-figure', '/pet-humanize', '/ghibli-style'];
+  const aiFeatures = ['', '/past', '/ancestor', '/action-figure', '/pet-humanize', '/ghibli-style', '/family-portrait', '/national-costume'];
   for (const locale of locales) {
     for (const feature of aiFeatures) {
       entries.push({
@@ -95,6 +95,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.9,
       });
     }
+    // Family portrait creation page
+    entries.push({
+      url: `${baseUrl}/${locale}/ai/family-portrait/create`,
+      lastModified: DATES.ai,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    });
+    // Order canvas page
+    entries.push({
+      url: `${baseUrl}/${locale}/order/canvas`,
+      lastModified: DATES.home,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    });
+    // Pricing page
+    entries.push({
+      url: `${baseUrl}/${locale}/pricing`,
+      lastModified: DATES.home,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    });
   }
 
   // Blog

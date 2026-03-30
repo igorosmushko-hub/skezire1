@@ -72,8 +72,13 @@ export async function GET(req: NextRequest) {
   }
 
   const locales = ['kk', 'ru'];
-  const pages = ['', '/ai', '/encyclopedia', '/glossary', '/zheti-ata', '/blog',
-    '/ai/past', '/ai/ancestor', '/ai/action-figure', '/ai/pet-humanize', '/ai/ghibli-style'];
+  const pages = [
+    '', '/ai', '/encyclopedia', '/glossary', '/zheti-ata', '/blog',
+    '/ai/past', '/ai/ancestor', '/ai/action-figure', '/ai/pet-humanize',
+    '/ai/ghibli-style', '/ai/family-portrait', '/ai/national-costume',
+    '/ai/family-portrait/create', '/order/canvas', '/pricing',
+    '/leaderboard', '/shezhire-tree',
+  ];
 
   const urls = locales.flatMap((locale) =>
     pages.map((page) => `${SITE_URL}/${locale}${page}`)
