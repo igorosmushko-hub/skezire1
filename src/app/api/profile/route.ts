@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSessionUser } from '@/lib/auth';
 import { getSupabase } from '@/lib/supabase';
 
-const FREE_LIMIT = 3;
+const FREE_LIMIT = 0;
 
 export async function GET(req: NextRequest) {
   const session = getSessionUser(req);

@@ -90,7 +90,7 @@ export function AiSection() {
                     <span>{t('btn')}</span>
                     {!card.live && <span className="soon-badge">{t('soon')}</span>}
                   </button>
-                  <span className="ai-card-micro">{card.live ? (locale === 'kk' ? '10 сек • 3 тегін генерация' : '10 сек • 3 генерации бесплатно') : ''}</span>
+                  <span className="ai-card-micro">{card.live ? (locale === 'kk' ? '10 сек • 990 ₸-дан' : '10 сек • от 990 ₸') : ''}</span>
                 </div>
                 {card.live && SLUG_MAP[card.type] && (
                   <Link

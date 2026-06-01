@@ -5,7 +5,7 @@ import { getBackgroundByKey } from '@/data/portrait-backgrounds';
 
 const KIE_API_BASE = 'https://api.kie.ai/api/v1/jobs';
 const STORAGE_BUCKET = 'ai-uploads';
-const FREE_LIMIT = 3;
+const FREE_LIMIT = 0;
 const UNLIMITED_PHONES = ['+77756006661'];
 
 /** Upload base64 data URI to Supabase Storage and return a public URL. */

@@ -24,9 +24,15 @@ export function NavbarAuth() {
     return (
       <div className="nav-auth">
         {typeof user.remaining === 'number' && (
-          <span className={`nav-balance ${user.remaining === 0 ? 'nav-balance-empty' : ''}`} title={t('login')}>
-            &#9889; {user.remaining}
-          </span>
+          user.remaining === 0 ? (
+            <Link href="/pricing" locale={locale} className="nav-balance nav-balance-empty nav-buy-link">
+              {locale === 'kk' ? 'Сатып алу' : 'Купить'}
+            </Link>
+          ) : (
+            <span className="nav-balance">
+              &#9889; {user.remaining}
+            </span>
+          )
         )}
         <Link href="/profile" locale={locale} className="nav-user-phone nav-profile-link">
           {user.firstName || formatPhone(user.phone)}
