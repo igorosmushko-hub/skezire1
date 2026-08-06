@@ -5,6 +5,8 @@ import { createPortal } from 'react-dom';
 import { useTranslations } from 'next-intl';
 import { pricingBuy } from '@/lib/analytics';
 import { RobokassaWidget } from '@/components/RobokassaWidget';
+import { LoginModal } from '@/components/LoginModal';
+import { useAuth } from '@/components/AuthProvider';
 
 interface Package {
   id: string;
@@ -25,10 +27,13 @@ const PACKAGES_CACHE: { data: Package[] | null } = { data: null };
 
 export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
   const t = useTranslations('pricing');
+  const { user } = useAuth();
   const [packages, setPackages] = useState<Package[]>(PACKAGES_CACHE.data ?? []);
   const [loading, setLoading] = useState(!PACKAGES_CACHE.data);
   const [buying, setBuying] = useState<string | null>(null);
   const [paymentData, setPaymentData] = useState<{ url: string; params: Record<string, unknown> } | null>(null);
+  const [showLogin, setShowLogin] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (!open || PACKAGES_CACHE.data) return;
@@ -44,6 +49,7 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
 
   const handleClose = useCallback(() => {
     setBuying(null);
+    setError('');
     onClose();
   }, [onClose]);
 
@@ -62,7 +68,12 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
 
   const handleBuy = useCallback(async (pkg: Package) => {
     pricingBuy(pkg.slug);
+    if (!user) {
+      setShowLogin(true);
+      return;
+    }
     setBuying(pkg.id);
+    setError('');
     try {
       const res = await fetch('/api/payments/create', {
         method: 'POST',
@@ -70,13 +81,20 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
         body: JSON.stringify({ packageId: pkg.id, locale }),
       });
       const data = await res.json();
-      if (data.url && data.params) {
+      if (res.ok && data.url && data.params) {
         setPaymentData({ url: data.url, params: data.params });
+      } else if (res.status === 401) {
+        setShowLogin(true);
+        setBuying(null);
+      } else {
+        setError(t('buyError'));
+        setBuying(null);
       }
     } catch {
+      setError(t('buyError'));
       setBuying(null);
     }
-  }, [locale]);
+  }, [locale, user, t]);
 
   if (!open) return null;
 
@@ -127,6 +145,8 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
           </div>
         )}
 
+        {error && <p className="login-error">{error}</p>}
+
         <p className="pricing-free-note">{t('free')}</p>
       </div>
     </div>
@@ -135,6 +155,7 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
   return (
     <>
       {createPortal(modal, document.body)}
+      <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
       {paymentData && (
         <RobokassaWidget
           params={paymentData.params as never}

@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { RobokassaWidget } from '@/components/RobokassaWidget';
+import { LoginModal } from '@/components/LoginModal';
+import { useAuth } from '@/components/AuthProvider';
 import '@/styles/pricing-page.css';
 
 interface Package {
@@ -16,11 +18,14 @@ interface Package {
 
 export function PricingPageClient({ locale }: { locale: string }) {
   const t = useTranslations('pricing');
+  const { user } = useAuth();
   const isKk = locale === 'kk';
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [buying, setBuying] = useState<string | null>(null);
   const [paymentData, setPaymentData] = useState<{ url: string; params: Record<string, unknown> } | null>(null);
+  const [showLogin, setShowLogin] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetch('/api/packages')
@@ -31,7 +36,12 @@ export function PricingPageClient({ locale }: { locale: string }) {
   }, []);
 
   const handleBuy = useCallback(async (pkg: Package) => {
+    if (!user) {
+      setShowLogin(true);
+      return;
+    }
     setBuying(pkg.id);
+    setError('');
     try {
       const res = await fetch('/api/payments/create', {
         method: 'POST',
@@ -39,15 +49,20 @@ export function PricingPageClient({ locale }: { locale: string }) {
         body: JSON.stringify({ packageId: pkg.id, locale }),
       });
       const data = await res.json();
-      if (data.url && data.params) {
+      if (res.ok && data.url && data.params) {
         setPaymentData({ url: data.url, params: data.params });
+      } else if (res.status === 401) {
+        setShowLogin(true);
+        setBuying(null);
       } else {
+        setError(t('buyError'));
         setBuying(null);
       }
     } catch {
+      setError(t('buyError'));
       setBuying(null);
     }
-  }, [locale]);
+  }, [locale, user, t]);
 
   return (
     <main className="pricing-page">
@@ -85,8 +100,12 @@ export function PricingPageClient({ locale }: { locale: string }) {
           </div>
         )}
 
+        {error && <p className="pricing-page-error">{error}</p>}
+
         <p className="pricing-page-free">{t('free')}</p>
       </div>
+
+      <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
 
       {paymentData && (
         <RobokassaWidget
