@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/components/AuthProvider';
 import { LoginModal } from '@/components/LoginModal';
 import type { Tribe, Zhuz } from '@/lib/types';
@@ -18,10 +18,53 @@ export function TribeJoinModal({ tribe, zhuz, locale, onClose, onJoined }: Props
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showLogin, setShowLogin] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const loginTriggerRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   const isKk = locale === 'kk';
   const tribeName = isKk ? tribe.kk : tribe.ru;
   const zhuzName = isKk ? zhuz.kk : zhuz.ru;
+
+  useEffect(() => {
+    previousFocusRef.current = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    closeButtonRef.current?.focus();
+    return () => previousFocusRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        if (!showLogin) onClose();
+        return;
+      }
+      if (event.key !== 'Tab' || showLogin) return;
+
+      const focusable = modalRef.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (!focusable?.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose, showLogin]);
+
+  useEffect(() => {
+    if (!showLogin) return;
+    document.querySelector<HTMLElement>('.modal[data-login-modal="true"] .modal-close')?.focus();
+  }, [showLogin]);
 
   const handleJoin = async () => {
     if (!user) return;
@@ -60,12 +103,27 @@ export function TribeJoinModal({ tribe, zhuz, locale, onClose, onJoined }: Props
 
   return (
     <div className="join-overlay" onClick={onClose}>
-      <div className="join-modal" onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} className="join-close">&times;</button>
+      <div
+        className="join-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="join-modal-title"
+        aria-hidden={showLogin}
+        ref={modalRef}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          ref={closeButtonRef}
+          onClick={onClose}
+          className="join-close"
+          aria-label={isKk ? 'Жабу' : 'Закрыть'}
+        >
+          &times;
+        </button>
 
         <div className="join-tamga">{tribe.tamga}</div>
 
-        <h3 className="join-tribe-name">{tribeName}</h3>
+        <h3 id="join-modal-title" className="join-tribe-name">{tribeName}</h3>
         <p className="join-zhuz-name">{zhuzName}</p>
 
         <div className="join-info">
@@ -81,10 +139,18 @@ export function TribeJoinModal({ tribe, zhuz, locale, onClose, onJoined }: Props
 
         {error && <p className="join-error">{error}</p>}
 
-        {showLogin && <LoginModal open={true} onClose={() => setShowLogin(false)} />}
+        {showLogin && (
+          <LoginModal
+            open={true}
+            onClose={() => {
+              setShowLogin(false);
+              loginTriggerRef.current?.focus();
+            }}
+          />
+        )}
 
         {!user ? (
-          <button onClick={() => setShowLogin(true)} className="join-btn">
+          <button ref={loginTriggerRef} onClick={() => setShowLogin(true)} className="join-btn">
             {isKk ? 'Деректерді толтыру' : 'Заполнить данные'}
           </button>
         ) : user.tribeId === tribe.id ? (
