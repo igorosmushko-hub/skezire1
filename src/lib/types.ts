@@ -5,6 +5,7 @@ export interface NotablePerson {
 }
 
 export interface SubTribe {
+  id: string;
   kk: string;
   ru: string;
 }
