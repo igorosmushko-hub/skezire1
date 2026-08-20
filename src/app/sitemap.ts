@@ -13,7 +13,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     encyclopedia: new Date('2026-03-01'),
     glossary: new Date('2026-02-28'),
     zhetiAta: new Date('2026-02-28'),
-    tree: new Date('2026-08-13'),
     leaderboard: new Date('2026-03-30'),
     blog: new Date('2026-03-21'),
     legal: new Date('2026-03-07'),
@@ -64,12 +63,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: DATES.leaderboard,
       changeFrequency: 'daily',
       priority: 0.9,
-    });
-    entries.push({
-      url: `${baseUrl}/${locale}/shezhire-tree`,
-      lastModified: DATES.tree,
-      changeFrequency: 'monthly',
-      priority: 1.0,
     });
   }
 

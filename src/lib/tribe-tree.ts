@@ -129,9 +129,14 @@ export function layoutTree(root: TribeTreeNode, expanded: ReadonlySet<string>): 
     const toNode = byId.get(to);
     return fromNode && toNode ? [{ from: fromNode, to: toNode }] : [];
   });
+  const visibleNodes = new Map(nodes.map((node) => [node.id, node]));
+  const orderedNodes = flattenTree(root).flatMap((node) => {
+    const positioned = visibleNodes.get(node.id);
+    return positioned ? [positioned] : [];
+  });
 
   return {
-    nodes,
+    nodes: orderedNodes,
     edges,
     width: PADDING * 2 + maxDepth * HORIZONTAL_GAP + NODE_WIDTH,
     height: Math.max(420, PADDING * 2 + Math.max(1, leafIndex) * VERTICAL_GAP - (VERTICAL_GAP - NODE_HEIGHT)),

@@ -6,7 +6,6 @@ import { LeaderboardHero } from '@/components/leaderboard/LeaderboardHero';
 import { ZhuzRaceCards } from '@/components/leaderboard/ZhuzRaceCards';
 import { TribeRanking } from '@/components/leaderboard/TribeRanking';
 import { findTribe } from '@/lib/tribe-utils';
-import Link from 'next/link';
 
 interface Props {
   locale: string;
@@ -68,30 +67,6 @@ export function LeaderboardClient({ locale }: Props) {
                     data.tribes.find((t) => t.tribe_id === user?.tribeId)?.member_count ?? 0
                   }
                 />
-              </div>
-            )}
-
-            {/* CTA if no tribe */}
-            {user && !user.tribeId && (
-              <div className="lb-cta">
-                <h3>{isKk ? 'Руыңыз әлі таңдалмаған!' : 'Вы ещё не выбрали род!'}</h3>
-                <Link href={`/${locale}/shezhire-tree`} className="lb-cta-btn">
-                  {isKk ? 'Руды таңдау →' : 'Выбрать род →'}
-                </Link>
-              </div>
-            )}
-
-            {!user && (
-              <div className="lb-cta">
-                <h3>{isKk ? 'Жарысқа қатысыңыз!' : 'Участвуйте в гонке!'}</h3>
-                <p>
-                  {isKk
-                    ? 'Тіркеліп, руыңызды таңдаңыз — рейтингте көріңіз'
-                    : 'Зарегистрируйтесь, выберите род — появитесь в рейтинге'}
-                </p>
-                <Link href={`/${locale}/shezhire-tree`} className="lb-cta-btn">
-                  {isKk ? 'Руды таңдау →' : 'Выбрать род →'}
-                </Link>
               </div>
             )}
 

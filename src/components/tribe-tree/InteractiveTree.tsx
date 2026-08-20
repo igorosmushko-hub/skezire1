@@ -180,6 +180,7 @@ export function InteractiveTree({ locale, tree, initialFocusId, initialJoin = fa
     const viewport = viewportRef.current;
     if (!viewport) return;
     const handleWheel = (event: WheelEvent) => {
+      if (!event.ctrlKey && !event.metaKey) return;
       event.preventDefault();
       zoomAt(event.clientX, event.clientY, event.deltaY < 0 ? 1.12 : 0.89);
     };

@@ -37,7 +37,7 @@ test('renders only expanded levels and connects every visible child', () => {
   assert.deepEqual(collapsed.nodes.map((node) => node.id), ['alash']);
 
   const expanded = layoutTree(tree, new Set(['alash', 'kishi']));
-  assert.deepEqual(new Set(expanded.nodes.map((node) => node.id)), new Set(['alash', 'kishi', 'aday']));
+  assert.deepEqual(expanded.nodes.map((node) => node.id), ['alash', 'kishi', 'aday']);
   assert.equal(expanded.edges.length, 2);
   assert.ok(expanded.width > 500);
   assert.ok(expanded.height >= 420);
