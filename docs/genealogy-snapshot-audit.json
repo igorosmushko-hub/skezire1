@@ -1,0 +1,15 @@
+{
+  "total": 794594,
+  "importable": 794594,
+  "unique_ids": 794594,
+  "reused_ids": 0,
+  "duplicate_id_parent_pairs": 0,
+  "roots": 1,
+  "placeholder_names": 1,
+  "locked": 27768,
+  "max_depth": 31,
+  "snapshot": "tumalas_shezire_flat.json",
+  "source": "tumalas-local-snapshot",
+  "snapshot_at": "2026-08-20T10:22:34.108593+00:00",
+  "publication_default": "private"
+}
