@@ -11,7 +11,8 @@
 - [x] Исправлены содержание/источники, SEO-переходы и privacy-safe события карты; baseline GSC снят.
 - [x] Node24 production build, lint (0 ошибок, старое предупреждение pixel img), runtime/SEO/content/tree/profile/SQL и настоящий локальный PostgREST проходят.
 - [x] Локальная production QA проверила 94 перехода статья→ветвь→статья, RU/KK desktop/mobile, поиск/ошибки/retry, copy/back/reload и ограниченную нагрузку.
-- [ ] Точная версия установлена и принята в новом защищённом preview. SHA/deployment и итог — в `docs/seo/first-release-result.md`.
+- [x] Кандидат `e950a8c` установлен в защищённое preview; HTTP/API/SSO/noindex проверены.
+- [ ] Браузерная приёмка нового preview: automatic approval review требует прямого разрешения на QA-cookie. SHA/deployment и итог — в `docs/seo/first-release-result.md`.
 - [ ] На целевой платёжной среде проверены schema/ACL, история paid/pending и backup/restore; выполнен Robokassa sandbox. Доступ/target пока не установлен.
 - [ ] Сохранены восемь целей Метрики и подтверждён приём. Требуется явное разрешение на изменение счётчика.
 - [x] Подготовлены manifest, read-only payment preflight и инструкция выпуска/отката.
