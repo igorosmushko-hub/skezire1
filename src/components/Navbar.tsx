@@ -12,6 +12,7 @@ export function Navbar({ locale }: { locale: string }) {
     { href: '/ai' as const, label: t('ai'), className: 'nav-ai-link' },
     { href: '/zheti-ata' as const, label: t('zhetiAta') },
     { href: '/encyclopedia' as const, label: t('enc') },
+    { href: '/shezhire-tree' as const, label: locale === 'kk' ? 'Рулар ағашы' : 'Дерево родов' },
     { href: '/leaderboard' as const, label: t('race'), className: 'nav-race-link' },
     { href: '/order/canvas' as const, label: t('orderCanvas'), className: 'nav-order-link' },
     { href: '/blog' as const, label: t('blog') },

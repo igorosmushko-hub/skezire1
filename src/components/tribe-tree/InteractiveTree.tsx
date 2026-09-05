@@ -11,11 +11,11 @@ import {
 } from 'react';
 import {
   findTreePath,
-  getExpandedPathIdsForSearchResult,
   computeViewportFitScale,
   layoutTree,
+  mergeTreeChildren,
+  mergeTreePath,
   normalizeTreeSearch,
-  searchTree,
   TREE_NODE_HEIGHT,
   TREE_NODE_WIDTH,
   type TribeTreeNode,
@@ -27,8 +27,13 @@ import { TribeJoinModal } from './TribeJoinModal';
 interface Props {
   locale: string;
   tree: TribeTreeNode;
+  source: string;
   initialFocusId?: string;
   initialJoin?: boolean;
+}
+
+interface SearchResult extends TribeTreeNode {
+  path: TribeTreeNode[];
 }
 
 interface ViewTransform {
@@ -47,18 +52,30 @@ const INITIAL_SCALE = 1;
 
 const clampScale = (value: number) => Math.min(MAX_SCALE, Math.max(MIN_SCALE, value));
 
-export function InteractiveTree({ locale, tree, initialFocusId, initialJoin = false }: Props) {
+export function InteractiveTree({
+  locale,
+  tree: initialTree,
+  source,
+  initialFocusId,
+  initialJoin = false,
+}: Props) {
   const isKk = locale === 'kk';
+  const [tree, setTree] = useState(initialTree);
   const initialPath = useMemo(
-    () => findTreePath(tree, initialFocusId ?? tree.id),
-    [initialFocusId, tree],
+    () => findTreePath(initialTree, initialFocusId ?? initialTree.id),
+    [initialFocusId, initialTree],
   );
-  const initialTargetId = initialPath.at(-1)?.id ?? tree.id;
+  const initialTargetId = initialPath.at(-1)?.id ?? initialTree.id;
   const [expanded, setExpanded] = useState<Set<string>>(
-    () => new Set([tree.id, ...initialPath.slice(0, -1).map((node) => node.id)]),
+    () => new Set([initialTree.id, ...initialPath.slice(0, -1).map((node) => node.id)]),
   );
   const [selectedId, setSelectedId] = useState(initialTargetId);
+  const lastUrlSelection = useRef(initialTargetId);
   const [query, setQuery] = useState('');
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [searchStatus, setSearchStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [loadingIds, setLoadingIds] = useState<Set<string>>(() => new Set());
+  const [loadErrors, setLoadErrors] = useState<Set<string>>(() => new Set());
   const [transform, setTransform] = useState<ViewTransform>({ x: 20, y: 80, scale: INITIAL_SCALE });
   const [centerRequest, setCenterRequest] = useState({ id: initialTargetId, scale: INITIAL_SCALE, seq: 0 });
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -68,6 +85,7 @@ export function InteractiveTree({ locale, tree, initialFocusId, initialJoin = fa
   const hasCenteredRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const [joinOpen, setJoinOpen] = useState(initialJoin);
+  const [linkStatus, setLinkStatus] = useState<'idle' | 'copied' | 'error'>('idle');
 
   const layout = useMemo(() => layoutTree(tree, expanded), [expanded, tree]);
   const resetLayout = useMemo(() => layoutTree(tree, new Set([tree.id])), [tree]);
@@ -82,11 +100,88 @@ export function InteractiveTree({ locale, tree, initialFocusId, initialJoin = fa
     }
     return null;
   }, [selected]);
-  const normalizedQuery = normalizeTreeSearch(query);
-  const results = useMemo(
-    () => normalizedQuery.length >= 2 ? searchTree(tree, normalizedQuery) : [],
-    [normalizedQuery, tree],
-  );
+  const normalizedQuery = source === 'repo' ? normalizeTreeSearch(query) : query.trim();
+  const minSearchLength = source === 'repo' ? 2 : 3;
+
+  useEffect(() => {
+    if (lastUrlSelection.current === selectedId) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set('highlight', selectedId);
+    window.history.replaceState(window.history.state, '', url);
+    lastUrlSelection.current = selectedId;
+  }, [selectedId]);
+
+  useEffect(() => {
+    ymGoal('public_tree_open', { locale, mode: source === 'repo' ? 'encyclopedia' : 'published', deep_link: Boolean(initialFocusId) });
+  }, [initialFocusId, locale, source]);
+
+  useEffect(() => {
+    if (normalizedQuery.length < minSearchLength) {
+      setResults([]);
+      setSearchStatus('idle');
+      return;
+    }
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      setSearchStatus('loading');
+      try {
+        const params = new URLSearchParams({
+          q: normalizedQuery,
+          locale,
+          source,
+        });
+        const response = await fetch(`/api/genealogy/search?${params}`, { signal: controller.signal });
+        if (!response.ok) throw new Error('search_failed');
+        const payload = await response.json() as { results?: SearchResult[] };
+        setResults(payload.results ?? []);
+        setSearchStatus('success');
+        ymGoal('public_tree_search', { status: 'success', count: payload.results?.length ?? 0 });
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+        setResults([]);
+        setSearchStatus('error');
+        ymGoal('public_tree_search', { status: 'error' });
+      }
+    }, 250);
+    return () => {
+      controller.abort();
+      window.clearTimeout(timer);
+    };
+  }, [locale, minSearchLength, normalizedQuery, source]);
+
+  const pendingLoads = useRef(new Set<string>());
+  const loadChildren = useCallback(async (node: TribeTreeNode) => {
+    if (!node.hasChildren || (node.children !== undefined && node.nextChildrenOffset == null)) return node.children ?? [];
+    if (pendingLoads.current.has(node.id)) return node.children ?? [];
+    pendingLoads.current.add(node.id);
+    setLoadingIds((current) => new Set(current).add(node.id));
+    setLoadErrors((current) => {
+      const next = new Set(current);
+      next.delete(node.id);
+      return next;
+    });
+    try {
+      const params = new URLSearchParams({ node: node.id, locale, source, offset: String(node.nextChildrenOffset ?? 0) });
+      const response = await fetch(`/api/genealogy/children?${params}`);
+      if (!response.ok) throw new Error('children_failed');
+      const payload = await response.json() as { children?: TribeTreeNode[]; nextOffset?: number | null };
+      const children = payload.children ?? [];
+      setTree((current) => mergeTreeChildren(current, node.id, children, payload.nextOffset ?? null));
+      ymGoal('public_tree_load', { status: 'success', count: children.length });
+      return children;
+    } catch {
+      setLoadErrors((current) => new Set(current).add(node.id));
+      ymGoal('public_tree_load', { status: 'error' });
+      return [];
+    } finally {
+      pendingLoads.current.delete(node.id);
+      setLoadingIds((current) => {
+        const next = new Set(current);
+        next.delete(node.id);
+        return next;
+      });
+    }
+  }, [locale, source]);
 
   const centerNode = useCallback((id: string, requestedScale?: number) => {
     const viewport = viewportRef.current;
@@ -141,23 +236,28 @@ export function InteractiveTree({ locale, tree, initialFocusId, initialJoin = fa
     if (suppressClickRef.current) return;
     hasInteractedRef.current = true;
     setSelectedId(node.id);
-    if (node.children?.length) {
+    setLinkStatus('idle');
+    if (node.hasChildren || node.children?.length) {
       setExpanded((current) => {
         const next = new Set(current);
         if (next.has(node.id)) next.delete(node.id);
         else next.add(node.id);
         return next;
       });
+      void loadChildren(node);
     }
     requestCenter(node.id);
-    ymGoal('public_tree_node', { kind: node.kind });
+    ymGoal('public_tree_node', { kind: node.kind, action: node.hasChildren || node.children?.length ? (expanded.has(node.id) ? 'collapse' : 'expand') : 'select' });
   };
 
-  const focusSearchResult = (node: TribeTreeNode) => {
-    setExpanded(new Set(getExpandedPathIdsForSearchResult(tree, node.id)));
+  const focusSearchResult = (node: SearchResult) => {
+    setTree((current) => mergeTreePath(current, node.path));
+    setExpanded(new Set(node.path.slice(0, -1).map((pathNode) => pathNode.id)));
     setSelectedId(node.id);
+    setLinkStatus('idle');
     setQuery('');
     requestCenter(node.id, 1);
+    void loadChildren(node);
     ymGoal('public_tree_search_result', { kind: node.kind });
   };
 
@@ -197,6 +297,7 @@ export function InteractiveTree({ locale, tree, initialFocusId, initialJoin = fa
     hasInteractedRef.current = false;
     setExpanded(new Set([tree.id]));
     setSelectedId(tree.id);
+    setLinkStatus('idle');
     const viewport = viewportRef.current;
     const nextScale = viewport
       ? computeViewportFitScale(resetLayout.width, viewport.clientWidth, 24, MIN_SCALE, INITIAL_SCALE)
@@ -298,7 +399,7 @@ export function InteractiveTree({ locale, tree, initialFocusId, initialJoin = fa
   };
 
   return (
-    <section className="tt-explorer" aria-labelledby="tree-explorer-title">
+    <section className="tt-explorer ym-hide-content" aria-labelledby="tree-explorer-title">
       <div className="tt-explorer-heading">
         <div>
           <span className="tt-eyebrow">{isKk ? 'Интерактивті карта' : 'Интерактивная карта'}</span>
@@ -321,17 +422,85 @@ export function InteractiveTree({ locale, tree, initialFocusId, initialJoin = fa
           />
           {query && <button type="button" onClick={() => setQuery('')} aria-label={isKk ? 'Іздеуді тазарту' : 'Очистить поиск'}>×</button>}
         </div>
-        {normalizedQuery.length >= 2 && (
+        {normalizedQuery.length >= minSearchLength && (
           <div className="tt-search-results" aria-live="polite">
-            {results.length ? results.map((node) => (
+            {searchStatus === 'loading' ? (
+              <p>{isKk ? 'Ізделуде…' : 'Ищем…'}</p>
+            ) : searchStatus === 'error' ? (
+              <p>{isKk ? 'Іздеу уақытша қолжетімсіз' : 'Поиск временно недоступен'}</p>
+            ) : results.length ? results.map((node) => (
               <button key={node.id} type="button" onClick={() => focusSearchResult(node)}>
                 <span>{node.name}</span>
-                <small>{node.secondaryName}</small>
+                <small>{node.path.slice(0, -1).map((item) => item.name).join(' → ')}</small>
               </button>
-            )) : <p>{isKk ? 'Сәйкестік табылмады' : 'Совпадений не найдено'}</p>}
+            )) : searchStatus === 'success' ? (
+              <p>{isKk ? 'Сәйкестік табылмады' : 'Совпадений не найдено'}</p>
+            ) : null}
           </div>
         )}
       </div>
+
+      <nav className="tt-mobile-browser" aria-label={isKk ? 'Шежіре тармақтары' : 'Ветви шежіре'}>
+        <div className="tt-mobile-browser-head">
+          <button
+            type="button"
+            onClick={() => {
+              const parent = selectedPath.at(-2);
+              if (parent) { setSelectedId(parent.id); setLinkStatus('idle'); }
+            }}
+            disabled={selectedPath.length < 2}
+          >
+            <span aria-hidden="true">←</span> {isKk ? 'Артқа' : 'Назад'}
+          </button>
+          <div>
+            <small>{selectedPath.map((node) => node.name).join(' → ')}</small>
+            <h3>{selected.name}</h3>
+          </div>
+        </div>
+
+        {loadingIds.has(selected.id) && !selected.children ? (
+          <div className="tt-mobile-loading" role="status">
+            <span />
+            <span />
+            <span />
+          </div>
+        ) : loadErrors.has(selected.id) && !selected.children?.length ? (
+          <div className="tt-mobile-message" role="alert">
+            <p>{isKk ? 'Тармақ жүктелмеді.' : 'Не удалось загрузить ветвь.'}</p>
+            <button type="button" onClick={() => void loadChildren(selected)}>
+              {isKk ? 'Қайталау' : 'Повторить'}
+            </button>
+          </div>
+        ) : selected.hasChildren && selected.children === undefined ? (
+          <button type="button" onClick={() => void loadChildren(selected)}>
+            {isKk ? 'Тармақтарды көрсету' : 'Показать ветви'}
+          </button>
+        ) : selected.children?.length ? (
+          <ul>
+            {selected.children.map((child) => (
+              <li key={child.id}>
+                <button type="button" onClick={() => selectNode(child)}>
+                  <span>
+                    <strong>{child.name}</strong>
+                    {child.secondaryName && child.secondaryName !== child.name && <small>{child.secondaryName}</small>}
+                  </span>
+                  {child.hasChildren && <b aria-hidden="true">→</b>}
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="tt-mobile-empty">{isKk ? 'Бұл тармақта жалғасы жоқ.' : 'У этой ветви нет продолжения.'}</p>
+        )}
+        {selected.children?.length && selected.nextChildrenOffset != null ? (
+          <div>
+            {loadErrors.has(selected.id) && <p role="alert">{isKk ? 'Тармақ жүктелмеді.' : 'Не удалось загрузить ветвь.'}</p>}
+            <button type="button" disabled={loadingIds.has(selected.id)} onClick={() => void loadChildren(selected)}>
+              {loadingIds.has(selected.id) ? (isKk ? 'Жүктелуде…' : 'Загрузка…') : (isKk ? 'Тағы тармақтарды көрсету' : 'Показать ещё ветви')}
+            </button>
+          </div>
+        ) : null}
+      </nav>
 
       <div
         ref={viewportRef}
@@ -385,7 +554,11 @@ export function InteractiveTree({ locale, tree, initialFocusId, initialJoin = fa
                   <strong>{node.name}</strong>
                   {node.secondaryName && node.secondaryName !== node.name && <small>{node.secondaryName}</small>}
                 </span>
-                {node.hasChildren && <span className="tt-node-toggle" aria-hidden="true">{isExpanded ? '−' : '+'}</span>}
+                {node.hasChildren && (
+                  <span className="tt-node-toggle" aria-hidden="true">
+                    {loadingIds.has(node.id) ? '…' : isExpanded ? '−' : '+'}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -408,8 +581,26 @@ export function InteractiveTree({ locale, tree, initialFocusId, initialJoin = fa
           </div>
           {selected.summary && <p className="tt-detail-summary">{selected.summary}</p>}
           <div className="tt-detail-actions">
+            <button type="button" className="tt-detail-link" onClick={async () => {
+              const url = new URL(window.location.pathname, window.location.origin);
+              url.searchParams.set('highlight', selected.id);
+              try {
+                await navigator.clipboard.writeText(url.href);
+                setLinkStatus('copied');
+                ymGoal('public_tree_link', { kind: selected.kind, status: 'copied' });
+              } catch {
+                setLinkStatus('error');
+              }
+            }}>{isKk ? 'Тармақ сілтемесін көшіру' : 'Скопировать ссылку на ветвь'}</button>
+            <span role="status">{linkStatus === 'copied' ? (isKk ? 'Сілтеме көшірілді' : 'Ссылка скопирована') : linkStatus === 'error' ? (isKk ? 'Сілтемені браузердің мекенжай жолағынан көшіріңіз' : 'Скопируйте ссылку из адресной строки браузера') : ''}</span>
+            {selected.hasChildren && (selected.children === undefined || selected.nextChildrenOffset != null) && (
+              <button type="button" className="tt-detail-link" disabled={loadingIds.has(selected.id)} onClick={() => void loadChildren(selected)}>
+                {loadingIds.has(selected.id) ? (isKk ? 'Жүктелуде…' : 'Загрузка…') : (isKk ? 'Тағы тармақтарды көрсету' : 'Показать ещё ветви')}
+              </button>
+            )}
+            {loadErrors.has(selected.id) && <p role="alert">{isKk ? 'Тармақ жүктелмеді. Қайталап көріңіз.' : 'Ветвь не загрузилась. Повторите попытку.'}</p>}
             {selected.href && (
-              <Link href={selected.href} className="tt-detail-link">
+              <Link href={selected.href} className="tt-detail-link" onClick={() => ymGoal('public_tree_article', { kind: selected.kind })}>
                 {isKk ? 'Толық мәліметті ашу' : 'Подробнее'} <span aria-hidden="true">→</span>
               </Link>
             )}

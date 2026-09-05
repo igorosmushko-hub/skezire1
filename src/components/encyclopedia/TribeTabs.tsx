@@ -55,6 +55,11 @@ export function TribeTabs({ tribes, locale, zhuzId, labels }: TribeTabsProps) {
             {subgroup && <span className="tribe-tabs-subgroup">{subgroup}</span>}
           </div>
         </div>
+        {tribe.tamga && (
+          <p className="tribe-tabs-desc" style={{ marginTop: 0 }}>
+            {isKk ? 'Каталогтың шартты белгісі; тамғаның тарихи бейнесі емес.' : 'Условное обозначение каталога; не историческое изображение тамги.'}
+          </p>
+        )}
 
         <p className="tribe-tabs-desc">{desc}</p>
 

@@ -1,0 +1,16 @@
+# Deploy application inputs only; snapshots, audit evidence and local tooling stay local.
+docs/
+scripts/
+supabase/
+_legacy/
+skezire_old/
+*.md
+*.pen
+.env*
+.agents/
+.codex/
+.playwright-cli/
+output/
+
+*.tsbuildinfo
+next-env.d.ts

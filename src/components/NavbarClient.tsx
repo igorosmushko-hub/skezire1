@@ -22,6 +22,15 @@ export function NavbarClient({ locale, links, brand, auth, langSwitcher }: Navba
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1280px)');
+    const closeOnDesktop = () => {
+      if (desktop.matches) setMenuOpen(false);
+    };
+    desktop.addEventListener('change', closeOnDesktop);
+    return () => desktop.removeEventListener('change', closeOnDesktop);
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       navRef.current?.classList.toggle('scrolled', window.scrollY > 40);
     };

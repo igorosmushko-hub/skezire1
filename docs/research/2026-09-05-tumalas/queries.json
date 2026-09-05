@@ -1,0 +1,218 @@
+[
+  {
+    "id": "schema",
+    "sql": "SELECT column_name,data_type,is_nullable FROM information_schema.columns WHERE table_schema='public' AND table_name='genealogy_nodes' AND $1::text IS NOT NULL ORDER BY ordinal_position"
+  },
+  {
+    "id": "summary",
+    "sql": "SELECT count(*)::int total,count(*) FILTER(WHERE is_public)::int public,count(*) FILTER(WHERE locked)::int locked,min(depth) min_depth,max(depth) max_depth,count(*) FILTER(WHERE parent_key IS NULL)::int roots,count(DISTINCT external_id)::int unique_ids,count(DISTINCT name)::int distinct_names,min(source_snapshot_at) first_snapshot,max(source_snapshot_at) last_snapshot,min(imported_at) first_import,max(imported_at) last_import FROM genealogy_nodes WHERE source=$1"
+  },
+  {
+    "id": "depth",
+    "sql": "SELECT depth,count(*)::int n,count(*) FILTER(WHERE is_public)::int public,count(*) FILTER(WHERE locked)::int locked,count(*) FILTER(WHERE taipa IS NOT NULL AND taipa<>0)::int nonzero_taipa FROM genealogy_nodes WHERE source=$1 GROUP BY depth ORDER BY depth"
+  },
+  {
+    "id": "taipa",
+    "sql": "SELECT taipa,count(*)::int n,min(depth) min_depth,max(depth) max_depth FROM genealogy_nodes WHERE source=$1 GROUP BY taipa ORDER BY n DESC"
+  },
+  {
+    "id": "degree",
+    "sql": "WITH degrees AS(SELECT n.node_key,count(c.node_key)::int children FROM genealogy_nodes n LEFT JOIN genealogy_nodes c ON c.parent_key=n.node_key WHERE n.source=$1 GROUP BY n.node_key) SELECT children,count(*)::int n FROM degrees GROUP BY children ORDER BY children"
+  },
+  {
+    "id": "integrity",
+    "sql": "SELECT count(*) FILTER(WHERE n.parent_key IS NOT NULL AND p.node_key IS NULL)::int missing_parents,count(*) FILTER(WHERE n.parent_key=n.node_key)::int self_parents,count(*) FILTER(WHERE p.node_key IS NOT NULL AND n.depth<>p.depth+1)::int bad_depth,count(*) FILTER(WHERE p.node_key IS NOT NULL AND n.source<>p.source)::int cross_source,count(*) FILTER(WHERE p.node_key IS NOT NULL AND n.external_parent_id<>p.external_id)::int parent_id_mismatch,count(*) FILTER(WHERE n.is_public AND p.node_key IS NOT NULL AND NOT p.is_public)::int public_private_parent FROM genealogy_nodes n LEFT JOIN genealogy_nodes p ON p.node_key=n.parent_key WHERE n.source=$1"
+  },
+  {
+    "id": "name_features",
+    "sql": "SELECT count(*) FILTER(WHERE name~'[0-9]')::int digits,count(*) FILTER(WHERE name~'(^|[^0-9])(1[0-9]{3}|20[0-2][0-9])([^0-9]|$)')::int year_token,count(*) FILTER(WHERE name~'[[:space:]]')::int whitespace,count(*) FILTER(WHERE name~*'(ұлы|улы|қызы|кызы|ович|евич|овна|евна)([[:space:][:punct:]]|$)')::int patronymic,count(*) FILTER(WHERE name~*'(^|[[:space:][:punct:]])(батыр|хан|би|сұлтан|султан|ақын|акын|жырау)([[:space:][:punct:]]|$)')::int title,count(*) FILTER(WHERE name~*'(жүз|жуз|тайпа|руы|роды|подрод|тармақ|тармак|атасы)')::int group_token,count(*) FILTER(WHERE name LIKE '[без имени #%')::int placeholder FROM genealogy_nodes WHERE source=$1"
+  },
+  {
+    "id": "review",
+    "sql": "SELECT count(*) FILTER(WHERE reviewed_at IS NOT NULL)::int reviewed,count(*) FILTER(WHERE publication_basis IS NOT NULL)::int basis,count(*) FILTER(WHERE NOT is_public AND reviewed_at IS NOT NULL)::int private_reviewed FROM genealogy_nodes WHERE source=$1"
+  },
+  {
+    "id": "public",
+    "sql": "SELECT external_id,name,depth,external_parent_id,publication_basis FROM genealogy_nodes WHERE source=$1 AND is_public ORDER BY depth,external_id"
+  },
+  {
+    "id": "root_branches",
+    "sql": "SELECT external_id,name,external_parent_id,depth,taipa FROM genealogy_nodes WHERE source=$1 AND depth<=1 ORDER BY depth,external_id"
+  },
+  {
+    "id": "classification",
+    "sql": "WITH RECURSIVE seeds AS (\n SELECT * FROM jsonb_to_recordset($2::jsonb) AS s(external_id bigint,expected_name text,expected_parent_id bigint,expected_taipa bigint,type text,relationship_verified boolean)\n), features AS MATERIALIZED (\n SELECT n.*,s.type AS verified_group_type,s.relationship_verified,\n n.name~*'(ұлы|улы|қызы|кызы|ович|евич|овна|евна)([[:space:][:punct:]]|$)' AS c_signal,\n (n.name~'[[:space:]]' AND n.name~*'(^|[[:space:][:punct:]])(батыр|хан|би|сұлтан|султан|ақын|акын|жырау)([[:space:][:punct:]]|$)') AS b_signal,\n EXISTS(SELECT 1 FROM genealogy_nodes child WHERE child.parent_key=n.node_key) AS has_children\n FROM genealogy_nodes n LEFT JOIN seeds s ON n.external_id=s.external_id AND n.name=s.expected_name AND n.external_parent_id=s.expected_parent_id AND n.taipa=s.expected_taipa\n WHERE n.source=$1\n), classified AS MATERIALIZED (\n SELECT *,CASE WHEN verified_group_type IS NOT NULL THEN 'A' WHEN c_signal THEN 'C' WHEN b_signal THEN 'B' ELSE 'D' END AS class FROM features\n), eligible AS (\n SELECT node_key,parent_key,is_public FROM classified WHERE class='A' OR (external_id=1 AND parent_key IS NULL AND name='Қазақ')\n), paths AS (\n SELECT node_key,parent_key,is_public FROM eligible WHERE parent_key IS NULL\n UNION ALL SELECT n.node_key,n.parent_key,n.is_public FROM eligible n JOIN paths p ON n.parent_key=p.node_key\n)\nSELECT\n (SELECT jsonb_agg(x ORDER BY class) FROM(SELECT class,count(*)::int n,count(*) FILTER(WHERE is_public)::int public,count(*) FILTER(WHERE has_children)::int nonleaf,count(*) FILTER(WHERE NOT has_children)::int leaf,min(depth) min_depth,max(depth) max_depth FROM classified GROUP BY class)x) AS classes,\n (SELECT jsonb_agg(x ORDER BY depth,external_id) FROM(SELECT node_key,external_id,external_parent_id,name,depth,taipa,verified_group_type,relationship_verified,is_public FROM classified WHERE class='A')x) AS a_candidates,\n (SELECT jsonb_agg(x) FROM(SELECT c_signal,b_signal,count(*)::int n FROM classified GROUP BY c_signal,b_signal)x) AS signal_overlap,\n (SELECT jsonb_build_object('proposed_nodes_including_root',(SELECT count(*)::int FROM eligible),'full_candidate_path_nodes',count(*)::int,'currently_private_in_candidate_paths',count(*) FILTER(WHERE NOT is_public)::int,'a_candidates',(SELECT count(*)::int FROM classified WHERE class='A'),'a_with_current_public_parent',(SELECT count(*)::int FROM classified n JOIN classified p ON p.node_key=n.parent_key WHERE n.class='A' AND p.is_public)) FROM paths) AS candidate_paths,\n (SELECT jsonb_build_object('corroborated_entity_type_records',count(*)::int,'corroborated_traditional_subgroup_edges',count(*) FILTER(WHERE relationship_verified)::int,'biological_parentage_verified',0) FROM classified WHERE class='A') AS e_overlay,\n (SELECT jsonb_agg(x ORDER BY depth,class) FROM(SELECT depth,class,count(*)::int n FROM classified GROUP BY depth,class)x) AS class_by_depth\n",
+    "params": [
+      "tumalas-local-snapshot",
+      "[{\"external_id\": 5, \"expected_name\": \"Албан\", \"expected_parent_id\": 1, \"expected_taipa\": 5, \"type\": \"clan\", \"evidence_url\": \"https://e-history.kz/storage/upload/library_kk_files/iblock/f23/f2310f0d5a63c06ed525ec0c86812669.pdf#page=81\", \"locator\": \"printed p.81, Uly zhuz tribe list\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": false, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 6, \"expected_name\": \"Дулат\", \"expected_parent_id\": 1, \"expected_taipa\": 6, \"type\": \"clan\", \"evidence_url\": \"https://e-history.kz/storage/upload/library_kk_files/iblock/f23/f2310f0d5a63c06ed525ec0c86812669.pdf#page=81\", \"locator\": \"printed p.81, Uly zhuz tribe list\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": false, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 15, \"expected_name\": \"Сарыүйсін\", \"expected_parent_id\": 1, \"expected_taipa\": 15, \"type\": \"clan\", \"evidence_url\": \"https://e-history.kz/storage/upload/library_kk_files/iblock/f23/f2310f0d5a63c06ed525ec0c86812669.pdf#page=81\", \"locator\": \"printed p.81, Uly zhuz tribe list\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": false, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 28, \"expected_name\": \"Сіргелі\", \"expected_parent_id\": 1, \"expected_taipa\": 28, \"type\": \"clan\", \"evidence_url\": \"https://e-history.kz/storage/upload/library_kk_files/iblock/f23/f2310f0d5a63c06ed525ec0c86812669.pdf#page=81\", \"locator\": \"printed p.81, Uly zhuz tribe list\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": false, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 29, \"expected_name\": \"Қаңлы\", \"expected_parent_id\": 1, \"expected_taipa\": 29, \"type\": \"clan\", \"evidence_url\": \"https://e-history.kz/storage/upload/library_kk_files/iblock/f23/f2310f0d5a63c06ed525ec0c86812669.pdf#page=81\", \"locator\": \"printed p.81, Uly zhuz tribe list\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": false, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 30, \"expected_name\": \"Шанышқылы\", \"expected_parent_id\": 1, \"expected_taipa\": 30, \"type\": \"clan\", \"evidence_url\": \"https://e-history.kz/storage/upload/library_kk_files/iblock/f23/f2310f0d5a63c06ed525ec0c86812669.pdf#page=81\", \"locator\": \"printed p.81, Uly zhuz tribe list\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": false, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 37, \"expected_name\": \"Шапырашты\", \"expected_parent_id\": 1, \"expected_taipa\": 37, \"type\": \"clan\", \"evidence_url\": \"https://e-history.kz/storage/upload/library_kk_files/iblock/f23/f2310f0d5a63c06ed525ec0c86812669.pdf#page=81\", \"locator\": \"printed p.81, Uly zhuz tribe list\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": false, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 38, \"expected_name\": \"Жалайыр\", \"expected_parent_id\": 1, \"expected_taipa\": 38, \"type\": \"clan\", \"evidence_url\": \"https://e-history.kz/storage/upload/library_kk_files/iblock/f23/f2310f0d5a63c06ed525ec0c86812669.pdf#page=81\", \"locator\": \"printed p.81, Uly zhuz tribe list\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": false, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 39, \"expected_name\": \"Ысты\", \"expected_parent_id\": 1, \"expected_taipa\": 39, \"type\": \"clan\", \"evidence_url\": \"https://e-history.kz/storage/upload/library_kk_files/iblock/f23/f2310f0d5a63c06ed525ec0c86812669.pdf#page=81\", \"locator\": \"printed p.81, Uly zhuz tribe list\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": false, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 40, \"expected_name\": \"Ошақты\", \"expected_parent_id\": 1, \"expected_taipa\": 40, \"type\": \"clan\", \"evidence_url\": \"https://e-history.kz/storage/upload/library_kk_files/iblock/f23/f2310f0d5a63c06ed525ec0c86812669.pdf#page=81\", \"locator\": \"printed p.81, Uly zhuz tribe list\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": false, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 41, \"expected_name\": \"Суан\", \"expected_parent_id\": 1, \"expected_taipa\": 41, \"type\": \"clan\", \"evidence_url\": \"https://e-history.kz/storage/upload/library_kk_files/iblock/f23/f2310f0d5a63c06ed525ec0c86812669.pdf#page=81\", \"locator\": \"printed p.81, Uly zhuz tribe list\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": false, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 376, \"expected_name\": \"Ботбай\", \"expected_parent_id\": 6, \"expected_taipa\": 6, \"type\": \"subclan\", \"evidence_url\": \"https://auezovinstitute.kz/?page_id=9125\", \"locator\": \"Ру атаулары: Дулат / Жалайыр / Суан\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": true, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 377, \"expected_name\": \"Жаныс\", \"expected_parent_id\": 6, \"expected_taipa\": 6, \"type\": \"subclan\", \"evidence_url\": \"https://auezovinstitute.kz/?page_id=9125\", \"locator\": \"Ру атаулары: Дулат / Жалайыр / Суан\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": true, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 378, \"expected_name\": \"Сиқым\", \"expected_parent_id\": 6, \"expected_taipa\": 6, \"type\": \"subclan\", \"evidence_url\": \"https://auezovinstitute.kz/?page_id=9125\", \"locator\": \"Ру атаулары: Дулат / Жалайыр / Суан\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": true, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 379, \"expected_name\": \"Шымыр\", \"expected_parent_id\": 6, \"expected_taipa\": 6, \"type\": \"subclan\", \"evidence_url\": \"https://auezovinstitute.kz/?page_id=9125\", \"locator\": \"Ру атаулары: Дулат / Жалайыр / Суан\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": true, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 387, \"expected_name\": \"Тоқарыстан\", \"expected_parent_id\": 41, \"expected_taipa\": 41, \"type\": \"subclan\", \"evidence_url\": \"https://auezovinstitute.kz/?page_id=9125\", \"locator\": \"Ру атаулары: Дулат / Жалайыр / Суан\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": true, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 400, \"expected_name\": \"Сырманақ\", \"expected_parent_id\": 38, \"expected_taipa\": 38, \"type\": \"subclan\", \"evidence_url\": \"https://auezovinstitute.kz/?page_id=9125\", \"locator\": \"Ру атаулары: Дулат / Жалайыр / Суан\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": true, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}, {\"external_id\": 401, \"expected_name\": \"Шуманақ\", \"expected_parent_id\": 38, \"expected_taipa\": 38, \"type\": \"subclan\", \"evidence_url\": \"https://auezovinstitute.kz/?page_id=9125\", \"locator\": \"Ру атаулары: Дулат / Жалайыр / Суан\", \"assertion_scope\": \"entity type and traditional clan membership; NOT biological parentage\", \"relationship_verified\": true, \"verification\": \"corroborated_in_research_not_published\", \"confidence\": \"high for group type; no calibrated probability\"}]"
+    ]
+  },
+  {
+    "id": "taipa_integrity",
+    "sql": "SELECT count(*) FILTER(WHERE n.depth>1 AND n.taipa IS DISTINCT FROM p.taipa)::int parent_taipa_changes,count(*) FILTER(WHERE n.taipa IS NULL)::int null_taipa,count(*) FILTER(WHERE n.taipa=0)::int zero_taipa,count(*) FILTER(WHERE n.depth=1 AND n.taipa<>n.external_id)::int root_taipa_mismatch FROM genealogy_nodes n LEFT JOIN genealogy_nodes p ON p.node_key=n.parent_key WHERE n.source=$1"
+  },
+  {
+    "id": "live_constraints",
+    "sql": "SELECT conname,pg_get_constraintdef(oid) definition FROM pg_constraint WHERE conrelid='public.genealogy_nodes'::regclass AND $1::text IS NOT NULL ORDER BY conname"
+  },
+  {
+    "id": "catalog_coverage",
+    "sql": "SELECT schemaname,tablename FROM pg_tables WHERE schemaname NOT IN('pg_catalog','information_schema') AND $1::text IS NOT NULL ORDER BY 1,2"
+  },
+  {
+    "id": "name_collisions",
+    "sql": "SELECT count(*)::int names_reused,sum(n)::int rows_with_reused_name,max(n)::int most_reused_name_count FROM(SELECT name,count(*) n FROM genealogy_nodes WHERE source=$1 GROUP BY name HAVING count(*)>1)x"
+  },
+  {
+    "id": "title_standalone",
+    "sql": "SELECT count(*)::int n FROM genealogy_nodes WHERE source=$1 AND lower(trim(name)) IN('батыр','хан','би','сұлтан','султан','ақын','акын','жырау')"
+  },
+  {
+    "id": "lexicon_match_limits",
+    "params": [
+      "tumalas-local-snapshot",
+      [
+        "қаңлы",
+        "арғын",
+        "ұзын",
+        "адай",
+        "есентемир",
+        "коктын",
+        "албан",
+        "шекты",
+        "атыгай",
+        "кыпшак",
+        "шеркеш",
+        "кете",
+        "найман",
+        "кызылкурт",
+        "сарыалбан",
+        "басшомекей",
+        "қараалбан",
+        "байбақты",
+        "тобыш",
+        "жаныс",
+        "берш",
+        "тортуыл",
+        "шомекей",
+        "жалайыр",
+        "сүйіндік",
+        "қытай",
+        "ойык",
+        "андас",
+        "тоқа",
+        "бериш",
+        "қоңырат",
+        "тілеу",
+        "кумсай",
+        "шымыр",
+        "суан",
+        "төртуыл",
+        "ашамайлы",
+        "аргынат",
+        "қаракерей",
+        "жағалбайлы",
+        "таз",
+        "куандык",
+        "қуандық",
+        "бура",
+        "табын",
+        "ошакты",
+        "қызылқұрт",
+        "арғынат",
+        "суюндик",
+        "сарыжомарт",
+        "қарабалық",
+        "атығай",
+        "қыпшақ",
+        "конырат",
+        "катаган",
+        "дулат",
+        "шапырашты",
+        "ысық",
+        "басшөмекей",
+        "матай",
+        "қарашөмекей",
+        "байбакты",
+        "шанышкылы",
+        "тока",
+        "қожа",
+        "черкес",
+        "есентемір",
+        "көшебе",
+        "төленгіт",
+        "мұңал",
+        "карабалык",
+        "кошебе",
+        "тана",
+        "мейрам",
+        "қатаған",
+        "oйық",
+        "каратай",
+        "шөмекей",
+        "ысык",
+        "тобықты",
+        "тилеу",
+        "абаккерей",
+        "келимберды",
+        "караалбан",
+        "узын",
+        "аргын",
+        "жаппас",
+        "көктін",
+        "алаша",
+        "жагалбайлы",
+        "телеу",
+        "кытай",
+        "сіргелі",
+        "ботбай",
+        "маскар",
+        "ергенекті",
+        "шимойын",
+        "жаманбай",
+        "торе(чингизиды)",
+        "бөтбай",
+        "ошақты",
+        "бұлтын",
+        "керей",
+        "карашомекей",
+        "торе",
+        "тобыкты",
+        "сырманақ",
+        "кердері",
+        "ергенекты",
+        "сикым",
+        "абақкерей",
+        "баганалы",
+        "каракесек",
+        "бултын",
+        "рамадан",
+        "садыр",
+        "каракерей",
+        "тама",
+        "кожа",
+        "шимир",
+        "мунал",
+        "шанышқылы",
+        "қаракесек",
+        "жеменей",
+        "каңлы",
+        "сырманак",
+        "ысты",
+        "таракты",
+        "келімберді",
+        "кердери",
+        "уак",
+        "меркіт",
+        "меркит",
+        "уақ",
+        "шекті",
+        "сиқым",
+        "қаратай",
+        "толенгит",
+        "құмсай"
+      ]
+    ],
+    "sql": "SELECT count(*)::int exact_lexical_rows,count(*) FILTER(WHERE depth>2)::int below_depth2 FROM genealogy_nodes WHERE source=$1 AND regexp_replace(lower(name),'[[:space:]]','','g')=ANY($2::text[])"
+  }
+]

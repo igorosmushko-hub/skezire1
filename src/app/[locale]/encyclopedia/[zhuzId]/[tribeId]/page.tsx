@@ -3,7 +3,9 @@ import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { TRIBES_DB } from '@/data/tribes';
+import { getEncyclopediaSources } from '@/data/encyclopedia-sources';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
+import { TreeMapLink } from '@/components/encyclopedia/TreeMapLink';
 import { TribeDetail } from '@/components/encyclopedia/TribeDetail';
 import { AiPromoBanner } from '@/components/AiPromoBanner';
 import { AiInlineHint } from '@/components/AiInlineHint';
@@ -71,6 +73,7 @@ export default async function TribePage({ params }: PageProps) {
   const zhuzName = isKk ? zhuz.kk : zhuz.ru;
   const tribeName = isKk ? tribe.kk : tribe.ru;
   const subgroup = isKk ? tribe.subgroup_kk : tribe.subgroup_ru;
+  const sources = getEncyclopediaSources(tribeId);
 
   const prevTribe = tribeIndex > 0 ? zhuz.tribes[tribeIndex - 1] : undefined;
   const nextTribe = tribeIndex < zhuz.tribes.length - 1 ? zhuz.tribes[tribeIndex + 1] : undefined;
@@ -97,10 +100,6 @@ export default async function TribePage({ params }: PageProps) {
         '@type': 'Person',
         name: p.name,
         description: isKk ? p.role_kk : p.role_ru,
-        memberOf: {
-          '@type': 'Organization',
-          name: tribeName,
-        },
       }))
     : [];
 
@@ -185,6 +184,21 @@ export default async function TribePage({ params }: PageProps) {
 
           <AiInlineHint slug="ancestor" locale={locale} />
 
+          {sources.length > 0 && (
+            <section aria-labelledby="sources-title" style={{ marginTop: 24 }}>
+              <h2 id="sources-title" style={{ fontSize: '1.1rem', color: '#003082', marginBottom: 12 }}>
+                {isKk ? 'Анықтамаға пайдаланылған дереккөздер' : 'Источники для справки'}
+              </h2>
+              <ul style={{ lineHeight: 1.8, paddingLeft: 20, color: '#444' }}>
+                {sources.map((source) => (
+                  <li key={source.id}>
+                    <a href={source.url} target="_blank" rel="noreferrer" style={{ color: '#003082' }}>{source.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
           {/* Siblings — other tribes in this zhuz */}
           {zhuz.tribes.length > 1 && (
             <section className="tribe-siblings">
@@ -244,6 +258,7 @@ export default async function TribePage({ params }: PageProps) {
           {isKk ? 'Пайдалы сілтемелер' : 'Полезные ссылки'}
         </h3>
         <ul style={{ lineHeight: 1.8, paddingLeft: 20, color: '#444' }}>
+          <li><TreeMapLink href={`/${locale}/shezhire-tree?highlight=${tribeId}`} locale={locale} targetKind="tribe" style={{ color: '#003082' }}>{isKk ? 'Картадан көру' : 'Посмотреть на карте'}</TreeMapLink></li>
           <li><Link href={`/${locale}/glossary`} style={{ color: '#003082' }}>{isKk ? 'Глоссарий — шежіре терминдері' : 'Глоссарий — термины шежіре'}</Link></li>
           <li><Link href={`/${locale}/blog/how-to-find-your-tribe`} style={{ color: '#003082' }}>{isKk ? 'Руыңды қалай білуге болады?' : 'Как узнать свой род?'}</Link></li>
           <li><Link href={`/${locale}/blog/zheti-ata-seven-ancestors`} style={{ color: '#003082' }}>{isKk ? 'Жеті ата — 7 буын дәстүрі' : 'Жеті ата — традиция 7 поколений'}</Link></li>

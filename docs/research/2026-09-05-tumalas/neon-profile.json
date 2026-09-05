@@ -1,0 +1,1382 @@
+{
+  "context": {
+    "read_only": "on",
+    "isolation": "repeatable read",
+    "checked_at": "2026-09-05T18:39:35.051Z",
+    "database": "neondb",
+    "reader": "skezire_preview_reader",
+    "can_select": true,
+    "can_insert": false,
+    "can_update": false,
+    "can_delete": false
+  },
+  "source": "tumalas-local-snapshot",
+  "query_sha256": "5c2d5e5e1044cc2895a6aaa663f74a94a5a0739ec352ee75b086b6ae63b2e14d",
+  "results": {
+    "schema": [
+      {
+        "column_name": "node_key",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "column_name": "parent_key",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "column_name": "external_id",
+        "data_type": "bigint",
+        "is_nullable": "NO"
+      },
+      {
+        "column_name": "external_parent_id",
+        "data_type": "bigint",
+        "is_nullable": "YES"
+      },
+      {
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "column_name": "depth",
+        "data_type": "smallint",
+        "is_nullable": "NO"
+      },
+      {
+        "column_name": "taipa",
+        "data_type": "bigint",
+        "is_nullable": "YES"
+      },
+      {
+        "column_name": "locked",
+        "data_type": "boolean",
+        "is_nullable": "NO"
+      },
+      {
+        "column_name": "sort_order",
+        "data_type": "integer",
+        "is_nullable": "NO"
+      },
+      {
+        "column_name": "is_public",
+        "data_type": "boolean",
+        "is_nullable": "NO"
+      },
+      {
+        "column_name": "source_snapshot_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+      },
+      {
+        "column_name": "imported_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "column_name": "reviewed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+      },
+      {
+        "column_name": "publication_basis",
+        "data_type": "text",
+        "is_nullable": "YES"
+      }
+    ],
+    "summary": [
+      {
+        "total": 794594,
+        "public": 3,
+        "locked": 27768,
+        "min_depth": 0,
+        "max_depth": 31,
+        "roots": 1,
+        "unique_ids": 794594,
+        "distinct_names": 54457,
+        "first_snapshot": "2026-08-20T10:22:34.108Z",
+        "last_snapshot": "2026-08-20T10:22:34.108Z",
+        "first_import": "2026-09-01T15:06:43.752Z",
+        "last_import": "2026-09-01T15:06:43.752Z"
+      }
+    ],
+    "depth": [
+      {
+        "depth": 0,
+        "n": 1,
+        "public": 1,
+        "locked": 0,
+        "nonzero_taipa": 0
+      },
+      {
+        "depth": 1,
+        "n": 12,
+        "public": 2,
+        "locked": 10,
+        "nonzero_taipa": 12
+      },
+      {
+        "depth": 2,
+        "n": 40,
+        "public": 0,
+        "locked": 34,
+        "nonzero_taipa": 40
+      },
+      {
+        "depth": 3,
+        "n": 132,
+        "public": 0,
+        "locked": 51,
+        "nonzero_taipa": 132
+      },
+      {
+        "depth": 4,
+        "n": 466,
+        "public": 0,
+        "locked": 79,
+        "nonzero_taipa": 466
+      },
+      {
+        "depth": 5,
+        "n": 1105,
+        "public": 0,
+        "locked": 97,
+        "nonzero_taipa": 1105
+      },
+      {
+        "depth": 6,
+        "n": 2352,
+        "public": 0,
+        "locked": 122,
+        "nonzero_taipa": 2352
+      },
+      {
+        "depth": 7,
+        "n": 4596,
+        "public": 0,
+        "locked": 185,
+        "nonzero_taipa": 4596
+      },
+      {
+        "depth": 8,
+        "n": 8724,
+        "public": 0,
+        "locked": 349,
+        "nonzero_taipa": 8724
+      },
+      {
+        "depth": 9,
+        "n": 15779,
+        "public": 0,
+        "locked": 716,
+        "nonzero_taipa": 15779
+      },
+      {
+        "depth": 10,
+        "n": 26095,
+        "public": 0,
+        "locked": 1443,
+        "nonzero_taipa": 26095
+      },
+      {
+        "depth": 11,
+        "n": 40452,
+        "public": 0,
+        "locked": 2245,
+        "nonzero_taipa": 40452
+      },
+      {
+        "depth": 12,
+        "n": 58408,
+        "public": 0,
+        "locked": 2964,
+        "nonzero_taipa": 58408
+      },
+      {
+        "depth": 13,
+        "n": 79601,
+        "public": 0,
+        "locked": 3651,
+        "nonzero_taipa": 79601
+      },
+      {
+        "depth": 14,
+        "n": 101468,
+        "public": 0,
+        "locked": 4329,
+        "nonzero_taipa": 101468
+      },
+      {
+        "depth": 15,
+        "n": 114946,
+        "public": 0,
+        "locked": 4109,
+        "nonzero_taipa": 114946
+      },
+      {
+        "depth": 16,
+        "n": 109206,
+        "public": 0,
+        "locked": 2786,
+        "nonzero_taipa": 109206
+      },
+      {
+        "depth": 17,
+        "n": 84648,
+        "public": 0,
+        "locked": 1705,
+        "nonzero_taipa": 84648
+      },
+      {
+        "depth": 18,
+        "n": 56329,
+        "public": 0,
+        "locked": 1134,
+        "nonzero_taipa": 56329
+      },
+      {
+        "depth": 19,
+        "n": 37153,
+        "public": 0,
+        "locked": 685,
+        "nonzero_taipa": 37153
+      },
+      {
+        "depth": 20,
+        "n": 25065,
+        "public": 0,
+        "locked": 457,
+        "nonzero_taipa": 25065
+      },
+      {
+        "depth": 21,
+        "n": 15922,
+        "public": 0,
+        "locked": 334,
+        "nonzero_taipa": 15922
+      },
+      {
+        "depth": 22,
+        "n": 7893,
+        "public": 0,
+        "locked": 174,
+        "nonzero_taipa": 7893
+      },
+      {
+        "depth": 23,
+        "n": 2546,
+        "public": 0,
+        "locked": 52,
+        "nonzero_taipa": 2546
+      },
+      {
+        "depth": 24,
+        "n": 856,
+        "public": 0,
+        "locked": 49,
+        "nonzero_taipa": 856
+      },
+      {
+        "depth": 25,
+        "n": 448,
+        "public": 0,
+        "locked": 8,
+        "nonzero_taipa": 448
+      },
+      {
+        "depth": 26,
+        "n": 229,
+        "public": 0,
+        "locked": 0,
+        "nonzero_taipa": 229
+      },
+      {
+        "depth": 27,
+        "n": 75,
+        "public": 0,
+        "locked": 0,
+        "nonzero_taipa": 75
+      },
+      {
+        "depth": 28,
+        "n": 17,
+        "public": 0,
+        "locked": 0,
+        "nonzero_taipa": 17
+      },
+      {
+        "depth": 29,
+        "n": 16,
+        "public": 0,
+        "locked": 0,
+        "nonzero_taipa": 16
+      },
+      {
+        "depth": 30,
+        "n": 6,
+        "public": 0,
+        "locked": 0,
+        "nonzero_taipa": 6
+      },
+      {
+        "depth": 31,
+        "n": 8,
+        "public": 0,
+        "locked": 0,
+        "nonzero_taipa": 8
+      }
+    ],
+    "taipa": [
+      {
+        "taipa": "6",
+        "n": 310320,
+        "min_depth": 1,
+        "max_depth": 27
+      },
+      {
+        "taipa": "5",
+        "n": 104449,
+        "min_depth": 1,
+        "max_depth": 24
+      },
+      {
+        "taipa": "28",
+        "n": 98795,
+        "min_depth": 1,
+        "max_depth": 23
+      },
+      {
+        "taipa": "38",
+        "n": 60353,
+        "min_depth": 1,
+        "max_depth": 25
+      },
+      {
+        "taipa": "37",
+        "n": 58835,
+        "min_depth": 1,
+        "max_depth": 24
+      },
+      {
+        "taipa": "39",
+        "n": 48049,
+        "min_depth": 1,
+        "max_depth": 25
+      },
+      {
+        "taipa": "29",
+        "n": 41588,
+        "min_depth": 1,
+        "max_depth": 25
+      },
+      {
+        "taipa": "40",
+        "n": 24728,
+        "min_depth": 1,
+        "max_depth": 22
+      },
+      {
+        "taipa": "30",
+        "n": 20036,
+        "min_depth": 1,
+        "max_depth": 21
+      },
+      {
+        "taipa": "41",
+        "n": 19809,
+        "min_depth": 1,
+        "max_depth": 22
+      },
+      {
+        "taipa": "15",
+        "n": 4928,
+        "min_depth": 1,
+        "max_depth": 23
+      },
+      {
+        "taipa": "27",
+        "n": 2703,
+        "min_depth": 1,
+        "max_depth": 31
+      },
+      {
+        "taipa": null,
+        "n": 1,
+        "min_depth": 0,
+        "max_depth": 0
+      }
+    ],
+    "degree": [
+      {
+        "children": 0,
+        "n": 432591
+      },
+      {
+        "children": 1,
+        "n": 140428
+      },
+      {
+        "children": 2,
+        "n": 108101
+      },
+      {
+        "children": 3,
+        "n": 59979
+      },
+      {
+        "children": 4,
+        "n": 29211
+      },
+      {
+        "children": 5,
+        "n": 13291
+      },
+      {
+        "children": 6,
+        "n": 6168
+      },
+      {
+        "children": 7,
+        "n": 2730
+      },
+      {
+        "children": 8,
+        "n": 1174
+      },
+      {
+        "children": 9,
+        "n": 481
+      },
+      {
+        "children": 10,
+        "n": 225
+      },
+      {
+        "children": 11,
+        "n": 101
+      },
+      {
+        "children": 12,
+        "n": 51
+      },
+      {
+        "children": 13,
+        "n": 24
+      },
+      {
+        "children": 14,
+        "n": 20
+      },
+      {
+        "children": 15,
+        "n": 7
+      },
+      {
+        "children": 16,
+        "n": 5
+      },
+      {
+        "children": 17,
+        "n": 1
+      },
+      {
+        "children": 18,
+        "n": 2
+      },
+      {
+        "children": 19,
+        "n": 2
+      },
+      {
+        "children": 21,
+        "n": 1
+      },
+      {
+        "children": 26,
+        "n": 1
+      }
+    ],
+    "integrity": [
+      {
+        "missing_parents": 0,
+        "self_parents": 0,
+        "bad_depth": 0,
+        "cross_source": 0,
+        "parent_id_mismatch": 0,
+        "public_private_parent": 0
+      }
+    ],
+    "name_features": [
+      {
+        "digits": 1,
+        "year_token": 0,
+        "whitespace": 4681,
+        "patronymic": 294,
+        "title": 3683,
+        "group_token": 293,
+        "placeholder": 1
+      }
+    ],
+    "review": [
+      {
+        "reviewed": 3,
+        "basis": 3,
+        "private_reviewed": 0
+      }
+    ],
+    "public": [
+      {
+        "external_id": "1",
+        "name": "Қазақ",
+        "depth": 0,
+        "external_parent_id": null,
+        "publication_basis": "owner-authorized protected preview 2026-09-01"
+      },
+      {
+        "external_id": "28",
+        "name": "Сіргелі",
+        "depth": 1,
+        "external_parent_id": "1",
+        "publication_basis": "owner-authorized protected preview 2026-09-01"
+      },
+      {
+        "external_id": "39",
+        "name": "Ысты",
+        "depth": 1,
+        "external_parent_id": "1",
+        "publication_basis": "owner-authorized protected preview 2026-09-01"
+      }
+    ],
+    "root_branches": [
+      {
+        "external_id": "1",
+        "name": "Қазақ",
+        "external_parent_id": null,
+        "depth": 0,
+        "taipa": null
+      },
+      {
+        "external_id": "5",
+        "name": "Албан",
+        "external_parent_id": "1",
+        "depth": 1,
+        "taipa": "5"
+      },
+      {
+        "external_id": "6",
+        "name": "Дулат",
+        "external_parent_id": "1",
+        "depth": 1,
+        "taipa": "6"
+      },
+      {
+        "external_id": "15",
+        "name": "Сарыүйсін",
+        "external_parent_id": "1",
+        "depth": 1,
+        "taipa": "15"
+      },
+      {
+        "external_id": "27",
+        "name": "Шақшам",
+        "external_parent_id": "1",
+        "depth": 1,
+        "taipa": "27"
+      },
+      {
+        "external_id": "28",
+        "name": "Сіргелі",
+        "external_parent_id": "1",
+        "depth": 1,
+        "taipa": "28"
+      },
+      {
+        "external_id": "29",
+        "name": "Қаңлы",
+        "external_parent_id": "1",
+        "depth": 1,
+        "taipa": "29"
+      },
+      {
+        "external_id": "30",
+        "name": "Шанышқылы",
+        "external_parent_id": "1",
+        "depth": 1,
+        "taipa": "30"
+      },
+      {
+        "external_id": "37",
+        "name": "Шапырашты",
+        "external_parent_id": "1",
+        "depth": 1,
+        "taipa": "37"
+      },
+      {
+        "external_id": "38",
+        "name": "Жалайыр",
+        "external_parent_id": "1",
+        "depth": 1,
+        "taipa": "38"
+      },
+      {
+        "external_id": "39",
+        "name": "Ысты",
+        "external_parent_id": "1",
+        "depth": 1,
+        "taipa": "39"
+      },
+      {
+        "external_id": "40",
+        "name": "Ошақты",
+        "external_parent_id": "1",
+        "depth": 1,
+        "taipa": "40"
+      },
+      {
+        "external_id": "41",
+        "name": "Суан",
+        "external_parent_id": "1",
+        "depth": 1,
+        "taipa": "41"
+      }
+    ],
+    "classification": [
+      {
+        "classes": [
+          {
+            "n": 18,
+            "leaf": 0,
+            "class": "A",
+            "public": 2,
+            "nonleaf": 18,
+            "max_depth": 2,
+            "min_depth": 1
+          },
+          {
+            "n": 446,
+            "leaf": 125,
+            "class": "B",
+            "public": 0,
+            "nonleaf": 321,
+            "max_depth": 24,
+            "min_depth": 3
+          },
+          {
+            "n": 294,
+            "leaf": 111,
+            "class": "C",
+            "public": 0,
+            "nonleaf": 183,
+            "max_depth": 22,
+            "min_depth": 4
+          },
+          {
+            "n": 793836,
+            "leaf": 432355,
+            "class": "D",
+            "public": 1,
+            "nonleaf": 361481,
+            "max_depth": 31,
+            "min_depth": 0
+          }
+        ],
+        "a_candidates": [
+          {
+            "name": "Албан",
+            "depth": 1,
+            "taipa": 5,
+            "node_key": "tumalas-local-snapshot:5:1",
+            "is_public": false,
+            "external_id": 5,
+            "external_parent_id": 1,
+            "verified_group_type": "clan",
+            "relationship_verified": false
+          },
+          {
+            "name": "Дулат",
+            "depth": 1,
+            "taipa": 6,
+            "node_key": "tumalas-local-snapshot:6:1",
+            "is_public": false,
+            "external_id": 6,
+            "external_parent_id": 1,
+            "verified_group_type": "clan",
+            "relationship_verified": false
+          },
+          {
+            "name": "Сарыүйсін",
+            "depth": 1,
+            "taipa": 15,
+            "node_key": "tumalas-local-snapshot:15:1",
+            "is_public": false,
+            "external_id": 15,
+            "external_parent_id": 1,
+            "verified_group_type": "clan",
+            "relationship_verified": false
+          },
+          {
+            "name": "Сіргелі",
+            "depth": 1,
+            "taipa": 28,
+            "node_key": "tumalas-local-snapshot:28:1",
+            "is_public": true,
+            "external_id": 28,
+            "external_parent_id": 1,
+            "verified_group_type": "clan",
+            "relationship_verified": false
+          },
+          {
+            "name": "Қаңлы",
+            "depth": 1,
+            "taipa": 29,
+            "node_key": "tumalas-local-snapshot:29:1",
+            "is_public": false,
+            "external_id": 29,
+            "external_parent_id": 1,
+            "verified_group_type": "clan",
+            "relationship_verified": false
+          },
+          {
+            "name": "Шанышқылы",
+            "depth": 1,
+            "taipa": 30,
+            "node_key": "tumalas-local-snapshot:30:1",
+            "is_public": false,
+            "external_id": 30,
+            "external_parent_id": 1,
+            "verified_group_type": "clan",
+            "relationship_verified": false
+          },
+          {
+            "name": "Шапырашты",
+            "depth": 1,
+            "taipa": 37,
+            "node_key": "tumalas-local-snapshot:37:1",
+            "is_public": false,
+            "external_id": 37,
+            "external_parent_id": 1,
+            "verified_group_type": "clan",
+            "relationship_verified": false
+          },
+          {
+            "name": "Жалайыр",
+            "depth": 1,
+            "taipa": 38,
+            "node_key": "tumalas-local-snapshot:38:1",
+            "is_public": false,
+            "external_id": 38,
+            "external_parent_id": 1,
+            "verified_group_type": "clan",
+            "relationship_verified": false
+          },
+          {
+            "name": "Ысты",
+            "depth": 1,
+            "taipa": 39,
+            "node_key": "tumalas-local-snapshot:39:1",
+            "is_public": true,
+            "external_id": 39,
+            "external_parent_id": 1,
+            "verified_group_type": "clan",
+            "relationship_verified": false
+          },
+          {
+            "name": "Ошақты",
+            "depth": 1,
+            "taipa": 40,
+            "node_key": "tumalas-local-snapshot:40:1",
+            "is_public": false,
+            "external_id": 40,
+            "external_parent_id": 1,
+            "verified_group_type": "clan",
+            "relationship_verified": false
+          },
+          {
+            "name": "Суан",
+            "depth": 1,
+            "taipa": 41,
+            "node_key": "tumalas-local-snapshot:41:1",
+            "is_public": false,
+            "external_id": 41,
+            "external_parent_id": 1,
+            "verified_group_type": "clan",
+            "relationship_verified": false
+          },
+          {
+            "name": "Ботбай",
+            "depth": 2,
+            "taipa": 6,
+            "node_key": "tumalas-local-snapshot:376:6",
+            "is_public": false,
+            "external_id": 376,
+            "external_parent_id": 6,
+            "verified_group_type": "subclan",
+            "relationship_verified": true
+          },
+          {
+            "name": "Жаныс",
+            "depth": 2,
+            "taipa": 6,
+            "node_key": "tumalas-local-snapshot:377:6",
+            "is_public": false,
+            "external_id": 377,
+            "external_parent_id": 6,
+            "verified_group_type": "subclan",
+            "relationship_verified": true
+          },
+          {
+            "name": "Сиқым",
+            "depth": 2,
+            "taipa": 6,
+            "node_key": "tumalas-local-snapshot:378:6",
+            "is_public": false,
+            "external_id": 378,
+            "external_parent_id": 6,
+            "verified_group_type": "subclan",
+            "relationship_verified": true
+          },
+          {
+            "name": "Шымыр",
+            "depth": 2,
+            "taipa": 6,
+            "node_key": "tumalas-local-snapshot:379:6",
+            "is_public": false,
+            "external_id": 379,
+            "external_parent_id": 6,
+            "verified_group_type": "subclan",
+            "relationship_verified": true
+          },
+          {
+            "name": "Тоқарыстан",
+            "depth": 2,
+            "taipa": 41,
+            "node_key": "tumalas-local-snapshot:387:41",
+            "is_public": false,
+            "external_id": 387,
+            "external_parent_id": 41,
+            "verified_group_type": "subclan",
+            "relationship_verified": true
+          },
+          {
+            "name": "Сырманақ",
+            "depth": 2,
+            "taipa": 38,
+            "node_key": "tumalas-local-snapshot:400:38",
+            "is_public": false,
+            "external_id": 400,
+            "external_parent_id": 38,
+            "verified_group_type": "subclan",
+            "relationship_verified": true
+          },
+          {
+            "name": "Шуманақ",
+            "depth": 2,
+            "taipa": 38,
+            "node_key": "tumalas-local-snapshot:401:38",
+            "is_public": false,
+            "external_id": 401,
+            "external_parent_id": 38,
+            "verified_group_type": "subclan",
+            "relationship_verified": true
+          }
+        ],
+        "signal_overlap": [
+          {
+            "n": 793854,
+            "b_signal": false,
+            "c_signal": false
+          },
+          {
+            "n": 294,
+            "b_signal": false,
+            "c_signal": true
+          },
+          {
+            "n": 446,
+            "b_signal": true,
+            "c_signal": false
+          }
+        ],
+        "candidate_paths": {
+          "a_candidates": 18,
+          "full_candidate_path_nodes": 19,
+          "a_with_current_public_parent": 11,
+          "proposed_nodes_including_root": 19,
+          "currently_private_in_candidate_paths": 16
+        },
+        "e_overlay": {
+          "biological_parentage_verified": 0,
+          "corroborated_entity_type_records": 18,
+          "corroborated_traditional_subgroup_edges": 7
+        },
+        "class_by_depth": [
+          {
+            "n": 1,
+            "class": "D",
+            "depth": 0
+          },
+          {
+            "n": 11,
+            "class": "A",
+            "depth": 1
+          },
+          {
+            "n": 1,
+            "class": "D",
+            "depth": 1
+          },
+          {
+            "n": 7,
+            "class": "A",
+            "depth": 2
+          },
+          {
+            "n": 33,
+            "class": "D",
+            "depth": 2
+          },
+          {
+            "n": 2,
+            "class": "B",
+            "depth": 3
+          },
+          {
+            "n": 130,
+            "class": "D",
+            "depth": 3
+          },
+          {
+            "n": 5,
+            "class": "B",
+            "depth": 4
+          },
+          {
+            "n": 3,
+            "class": "C",
+            "depth": 4
+          },
+          {
+            "n": 458,
+            "class": "D",
+            "depth": 4
+          },
+          {
+            "n": 12,
+            "class": "B",
+            "depth": 5
+          },
+          {
+            "n": 2,
+            "class": "C",
+            "depth": 5
+          },
+          {
+            "n": 1091,
+            "class": "D",
+            "depth": 5
+          },
+          {
+            "n": 9,
+            "class": "B",
+            "depth": 6
+          },
+          {
+            "n": 7,
+            "class": "C",
+            "depth": 6
+          },
+          {
+            "n": 2336,
+            "class": "D",
+            "depth": 6
+          },
+          {
+            "n": 27,
+            "class": "B",
+            "depth": 7
+          },
+          {
+            "n": 5,
+            "class": "C",
+            "depth": 7
+          },
+          {
+            "n": 4564,
+            "class": "D",
+            "depth": 7
+          },
+          {
+            "n": 44,
+            "class": "B",
+            "depth": 8
+          },
+          {
+            "n": 12,
+            "class": "C",
+            "depth": 8
+          },
+          {
+            "n": 8668,
+            "class": "D",
+            "depth": 8
+          },
+          {
+            "n": 44,
+            "class": "B",
+            "depth": 9
+          },
+          {
+            "n": 22,
+            "class": "C",
+            "depth": 9
+          },
+          {
+            "n": 15713,
+            "class": "D",
+            "depth": 9
+          },
+          {
+            "n": 35,
+            "class": "B",
+            "depth": 10
+          },
+          {
+            "n": 36,
+            "class": "C",
+            "depth": 10
+          },
+          {
+            "n": 26024,
+            "class": "D",
+            "depth": 10
+          },
+          {
+            "n": 52,
+            "class": "B",
+            "depth": 11
+          },
+          {
+            "n": 31,
+            "class": "C",
+            "depth": 11
+          },
+          {
+            "n": 40369,
+            "class": "D",
+            "depth": 11
+          },
+          {
+            "n": 48,
+            "class": "B",
+            "depth": 12
+          },
+          {
+            "n": 47,
+            "class": "C",
+            "depth": 12
+          },
+          {
+            "n": 58313,
+            "class": "D",
+            "depth": 12
+          },
+          {
+            "n": 53,
+            "class": "B",
+            "depth": 13
+          },
+          {
+            "n": 37,
+            "class": "C",
+            "depth": 13
+          },
+          {
+            "n": 79511,
+            "class": "D",
+            "depth": 13
+          },
+          {
+            "n": 28,
+            "class": "B",
+            "depth": 14
+          },
+          {
+            "n": 41,
+            "class": "C",
+            "depth": 14
+          },
+          {
+            "n": 101399,
+            "class": "D",
+            "depth": 14
+          },
+          {
+            "n": 28,
+            "class": "B",
+            "depth": 15
+          },
+          {
+            "n": 17,
+            "class": "C",
+            "depth": 15
+          },
+          {
+            "n": 114901,
+            "class": "D",
+            "depth": 15
+          },
+          {
+            "n": 19,
+            "class": "B",
+            "depth": 16
+          },
+          {
+            "n": 11,
+            "class": "C",
+            "depth": 16
+          },
+          {
+            "n": 109176,
+            "class": "D",
+            "depth": 16
+          },
+          {
+            "n": 16,
+            "class": "B",
+            "depth": 17
+          },
+          {
+            "n": 4,
+            "class": "C",
+            "depth": 17
+          },
+          {
+            "n": 84628,
+            "class": "D",
+            "depth": 17
+          },
+          {
+            "n": 12,
+            "class": "B",
+            "depth": 18
+          },
+          {
+            "n": 14,
+            "class": "C",
+            "depth": 18
+          },
+          {
+            "n": 56303,
+            "class": "D",
+            "depth": 18
+          },
+          {
+            "n": 4,
+            "class": "B",
+            "depth": 19
+          },
+          {
+            "n": 3,
+            "class": "C",
+            "depth": 19
+          },
+          {
+            "n": 37146,
+            "class": "D",
+            "depth": 19
+          },
+          {
+            "n": 5,
+            "class": "B",
+            "depth": 20
+          },
+          {
+            "n": 1,
+            "class": "C",
+            "depth": 20
+          },
+          {
+            "n": 25059,
+            "class": "D",
+            "depth": 20
+          },
+          {
+            "n": 1,
+            "class": "B",
+            "depth": 21
+          },
+          {
+            "n": 15921,
+            "class": "D",
+            "depth": 21
+          },
+          {
+            "n": 1,
+            "class": "B",
+            "depth": 22
+          },
+          {
+            "n": 1,
+            "class": "C",
+            "depth": 22
+          },
+          {
+            "n": 7891,
+            "class": "D",
+            "depth": 22
+          },
+          {
+            "n": 2546,
+            "class": "D",
+            "depth": 23
+          },
+          {
+            "n": 1,
+            "class": "B",
+            "depth": 24
+          },
+          {
+            "n": 855,
+            "class": "D",
+            "depth": 24
+          },
+          {
+            "n": 448,
+            "class": "D",
+            "depth": 25
+          },
+          {
+            "n": 229,
+            "class": "D",
+            "depth": 26
+          },
+          {
+            "n": 75,
+            "class": "D",
+            "depth": 27
+          },
+          {
+            "n": 17,
+            "class": "D",
+            "depth": 28
+          },
+          {
+            "n": 16,
+            "class": "D",
+            "depth": 29
+          },
+          {
+            "n": 6,
+            "class": "D",
+            "depth": 30
+          },
+          {
+            "n": 8,
+            "class": "D",
+            "depth": 31
+          }
+        ]
+      }
+    ],
+    "taipa_integrity": [
+      {
+        "parent_taipa_changes": 0,
+        "null_taipa": 1,
+        "zero_taipa": 0,
+        "root_taipa_mismatch": 0
+      }
+    ],
+    "live_constraints": [
+      {
+        "conname": "genealogy_nodes_depth_check",
+        "definition": "CHECK ((depth >= 0))"
+      },
+      {
+        "conname": "genealogy_nodes_depth_not_null",
+        "definition": "NOT NULL depth"
+      },
+      {
+        "conname": "genealogy_nodes_external_id_not_null",
+        "definition": "NOT NULL external_id"
+      },
+      {
+        "conname": "genealogy_nodes_imported_at_not_null",
+        "definition": "NOT NULL imported_at"
+      },
+      {
+        "conname": "genealogy_nodes_is_public_not_null",
+        "definition": "NOT NULL is_public"
+      },
+      {
+        "conname": "genealogy_nodes_locked_not_null",
+        "definition": "NOT NULL locked"
+      },
+      {
+        "conname": "genealogy_nodes_name_check",
+        "definition": "CHECK ((length(TRIM(BOTH FROM name)) > 0))"
+      },
+      {
+        "conname": "genealogy_nodes_name_not_null",
+        "definition": "NOT NULL name"
+      },
+      {
+        "conname": "genealogy_nodes_node_key_not_null",
+        "definition": "NOT NULL node_key"
+      },
+      {
+        "conname": "genealogy_nodes_parent_key_fkey",
+        "definition": "FOREIGN KEY (parent_key) REFERENCES genealogy_nodes(node_key) DEFERRABLE INITIALLY DEFERRED"
+      },
+      {
+        "conname": "genealogy_nodes_pkey",
+        "definition": "PRIMARY KEY (node_key)"
+      },
+      {
+        "conname": "genealogy_nodes_public_reviewed",
+        "definition": "CHECK (((NOT is_public) OR ((reviewed_at IS NOT NULL) AND (publication_basis IS NOT NULL) AND (length(TRIM(BOTH FROM publication_basis)) > 0) AND (NOT locked))))"
+      },
+      {
+        "conname": "genealogy_nodes_sort_order_not_null",
+        "definition": "NOT NULL sort_order"
+      },
+      {
+        "conname": "genealogy_nodes_source_not_null",
+        "definition": "NOT NULL source"
+      }
+    ],
+    "catalog_coverage": [
+      {
+        "schemaname": "public",
+        "tablename": "genealogy_import_state"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "genealogy_nodes"
+      }
+    ],
+    "name_collisions": [
+      {
+        "names_reused": 21266,
+        "rows_with_reused_name": 761403,
+        "most_reused_name_count": 5311
+      }
+    ],
+    "title_standalone": [
+      {
+        "n": 3097
+      }
+    ],
+    "lexicon_match_limits": [
+      {
+        "exact_lexical_rows": 4157,
+        "below_depth2": 4142
+      }
+    ]
+  }
+}

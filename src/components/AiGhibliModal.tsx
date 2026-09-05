@@ -163,7 +163,7 @@ export function AiGhibliModal({ open, onClose }: Props) {
         setStep('preview');
       }
     }
-  }, [imageBase64, showToast, t]);
+  }, [imageBase64, aspectRatio, showToast, t]);
 
   const getWatermarkedBlob = useCallback(async (): Promise<Blob | null> => {
     if (!resultUrl) return null;

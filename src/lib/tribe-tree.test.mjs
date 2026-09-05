@@ -6,7 +6,10 @@ import {
   flattenTree,
   getExpandedPathIdsForSearchResult,
   layoutTree,
+  mergeTreeChildren,
+  mergeTreePath,
   normalizeTreeSearch,
+  pruneTree,
   searchTree,
   stringifyJsonLd,
   computeViewportFitScale,
@@ -78,6 +81,44 @@ test('computes responsive fit scale with hard min/max bounds', () => {
   assert.equal(Number(computeViewportFitScale(400, 480, 24, 0.55, 2.2).toFixed(4)), 1.14);
 });
 
+test('keeps unloaded branches expandable and merges lazy API data', () => {
+  const initial = pruneTree(tree, 1);
+  assert.equal(initial.children[0].children, undefined);
+  assert.equal(initial.children[0].hasChildren, true);
+
+  const merged = mergeTreeChildren(initial, 'kishi', [
+    { id: 'aday', name: 'Адай', kind: 'tribe', hasChildren: false },
+  ]);
+  assert.equal(findTreePath(merged, 'aday').at(-1)?.name, 'Адай');
+  assert.deepEqual(
+    layoutTree(merged, new Set(['alash', 'kishi'])).nodes.map((node) => node.id),
+    ['alash', 'kishi', 'aday'],
+  );
+});
+
+test('merges a server search path without discarding loaded siblings', () => {
+  const initial = {
+    ...tree,
+    children: [
+      {
+        ...tree.children[0],
+        children: [{ id: 'aday', name: 'Адай', kind: 'tribe', children: [
+          { id: 'zhemeney', name: 'Жеменей', kind: 'subtribe' },
+        ] }],
+      },
+      { id: 'other', name: 'Вне жузов', kind: 'zhuz' },
+    ],
+  };
+  const merged = mergeTreePath(initial, [
+    { id: 'alash', name: 'Алаш', kind: 'root', hasChildren: true },
+    { id: 'kishi', name: 'Кіші жүз', kind: 'zhuz', hasChildren: true },
+    { id: 'aday', name: 'Адай', kind: 'tribe', hasChildren: false },
+  ]);
+  assert.deepEqual(findTreePath(merged, 'aday').map((node) => node.id), ['alash', 'kishi', 'aday']);
+  assert.equal(findTreePath(merged, 'zhemeney').at(-1)?.name, 'Жеменей');
+  assert.deepEqual(merged.children.map((node) => node.id), ['kishi', 'other']);
+});
+
 test('keeps the public tribe directory and subtribe IDs source-backed and stable', () => {
   const tribes = TRIBES_DB.flatMap((zhuz) => zhuz.tribes);
   const subtribes = tribes.flatMap((tribe) => tribe.subtribes ?? []);
@@ -105,4 +146,22 @@ test('keeps the public tribe directory and subtribe IDs source-backed and stable
 
 test('escapes JSON-LD closing-script characters', () => {
   assert.equal(stringifyJsonLd({ description: '</script>' }), '{"description":"\\u003c/script>"}');
+});
+
+test('deep paths remain partial and paginated siblings preserve focused descendants', () => {
+  const root = { id: 'root', name: 'Root', kind: 'root', hasChildren: true };
+  const path = [root, { id: 'parent', name: 'Parent', kind: 'subtribe', hasChildren: true },
+    { id: 'target', name: 'Target', kind: 'subtribe', hasChildren: true },
+    { id: 'leaf', name: 'Leaf', kind: 'subtribe' }];
+  let result = mergeTreePath(root, path);
+  assert.equal(result.nextChildrenOffset, 0);
+  assert.equal(findTreePath(result, 'parent').at(-1).nextChildrenOffset, 0);
+  result = mergeTreeChildren(result, 'parent', [{ id: 'sibling', name: 'Sibling', kind: 'subtribe' }], 100);
+  assert.equal(findTreePath(result, 'parent').at(-1).nextChildrenOffset, 100);
+  assert.equal(findTreePath(result, 'leaf').length, 4);
+  result = mergeTreeChildren(result, 'parent', [path[2]], null);
+  const parent = findTreePath(result, 'parent').at(-1);
+  assert.equal(parent.nextChildrenOffset, null);
+  assert.equal(parent.children.length, 2);
+  assert.equal(findTreePath(result, 'leaf').length, 4);
 });

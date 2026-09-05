@@ -1,0 +1,58 @@
+{
+  "checked_date": "2026-09-05",
+  "reviewer": "research-session 01a072d2-6741-7dd1-94a7-bd278c8b5c03, primary agent; external-text corroboration, human editorial approval pending",
+  "evidence_seed_sha256": "8bff77162c88677f9a76e1cd6592c21937b41f23ecf5a394c6c53d56024c28da",
+  "identity_match_basis": "Exact Neon source ID, name, expected parent ID and taipa on dated snapshot; source text establishes group sense and named subgroup relation, not personal identity or biological parentage. Source URLs are mapped to seed evidence_url, ignoring fragment.",
+  "sources": [
+    {
+      "source_id": "history-textbook-2010",
+      "url": "https://e-history.kz/storage/upload/library_kk_files/iblock/f23/f2310f0d5a63c06ed525ec0c86812669.pdf",
+      "covered_external_ids": [
+        5,
+        6,
+        15,
+        28,
+        29,
+        30,
+        37,
+        38,
+        39,
+        40,
+        41
+      ],
+      "independence_from_skezire": "external publication",
+      "independence_from_tumalas_upstream": "unknown; do not count as two independent witnesses",
+      "source_rights": "not cleared for reproduction; facts paraphrased with attribution",
+      "retrieved_at": "2026-09-05T18:52:19.674503+00:00",
+      "content_sha256": "0df74ecf4c47c5f7546a8884081867be3d100f13b8826cd25777a66737ec7f8c",
+      "bytes": 8149497,
+      "http_status": 200,
+      "local_snapshot_ref": "/private/tmp/skezire-research-source-history-textbook-2010.pdf",
+      "retention": "temporary local research artifact; move to approved secure evidence store in next stage, not a public repository",
+      "snapshot_content_check": "PDF header valid"
+    },
+    {
+      "source_id": "auezov-clan-glossary",
+      "url": "https://auezovinstitute.kz/?page_id=9125",
+      "covered_external_ids": [
+        376,
+        377,
+        378,
+        379,
+        400,
+        401,
+        387
+      ],
+      "independence_from_skezire": "external publication",
+      "independence_from_tumalas_upstream": "unknown; do not count as two independent witnesses",
+      "source_rights": "not cleared for reproduction; facts paraphrased with attribution",
+      "retrieved_at": "2026-09-05T18:52:20.993372+00:00",
+      "content_sha256": "38bd8ec0f19d13c2b29253af957579fea613f319f03f6ac92662b1750dd59fb6",
+      "bytes": 135022,
+      "http_status": 200,
+      "local_snapshot_ref": "/private/tmp/skezire-research-source-auezov-clan-glossary.html",
+      "retention": "temporary local research artifact; move to approved secure evidence store in next stage, not a public repository",
+      "snapshot_content_check": "Seven cited subgroup names present in source HTML"
+    }
+  ]
+}

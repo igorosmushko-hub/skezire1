@@ -56,6 +56,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
+  // The interactive tool has one canonical URL per locale; focus is not a document.
+  for (const locale of locales) {
+    entries.push({ url: `${baseUrl}/${locale}/shezhire-tree`, changeFrequency: 'monthly', priority: 0.8,
+      alternates: { languages: { kk: `${baseUrl}/kk/shezhire-tree`, ru: `${baseUrl}/ru/shezhire-tree` } } });
+  }
+
   // Tribe race pages
   for (const locale of locales) {
     entries.push({

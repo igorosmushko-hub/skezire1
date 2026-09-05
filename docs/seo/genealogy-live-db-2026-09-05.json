@@ -1,0 +1,130 @@
+{
+  "checkedAt": "2026-09-05T15:21:47.216Z",
+  "source": "tumalas-local-snapshot",
+  "configScope": "existing Neon preview reader from authenticated console; no roles or passwords changed",
+  "auditReadOnly": true,
+  "includesPrivateAggregates": true,
+  "counts": [
+    {
+      "total": 794594,
+      "public": 3,
+      "locked": 27768,
+      "max_depth": 31,
+      "first_snapshot": "2026-08-20T10:22:34.108Z",
+      "last_snapshot": "2026-08-20T10:22:34.108Z",
+      "invalid_public": 0
+    }
+  ],
+  "width": [
+    {
+      "widest_branch": 26
+    }
+  ],
+  "configuredRoot": [
+    {
+      "is_public": true,
+      "locked": false,
+      "reviewed": true,
+      "has_publication_basis": true,
+      "is_root": true
+    }
+  ],
+  "rls": [
+    {
+      "rls_enabled": true
+    }
+  ],
+  "constraints": [
+    {
+      "conname": "genealogy_nodes_depth_check",
+      "definition": "CHECK ((depth >= 0))"
+    },
+    {
+      "conname": "genealogy_nodes_depth_not_null",
+      "definition": "NOT NULL depth"
+    },
+    {
+      "conname": "genealogy_nodes_external_id_not_null",
+      "definition": "NOT NULL external_id"
+    },
+    {
+      "conname": "genealogy_nodes_imported_at_not_null",
+      "definition": "NOT NULL imported_at"
+    },
+    {
+      "conname": "genealogy_nodes_is_public_not_null",
+      "definition": "NOT NULL is_public"
+    },
+    {
+      "conname": "genealogy_nodes_locked_not_null",
+      "definition": "NOT NULL locked"
+    },
+    {
+      "conname": "genealogy_nodes_name_check",
+      "definition": "CHECK ((length(TRIM(BOTH FROM name)) > 0))"
+    },
+    {
+      "conname": "genealogy_nodes_name_not_null",
+      "definition": "NOT NULL name"
+    },
+    {
+      "conname": "genealogy_nodes_node_key_not_null",
+      "definition": "NOT NULL node_key"
+    },
+    {
+      "conname": "genealogy_nodes_parent_key_fkey",
+      "definition": "FOREIGN KEY (parent_key) REFERENCES genealogy_nodes(node_key) DEFERRABLE INITIALLY DEFERRED"
+    },
+    {
+      "conname": "genealogy_nodes_pkey",
+      "definition": "PRIMARY KEY (node_key)"
+    },
+    {
+      "conname": "genealogy_nodes_public_reviewed",
+      "definition": "CHECK (((NOT is_public) OR ((reviewed_at IS NOT NULL) AND (publication_basis IS NOT NULL) AND (length(TRIM(BOTH FROM publication_basis)) > 0) AND (NOT locked))))"
+    },
+    {
+      "conname": "genealogy_nodes_sort_order_not_null",
+      "definition": "NOT NULL sort_order"
+    },
+    {
+      "conname": "genealogy_nodes_source_not_null",
+      "definition": "NOT NULL source"
+    }
+  ],
+  "role": [
+    {
+      "can_read": true,
+      "can_insert": false,
+      "can_update": false,
+      "can_delete": false
+    }
+  ],
+  "publicPaths": [
+    {
+      "broken_public_parent_paths": 0
+    }
+  ],
+  "indexes": [
+    {
+      "indexname": "genealogy_nodes_pkey",
+      "indexdef": "CREATE UNIQUE INDEX genealogy_nodes_pkey ON public.genealogy_nodes USING btree (node_key)"
+    },
+    {
+      "indexname": "genealogy_nodes_public_children_idx",
+      "indexdef": "CREATE INDEX genealogy_nodes_public_children_idx ON public.genealogy_nodes USING btree (parent_key, sort_order, external_id) WHERE is_public"
+    },
+    {
+      "indexname": "genealogy_nodes_public_name_trgm_idx",
+      "indexdef": "CREATE INDEX genealogy_nodes_public_name_trgm_idx ON public.genealogy_nodes USING gin (lower(name) gin_trgm_ops) WHERE is_public"
+    },
+    {
+      "indexname": "genealogy_nodes_preview_children_idx",
+      "indexdef": "CREATE INDEX genealogy_nodes_preview_children_idx ON public.genealogy_nodes USING btree (parent_key, sort_order, external_id)"
+    },
+    {
+      "indexname": "genealogy_nodes_preview_name_trgm_idx",
+      "indexdef": "CREATE INDEX genealogy_nodes_preview_name_trgm_idx ON public.genealogy_nodes USING gin (lower(name) gin_trgm_ops)"
+    }
+  ]
+}
