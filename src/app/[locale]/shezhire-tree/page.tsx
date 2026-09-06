@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { InteractiveTree } from '@/components/tribe-tree/InteractiveTree';
 import { TRIBES_DB } from '@/data/tribes';
+import { getInitialGenealogyTree } from '@/lib/genealogy-data';
 import { stringifyJsonLd } from '@/lib/tribe-tree';
-import { buildTribeTree } from '@/lib/tribe-tree-page';
 import '@/styles/shezhire-tree.css';
 import '@/styles/tribe-race.css';
 
@@ -59,8 +59,8 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
   const { locale } = await params;
   const { highlight, join } = await searchParams;
   const isKk = locale === 'kk';
-  const tree = buildTribeTree(locale, TRIBES_DB);
   const initialFocusId = highlight ? (highlight.includes(':') ? highlight : `tribe:${highlight}`) : undefined;
+  const { tree, source } = await getInitialGenealogyTree(locale, initialFocusId);
   const pageUrl = `${BASE_URL}/${locale}/shezhire-tree`;
   const tribeCount = TRIBES_DB.reduce((sum, zhuz) => sum + zhuz.tribes.length, 0);
   const zhuzCount = TRIBES_DB.length;
@@ -123,6 +123,7 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
           key={`${locale}:${initialFocusId ?? 'root'}:${join === '1' ? 'join' : 'view'}`}
           locale={locale}
           tree={tree}
+          source={source}
           initialFocusId={initialFocusId}
           initialJoin={join === '1'}
         />

@@ -1,0 +1,520 @@
+{
+  "view": "actions",
+  "report": {
+    "id": "report",
+    "workflow": "report",
+    "site": "https://skezire.kz",
+    "generatedAt": "2026-09-06T11:11:38.427Z",
+    "summary": "Found 0 high, 4 medium, and 220 low technical issues across 172 crawled pages. Search Console and Google Analytics are not connected; provider-backed sections were skipped."
+  },
+  "findings": {
+    "schemaVersion": 1,
+    "scope": "returned-report",
+    "coverage": {
+      "state": "complete",
+      "detail": "Every finding in the declared report scope is represented."
+    },
+    "counts": {
+      "total": 8,
+      "returned": 8,
+      "fixes": 1,
+      "reviews": 7,
+      "open": 8
+    },
+    "completion": {
+      "state": "pending",
+      "instruction": "Before finishing, return one allowed outcome and reason for every open item; the outcome count must equal counts.returned. A review is a decision task, not an instruction to change the site. Do not silently drop findings."
+    },
+    "verification": {
+      "requiredAfterChanges": true,
+      "instruction": "After edits, run each changed item's verification and rerun the originating report. A code change alone does not close a finding.",
+      "reportCheck": "Rerun seo report with the same inputs and confirm the finding is absent or its evidence now matches the intended state."
+    },
+    "sourcePaths": [
+      "actions"
+    ],
+    "items": [
+      {
+        "id": "crawl:title_duplicate",
+        "status": "open",
+        "title": "title_duplicate: Duplicate title (2 URLs)",
+        "confidence": "high",
+        "severity": "medium",
+        "affectedCount": 2,
+        "affectedUrls": {
+          "total": 2,
+          "returned": 2,
+          "complete": true,
+          "items": [
+            "https://skezire.kz/kk/ai",
+            "https://skezire.kz/ru/ai"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "title_duplicate"
+            }
+          }
+        },
+        "sourcePath": "actions[0]",
+        "evidence": {
+          "ruleId": "title_duplicate",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This ranks as a fix. Severity is 1200; 2 URLs are affected; estimated effort is low.",
+          "sampleUrls": [
+            "https://skezire.kz/kk/ai",
+            "https://skezire.kz/ru/ai"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity medium --max-pages 100",
+          "expected": "Re-run the crawl and confirm this title appears on only one indexable URL."
+        },
+        "type": "fix",
+        "fix": {
+          "instruction": "Rewrite each title so it reflects the specific page, including the unique entity, intent, location, product, or angle."
+        },
+        "allowedOutcomes": [
+          "fixed",
+          "deferred",
+          "not-needed"
+        ]
+      },
+      {
+        "id": "crawl:noindex",
+        "status": "open",
+        "title": "noindex: Noindex found (2 URLs)",
+        "confidence": "medium",
+        "severity": "medium",
+        "affectedCount": 2,
+        "affectedUrls": {
+          "total": 2,
+          "returned": 2,
+          "complete": true,
+          "items": [
+            "https://skezire.kz/kk/ai/family-portrait/create",
+            "https://skezire.kz/ru/ai/family-portrait/create"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "noindex"
+            }
+          }
+        },
+        "sourcePath": "actions[1]",
+        "evidence": {
+          "ruleId": "noindex",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/kk/ai/family-portrait/create",
+            "https://skezire.kz/ru/ai/family-portrait/create"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity medium --max-pages 100",
+          "expected": "Re-run the crawl or URL Inspection and confirm no effective meta robots or X-Robots-Tag noindex remains, including the equivalent none directive."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"noindex: Noindex found (2 URLs)\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Remove the noindex directive if the page should rank. Leave it in place only for intentionally private or low-value pages.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "crawl:hsts_missing",
+        "status": "open",
+        "title": "hsts_missing: HSTS header missing (172 URLs)",
+        "confidence": "medium",
+        "severity": "low",
+        "affectedCount": 172,
+        "affectedUrls": {
+          "total": 172,
+          "returned": 10,
+          "complete": false,
+          "items": [
+            "https://skezire.kz/kk",
+            "https://skezire.kz/kk/ai",
+            "https://skezire.kz/kk/ai/action-figure",
+            "https://skezire.kz/kk/ai/ancestor",
+            "https://skezire.kz/kk/ai/family-portrait",
+            "https://skezire.kz/kk/ai/family-portrait/create",
+            "https://skezire.kz/kk/ai/ghibli-style",
+            "https://skezire.kz/kk/ai/national-costume",
+            "https://skezire.kz/kk/ai/past",
+            "https://skezire.kz/kk/ai/pet-humanize"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "hsts_missing"
+            }
+          }
+        },
+        "sourcePath": "actions[2]",
+        "evidence": {
+          "ruleId": "hsts_missing",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/kk",
+            "https://skezire.kz/kk/ai",
+            "https://skezire.kz/kk/ai/action-figure",
+            "https://skezire.kz/kk/ai/ancestor",
+            "https://skezire.kz/kk/ai/family-portrait",
+            "https://skezire.kz/kk/ai/family-portrait/create",
+            "https://skezire.kz/kk/ai/ghibli-style",
+            "https://skezire.kz/kk/ai/national-costume",
+            "https://skezire.kz/kk/ai/past",
+            "https://skezire.kz/kk/ai/pet-humanize"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm hasHsts is true for HTTPS pages."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"hsts_missing: HSTS header missing (172 URLs)\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Send a Strict-Transport-Security header with a suitable max-age once the whole site is stable on HTTPS.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "crawl:structured_data_missing",
+        "status": "open",
+        "title": "structured_data_missing: No structured data detected (18 URLs)",
+        "confidence": "medium",
+        "severity": "low",
+        "affectedCount": 18,
+        "affectedUrls": {
+          "total": 18,
+          "returned": 10,
+          "complete": false,
+          "items": [
+            "https://skezire.kz/kk/contacts",
+            "https://skezire.kz/kk/delivery",
+            "https://skezire.kz/kk/leaderboard",
+            "https://skezire.kz/kk/oferta",
+            "https://skezire.kz/kk/order/canvas",
+            "https://skezire.kz/kk/payment-policy",
+            "https://skezire.kz/kk/privacy",
+            "https://skezire.kz/kk/refund",
+            "https://skezire.kz/kk/shezhire-tree",
+            "https://skezire.kz/ru/contacts"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "structured_data_missing"
+            }
+          }
+        },
+        "sourcePath": "actions[3]",
+        "evidence": {
+          "ruleId": "structured_data_missing",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/kk/contacts",
+            "https://skezire.kz/kk/delivery",
+            "https://skezire.kz/kk/leaderboard",
+            "https://skezire.kz/kk/oferta",
+            "https://skezire.kz/kk/order/canvas",
+            "https://skezire.kz/kk/payment-policy",
+            "https://skezire.kz/kk/privacy",
+            "https://skezire.kz/kk/refund",
+            "https://skezire.kz/kk/shezhire-tree",
+            "https://skezire.kz/ru/contacts"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm structuredDataFormats lists the added format, then validate the page with a structured data tester."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does a specific structured data type accurately describe the visible content on this page?",
+          "changeOnlyIf": "Add markup only when a specific schema type fits the page and every claimed property is supported by its visible content.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Add structured data only where a schema type genuinely describes the page, for example an article page describing its article. Validate the markup after adding it, and leave pages without a fitting schema type unmarked.",
+          "ifNotNeeded": "Leave the page unmarked and record that no suitable schema type was confirmed.",
+          "doNot": [
+            "Do not add Organization or another generic schema type only to clear this finding.",
+            "Do not copy site-wide markup onto unrelated page types."
+          ]
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "crawl:image_oversized_candidate",
+        "status": "open",
+        "title": "image_oversized_candidate: Oversized image candidates (16 URLs)",
+        "confidence": "medium",
+        "severity": "low",
+        "affectedCount": 16,
+        "affectedUrls": {
+          "total": 16,
+          "returned": 10,
+          "complete": false,
+          "items": [
+            "https://skezire.kz/kk",
+            "https://skezire.kz/kk/ai/action-figure",
+            "https://skezire.kz/kk/ai/ancestor",
+            "https://skezire.kz/kk/ai/family-portrait",
+            "https://skezire.kz/kk/ai/ghibli-style",
+            "https://skezire.kz/kk/ai/national-costume",
+            "https://skezire.kz/kk/ai/past",
+            "https://skezire.kz/kk/ai/pet-humanize",
+            "https://skezire.kz/ru",
+            "https://skezire.kz/ru/ai/action-figure"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "image_oversized_candidate"
+            }
+          }
+        },
+        "sourcePath": "actions[4]",
+        "evidence": {
+          "ruleId": "image_oversized_candidate",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/kk",
+            "https://skezire.kz/kk/ai/action-figure",
+            "https://skezire.kz/kk/ai/ancestor",
+            "https://skezire.kz/kk/ai/family-portrait",
+            "https://skezire.kz/kk/ai/ghibli-style",
+            "https://skezire.kz/kk/ai/national-costume",
+            "https://skezire.kz/kk/ai/past",
+            "https://skezire.kz/kk/ai/pet-humanize",
+            "https://skezire.kz/ru",
+            "https://skezire.kz/ru/ai/action-figure"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm oversizedImageCandidates is empty, then spot-check the page in a browser performance trace if the image is important."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"image_oversized_candidate: Oversized image candidates (16 URLs)\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Resize the source image, add responsive srcset sizes, and serve modern compressed formats such as WebP or AVIF where supported.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "crawl:title_too_wide",
+        "status": "open",
+        "title": "title_too_wide: Title may truncate on some devices (9 URLs)",
+        "confidence": "medium",
+        "severity": "low",
+        "affectedCount": 9,
+        "affectedUrls": {
+          "total": 9,
+          "returned": 9,
+          "complete": true,
+          "items": [
+            "https://skezire.kz/kk",
+            "https://skezire.kz/kk/ai/past",
+            "https://skezire.kz/kk/blog/ai-action-figure",
+            "https://skezire.kz/kk/blog/ai-photo-trends-2026",
+            "https://skezire.kz/ru",
+            "https://skezire.kz/ru/ai/past",
+            "https://skezire.kz/ru/blog/ai-action-figure",
+            "https://skezire.kz/ru/blog/guide-kazakh-tribes",
+            "https://skezire.kz/ru/blog/how-to-create-shezhire"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "title_too_wide"
+            }
+          }
+        },
+        "sourcePath": "actions[5]",
+        "evidence": {
+          "ruleId": "title_too_wide",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/kk",
+            "https://skezire.kz/kk/ai/past",
+            "https://skezire.kz/kk/blog/ai-action-figure",
+            "https://skezire.kz/kk/blog/ai-photo-trends-2026",
+            "https://skezire.kz/ru",
+            "https://skezire.kz/ru/ai/past",
+            "https://skezire.kz/ru/blog/ai-action-figure",
+            "https://skezire.kz/ru/blog/guide-kazakh-tribes",
+            "https://skezire.kz/ru/blog/how-to-create-shezhire"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the audit and review estimatedPixels, referencePixels, confidence, and profile. Confirm the important wording appears early."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"title_too_wide: Title may truncate on some devices (9 URLs)\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Review the title rather than shortening it blindly. Put the clearest page-specific wording first and remove filler only when meaning is preserved.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "crawl:orphan_page",
+        "status": "open",
+        "title": "orphan_page: No observed internal links (4 URLs)",
+        "confidence": "medium",
+        "severity": "low",
+        "affectedCount": 4,
+        "affectedUrls": {
+          "total": 4,
+          "returned": 4,
+          "complete": true,
+          "items": [
+            "https://skezire.kz/kk/pricing",
+            "https://skezire.kz/kk/shezhire-tree",
+            "https://skezire.kz/ru/pricing",
+            "https://skezire.kz/ru/shezhire-tree"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "orphan_page"
+            }
+          }
+        },
+        "sourcePath": "actions[6]",
+        "evidence": {
+          "ruleId": "orphan_page",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/kk/pricing",
+            "https://skezire.kz/kk/shezhire-tree",
+            "https://skezire.kz/ru/pricing",
+            "https://skezire.kz/ru/shezhire-tree"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run a complete crawl from the same site entry point and confirm an observed internal link reaches the page."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"orphan_page: No observed internal links (4 URLs)\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Check the page in a complete crawl and in the sitemap. If it is meant to be discovered, add a relevant link from a hub, navigation path, related page, or template.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "crawl:redirected_url",
+        "status": "open",
+        "title": "redirected_url: URL redirects (1 URL)",
+        "confidence": "medium",
+        "severity": "low",
+        "affectedCount": 1,
+        "affectedUrls": {
+          "total": 1,
+          "returned": 1,
+          "complete": true,
+          "items": [
+            "https://skezire.kz/"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "redirected_url"
+            }
+          }
+        },
+        "sourcePath": "actions[7]",
+        "evidence": {
+          "ruleId": "redirected_url",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm the requested URL is the same as the final URL, or that the redirect is intentional."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"redirected_url: URL redirects (1 URL)\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Check why the old URL was requested. Update internal links, canonicals, and sitemap entries to the final URL when appropriate. Keep one direct 301 when the old URL must remain supported.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      }
+    ]
+  },
+  "outputBudget": {
+    "schemaVersion": 1,
+    "maxBytes": 98304,
+    "originalBytes": 16728,
+    "returnedBytes": 16963,
+    "truncated": false,
+    "omissions": [],
+    "omissionsTruncated": false,
+    "detail": "The complete structured report fits within the agent output budget."
+  }
+}

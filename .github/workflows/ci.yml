@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect package manager
+        id: pm
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            echo "name=pnpm" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=npm" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup pnpm
+        if: steps.pm.outputs.name == 'pnpm'
+        uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: ${{ steps.pm.outputs.name }}
+
+      - name: Install dependencies
+        run: |
+          if [ "${{ steps.pm.outputs.name }}" = "pnpm" ]; then
+            pnpm install --frozen-lockfile
+          else
+            npm ci
+          fi
+
+      - name: Typecheck
+        run: |
+          if node -e "process.exit(require('./package.json').scripts?.typecheck ? 0 : 1)"; then
+            if [ "${{ steps.pm.outputs.name }}" = "pnpm" ]; then pnpm run typecheck; else npm run typecheck; fi
+          else
+            npx tsc --noEmit
+          fi
+
+      - name: Lint
+        run: |
+          if [ "${{ steps.pm.outputs.name }}" = "pnpm" ]; then
+            pnpm run --if-present lint
+          else
+            npm run lint --if-present
+          fi
+
+      # Non-blocking until required env secrets are configured in repo settings.
+      # To enforce, remove the `continue-on-error` line below.
+      - name: Build
+        continue-on-error: true
+        run: |
+          if [ "${{ steps.pm.outputs.name }}" = "pnpm" ]; then
+            pnpm run build
+          else
+            npm run build
+          fi

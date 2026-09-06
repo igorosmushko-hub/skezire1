@@ -6,7 +6,10 @@ import {
   flattenTree,
   getExpandedPathIdsForSearchResult,
   layoutTree,
+  mergeTreeChildren,
+  mergeTreePath,
   normalizeTreeSearch,
+  pruneTree,
   searchTree,
   stringifyJsonLd,
   computeViewportFitScale,
@@ -76,6 +79,44 @@ test('computes responsive fit scale with hard min/max bounds', () => {
   assert.equal(computeViewportFitScale(2000, 360, 24, 0.55, 2.2), 0.55);
   assert.equal(computeViewportFitScale(200, 1200, 24, 0.55, 2.2), 2.2);
   assert.equal(Number(computeViewportFitScale(400, 480, 24, 0.55, 2.2).toFixed(4)), 1.14);
+});
+
+test('keeps unloaded branches expandable and merges lazy API data', () => {
+  const initial = pruneTree(tree, 1);
+  assert.equal(initial.children[0].children, undefined);
+  assert.equal(initial.children[0].hasChildren, true);
+
+  const merged = mergeTreeChildren(initial, 'kishi', [
+    { id: 'aday', name: 'Адай', kind: 'tribe', hasChildren: false },
+  ]);
+  assert.equal(findTreePath(merged, 'aday').at(-1)?.name, 'Адай');
+  assert.deepEqual(
+    layoutTree(merged, new Set(['alash', 'kishi'])).nodes.map((node) => node.id),
+    ['alash', 'kishi', 'aday'],
+  );
+});
+
+test('merges a server search path without discarding loaded siblings', () => {
+  const initial = {
+    ...tree,
+    children: [
+      {
+        ...tree.children[0],
+        children: [{ id: 'aday', name: 'Адай', kind: 'tribe', children: [
+          { id: 'zhemeney', name: 'Жеменей', kind: 'subtribe' },
+        ] }],
+      },
+      { id: 'other', name: 'Вне жузов', kind: 'zhuz' },
+    ],
+  };
+  const merged = mergeTreePath(initial, [
+    { id: 'alash', name: 'Алаш', kind: 'root', hasChildren: true },
+    { id: 'kishi', name: 'Кіші жүз', kind: 'zhuz', hasChildren: true },
+    { id: 'aday', name: 'Адай', kind: 'tribe', hasChildren: false },
+  ]);
+  assert.deepEqual(findTreePath(merged, 'aday').map((node) => node.id), ['alash', 'kishi', 'aday']);
+  assert.equal(findTreePath(merged, 'zhemeney').at(-1)?.name, 'Жеменей');
+  assert.deepEqual(merged.children.map((node) => node.id), ['kishi', 'other']);
 });
 
 test('keeps the public tribe directory and subtribe IDs source-backed and stable', () => {

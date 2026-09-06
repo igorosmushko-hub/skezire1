@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { heroCreateTree, heroAiFeatures } from '@/lib/analytics';
 
 export function Hero() {
@@ -8,7 +9,9 @@ export function Hero() {
 
   return (
     <section id="hero" className="hero">
-      <div className="hero-ornament" />
+      <div className="hero-ornament" aria-hidden="true">
+        <Image src="/ornament-hero.webp" alt="" fill sizes="100vw" quality={5} preload fetchPriority="high" style={{ objectFit: 'cover' }} />
+      </div>
       <div className="hero-content">
         <div className="hero-badge">{t('badge')}</div>
         <h1 className="hero-title">

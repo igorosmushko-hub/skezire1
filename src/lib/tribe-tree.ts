@@ -5,6 +5,7 @@ export interface TribeTreeNode {
   name: string;
   secondaryName?: string;
   kind: TribeTreeNodeKind;
+  hasChildren?: boolean;
   href?: string;
   tamga?: string;
   summary?: string;
@@ -68,6 +69,58 @@ export function flattenTree(root: TribeTreeNode) {
   return result;
 }
 
+export function pruneTree(root: TribeTreeNode, maxDepth: number): TribeTreeNode {
+  const visit = (node: TribeTreeNode, depth: number): TribeTreeNode => {
+    const children = node.children ?? [];
+    return {
+      ...node,
+      hasChildren: Boolean(node.hasChildren || children.length),
+      children: depth < maxDepth ? children.map((child) => visit(child, depth + 1)) : undefined,
+    };
+  };
+  return visit(root, 0);
+}
+
+export function mergeTreeChildren(
+  root: TribeTreeNode,
+  targetId: string,
+  children: TribeTreeNode[],
+): TribeTreeNode {
+  if (root.id === targetId) return { ...root, hasChildren: children.length > 0, children };
+  if (!root.children?.length) return root;
+
+  let changed = false;
+  const nextChildren = root.children.map((child) => {
+    const next = mergeTreeChildren(child, targetId, children);
+    changed ||= next !== child;
+    return next;
+  });
+  return changed ? { ...root, children: nextChildren } : root;
+}
+
+export function mergeTreePath(root: TribeTreeNode, path: TribeTreeNode[]): TribeTreeNode {
+  if (!path.length || path[0].id !== root.id) return root;
+  const pathTarget = path.at(-1)!;
+  const existingTarget = findTreePath(root, pathTarget.id).at(-1);
+  let branch = { ...pathTarget, ...existingTarget };
+  for (let index = path.length - 2; index >= 0; index -= 1) {
+    const parent = path[index];
+    const existing = findTreePath(root, parent.id).at(-1);
+    const siblings = existing?.children ?? [];
+    const branchIndex = siblings.findIndex((child) => child.id === branch.id);
+    const children = branchIndex >= 0
+      ? siblings.map((child, siblingIndex) => siblingIndex === branchIndex ? branch : child)
+      : [...siblings, branch];
+    branch = {
+      ...parent,
+      ...existing,
+      hasChildren: true,
+      children,
+    };
+  }
+  return branch;
+}
+
 export function findTreePath(root: TribeTreeNode, id: string): TribeTreeNode[] {
   if (root.id === id) return [root];
   for (const child of root.children ?? []) {
@@ -91,9 +144,9 @@ export function getExpandedPathIdsForSearchResult(root: TribeTreeNode, targetId:
   const path = findTreePath(root, targetId);
   if (!path.length) return [];
 
-  const ids = path.slice(0, -1).filter((node) => node.children?.length).map((node) => node.id);
+  const ids = path.slice(0, -1).filter((node) => node.hasChildren || node.children?.length).map((node) => node.id);
   const target = path.at(-1);
-  if (target?.children?.length) ids.push(target.id);
+  if (target?.hasChildren || target?.children?.length) ids.push(target.id);
   return ids;
 }
 
@@ -115,7 +168,7 @@ export function layoutTree(root: TribeTreeNode, expanded: ReadonlySet<string>): 
       x: PADDING + depth * HORIZONTAL_GAP,
       y,
       depth,
-      hasChildren: Boolean(node.children?.length),
+      hasChildren: Boolean(node.hasChildren || node.children?.length),
     };
     nodes.push(positioned);
     positionedChildren.forEach((child) => edgeIds.push({ from: node.id, to: child.id }));
