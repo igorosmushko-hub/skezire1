@@ -1,4 +1,6 @@
-import type { Tribe } from '@/lib/types';
+import type { Tribe, SubTribe } from '@/lib/types';
+import Link from 'next/link';
+import { TreeMapLink } from './TreeMapLink';
 import { LinkedText } from '@/components/LinkedText';
 
 interface TribeDetailTranslations {
@@ -38,13 +40,27 @@ export function TribeDetail({ tribe, locale, zhuzName, zhuzId, labels }: TribeDe
   const history = isKk ? tribe.history_kk : tribe.history_ru;
   const subtribes = tribe.subtribes;
   const name = isKk ? tribe.kk : tribe.ru;
-  const branchNote = BRANCH_NOTES[tribe.id];
+  const branchNote = tribe.branchNote ?? BRANCH_NOTES[tribe.id];
+
+  const renderBranches = (branches: SubTribe[]) => (
+    <ul className="tribe-branch-list">
+      {branches.map((branch) => (
+        <li key={branch.id} id={`branch-${branch.id}`}>
+          <Link className="tribe-subtribe-tag" href={`/${locale}/shezhire-tree?view=reference&highlight=${encodeURIComponent(`subtribe:${branch.id}`)}`}>
+            {isKk ? branch.kk : branch.ru}
+          </Link>
+          {branch.note && <p className="tribe-card-desc">{branch.note[isKk ? 'kk' : 'ru']}</p>}
+          {branch.children?.length ? renderBranches(branch.children) : null}
+        </li>
+      ))}
+    </ul>
+  );
 
   return (
     <article className="tribe-article-card">
       {/* Dark hero header */}
       <div className="tribe-card-hero">
-        <div className="tribe-card-tamga-icon">{tribe.tamga}</div>
+        {tribe.tamga && <div className="tribe-card-tamga-icon">{tribe.tamga}</div>}
         <div className="tribe-card-hero-text">
           <h1 className="tribe-card-name">{name}</h1>
           {tribe.uran && (
@@ -81,12 +97,19 @@ export function TribeDetail({ tribe, locale, zhuzName, zhuzId, labels }: TribeDe
       {/* Description */}
       <div className="tribe-card-section">
         <LinkedText text={desc} locale={locale} className="tribe-card-desc" selfPath={`/encyclopedia/${zhuzId}/${tribe.id}`} />
+        {tribe.sources && tribe.sources.length > 0 && (
+          <p className="tribe-card-desc" style={{ marginTop: 16 }}>
+            <TreeMapLink locale={locale} targetKind="tribe" href={`/${locale}/shezhire-tree?view=reference&highlight=${encodeURIComponent(`tribe:${tribe.id}`)}`} className="btn btn-primary" style={{ minHeight: 48, whiteSpace: 'normal', textAlign: 'center' }}>
+              {isKk ? 'Рулар картасынан көру' : 'Посмотреть на карте родов'}
+            </TreeMapLink>
+          </p>
+        )}
       </div>
 
       {/* History */}
       {history && (
         <div className="tribe-card-section">
-          <h3 className="tribe-card-section-title">{isKk ? 'Тарихы' : 'История'}</h3>
+          <h2 className="tribe-card-section-title">{tribe.historyTitle?.[isKk ? 'kk' : 'ru'] ?? (isKk ? 'Тарихы' : 'История')}</h2>
           <LinkedText text={history} locale={locale} className="tribe-card-desc" selfPath={`/encyclopedia/${zhuzId}/${tribe.id}`} />
         </div>
       )}
@@ -94,16 +117,24 @@ export function TribeDetail({ tribe, locale, zhuzName, zhuzId, labels }: TribeDe
       {/* Subtribes */}
       {subtribes && subtribes.length > 0 && (
         <div className="tribe-card-section">
-          <h3 className="tribe-card-section-title">{isKk ? 'Тармақ атаулары' : 'Названия ветвей'}</h3>
-          {branchNote && <p className="tribe-card-desc">{isKk ? branchNote.kk : branchNote.ru}</p>}
-          <div className="tribe-card-subtribes">
-            {subtribes.map((st) => (
-              <span key={st.kk} className="tribe-subtribe-tag">
-                {isKk ? st.kk : st.ru}
-              </span>
-            ))}
-          </div>
+          <h2 className="tribe-card-section-title">{tribe.branchTitle?.[isKk ? 'kk' : 'ru'] ?? (isKk ? 'Тармақ атаулары' : 'Названия ветвей')}</h2>
+          {branchNote && <p className="tribe-card-desc" style={{ marginBottom: 16 }}>{branchNote[isKk ? 'kk' : 'ru']}</p>}
+          {renderBranches(subtribes)}
         </div>
+      )}
+
+      {tribe.sources && tribe.sources.length > 0 && (
+        <section className="tribe-card-section tribe-card-section--last" aria-labelledby="tribe-sources-title">
+          <h2 id="tribe-sources-title" className="tribe-card-section-title">{isKk ? 'Дереккөздер' : 'Источники'}</h2>
+          <ul className="tribe-card-desc" style={{ paddingLeft: 20, overflowWrap: 'anywhere' }}>
+            {tribe.sources.map((source) => (
+              <li key={source.url}>
+                <a href={source.url} style={{ textDecoration: 'underline', textUnderlineOffset: 3 }}>{source.title}</a>
+                {' — '}{isKk ? source.locator_kk : source.locator_ru}
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
       {/* Notable people */}

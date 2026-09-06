@@ -137,11 +137,56 @@ test('keeps the public tribe directory and subtribe IDs source-backed and stable
 
   const treeNodes = flattenTree(buildTribeTree('ru', TRIBES_DB));
   const tribeNodes = treeNodes.filter((node) => node.kind === 'tribe');
+  const branchNodes = treeNodes.filter((node) => node.kind === 'subtribe');
   assert.equal(tribeNodes.length, 47);
+  assert.equal(new Set(branchNodes.map((node) => node.id)).size, branchNodes.length);
+  assert.ok(branchNodes.every((node) => node.id.startsWith('subtribe:')));
+  assert.ok(branchNodes.every((node) => node.href?.includes('#branch-')));
   assert.deepEqual(
     tribeNodes.map((node) => node.href).sort(),
     links.sort(),
   );
+});
+
+test('keeps nested branch paths, notes and encyclopedia anchors in the reference tree', () => {
+  const source = [{
+    id: 'test-zhuz', kk: 'Тест жүз', ru: 'Тестовый жуз', desc_kk: '', desc_ru: '',
+    tribes: [{
+      id: 'test-tribe', kk: 'Тест ру', ru: 'Тестовый род', desc_kk: '', desc_ru: '',
+      region_kk: '', region_ru: '', tamga: '', uran: '', notable: [],
+      branchNote: { kk: 'Ортақ ескерту', ru: 'Общая заметка' },
+      subtribes: [{
+        id: 'parent', kk: 'Ата тармақ', ru: 'Родительская ветвь', aliases: ['Кудайкул'],
+        children: [{
+          id: 'child', kk: 'Бала тармақ', ru: 'Дочерняя ветвь',
+          note: { kk: 'Жеке ескерту', ru: 'Отдельная заметка' },
+        }],
+      }],
+    }],
+  }];
+
+  const tree = buildTribeTree('ru', source);
+  const parent = findTreePath(tree, 'subtribe:parent').at(-1);
+  const child = findTreePath(tree, 'subtribe:child').at(-1);
+
+  assert.equal(parent?.summary, 'Общая заметка');
+  assert.equal(parent?.secondaryName, 'Ата тармақ · Кудайкул');
+  assert.equal(parent?.href, '/ru/encyclopedia/test-zhuz/test-tribe#branch-parent');
+  assert.equal(child?.summary, 'Отдельная заметка');
+  assert.equal(child?.href, '/ru/encyclopedia/test-zhuz/test-tribe#branch-child');
+  assert.deepEqual(findTreePath(tree, 'subtribe:child').map((node) => node.id), [
+    'alash', 'zhuz:test-zhuz', 'tribe:test-tribe', 'subtribe:parent', 'subtribe:child',
+  ]);
+});
+
+test('marks legacy branch lists as non-biological when no editorial note is available', () => {
+  const tribe = TRIBES_DB.flatMap((zhuz) => zhuz.tribes)
+    .find((item) => item.subtribes?.length && !item.branchNote);
+  assert.ok(tribe);
+
+  const tree = buildTribeTree('ru', TRIBES_DB);
+  const branch = findTreePath(tree, `subtribe:${tribe.subtribes[0].id}`).at(-1);
+  assert.match(branch?.summary ?? '', /не подтверждает биологическое родство/);
 });
 
 test('escapes JSON-LD closing-script characters', () => {

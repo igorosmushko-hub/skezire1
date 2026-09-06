@@ -171,7 +171,7 @@ async function loadProbe(context) {
   result.timings.mapPage = { samples, p95: value }; record('bounded-load', { concurrency: limits.concurrency, samples: limits.samples, p95: value });
 }
 await mkdir(artifacts, { recursive: true });
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE });
 try {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, ...(storageState ? { storageState } : {}) });
   await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: base });

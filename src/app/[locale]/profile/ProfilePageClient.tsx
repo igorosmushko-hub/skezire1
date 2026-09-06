@@ -376,14 +376,14 @@ function ProfileContent({ locale }: { locale: string }) {
                     <span className="profile-tribe-item-label">{t('tribeLabel')}</span>
                     <span>{isKk ? tribeInfo.tribe.kk : tribeInfo.tribe.ru}</span>
                   </div>
-                  <div className="profile-tribe-item">
+                  {tribeInfo.tribe.tamga && <div className="profile-tribe-item">
                     <span className="profile-tribe-item-label">{t('tamga')}</span>
                     <span className="profile-tribe-tamga">{tribeInfo.tribe.tamga}</span>
-                  </div>
-                  <div className="profile-tribe-item">
+                  </div>}
+                  {tribeInfo.tribe.uran && <div className="profile-tribe-item">
                     <span className="profile-tribe-item-label">{t('uran')}</span>
                     <span>{tribeInfo.tribe.uran}</span>
-                  </div>
+                  </div>}
                 </div>
                 <Link
                   href={`/${locale}/encyclopedia/${tribeInfo.zhuz.id}/${tribeInfo.tribe.id}`}

@@ -67,14 +67,14 @@ for (const offset of ['-1', '1.5', 'NaN', '1000001']) {
 }
 assert.equal((await route.GET(new Request('http://localhost/api?node=snapshot:1&source=snapshot'))).status, 404);
 // Render the actual page with the actual adapter; only the DB transport is synthetic.
-const renderPage = async (locale, highlight, env = config) => {
+const renderPage = async (locale, highlight, env = config, view) => {
   const { default: Page } = load('src/app/[locale]/shezhire-tree/page.tsx', {
     'react/jsx-runtime': jsxRuntime, 'next/link': { default: 'a' },
     '@/components/tribe-tree/InteractiveTree': { InteractiveTree: () => jsxRuntime.jsx('div', { 'data-test-tree': true }) },
-    '@/data/tribes': { TRIBES_DB }, '@/lib/genealogy-data': adapter(env), '@/lib/tribe-tree': tree,
+    '@/data/tribes': { TRIBES_DB }, '@/lib/genealogy-data': adapter(env), '@/lib/tribe-tree': tree, '@/lib/tribe-tree-page': { buildTribeTree },
     '@/styles/shezhire-tree.css': {}, '@/styles/tribe-race.css': {},
   });
-  return renderToStaticMarkup(await Page({ params: Promise.resolve({ locale }), searchParams: Promise.resolve({ highlight }) }));
+  return renderToStaticMarkup(await Page({ params: Promise.resolve({ locale }), searchParams: Promise.resolve({ highlight, view }) }));
 };
 for (const locale of ['ru', 'kk']) {
   const missingText = locale === 'ru' ? 'Ветвь не найдена или недоступна' : 'Тармақ табылмады немесе қолжетімсіз';
@@ -107,6 +107,12 @@ for (const locale of ['ru', 'kk']) {
   assert.ok((await renderPage(locale)).includes('data-test-tree'));
   assert.equal(responses.length, 0);
   assert.ok((await renderPage(locale, 'naiman')).includes('data-test-tree'));
+  const callsBefore = queries.length;
+  assert.ok((await renderPage(locale, 'subtribe:dulat-kudaykul', { ...config, GENEALOGY_INCLUDE_PRIVATE: '1' }, 'reference')).includes('data-test-tree'));
+  assert.equal(queries.length, callsBefore, 'reference mode must not access private DB');
+  const missingReference = await renderPage(locale, 'subtribe:alban-sary', config, 'reference');
+  assert.ok(missingReference.includes(missingText) && !missingReference.includes('data-test-tree'));
+  assert.equal(queries.length, callsBefore, 'unknown reference must not query DB');
 }
 console.log('PASS: repo is the default without DB calls even with stale DSN; external DB errors fail closed, private bypass rejected, legacy links, rooted paths, bounded children and API validation. Synthetic data only; does not prove live SQL or full DB performance.');
 console.log('PASS: RU/KK unavailable links are indistinguishable for missing/private paths, recover to root, and remain distinct from source outages.');

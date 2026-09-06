@@ -2,19 +2,25 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { InteractiveTree } from '@/components/tribe-tree/InteractiveTree';
 import { TRIBES_DB } from '@/data/tribes';
+import type { SubTribe } from '@/lib/types';
+import { buildTribeTree } from '@/lib/tribe-tree-page';
 import { getInitialGenealogyTree } from '@/lib/genealogy-data';
-import { stringifyJsonLd } from '@/lib/tribe-tree';
+import { findTreePath, stringifyJsonLd } from '@/lib/tribe-tree';
 import '@/styles/shezhire-tree.css';
 import '@/styles/tribe-race.css';
 
 const BASE_URL = 'https://skezire.kz';
+
+function countBranches(branches: SubTribe[] | undefined): number {
+  return (branches ?? []).reduce((count, branch) => count + 1 + countBranches(branch.children), 0);
+}
 
 // The published source and its access rules are evaluated for every request.
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ highlight?: string; join?: string }>;
+  searchParams: Promise<{ highlight?: string; join?: string; view?: string }>;
 }
 
 export async function generateMetadata({ params }: Pick<PageProps, 'params'>): Promise<Metadata> {
@@ -60,7 +66,7 @@ export async function generateMetadata({ params }: Pick<PageProps, 'params'>): P
 
 export default async function ShezhireTreePage({ params, searchParams }: PageProps) {
   const { locale } = await params;
-  const { highlight, join } = await searchParams;
+  const { highlight, join, view } = await searchParams;
   const isKk = locale === 'kk';
   // Existing tribe slugs use the legacy prefix; external numeric IDs are opaque.
   const initialFocusId = highlight
@@ -68,18 +74,30 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
     : undefined;
   let genealogy: Awaited<ReturnType<typeof getInitialGenealogyTree>> | null = null;
   let focusUnavailable = false;
-  try {
-    genealogy = await getInitialGenealogyTree(locale, initialFocusId);
-  } catch (error) {
-    // Log only application codes; database exceptions may contain private values.
-    const code = error instanceof Error && /^genealogy_[a-z_]+$/.test(error.message)
-      ? error.message : 'genealogy_unavailable';
-    focusUnavailable = code === 'genealogy_focus_unavailable';
-    console.error('[genealogy]', code);
-    // The directory remains useful when the published data source is unavailable.
+  // Reference links use the public catalog even on a database-backed preview.
+  if (view === 'reference') {
+    const tree = buildTribeTree(locale, TRIBES_DB);
+    if (initialFocusId && !findTreePath(tree, initialFocusId).length) {
+      focusUnavailable = true;
+    } else {
+      genealogy = { tree, source: 'repo' };
+    }
+  } else {
+    try {
+      genealogy = await getInitialGenealogyTree(locale, initialFocusId);
+    } catch (error) {
+      // Log only application codes; database exceptions may contain private values.
+      const code = error instanceof Error && /^genealogy_[a-z_]+$/.test(error.message)
+        ? error.message : 'genealogy_unavailable';
+      focusUnavailable = code === 'genealogy_focus_unavailable';
+      console.error('[genealogy]', code);
+      // The directory remains useful when the published data source is unavailable.
+    }
   }
   const pageUrl = `${BASE_URL}/${locale}/shezhire-tree`;
   const tribeCount = TRIBES_DB.reduce((sum, zhuz) => sum + zhuz.tribes.length, 0);
+  const branchCount = TRIBES_DB.flatMap((zhuz) => zhuz.tribes)
+    .reduce((sum, tribe) => sum + countBranches(tribe.subtribes), 0);
   let position = 0;
 
   const breadcrumbJsonLd = {
@@ -142,6 +160,7 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
           <div className="tt-hero-facts" aria-label={isKk ? 'Ағаш құрамы' : 'Состав дерева'}>
             <span><strong>4</strong> {isKk ? 'бөлім' : 'раздела'}</span>
             <span><strong>{tribeCount}</strong> {isKk ? 'ру' : 'родов'}</span>
+            <span><strong>{branchCount}</strong> {isKk ? 'тармақ' : 'ветвей'}</span>
             <span><strong>RU / KK</strong></span>
           </div>
         </div>
@@ -153,6 +172,11 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
           : (isKk ? 'Импортталған деректер тек жариялауға тексерілгеннен кейін көрсетіледі. Tumalas жергілікті көшірмесінің 2026-08-20 түсірілімінде 794 594 жазба, байланыс тереңдігі 31 деңгейге дейін болған. Бұл 31 тарихи дәлелденген ұрпақ дегенді білдірмейді.' : 'Импортированные данные показываются только после проверки оснований публикации. Локальный снимок Tumalas от 20.08.2026 содержал 794 594 записи и связи глубиной до 31 уровня. Это не означает 31 исторически подтверждённое поколение.')}
           {' '}<Link href={`/${locale}/contacts`}>{isKk ? 'Қате туралы хабарлау' : 'Сообщить об ошибке'}</Link>
         </p>
+        {genealogy?.source === 'repo' && (
+          <p>{isKk
+            ? 'Анықтамалық редакциясы — 2026 жылғы 6 қыркүйек. Бұл дәстүрлі топ мүшелігінің авторлық картасы және Tumalas құрылымынан өзгеше болуы мүмкін; дереккөздер ру карточкаларында ашылады. Зерттеуге Tumalas-тың 2026 жылғы 20 тамыздағы көшірмесі пайдаланылды. Оның құрылымдық тексерісі (6 қыркүйек) биологиялық туыстықты растамайды.'
+            : 'Справочная редакция — 6 сентября 2026 года. Это авторская карта традиционной групповой принадлежности, поэтому она может отличаться от структуры Tumalas; источники открываются в карточках родов. Для исследования использован снимок Tumalas от 20 августа 2026 года. Его структурная проверка (6 сентября) не подтверждает биологическое родство.'}</p>
+        )}
         {genealogy ? (
           <InteractiveTree
             key={`${locale}:${initialFocusId ?? 'root'}:${join === '1' ? 'join' : 'view'}`}
@@ -204,7 +228,7 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
                   {zhuz.tribes.map((tribe) => (
                     <li key={tribe.id}>
                       <Link href={`/${locale}/encyclopedia/${zhuz.id}/${tribe.id}`}>
-                        <span aria-hidden="true">{tribe.tamga}</span>
+                        {tribe.tamga && <span aria-hidden="true">{tribe.tamga}</span>}
                         {isKk ? tribe.kk : tribe.ru}
                       </Link>
                     </li>

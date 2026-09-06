@@ -111,9 +111,27 @@ console.log('PASS: desktop transition closes mobile menu; unloaded branches rema
   const sources = load('src/data/encyclopedia-sources.ts');
   const allTribeIds = tribes.TRIBES_DB.flatMap(zhuz => zhuz.tribes.map(tribe => tribe.id));
   const allSectionIds = tribes.TRIBES_DB.map(zhuz => zhuz.id);
+  const enrichedIds = new Set(['dulat', 'jalayir', 'sirgeli', 'shapyrashty', 'alban', 'suan']);
+  const enriched = Object.fromEntries(allTribeIds
+    .filter(id => enrichedIds.has(id))
+    .map(id => [id, tribes.TRIBES_DB.flatMap(zhuz => zhuz.tribes).find(tribe => tribe.id === id)]));
+  const dulat = enriched.dulat;
+  const branchCount = branches => branches.reduce((count, branch) => count + 1 + branchCount(branch.children ?? []), 0);
   assert.equal(allTribeIds.length, 47);
-  assert.deepEqual(Object.keys(sources.ENCYCLOPEDIA_SOURCE_IDS_BY_TRIBE).sort(), [...allTribeIds].sort());
-  assert([...allTribeIds, ...allSectionIds].every(id => sources.getEncyclopediaSources(id).length > 0 && sources.getEncyclopediaSources(id).every(Boolean)));
+  assert(allSectionIds.every(id => sources.getEncyclopediaSources(id).length > 0));
+  for (const id of allTribeIds) {
+    const tribe = enriched[id];
+    if (tribe) {
+      assert.equal(tribe.updatedAt, '2026-09-06', `${id}: release date`);
+      assert(tribe.sources?.length && tribe.sources.every(source => source.title && /^https:\/\//.test(source.url) && source.locator_kk && source.locator_ru), `${id}: direct sources`);
+    } else {
+      assert(sources.getEncyclopediaSources(id).length > 0, `${id}: legacy source`);
+    }
+  }
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(enriched).map(([id, tribe]) => [id, { top: tribe.subtribes?.length ?? 0, total: branchCount(tribe.subtribes ?? []) }])),
+    { dulat: { top: 4, total: 8 }, jalayir: { top: 3, total: 17 }, sirgeli: { top: 12, total: 12 }, shapyrashty: { top: 6, total: 7 }, alban: { top: 1, total: 1 }, suan: { top: 1, total: 1 } },
+  );
 
   const tracked = [];
   const { TreeMapLink } = load('src/components/encyclopedia/TreeMapLink.tsx', {
@@ -131,7 +149,10 @@ console.log('PASS: desktop transition closes mobile menu; unloaded branches rema
     '@/data/tribes': tribes,
     '@/data/encyclopedia-sources': sources,
     '@/components/encyclopedia/Breadcrumb': { Breadcrumb: () => null },
-    '@/components/encyclopedia/TribeDetail': { TribeDetail: () => null },
+    '@/components/encyclopedia/TribeDetail': load('src/components/encyclopedia/TribeDetail.tsx', {
+      './TreeMapLink': { TreeMapLink: ({ locale, targetKind, ...props }) => React.createElement('a', props) },
+      'next/link': { default: 'a' }, '@/components/LinkedText': { LinkedText: ({ text, selfPath, ...props }) => React.createElement('p', props, text) },
+    }),
     '@/components/encyclopedia/ZhuzSection': { ZhuzSection: () => null },
     '@/components/encyclopedia/Pager': { Pager: () => null },
     '@/components/encyclopedia/TreeMapLink': { TreeMapLink: ({ locale, targetKind, ...props }) => React.createElement('a', props) },
@@ -149,8 +170,9 @@ console.log('PASS: desktop transition closes mobile menu; unloaded branches rema
     const html = renderToStaticMarkup(await tribePage.default({ params: Promise.resolve({ locale, zhuzId: 'uly', tribeId: 'dulat' }) }));
     assert(html.includes('application/ld+json'));
     assert(!html.includes('memberOf'));
-    assert(html.includes(`/${locale}/shezhire-tree?highlight=dulat`));
-    assert(html.includes(sources.getEncyclopediaSources('dulat')[0].title));
+    assert(html.includes(`/${locale}/shezhire-tree?view=reference&amp;highlight=tribe%3Adulat`));
+    assert(html.includes(dulat.sources[0].title));
+    assert(html.includes('id="branch-dulat-botbay"'));
 
     const zhuzHtml = renderToStaticMarkup(await zhuzPage.default({ params: Promise.resolve({ locale, zhuzId: 'uly' }) }));
     assert(zhuzHtml.includes(`/${locale}/shezhire-tree?highlight=zhuz:uly`));
@@ -158,23 +180,29 @@ console.log('PASS: desktop transition closes mobile menu; unloaded branches rema
   }
 
   const { TribeDetail } = load('src/components/encyclopedia/TribeDetail.tsx', {
+    './TreeMapLink': { TreeMapLink: ({ locale, targetKind, ...props }) => React.createElement('a', props) },
+    'next/link': { default: 'a' },
     '@/components/LinkedText': { LinkedText: ({ text }) => React.createElement('p', null, text) },
   });
-  const dulat = tribes.TRIBES_DB.find(zhuz => zhuz.id === 'uly').tribes.find(tribe => tribe.id === 'dulat');
+  const cardDependencies = { react: React, 'next/link': { default: 'a' }, 'next-intl': { useTranslations: () => key => key } };
+  for (const [file, component, props] of [
+    ['TribeCardEnc', 'TribeCardEnc', { tribe: dulat, moreLabel: 'More' }],
+    ['TribeTabs', 'TribeTabs', { tribes: [dulat], labels: {} }],
+    ['EncTabs', 'EncTabs', { zhuzes: [{ ...tribes.TRIBES_DB[0], tribes: [dulat] }], moreLabel: 'More' }],
+  ]) {
+    const Component = load(`src/components/encyclopedia/${file}.tsx`, cardDependencies)[component];
+    const markup = renderToStaticMarkup(React.createElement(Component, { ...props, locale: 'ru', zhuzId: 'uly' }));
+    assert(!/class="[^"]*tamga/.test(markup), `${file}: empty symbol tile`);
+    assert(markup.includes('Дулат'), `${file}: tribe name retained`);
+  }
   const emptyNotable = tribes.TRIBES_DB.find(zhuz => zhuz.id === 'uly').tribes.find(tribe => tribe.id === 'jalayir');
   const detailLabels = { tamga: 'Тамга', uran: 'Уран', region: 'Регион', subgroup: 'Подгруппа', notable: 'Известные представители' };
   const dulatDetail = renderToStaticMarkup(React.createElement(TribeDetail, { tribe: dulat, locale: 'ru', zhuzName: 'Старший жуз', zhuzId: 'uly', labels: detailLabels }));
-  assert(dulatDetail.includes('Условное обозначение каталога; не историческое изображение тамги.'));
   assert(dulatDetail.includes('Названия ветвей'));
-  assert(dulatDetail.includes('Четыре названия приведены в версии шежире S08.'));
+  assert(dulatDetail.includes('id="branch-dulat-botbay"'));
+  assert(dulatDetail.includes(dulat.sources[0].title));
   const emptyDetail = renderToStaticMarkup(React.createElement(TribeDetail, { tribe: emptyNotable, locale: 'ru', zhuzName: 'Старший жуз', zhuzId: 'uly', labels: detailLabels }));
   assert(!emptyDetail.includes('Известные представители'));
-
-  const { TribeTabs } = load('src/components/encyclopedia/TribeTabs.tsx', {
-    react: { useState: initial => [initial, () => {}] }, 'next/link': { default: 'a' },
-  });
-  const tabs = renderToStaticMarkup(React.createElement(TribeTabs, { tribes: [dulat], locale: 'ru', zhuzId: 'uly', labels: { ...detailLabels, moreLink: 'Подробнее' } }));
-  assert(tabs.includes('Условное обозначение каталога; не историческое изображение тамги.'));
 
   const sitemap = load('src/app/sitemap.ts', { '@/data/tribes': tribes, '@/data/blog': { BLOG_POSTS: [] } }).default();
   const mapUrls = sitemap.filter(entry => entry.url.includes('/shezhire-tree'));

@@ -33,7 +33,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${tribeName} — ${zhuzName} | Шежіре`,
     description: isKk ? tribe.desc_kk : tribe.desc_ru,
-    keywords: isKk
+    keywords: tribe.sources?.length
+      ? (isKk ? `${tribeName}, ${zhuzName}, ру тармақтары, шежіре, дереккөздер` : `${tribeName}, ${zhuzName}, подразделения рода, шежіре, источники`)
+      : isKk
       ? `${tribeName}, ${zhuzName}, тамға, ұран, шежіре, қазақ руы`
       : `${tribeName}, ${zhuzName}, тамга, уран, шежіре, казахский род`,
     openGraph: {
@@ -73,7 +75,7 @@ export default async function TribePage({ params }: PageProps) {
   const zhuzName = isKk ? zhuz.kk : zhuz.ru;
   const tribeName = isKk ? tribe.kk : tribe.ru;
   const subgroup = isKk ? tribe.subgroup_kk : tribe.subgroup_ru;
-  const sources = getEncyclopediaSources(tribeId);
+  const sources = tribe.sources?.length ? [] : getEncyclopediaSources(tribeId);
 
   const prevTribe = tribeIndex > 0 ? zhuz.tribes[tribeIndex - 1] : undefined;
   const nextTribe = tribeIndex < zhuz.tribes.length - 1 ? zhuz.tribes[tribeIndex + 1] : undefined;
@@ -120,8 +122,9 @@ export default async function TribePage({ params }: PageProps) {
     headline: tribeName,
     description: isKk ? tribe.desc_kk : tribe.desc_ru,
     url: pageUrl,
-    datePublished: '2026-02-27',
-    dateModified: '2026-03-03',
+    ...(!tribe.updatedAt && { datePublished: '2026-02-27' }),
+    dateModified: tribe.updatedAt ?? '2026-03-03',
+    citation: tribe.sources?.map((source) => source.url),
     inLanguage: locale === 'kk' ? 'kk-KZ' : 'ru-RU',
     author: {
       '@type': 'Organization',
@@ -211,7 +214,7 @@ export default async function TribePage({ params }: PageProps) {
                   .slice(0, 5)
                   .map((tr) => (
                     <a key={tr.id} href={`/${locale}/encyclopedia/${zhuz.id}/${tr.id}`} className="tribe-sib-card">
-                      <span className="tribe-sib-tamga">{tr.tamga}</span>
+                      {tr.tamga && <span className="tribe-sib-tamga">{tr.tamga}</span>}
                       <span className="tribe-sib-name">{isKk ? tr.kk : tr.ru}</span>
                     </a>
                   ))}
@@ -243,7 +246,7 @@ export default async function TribePage({ params }: PageProps) {
                   href={`/${locale}/encyclopedia/${r.zhuzId}/${r.tribe.id}`}
                   style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px', background: '#f8f6f0', borderRadius: 8, textDecoration: 'none', color: '#003082' }}
                 >
-                  <span style={{ fontSize: '1.2rem' }}>{r.tribe.tamga}</span>
+                  {r.tribe.tamga && <span style={{ fontSize: '1.2rem' }}>{r.tribe.tamga}</span>}
                   <span>{isKk ? r.tribe.kk : r.tribe.ru}</span>
                 </Link>
               ))}

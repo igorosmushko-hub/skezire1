@@ -155,7 +155,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       for (const tribe of zhuz.tribes) {
         entries.push({
           url: `${baseUrl}/${locale}/encyclopedia/${zhuz.id}/${tribe.id}`,
-          lastModified: DATES.encyclopedia,
+          lastModified: tribe.updatedAt ? new Date(tribe.updatedAt) : DATES.encyclopedia,
           changeFrequency: 'monthly',
           priority: 0.8,
         });

@@ -584,6 +584,7 @@ export function InteractiveTree({
             <button type="button" className="tt-detail-link" onClick={async () => {
               const url = new URL(window.location.pathname, window.location.origin);
               url.searchParams.set('highlight', selected.id);
+              if (source === 'repo') url.searchParams.set('view', 'reference');
               try {
                 await navigator.clipboard.writeText(url.href);
                 setLinkStatus('copied');

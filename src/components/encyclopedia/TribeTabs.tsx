@@ -40,7 +40,7 @@ export function TribeTabs({ tribes, locale, zhuzId, labels }: TribeTabsProps) {
             className={`tribe-tab${i === activeIndex ? ' tribe-tab--active' : ''}`}
             onClick={() => setActiveIndex(i)}
           >
-            <span className="tribe-tab-tamga">{t.tamga}</span>
+            {t.tamga && <span className="tribe-tab-tamga">{t.tamga}</span>}
             <span className="tribe-tab-name">{isKk ? t.kk : t.ru}</span>
           </button>
         ))}
@@ -49,7 +49,7 @@ export function TribeTabs({ tribes, locale, zhuzId, labels }: TribeTabsProps) {
       {/* Tab content */}
       <div className="tribe-tabs-content">
         <div className="tribe-tabs-header">
-          <div className="tribe-tabs-tamga-big">{tribe.tamga}</div>
+          {tribe.tamga && <div className="tribe-tabs-tamga-big">{tribe.tamga}</div>}
           <div>
             <h3 className="tribe-tabs-title">{name}</h3>
             {subgroup && <span className="tribe-tabs-subgroup">{subgroup}</span>}

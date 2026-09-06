@@ -735,3 +735,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Branch links retain the catalog style while exposing nested membership. */
+.tribe-branch-list { list-style: none; padding: 0; margin: 0; }
+.tribe-branch-list li { margin-block: 8px; scroll-margin-top: 100px; }
+.tribe-branch-list .tribe-branch-list { margin: 8px 0 12px 12px; padding-left: 16px; border-left: 1px solid var(--color-gold, #c8a253); }
+.tribe-branch-list a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+.tribe-branch-list a:focus-visible { outline: 2px solid #003082; outline-offset: 3px; }
