@@ -105,3 +105,11 @@ for (const id of enrichedIds) {
   }
 }
 console.log('PASS: release scope, Unicode links, enriched sources, branch anchors, SSR metadata and sitemap.');
+
+for (const locale of ['ru', 'kk']) {
+  const res = await fetch(`${base}/${locale}/encyclopedia`);
+  assert.equal(res.status, 200);
+  const html = await res.text();
+  assert.ok(!/полная история|толық тарих|Полный справочник всех|толық анықтамалығы/.test(html), 'hub must describe bounded reference content');
+  assert.ok(html.includes(locale === 'ru' ? 'карта' : 'карта'));
+}
