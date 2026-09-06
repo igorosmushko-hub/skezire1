@@ -1,11 +1,14 @@
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 export function About() {
   const t = useTranslations('about');
 
   return (
     <section id="about" className="about">
-      <div className="about-ornament" />
+      <div className="about-ornament" aria-hidden="true">
+        <Image src="/ornament-about.webp" alt="" fill sizes="100vw" quality={5} style={{ objectFit: 'cover' }} />
+      </div>
       <div className="container">
         <div className="section-header">
           <div className="about-header-wrap">

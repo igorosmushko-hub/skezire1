@@ -20,14 +20,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const entries: MetadataRoute.Sitemap = [];
 
-  // Root — redirects to /kk
-  entries.push({
-    url: `${baseUrl}/`,
-    lastModified: DATES.home,
-    changeFrequency: 'weekly',
-    priority: 1.0,
-  });
-
   // Main pages
   for (const locale of locales) {
     entries.push({
@@ -50,6 +42,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
     entries.push({
       url: `${baseUrl}/${locale}/encyclopedia`,
+      lastModified: DATES.encyclopedia,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    });
+    entries.push({
+      url: `${baseUrl}/${locale}/shezhire-tree`,
       lastModified: DATES.encyclopedia,
       changeFrequency: 'monthly',
       priority: 0.9,
@@ -90,13 +88,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.9,
       });
     }
-    // Family portrait creation page
-    entries.push({
-      url: `${baseUrl}/${locale}/ai/family-portrait/create`,
-      lastModified: DATES.ai,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    });
     // Order canvas page
     entries.push({
       url: `${baseUrl}/${locale}/order/canvas`,

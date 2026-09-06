@@ -1,0 +1,229 @@
+{
+  "schemaVersion": 1,
+  "methodology": "performance-v2",
+  "dataStatus": "complete",
+  "id": "perf_9403d8575bbe8c28bbd6",
+  "url": "http://127.0.0.1:3106/ru",
+  "finalUrl": "http://127.0.0.1:3106/ru",
+  "strategy": "mobile",
+  "generatedAt": "2026-09-06T11:57:26.300Z",
+  "cache": {
+    "status": "bypass",
+    "ttlHours": 24
+  },
+  "source": "lighthouse",
+  "score": 85,
+  "grade": "needs-work",
+  "headline": "Lighthouse lab performance score is 85/100.",
+  "metrics": {
+    "firstContentfulPaint": {
+      "value": 2694.275,
+      "displayValue": "2.7 s",
+      "score": 0.6,
+      "rating": "needs-work",
+      "source": "lighthouse-lab"
+    },
+    "largestContentfulPaint": {
+      "value": 3592.267,
+      "displayValue": "3.6 s",
+      "score": 0.61,
+      "rating": "needs-work",
+      "source": "lighthouse-lab"
+    },
+    "totalBlockingTime": {
+      "value": 36.309,
+      "displayValue": "40 ms",
+      "score": 1,
+      "rating": "good",
+      "source": "lighthouse-lab"
+    },
+    "cumulativeLayoutShift": {
+      "value": 0.002,
+      "displayValue": "0.002",
+      "score": 1,
+      "rating": "good",
+      "source": "lighthouse-lab"
+    },
+    "speedIndex": {
+      "value": 3192,
+      "displayValue": "3.2 s",
+      "score": 0.92,
+      "rating": "good",
+      "source": "lighthouse-lab"
+    },
+    "serverResponseTime": {
+      "value": 22,
+      "displayValue": "Root document took 20 ms",
+      "score": 1,
+      "rating": "good",
+      "source": "lighthouse-lab"
+    }
+  },
+  "labInsights": [
+    {
+      "id": "cache-insight",
+      "title": "Use efficient cache lifetimes",
+      "displayValue": "Est savings of 70 KiB",
+      "score": 0.5,
+      "evidence": [
+        {
+          "type": "debugdata",
+          "wastedBytes": 71816.8
+        },
+        {
+          "url": "https://mc.yandex.ru/metrika/tag.js?id=107086067",
+          "cacheLifetimeMs": 3600000,
+          "totalBytes": 88990,
+          "wastedBytes": 71192
+        },
+        {
+          "cacheLifetimeMs": 0,
+          "totalBytes": 402,
+          "wastedBytes": 402
+        }
+      ]
+    },
+    {
+      "id": "forced-reflow-insight",
+      "title": "Forced reflow",
+      "score": 0,
+      "evidence": [
+        {
+          "type": "table"
+        }
+      ]
+    },
+    {
+      "id": "image-delivery-insight",
+      "title": "Improve image delivery",
+      "displayValue": "Est savings of 145 KiB",
+      "score": 0.5,
+      "evidence": [
+        {
+          "type": "debugdata",
+          "wastedBytes": 148865
+        },
+        {
+          "url": "http://127.0.0.1:3106/_next/image?url=%2Fornament-about.webp&w=750&q=5",
+          "totalBytes": 71728,
+          "wastedBytes": 44450
+        },
+        {
+          "url": "http://127.0.0.1:3106/_next/image?url=%2Fai-examples%2Fpast-1.webp&w=750&q=75",
+          "totalBytes": 90720,
+          "wastedBytes": 36933
+        }
+      ]
+    },
+    {
+      "id": "inp-breakdown-insight",
+      "title": "INP breakdown",
+      "score": null,
+      "evidence": []
+    },
+    {
+      "id": "lcp-breakdown-insight",
+      "title": "LCP breakdown",
+      "score": 0,
+      "evidence": [
+        {
+          "type": "table"
+        },
+        {
+          "type": "node",
+          "lhId": "page-0-IMG",
+          "path": "1,HTML,1,BODY,4,SECTION,0,DIV,0,IMG",
+          "selector": "body > section#hero > div.hero-ornament > img"
+        }
+      ]
+    },
+    {
+      "id": "legacy-javascript-insight",
+      "title": "Legacy JavaScript",
+      "displayValue": "Est savings of 13 KiB",
+      "score": 0.5,
+      "evidence": [
+        {
+          "type": "debugdata",
+          "wastedBytes": 13807
+        },
+        {
+          "url": "http://127.0.0.1:3106/_next/static/chunks/69be39811437728d.js",
+          "wastedBytes": 13807
+        }
+      ]
+    },
+    {
+      "id": "network-dependency-tree-insight",
+      "title": "Network dependency tree",
+      "score": 0,
+      "evidence": [
+        {
+          "type": "list-section"
+        },
+        {
+          "type": "list-section",
+          "title": "Preconnected origins"
+        }
+      ]
+    },
+    {
+      "id": "render-blocking-insight",
+      "title": "Render-blocking requests",
+      "displayValue": "Est savings of 590 ms",
+      "score": 0,
+      "evidence": [
+        {
+          "url": "http://127.0.0.1:3106/_next/static/chunks/60eb54f80d2586fa.css",
+          "totalBytes": 1059,
+          "wastedMs": 875
+        },
+        {
+          "url": "http://127.0.0.1:3106/_next/static/chunks/5d1ef6119d9fea6e.css",
+          "totalBytes": 2474,
+          "wastedMs": 875
+        }
+      ]
+    }
+  ],
+  "labDataStatus": {
+    "provider": "lighthouse",
+    "status": "available",
+    "reason": "Lighthouse 13.4.1 completed a mobile navigation lab run."
+  },
+  "fieldDataStatus": {
+    "provider": "crux",
+    "status": "not_configured",
+    "reason": "Chrome UX Report field data is not configured.",
+    "checkedUrl": "http://127.0.0.1:3106/ru",
+    "checkedOrigin": "http://127.0.0.1:3106",
+    "formFactor": "PHONE"
+  },
+  "caveats": [
+    "Lighthouse is one controlled lab run; its score and timings can vary between runs and are not field Core Web Vitals.",
+    "Navigation Lighthouse uses Total Blocking Time as a lab responsiveness diagnostic; field INP comes from CrUX when available.",
+    "Field Core Web Vitals were not checked in this run."
+  ],
+  "topActions": [
+    {
+      "title": "Improve the largest visible content",
+      "plainEnglish": "Lighthouse LCP is 3.6 s (Lighthouse lab run).",
+      "action": "Optimize the LCP resource, render path, and HTML delivery, then repeat controlled lab runs.",
+      "evidence": {
+        "metric": "Lighthouse LCP",
+        "value": 3592.267,
+        "source": "Lighthouse lab run"
+      }
+    }
+  ],
+  "outputBudget": {
+    "schemaVersion": 1,
+    "maxBytes": 98304,
+    "originalBytes": 4086,
+    "returnedBytes": 4319,
+    "truncated": false,
+    "omissions": [],
+    "omissionsTruncated": false,
+    "detail": "The complete structured report fits within the agent output budget."
+  }
+}

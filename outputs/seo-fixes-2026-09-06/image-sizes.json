@@ -1,0 +1,20 @@
+[
+  {
+    "image": "hero",
+    "width": 750,
+    "quality": 5,
+    "status": 200,
+    "contentType": "image/webp",
+    "originalBytes": 284438,
+    "optimizedBytes": 56508
+  },
+  {
+    "image": "about",
+    "width": 750,
+    "quality": 5,
+    "status": 200,
+    "contentType": "image/webp",
+    "originalBytes": 394422,
+    "optimizedBytes": 71728
+  }
+]
