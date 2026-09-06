@@ -1,0 +1,37 @@
+name: Reference release
+on:
+  pull_request:
+  push:
+    branches: [codex/enriched-reference-release]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run lint
+      - run: node --experimental-strip-types --test src/lib/tribe-tree.test.mjs
+      - run: node scripts/encyclopedia-content-check.mjs
+      - run: node scripts/seo-runtime-check.mjs
+      - run: node scripts/genealogy-runtime-check.mjs
+      - name: Locate isolated PostgreSQL tools
+        run: echo "$(pg_config --bindir)" >> "$GITHUB_PATH"
+      - run: node scripts/check-payment-retry.mjs
+      - run: node scripts/analytics-runtime-check.mjs
+      - run: npm run build
+      - name: Verify rendered reference pages and branch API
+        run: |
+          PORT=3434 GENEALOGY_SOURCE=repo npm run start > /tmp/reference-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:3434/robots.txt > /dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/verify-reference-pilot.mjs http://127.0.0.1:3434
