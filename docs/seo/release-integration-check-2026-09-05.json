@@ -1,0 +1,70 @@
+{
+  "checkedAt": "2026-09-05T18:47:02.424694+00:00",
+  "workspace": "/Users/am/.codex/worktrees/151b/skezire",
+  "status": "integrated and locally verified; not deployed",
+  "lint": {
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 1
+  },
+  "build": {
+    "exitCode": 0,
+    "staticPages": 88,
+    "includesTypeScript": true
+  },
+  "profileRegression": "PASS real ReactDOM/Chrome with synthetic auth/fetch",
+  "paymentRegression": {
+    "groups": 12,
+    "status": "PASS",
+    "database": "isolated PostgreSQL 16.13",
+    "transport": "psql adapter; real Next handler; not PostgREST"
+  },
+  "files": [
+    {
+      "path": "src/app/[locale]/profile/ProfilePageClient.tsx",
+      "sha256": "5ce1553067e8abd1e598a1796f803c3401af5c9747c28c09ff41ac91215ca268"
+    },
+    {
+      "path": "src/app/api/payments/result/route.ts",
+      "sha256": "c470cd2f7b696d09a15467d8c58176ea7212f24b9b1e9888fa4c34ae7b220c86"
+    },
+    {
+      "path": "supabase/migrations/20260905183201_atomic_package_payment.sql",
+      "sha256": "ae6c9c6f109cac0991c704c1d344967fc2e4a20755b5892ddd995fff5fa51c00"
+    },
+    {
+      "path": "scripts/profile-runtime-check.mjs",
+      "sha256": "811d0a5b5f350ac105c524bf6780ff7aa42ec85fd2413e7955638b196c37426d"
+    },
+    {
+      "path": "scripts/check-payment-retry.mjs",
+      "sha256": "dc51cb4f0786d28ef5c42c2b65399b1b1e57755fed6352cbf4a287e4c07757ff"
+    }
+  ],
+  "notPerformed": [
+    "external migrations",
+    "new preview deploy",
+    "production deploy",
+    "real provider/PostgREST staging verification",
+    "historical fulfillment reconciliation"
+  ],
+  "focusErrorStateFix": {
+    "checkedAt": "2026-09-05T19:13:21.647646+00:00",
+    "scope": "local RU/KK rendered page + real adapter, synthetic DB transport",
+    "runtime": "PASS",
+    "lint": "0 errors, 1 existing warning",
+    "build": "PASS TypeScript, 88 static pages",
+    "deployed": false,
+    "files": [
+      {
+        "path": "src/app/[locale]/shezhire-tree/page.tsx",
+        "sha256": "56b8384d2eb46493e487ed3c14374e4b5478bd01212849e8abcccb7c9708ac89"
+      },
+      {
+        "path": "scripts/genealogy-runtime-check.mjs",
+        "sha256": "b454b29b2f40df86d49606ee71100b1d77d82bc6027b23e087802d5e92713e7d"
+      }
+    ],
+    "independentReview": "No production findings; low test-fixture gap fixed and regression rerun"
+  }
+}

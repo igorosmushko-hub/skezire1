@@ -1,0 +1,53 @@
+{
+  "checkedAt": "2026-09-05T15:26:45.771Z",
+  "source": "tumalas-local-snapshot",
+  "mode": "actual Neon DB; adapter keeps public filter; aggregate raw snapshot probes only",
+  "roots": 1,
+  "rootPublic": true,
+  "publicNodesChecked": 3,
+  "privateNodesDenied": 5,
+  "privateLockedNodesDenied": 5,
+  "widestBranch": 26,
+  "widestRawResponseBytes": 2258,
+  "fullSnapshotSearchMatches": 113,
+  "roleHasColumnWrites": false,
+  "roleHasImportOrPublishFunctionAccess": false,
+  "measurements": [
+    {
+      "label": "initialPublicTree",
+      "ms": 217
+    },
+    {
+      "label": "publicPath",
+      "ms": 47
+    },
+    {
+      "label": "publicSearch",
+      "ms": 58
+    },
+    {
+      "label": "publicPath",
+      "ms": 49
+    },
+    {
+      "label": "publicSearch",
+      "ms": 49
+    },
+    {
+      "label": "publicPath",
+      "ms": 46
+    },
+    {
+      "label": "publicSearch",
+      "ms": 56
+    },
+    {
+      "label": "fullSnapshotWidestChildren",
+      "ms": 86
+    },
+    {
+      "label": "fullSnapshotSearchCount",
+      "ms": 52
+    }
+  ]
+}

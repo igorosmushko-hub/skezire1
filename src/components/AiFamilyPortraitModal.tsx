@@ -43,7 +43,7 @@ export function AiFamilyPortraitModal({ open, onClose }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef(false);
 
-  const t = (key: string) => {
+  const t = useCallback((key: string) => {
     const texts: Record<string, Record<string, string>> = {
       title: { kk: '\u041E\u0442\u0431\u0430\u0441\u044B\u043B\u044B\u049B \u043F\u043E\u0440\u0442\u0440\u0435\u0442', ru: '\u0421\u0435\u043C\u0435\u0439\u043D\u044B\u0439 \u043F\u043E\u0440\u0442\u0440\u0435\u0442' },
       desc: { kk: '\u04D8\u0440 \u0430\u0434\u0430\u043C\u043D\u044B\u04A3 \u0444\u043E\u0442\u043E\u0441\u044B\u043D \u0436\u04AF\u043A\u0442\u0435\u04A3\u0456\u0437, \u0444\u043E\u043D \u0442\u0430\u04A3\u0434\u0430\u04A3\u044B\u0437 \u2014 AI \u0431\u0456\u0440 \u043F\u043E\u0440\u0442\u0440\u0435\u0442\u043A\u0435 \u0436\u0438\u043D\u0430\u0439\u0434\u044B', ru: '\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u0435 \u0444\u043E\u0442\u043E \u043A\u0430\u0436\u0434\u043E\u0433\u043E \u0447\u0435\u043B\u043E\u0432\u0435\u043A\u0430, \u0432\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0444\u043E\u043D \u2014 AI \u0441\u043E\u0431\u0435\u0440\u0451\u0442 \u0432 \u043E\u0434\u0438\u043D \u043F\u043E\u0440\u0442\u0440\u0435\u0442' },
@@ -64,7 +64,7 @@ export function AiFamilyPortraitModal({ open, onClose }: Props) {
       formats: { kk: 'JPG, PNG, WEBP \u00B7 5 MB \u0434\u0435\u0439\u0456\u043D', ru: 'JPG, PNG, WEBP \u00B7 \u0434\u043E 5 MB' },
     };
     return texts[key]?.[isKk ? 'kk' : 'ru'] ?? key;
-  };
+  }, [isKk]);
 
   const handleClose = useCallback(() => {
     abortRef.current = true;
@@ -110,7 +110,7 @@ export function AiFamilyPortraitModal({ open, onClose }: Props) {
         showToast(t('error'));
       });
     }
-  }, [showToast]);
+  }, [showToast, t]);
 
   const removePhoto = useCallback((id: string) => {
     setPhotos((prev) => {
@@ -192,7 +192,7 @@ export function AiFamilyPortraitModal({ open, onClose }: Props) {
         setStep('select_background');
       }
     }
-  }, [allReady, photos, selectedBg, showToast]);
+  }, [allReady, photos, selectedBg, aspectRatio, showToast, t]);
 
   const getWatermarkedBlob = useCallback(async (): Promise<Blob | null> => {
     if (!resultUrl) return null;
@@ -224,7 +224,7 @@ export function AiFamilyPortraitModal({ open, onClose }: Props) {
     } catch (e) {
       if ((e as DOMException)?.name !== 'AbortError') showToast(t('error'));
     }
-  }, [resultUrl, getWatermarkedBlob, showToast]);
+  }, [resultUrl, getWatermarkedBlob, showToast, t]);
 
   const handleShare = useCallback(async () => {
     if (!resultUrl) return;

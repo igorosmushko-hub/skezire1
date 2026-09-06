@@ -5,3 +5,12 @@ node_modules
 _legacy
 *.pen
 .DS_Store
+.env*
+.vercel
+.agents
+.codex
+docs
+scripts
+supabase
+skezire_old
+output

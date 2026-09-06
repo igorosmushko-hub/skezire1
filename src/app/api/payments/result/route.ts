@@ -3,24 +3,27 @@ import { getSupabase } from '@/lib/supabase';
 import { verifyResultSignature, resultOkResponse } from '@/lib/robokassa';
 import { sendMessage, getAdminChatId, isBotConfigured } from '@/lib/telegram-bot';
 
-/** Send debug info to Telegram admin */
 async function notify(text: string) {
   if (!isBotConfigured()) return;
   try {
     await sendMessage({ chatId: getAdminChatId(), text, parseMode: 'HTML' });
-  } catch { /* ignore */ }
+  } catch { /* notification failure must not change payment processing */ }
 }
 
-/**
- * Parse Robokassa callback params from either POST form data or GET query string.
- */
 function getParams(req: NextRequest, formData?: FormData) {
+  const params = formData ?? req.nextUrl.searchParams;
   const get = (key: string): string | null => {
-    if (formData) {
-      return formData.get(key) as string | null;
+    const values = params.getAll(key);
+    if (values.length > 1 || (values.length === 1 && typeof values[0] !== 'string')) {
+      throw new Error('Ambiguous callback parameter');
     }
-    return req.nextUrl.searchParams.get(key);
+    return values[0] as string | undefined ?? null;
   };
+  for (const key of params.keys()) {
+    if (/^shp_/i.test(key) && key !== 'Shp_paymentId' && key !== 'Shp_orderId') {
+      throw new Error('Unsupported custom parameter');
+    }
+  }
   return {
     OutSum: get('OutSum'),
     InvId: get('InvId'),
@@ -31,76 +34,62 @@ function getParams(req: NextRequest, formData?: FormData) {
 }
 
 async function handleResult(req: NextRequest, formData?: FormData) {
-  const supabase = getSupabase();
-  if (!supabase) {
-    await notify('❌ Result callback: Supabase unavailable');
+  if (!process.env.ROBOKASSA_PASSWORD2) {
     return new NextResponse('Service unavailable', { status: 503 });
   }
-
-  const { OutSum, InvId, SignatureValue, Shp_paymentId, Shp_orderId } = getParams(req, formData);
-
-  await notify(
-    `🔔 <b>Robokassa callback</b>\nOutSum: ${OutSum}\nInvId: ${InvId}\nSignature: ${SignatureValue}\nShp_paymentId: ${Shp_paymentId}\nShp_orderId: ${Shp_orderId}\nMethod: ${req.method}`,
-  );
-
-  if (!OutSum || !InvId || !SignatureValue) {
-    await notify('❌ Missing required params');
-    return new NextResponse('Bad request: missing OutSum, InvId, or SignatureValue', { status: 400 });
+  let params: ReturnType<typeof getParams>;
+  try {
+    params = getParams(req, formData);
+  } catch {
+    return new NextResponse('Invalid callback parameters', { status: 400 });
+  }
+  const { OutSum, InvId, SignatureValue, Shp_paymentId, Shp_orderId } = params;
+  // OutSum is the KZT merchant amount, including six-decimal ResultURL values.
+  // IncCurrLabel describes the payer's currency and is not a signed order currency.
+  const targetId = Shp_paymentId ?? Shp_orderId;
+  if (!OutSum || !/^\d{1,10}(?:\.\d{1,6})?$/.test(OutSum)
+    || Number(OutSum) <= 0 || Number(OutSum) > 2147483647
+    || !InvId || !/^[1-9]\d{0,9}$/.test(InvId) || Number(InvId) > 2147483647
+    || !SignatureValue || !/^[a-f\d]{32}$/i.test(SignatureValue)
+    || (Shp_paymentId !== null && Shp_orderId !== null)
+    || !targetId || !/^[a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12}$/i.test(targetId)) {
+    return new NextResponse('Invalid callback parameters', { status: 400 });
   }
 
-  if (!Shp_paymentId && !Shp_orderId) {
-    await notify('❌ Missing Shp_paymentId and Shp_orderId');
-    return new NextResponse('Bad request: missing Shp_paymentId or Shp_orderId', { status: 400 });
-  }
-
-  // Build shp params for signature verification (only include what was sent)
   const shpParams: Record<string, string> = {};
   if (Shp_orderId) shpParams.Shp_orderId = Shp_orderId;
   if (Shp_paymentId) shpParams.Shp_paymentId = Shp_paymentId;
-
-  const valid = verifyResultSignature(OutSum, InvId, SignatureValue, shpParams);
-  if (!valid) {
-    await notify(`❌ Invalid signature!\nExpected hash for: ${OutSum}:${InvId}:Password2:${Object.entries(shpParams).map(([k, v]) => `${k}=${v}`).join(':')}`);
+  if (!verifyResultSignature(OutSum, InvId, SignatureValue, shpParams)) {
     return new NextResponse('Invalid signature', { status: 400 });
   }
 
-  // --- Handle token package payment ---
+  const supabase = getSupabase();
+  if (!supabase) {
+    return new NextResponse('Service unavailable', { status: 503 });
+  }
+
   if (Shp_paymentId) {
-    const { data: payment, error: payErr } = await supabase
-      .from('payments')
-      .update({ status: 'paid', paid_at: new Date().toISOString() })
-      .eq('id', Shp_paymentId)
-      .eq('inv_id', Number(InvId))
-      .select('id, user_id, package_id')
-      .single();
-
-    if (payErr || !payment) {
-      await notify(`❌ Payment not found: id=${Shp_paymentId}, inv_id=${InvId}, error=${payErr?.message}`);
-      return new NextResponse('Payment not found', { status: 400 });
-    }
-
-    // Credit generations to user
-    const { data: pkg } = await supabase
-      .from('packages')
-      .select('generations')
-      .eq('id', payment.package_id)
-      .single();
-
-    if (pkg) {
-      const { error: rpcErr } = await supabase.rpc('increment_paid_generations', {
-        p_user_id: payment.user_id,
-        p_amount: pkg.generations,
+    try {
+      const { data, error } = await supabase.rpc('confirm_package_payment', {
+        p_payment_id: Shp_paymentId,
+        p_inv_id: Number(InvId),
+        // Preserve decimal precision; PostgreSQL compares numeric to stored KZT.
+        p_amount_kzt: OutSum,
       });
-
-      if (rpcErr) {
-        await notify(`❌ Failed to credit generations: ${rpcErr.message}`);
-      } else {
-        await notify(`✅ Payment OK! InvId=${InvId}, +${pkg.generations} generations`);
+      if (error || (data !== 'credited' && data !== 'already_paid')) {
+        await notify(`❌ Package payment not confirmed: InvId=${InvId}, code=${error?.code ?? 'unexpected_result'}`);
+        return new NextResponse('Payment not confirmed', {
+          status: error?.code === '22023' ? 400 : 503,
+        });
       }
+      if (data === 'credited') await notify(`✅ Package payment credited: InvId=${InvId}`);
+    } catch {
+      // Includes an uncertain outcome after a transport failure: retry is safe.
+      return new NextResponse('Payment confirmation unavailable', { status: 503 });
     }
   }
 
-  // --- Handle canvas/painting order payment ---
+  // Existing canvas-order flow; package fulfillment is handled only by the RPC.
   if (Shp_orderId) {
     const { error: orderErr } = await supabase
       .from('orders')
@@ -109,10 +98,9 @@ async function handleResult(req: NextRequest, formData?: FormData) {
       .eq('inv_id', Number(InvId));
 
     if (orderErr) {
-      await notify(`❌ Order not found: id=${Shp_orderId}, inv_id=${InvId}, error=${orderErr.message}`);
+      await notify(`❌ Order not found: id=${Shp_orderId}, inv_id=${InvId}`);
       return new NextResponse('Order not found', { status: 400 });
     }
-
     await notify(`✅ Order paid! InvId=${InvId}, orderId=${Shp_orderId}`);
   }
 
@@ -122,9 +110,13 @@ async function handleResult(req: NextRequest, formData?: FormData) {
   });
 }
 
-// Robokassa can send ResultURL as POST (form-encoded) or GET
 export async function POST(req: NextRequest) {
-  const formData = await req.formData();
+  let formData: FormData;
+  try {
+    formData = await req.formData();
+  } catch {
+    return new NextResponse('Invalid callback body', { status: 400 });
+  }
   return handleResult(req, formData);
 }
 

@@ -121,7 +121,7 @@ export function TribeJoinModal({ tribe, zhuz, locale, onClose, onJoined }: Props
           &times;
         </button>
 
-        <div className="join-tamga">{tribe.tamga}</div>
+        {tribe.tamga && <div className="join-tamga">{tribe.tamga}</div>}
 
         <h3 id="join-modal-title" className="join-tribe-name">{tribeName}</h3>
         <p className="join-zhuz-name">{zhuzName}</p>
@@ -131,10 +131,10 @@ export function TribeJoinModal({ tribe, zhuz, locale, onClose, onJoined }: Props
           {tribe.uran && (
             <p><span className="join-info-label">{isKk ? 'Ұран' : 'Уран'}:</span> {tribe.uran}</p>
           )}
-          <p>
+          {(isKk ? tribe.region_kk : tribe.region_ru) && <p>
             <span className="join-info-label">{isKk ? 'Аймақ' : 'Регион'}:</span>{' '}
             {isKk ? tribe.region_kk : tribe.region_ru}
-          </p>
+          </p>}
         </div>
 
         {error && <p className="join-error">{error}</p>}
