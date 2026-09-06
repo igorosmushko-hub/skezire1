@@ -130,7 +130,7 @@ console.log('PASS: desktop transition closes mobile menu; unloaded branches rema
   }
   assert.deepEqual(
     Object.fromEntries(Object.entries(enriched).map(([id, tribe]) => [id, { top: tribe.subtribes?.length ?? 0, total: branchCount(tribe.subtribes ?? []) }])),
-    { dulat: { top: 4, total: 8 }, jalayir: { top: 3, total: 17 }, sirgeli: { top: 12, total: 12 }, shapyrashty: { top: 6, total: 7 }, alban: { top: 1, total: 1 }, suan: { top: 1, total: 1 } },
+    { dulat: { top: 4, total: 8 }, jalayir: { top: 3, total: 17 }, sirgeli: { top: 12, total: 12 }, shapyrashty: { top: 6, total: 11 }, alban: { top: 1, total: 1 }, suan: { top: 3, total: 3 } },
   );
 
   const tracked = [];

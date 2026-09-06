@@ -1,5 +1,7 @@
 # Enriched reference catalogue: source manifest
 
+Historical first batch (78 nodes). The subsequent [325-node expansion](2026-09-06-expanded-reference.md) supersedes its counts and the Шапырашты/Суан composition below.
+
 **Content snapshot:** 6 September 2026. This is a source-authored reference catalogue for six existing Ұлы жүз cards: Дулат, Жалайыр, Шапырашты, Сіргелі, Албан and Суан. Its nested links mean membership in the cited editorial version. They do not assert biological parentage.
 
 ## Actual catalogue delta

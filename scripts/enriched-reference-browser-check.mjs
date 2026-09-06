@@ -1,5 +1,8 @@
 // Local production browser checks. Use the same PLAYWRIGHT_MODULE as release-browser-check.mjs.
 import assert from 'node:assert/strict';
+import { TRIBES_DB } from '../src/data/tribes.ts';
+import { buildTribeTree } from '../src/lib/tribe-tree-page.ts';
+import { findTreePath } from '../src/lib/tribe-tree.ts';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -9,12 +12,19 @@ assert.ok(['127.0.0.1', 'localhost'].includes(new URL(base).hostname));
 const out = process.env.QA_ARTIFACT_DIR || '/private/tmp/skezire-enriched-reference-browser';
 await mkdir(out, { recursive: true });
 const cases = [
-  ['dulat', 'dulat-kudaykul', 'Құдайқұл', 'Кудайкул', ['Дулат', 'Ботбай']],
-  ['jalayir', 'jalayir-andas', 'Андас', 'Андас', ['Жалайыр', 'Шуман']],
-  ['shapyrashty', 'shapyrashty-zharimbet', 'Жәрімбет', 'Жаримбет', ['Шапырашты', 'Екей']],
-  ['sirgeli', 'sirgeli-koyshyly', 'Қойшылы', 'Қойшылы', ['Сіргелі']],
-  ['alban', 'alban-shybyl', 'Шыбыл', 'Шыбыл', ['Албан']],
-  ['suan', 'suan-tokarystan', 'Тоқарыстан', 'Токарыстан', ['Суан']],
+  ['dulat', 'dulat-kudaykul', 'Құдайқұл', 'Кудайкул', ['tribe:dulat', 'subtribe:dulat-botbay']],
+  ['jalayir', 'jalayir-andas', 'Андас', 'Андас', ['tribe:jalayir', 'subtribe:jalayir-shumanak']],
+  ['shapyrashty', 'shapyrashty-zharimbet', 'Жәрімбет', 'Жаримбет', ['tribe:shapyrashty', 'subtribe:shapyrashty-ekey']],
+  ['sirgeli', 'sirgeli-koyshyly', 'Қойшылы', 'Қойшылы', ['tribe:sirgeli']],
+  ['alban', 'alban-shybyl', 'Шыбыл', 'Шыбыл', ['tribe:alban']],
+  ['suan', 'suan-tokarystan', 'Тоқарыстан', 'Токарыстан', ['tribe:suan']],
+  ['kanly', 'kanly-sary-zhetisu-akbarak', 'Ақбарақ', 'Акбарак', ['tribe:kanly', 'subtribe:kanly-sary', 'subtribe:kanly-sary-zhetisu'], 'uly'],
+  ['ysty', 'ysty-karakoyly-rustem', 'Рүстем', 'Рустем', ['tribe:ysty', 'subtribe:ysty-tilik', 'subtribe:ysty-tilik-karakoyly'], 'uly'],
+  ['argyn', 'argyn-shakshak', 'Шақшақ', 'Шакшак', ['tribe:argyn', 'subtribe:argyn-momyn'], 'orta'],
+  ['kerey', 'kerey-abak-zhantekey', 'Жәнтекей', 'Жантекей', ['tribe:kerey', 'subtribe:kerey-abak'], 'orta'],
+  ['konyrat', 'konyrat-sangyl-agysai', 'Ағысай', 'Агысай', ['tribe:konyrat', 'subtribe:konyrat-kotenshi', 'subtribe:konyrat-bes-ata', 'subtribe:konyrat-sangyl'], 'orta'],
+  ['taz', 'taz-aqserke', 'Ақсерке', 'Аксерке', ['tribe:taz', 'subtribe:taz-sharga'], 'kishi'],
+  ['tabyn', 'tabyn-shomishti', 'Шөмішті', 'Шомишты', ['tribe:tabyn'], 'kishi'],
 ];
 const browser = await chromium.launch({ headless: true, executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE });
 const results = [];
@@ -26,8 +36,8 @@ try {
     page.setDefaultTimeout(15_000);
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
-    for (const [tribe, branch, kk, ru, ancestors] of cases) {
-      const article = `/${locale}/encyclopedia/uly/${tribe}`;
+    for (const [tribe, branch, kk, ru, ancestorIds, zhuz = 'uly'] of cases) {
+      const article = `/${locale}/encyclopedia/${zhuz}/${tribe}`;
       assert.equal((await page.goto(base + article))?.status(), 200);
       const cta = page.locator('.tribe-article-card .btn.btn-primary');
       assert.equal(await cta.textContent(), locale === 'ru' ? 'Посмотреть на карте родов' : 'Рулар картасынан көру');
@@ -48,11 +58,14 @@ try {
       }
       const input = page.locator('#tribe-tree-search');
       await input.fill(locale === 'kk' ? kk : ru);
-      const hit = page.locator('.tt-search-results button').filter({ has: page.locator('small').filter({ hasText: ancestors[0] }) });
+      const expectedPath = findTreePath(buildTribeTree(locale, TRIBES_DB), `subtribe:${branch}`);
+      assert.deepEqual(expectedPath.filter(node => ['tribe', 'subtribe'].includes(node.kind)).map(node => node.id), [...ancestorIds, `subtribe:${branch}`], 'published ancestry changed');
+      const tribeName = expectedPath.find(node => node.id === `tribe:${tribe}`).name;
+      const hit = page.locator('.tt-search-results button').filter({ has: page.locator('small').filter({ hasText: tribeName }) });
       await hit.first().click();
       await page.waitForFunction(id => new URL(location.href).searchParams.get('highlight') === id, `subtribe:${branch}`);
       const path = await page.locator('.tt-detail-path').textContent();
-      for (const ancestor of ancestors) assert.ok(path.includes(ancestor), `${branch}: missing ancestor ${ancestor}`);
+      for (const ancestor of expectedPath.slice(1, -1)) assert.ok(path.includes(ancestor.name), `${branch}: missing ancestor ${ancestor.name}`);
       assert.ok(await page.locator('.tt-detail-summary').textContent(), `${branch}: missing source version note`);
       await page.reload();
       assert.equal(await page.locator('.tt-detail h3').textContent(), locale === 'kk' ? kk : ru);
@@ -78,7 +91,7 @@ try {
       results.push({ locale, width, tribe, branch, status: 'PASS' });
     }
     await page.goto(`${base}/${locale}/encyclopedia`);
-    for (const [tribe] of cases) {
+    for (const [tribe] of cases.slice(0, 6)) {
       const card = page.locator(`a.enc-tribe-card[href="/${locale}/encyclopedia/uly/${tribe}"]`);
       assert.equal(await card.locator('.enc-tribe-card-tamga').count(), 0);
       assert.ok(await card.isVisible());
