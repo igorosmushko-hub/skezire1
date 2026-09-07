@@ -62,7 +62,12 @@ export function NavbarClient({ locale, links, brand, auth, langSwitcher }: Navba
       if (menuOpen) element.setAttribute('inert', '');
       else element.removeAttribute('inert');
     });
-    if (menuOpen) menuRef.current?.querySelector<HTMLElement>('.mobile-menu-link')?.focus();
+    if (menuOpen) {
+      const frame = window.requestAnimationFrame(() => {
+        menuRef.current?.querySelector<HTMLElement>('.mobile-menu-link')?.focus();
+      });
+      return () => window.cancelAnimationFrame(frame);
+    }
   }, [menuOpen]);
 
   // Body scroll-lock when mobile menu is open (iOS-safe)
