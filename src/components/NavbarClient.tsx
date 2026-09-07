@@ -20,6 +20,8 @@ interface NavbarClientProps {
 export function NavbarClient({ locale, links, brand, auth, langSwitcher }: NavbarClientProps) {
   const navRef = useRef<HTMLElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
+  const wasMenuOpen = useRef(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -66,8 +68,11 @@ export function NavbarClient({ locale, links, brand, auth, langSwitcher }: Navba
       const focusTimer = window.setTimeout(() => {
         menuRef.current?.querySelector<HTMLElement>('.mobile-menu-link')?.focus();
       }, 0);
+      wasMenuOpen.current = true;
       return () => window.clearTimeout(focusTimer);
     }
+    if (wasMenuOpen.current) burgerRef.current?.focus();
+    wasMenuOpen.current = false;
   }, [menuOpen]);
 
   // Body scroll-lock when mobile menu is open (iOS-safe)
@@ -112,6 +117,7 @@ export function NavbarClient({ locale, links, brand, auth, langSwitcher }: Navba
           className="nav-burger"
           aria-label="Menu"
           aria-expanded={menuOpen}
+          ref={burgerRef}
           onClick={toggleMenu}
         >
           {menuOpen ? '\u2715' : '\u2630'}
