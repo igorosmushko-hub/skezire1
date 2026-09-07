@@ -165,7 +165,7 @@ export function AiAncestorModal({ open, onClose }: Props) {
         setStep('preview');
       }
     }
-  }, [imageBase64, gender, aspectRatio, showToast, t]);
+  }, [imageBase64, gender, showToast, t]);
 
   const getWatermarkedBlob = useCallback(async (): Promise<Blob | null> => {
     if (!resultUrl) return null;

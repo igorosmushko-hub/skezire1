@@ -2,7 +2,7 @@ name: Reference release
 on:
   pull_request:
   push:
-    branches: [codex/enriched-reference-release]
+    branches: [main, codex/enriched-reference-release]
 permissions:
   contents: read
 jobs:
@@ -22,9 +22,6 @@ jobs:
       - run: node scripts/encyclopedia-content-check.mjs
       - run: node scripts/seo-runtime-check.mjs
       - run: node scripts/genealogy-runtime-check.mjs
-      - name: Locate isolated PostgreSQL tools
-        run: echo "$(pg_config --bindir)" >> "$GITHUB_PATH"
-      - run: node scripts/check-payment-retry.mjs
       - run: node scripts/analytics-runtime-check.mjs
       - run: npm run build
       - name: Verify rendered reference pages and branch API

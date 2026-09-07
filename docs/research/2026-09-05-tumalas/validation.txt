@@ -1,5 +1,0 @@
-PASS: manifest hash, read-only scope, totals, A/B/C/D partition, evidence seeds, full candidate paths, E scope, credential URL scan
-Neon snapshot: 2026-09-05T18:39:35.051Z; nodes=794594; A=18 B_review=446 C_signal=294 D=793836; candidate_path=19; public=3; new_publications=0
-PASS: external source hashes and seed mapping; 17 unique query IDs
-PASS: node --check query-neon.mjs; local Markdown links; git diff --check
-Scope: docs and read-only tooling only; no runtime build, migration or publication

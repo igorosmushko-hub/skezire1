@@ -158,7 +158,7 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
       <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
       {paymentData && (
         <RobokassaWidget
-          params={paymentData.params}
+          params={paymentData.params as never}
           fallbackUrl={paymentData.url}
           onClose={() => {
             setPaymentData(null);

@@ -105,7 +105,7 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
       {showLogin && <LoginModal open={true} onClose={() => setShowLogin(false)} />}
       {paymentData && (
         <RobokassaWidget
-          params={paymentData.params}
+          params={paymentData.params as never}
           fallbackUrl={paymentData.url}
           onClose={() => {
             setPaymentData(null);

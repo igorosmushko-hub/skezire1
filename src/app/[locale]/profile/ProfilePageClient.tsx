@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -99,12 +99,6 @@ function findTribeInfo(tribeId: string | null) {
 }
 
 export function ProfilePageClient({ locale }: { locale: string }) {
-  const { user } = useAuth();
-  // Reset private data before rendering a different account, including on logout.
-  return <ProfileContent key={user?.id ?? 'anonymous'} locale={locale} />;
-}
-
-function ProfileContent({ locale }: { locale: string }) {
   const t = useTranslations('profile');
   const tOrders = useTranslations('orders');
   const isKk = locale === 'kk';
@@ -140,66 +134,55 @@ function ProfileContent({ locale }: { locale: string }) {
     ? generations.filter((g) => g.type === genFilter)
     : generations;
 
-  const userId = user?.id;
+  const fetchProfile = useCallback(async () => {
+    try {
+      const res = await fetch('/api/profile');
+      const d = await res.json();
+      if (d.profile) {
+        setProfile(d.profile);
+        setFirstName(d.profile.firstName ?? '');
+        setLastName(d.profile.lastName ?? '');
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  const fetchGenerations = useCallback(async () => {
+    try {
+      const res = await fetch('/api/generations/my');
+      const d = await res.json();
+      setGenerations(d.generations ?? []);
+    } catch { /* ignore */ }
+  }, []);
+
+  const fetchOrders = useCallback(async () => {
+    try {
+      const res = await fetch('/api/orders/my');
+      const d = await res.json();
+      setOrders(d.orders ?? []);
+    } catch { /* ignore */ }
+  }, []);
+
+  const fetchPayments = useCallback(async () => {
+    try {
+      const res = await fetch('/api/payments/my');
+      const d = await res.json();
+      setPayments(d.payments ?? []);
+      setPaymentsLoaded(true);
+    } catch { /* ignore */ }
+  }, []);
+
   useEffect(() => {
-    if (!userId) return;
-    const controller = new AbortController();
-    const { signal } = controller;
-
-    async function fetchProfile() {
-      try {
-        const res = await fetch('/api/profile', { signal });
-        if (!res.ok) return;
-        const d = await res.json();
-        if (!signal.aborted && d.profile) {
-          setProfile(d.profile);
-          setFirstName(d.profile.firstName ?? '');
-          setLastName(d.profile.lastName ?? '');
-        }
-      } catch { /* ignore */ }
-    }
-
-    async function fetchGenerations() {
-      try {
-        const res = await fetch('/api/generations/my', { signal });
-        if (!res.ok) return;
-        const d = await res.json();
-        if (!signal.aborted) setGenerations(d.generations ?? []);
-      } catch { /* ignore */ }
-    }
-
-    async function fetchOrders() {
-      try {
-        const res = await fetch('/api/orders/my', { signal });
-        if (!res.ok) return;
-        const d = await res.json();
-        if (!signal.aborted) setOrders(d.orders ?? []);
-      } catch { /* ignore */ }
-    }
-
+    if (!user) return;
     Promise.all([fetchProfile(), fetchGenerations(), fetchOrders()])
-      .finally(() => { if (!signal.aborted) setLoading(false); });
-    return () => controller.abort();
-  }, [userId]);
+      .finally(() => setLoading(false));
+  }, [user, fetchProfile, fetchGenerations, fetchOrders]);
 
-  // Lazy-load payments on first tab switch; retry an unfinished read on return.
+  // Lazy-load payments on first tab switch
   useEffect(() => {
-    if (tab !== 'payments' || paymentsLoaded || !userId) return;
-    const controller = new AbortController();
-    const { signal } = controller;
-    async function fetchPayments() {
-      try {
-        const res = await fetch('/api/payments/my', { signal });
-        if (!res.ok) return;
-        const d = await res.json();
-        if (signal.aborted) return;
-        setPayments(d.payments ?? []);
-        setPaymentsLoaded(true);
-      } catch { /* ignore */ }
+    if (tab === 'payments' && !paymentsLoaded && user) {
+      fetchPayments();
     }
-    fetchPayments();
-    return () => controller.abort();
-  }, [tab, paymentsLoaded, userId]);
+  }, [tab, paymentsLoaded, user, fetchPayments]);
 
   const saveName = async () => {
     setSaving(true);
@@ -376,14 +359,14 @@ function ProfileContent({ locale }: { locale: string }) {
                     <span className="profile-tribe-item-label">{t('tribeLabel')}</span>
                     <span>{isKk ? tribeInfo.tribe.kk : tribeInfo.tribe.ru}</span>
                   </div>
-                  {tribeInfo.tribe.tamga && <div className="profile-tribe-item">
+                  <div className="profile-tribe-item">
                     <span className="profile-tribe-item-label">{t('tamga')}</span>
                     <span className="profile-tribe-tamga">{tribeInfo.tribe.tamga}</span>
-                  </div>}
-                  {tribeInfo.tribe.uran && <div className="profile-tribe-item">
+                  </div>
+                  <div className="profile-tribe-item">
                     <span className="profile-tribe-item-label">{t('uran')}</span>
                     <span>{tribeInfo.tribe.uran}</span>
-                  </div>}
+                  </div>
                 </div>
                 <Link
                   href={`/${locale}/encyclopedia/${tribeInfo.zhuz.id}/${tribeInfo.tribe.id}`}

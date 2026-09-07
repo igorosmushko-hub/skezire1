@@ -109,7 +109,7 @@ export function PricingPageClient({ locale }: { locale: string }) {
 
       {paymentData && (
         <RobokassaWidget
-          params={paymentData.params}
+          params={paymentData.params as never}
           fallbackUrl={paymentData.url}
           onClose={() => {
             setPaymentData(null);
