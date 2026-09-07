@@ -83,4 +83,4 @@ Counts include collective and territorial grouping nodes as well as inner clan l
 - Passed: eight HTTP alias-search checks. Published Konyrat aliases resolve to their existing branch nodes; the qualified Oshakty spelling is searchable.
 - Independent source/topology/code review closed without remaining actionable findings.
 - Konyrat PDF evidence SHA-256: `0ea06d48f5508cda77228a7066b5636658cd3ff13abd5d26f0790c3dfc93f8f7`.
-- This batch adds no runtime code, dependencies, migrations or environment variables. Earlier PR release gates for production DB/payments/analytics and protected preview remain unchanged. No production deployment.
+- This source-data batch adds no runtime code, dependencies, migrations or environment variables. The current [SEO release scope](../seo/reference-release-2026-09-07.md) excludes the payment rewrite and DB migrations. This historical validation does not certify a production deployment.
