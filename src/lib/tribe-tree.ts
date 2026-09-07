@@ -10,6 +10,7 @@ export interface TribeTreeNode {
   tamga?: string;
   summary?: string;
   children?: TribeTreeNode[];
+  nextChildrenOffset?: number | null;
 }
 
 export interface PositionedTreeNode extends TribeTreeNode {
@@ -85,13 +86,18 @@ export function mergeTreeChildren(
   root: TribeTreeNode,
   targetId: string,
   children: TribeTreeNode[],
+  nextChildrenOffset: number | null = null,
 ): TribeTreeNode {
-  if (root.id === targetId) return { ...root, hasChildren: children.length > 0, children };
+  if (root.id === targetId) {
+    const merged = new Map((root.children ?? []).map(child => [child.id, child]));
+    children.forEach(child => merged.set(child.id, { ...child, ...merged.get(child.id) }));
+    return { ...root, hasChildren: merged.size > 0, children: [...merged.values()], nextChildrenOffset };
+  }
   if (!root.children?.length) return root;
 
   let changed = false;
   const nextChildren = root.children.map((child) => {
-    const next = mergeTreeChildren(child, targetId, children);
+    const next = mergeTreeChildren(child, targetId, children, nextChildrenOffset);
     changed ||= next !== child;
     return next;
   });
@@ -115,6 +121,7 @@ export function mergeTreePath(root: TribeTreeNode, path: TribeTreeNode[]): Tribe
       ...parent,
       ...existing,
       hasChildren: true,
+      nextChildrenOffset: existing?.children === undefined ? 0 : existing.nextChildrenOffset,
       children,
     };
   }

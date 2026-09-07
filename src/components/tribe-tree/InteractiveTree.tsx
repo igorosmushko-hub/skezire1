@@ -70,6 +70,7 @@ export function InteractiveTree({
     () => new Set([initialTree.id, ...initialPath.slice(0, -1).map((node) => node.id)]),
   );
   const [selectedId, setSelectedId] = useState(initialTargetId);
+  const lastUrlSelection = useRef(initialTargetId);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [searchStatus, setSearchStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -84,6 +85,7 @@ export function InteractiveTree({
   const hasCenteredRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const [joinOpen, setJoinOpen] = useState(initialJoin);
+  const [linkStatus, setLinkStatus] = useState<'idle' | 'copied' | 'error'>('idle');
 
   const layout = useMemo(() => layoutTree(tree, expanded), [expanded, tree]);
   const resetLayout = useMemo(() => layoutTree(tree, new Set([tree.id])), [tree]);
@@ -98,8 +100,20 @@ export function InteractiveTree({
     }
     return null;
   }, [selected]);
-  const normalizedQuery = normalizeTreeSearch(query);
+  const normalizedQuery = source === 'repo' ? normalizeTreeSearch(query) : query.trim();
   const minSearchLength = source === 'repo' ? 2 : 3;
+
+  useEffect(() => {
+    if (lastUrlSelection.current === selectedId) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set('highlight', selectedId);
+    window.history.replaceState(window.history.state, '', url);
+    lastUrlSelection.current = selectedId;
+  }, [selectedId]);
+
+  useEffect(() => {
+    ymGoal('public_tree_open', { locale, mode: source === 'repo' ? 'encyclopedia' : 'published', deep_link: Boolean(initialFocusId) });
+  }, [initialFocusId, locale, source]);
 
   useEffect(() => {
     if (normalizedQuery.length < minSearchLength) {
@@ -121,10 +135,12 @@ export function InteractiveTree({
         const payload = await response.json() as { results?: SearchResult[] };
         setResults(payload.results ?? []);
         setSearchStatus('success');
+        ymGoal('public_tree_search', { status: 'success', count: payload.results?.length ?? 0 });
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') return;
         setResults([]);
         setSearchStatus('error');
+        ymGoal('public_tree_search', { status: 'error' });
       }
     }, 250);
     return () => {
@@ -133,8 +149,11 @@ export function InteractiveTree({
     };
   }, [locale, minSearchLength, normalizedQuery, source]);
 
+  const pendingLoads = useRef(new Set<string>());
   const loadChildren = useCallback(async (node: TribeTreeNode) => {
-    if (!node.hasChildren || node.children !== undefined) return node.children ?? [];
+    if (!node.hasChildren || (node.children !== undefined && node.nextChildrenOffset == null)) return node.children ?? [];
+    if (pendingLoads.current.has(node.id)) return node.children ?? [];
+    pendingLoads.current.add(node.id);
     setLoadingIds((current) => new Set(current).add(node.id));
     setLoadErrors((current) => {
       const next = new Set(current);
@@ -142,17 +161,20 @@ export function InteractiveTree({
       return next;
     });
     try {
-      const params = new URLSearchParams({ node: node.id, locale, source });
+      const params = new URLSearchParams({ node: node.id, locale, source, offset: String(node.nextChildrenOffset ?? 0) });
       const response = await fetch(`/api/genealogy/children?${params}`);
       if (!response.ok) throw new Error('children_failed');
-      const payload = await response.json() as { children?: TribeTreeNode[] };
+      const payload = await response.json() as { children?: TribeTreeNode[]; nextOffset?: number | null };
       const children = payload.children ?? [];
-      setTree((current) => mergeTreeChildren(current, node.id, children));
+      setTree((current) => mergeTreeChildren(current, node.id, children, payload.nextOffset ?? null));
+      ymGoal('public_tree_load', { status: 'success', count: children.length });
       return children;
     } catch {
       setLoadErrors((current) => new Set(current).add(node.id));
+      ymGoal('public_tree_load', { status: 'error' });
       return [];
     } finally {
+      pendingLoads.current.delete(node.id);
       setLoadingIds((current) => {
         const next = new Set(current);
         next.delete(node.id);
@@ -214,6 +236,7 @@ export function InteractiveTree({
     if (suppressClickRef.current) return;
     hasInteractedRef.current = true;
     setSelectedId(node.id);
+    setLinkStatus('idle');
     if (node.hasChildren || node.children?.length) {
       setExpanded((current) => {
         const next = new Set(current);
@@ -224,13 +247,14 @@ export function InteractiveTree({
       void loadChildren(node);
     }
     requestCenter(node.id);
-    ymGoal('public_tree_node', { kind: node.kind });
+    ymGoal('public_tree_node', { kind: node.kind, action: node.hasChildren || node.children?.length ? (expanded.has(node.id) ? 'collapse' : 'expand') : 'select' });
   };
 
   const focusSearchResult = (node: SearchResult) => {
     setTree((current) => mergeTreePath(current, node.path));
     setExpanded(new Set(node.path.slice(0, -1).map((pathNode) => pathNode.id)));
     setSelectedId(node.id);
+    setLinkStatus('idle');
     setQuery('');
     requestCenter(node.id, 1);
     void loadChildren(node);
@@ -273,6 +297,7 @@ export function InteractiveTree({
     hasInteractedRef.current = false;
     setExpanded(new Set([tree.id]));
     setSelectedId(tree.id);
+    setLinkStatus('idle');
     const viewport = viewportRef.current;
     const nextScale = viewport
       ? computeViewportFitScale(resetLayout.width, viewport.clientWidth, 24, MIN_SCALE, INITIAL_SCALE)
@@ -374,7 +399,7 @@ export function InteractiveTree({
   };
 
   return (
-    <section className="tt-explorer" aria-labelledby="tree-explorer-title">
+    <section className="tt-explorer ym-hide-content" aria-labelledby="tree-explorer-title">
       <div className="tt-explorer-heading">
         <div>
           <span className="tt-eyebrow">{isKk ? 'Интерактивті карта' : 'Интерактивная карта'}</span>
@@ -421,7 +446,7 @@ export function InteractiveTree({
             type="button"
             onClick={() => {
               const parent = selectedPath.at(-2);
-              if (parent) setSelectedId(parent.id);
+              if (parent) { setSelectedId(parent.id); setLinkStatus('idle'); }
             }}
             disabled={selectedPath.length < 2}
           >
@@ -439,13 +464,17 @@ export function InteractiveTree({
             <span />
             <span />
           </div>
-        ) : loadErrors.has(selected.id) ? (
+        ) : loadErrors.has(selected.id) && !selected.children?.length ? (
           <div className="tt-mobile-message" role="alert">
             <p>{isKk ? 'Тармақ жүктелмеді.' : 'Не удалось загрузить ветвь.'}</p>
             <button type="button" onClick={() => void loadChildren(selected)}>
               {isKk ? 'Қайталау' : 'Повторить'}
             </button>
           </div>
+        ) : selected.hasChildren && selected.children === undefined ? (
+          <button type="button" onClick={() => void loadChildren(selected)}>
+            {isKk ? 'Тармақтарды көрсету' : 'Показать ветви'}
+          </button>
         ) : selected.children?.length ? (
           <ul>
             {selected.children.map((child) => (
@@ -463,6 +492,14 @@ export function InteractiveTree({
         ) : (
           <p className="tt-mobile-empty">{isKk ? 'Бұл тармақта жалғасы жоқ.' : 'У этой ветви нет продолжения.'}</p>
         )}
+        {selected.children?.length && selected.nextChildrenOffset != null ? (
+          <div>
+            {loadErrors.has(selected.id) && <p role="alert">{isKk ? 'Тармақ жүктелмеді.' : 'Не удалось загрузить ветвь.'}</p>}
+            <button type="button" disabled={loadingIds.has(selected.id)} onClick={() => void loadChildren(selected)}>
+              {loadingIds.has(selected.id) ? (isKk ? 'Жүктелуде…' : 'Загрузка…') : (isKk ? 'Тағы тармақтарды көрсету' : 'Показать ещё ветви')}
+            </button>
+          </div>
+        ) : null}
       </nav>
 
       <div
@@ -544,8 +581,27 @@ export function InteractiveTree({
           </div>
           {selected.summary && <p className="tt-detail-summary">{selected.summary}</p>}
           <div className="tt-detail-actions">
+            <button type="button" className="tt-detail-link" onClick={async () => {
+              const url = new URL(window.location.pathname, window.location.origin);
+              url.searchParams.set('highlight', selected.id);
+              if (source === 'repo') url.searchParams.set('view', 'reference');
+              try {
+                await navigator.clipboard.writeText(url.href);
+                setLinkStatus('copied');
+                ymGoal('public_tree_link', { kind: selected.kind, status: 'copied' });
+              } catch {
+                setLinkStatus('error');
+              }
+            }}>{isKk ? 'Тармақ сілтемесін көшіру' : 'Скопировать ссылку на ветвь'}</button>
+            <span role="status">{linkStatus === 'copied' ? (isKk ? 'Сілтеме көшірілді' : 'Ссылка скопирована') : linkStatus === 'error' ? (isKk ? 'Сілтемені браузердің мекенжай жолағынан көшіріңіз' : 'Скопируйте ссылку из адресной строки браузера') : ''}</span>
+            {selected.hasChildren && (selected.children === undefined || selected.nextChildrenOffset != null) && (
+              <button type="button" className="tt-detail-link" disabled={loadingIds.has(selected.id)} onClick={() => void loadChildren(selected)}>
+                {loadingIds.has(selected.id) ? (isKk ? 'Жүктелуде…' : 'Загрузка…') : (isKk ? 'Тағы тармақтарды көрсету' : 'Показать ещё ветви')}
+              </button>
+            )}
+            {loadErrors.has(selected.id) && <p role="alert">{isKk ? 'Тармақ жүктелмеді. Қайталап көріңіз.' : 'Ветвь не загрузилась. Повторите попытку.'}</p>}
             {selected.href && (
-              <Link href={selected.href} className="tt-detail-link">
+              <Link href={selected.href} className="tt-detail-link" onClick={() => ymGoal('public_tree_article', { kind: selected.kind })}>
                 {isKk ? 'Толық мәліметті ашу' : 'Подробнее'} <span aria-hidden="true">→</span>
               </Link>
             )}

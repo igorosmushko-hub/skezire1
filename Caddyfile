@@ -1,0 +1,3 @@
+skezire.kz, www.skezire.kz {
+    reverse_proxy web:3000
+}

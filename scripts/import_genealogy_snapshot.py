@@ -37,6 +37,12 @@ def node_key(source: str, external_id: int, external_parent_id: int | None) -> s
     return f"{source}:{external_id}:{parent}"
 
 
+def integer(value: Any, field: str, bits: int = 64) -> int:
+    if type(value) is not int or not -(2 ** (bits - 1)) <= value < 2 ** (bits - 1):
+        raise ValueError(f"{field} must fit a PostgreSQL int{bits}")
+    return value
+
+
 def analyze(rows: list[dict[str, Any]], source: str) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     ids = Counter(row.get("id") for row in rows)
     pairs = Counter((row.get("id"), row.get("parent")) for row in rows)
@@ -48,10 +54,9 @@ def analyze(rows: list[dict[str, Any]], source: str) -> tuple[list[dict[str, Any
     for row in rows:
         external_id = row.get("id")
         external_parent_id = row.get("parent")
-        if not isinstance(external_id, int):
-            raise ValueError(f"invalid node id: {external_id!r}")
-        if external_parent_id is not None and not isinstance(external_parent_id, int):
-            raise ValueError(f"invalid parent id: {external_parent_id!r}")
+        integer(external_id, "id")
+        if external_parent_id is not None:
+            integer(external_parent_id, "parent")
         row_key = (external_id, external_parent_id)
         rows_by_key[row_key] = row
         id_to_keys.setdefault(external_id, []).append(row_key)
@@ -100,6 +105,12 @@ def analyze(rows: list[dict[str, Any]], source: str) -> tuple[list[dict[str, Any
                 )
             parent_row_key = parent_candidates[0]
             parent_key = node_key(source, parent_row_key[0], parent_row_key[1])
+        source_locked = row.get("locked")
+        if source_locked is not None and (type(source_locked) is not int or not 0 <= source_locked <= 2147483647):
+            raise ValueError("locked must be a non-negative integer or null")
+        taipa = row.get("taipa")
+        if taipa is not None:
+            integer(taipa, "taipa")
         prepared.append({
             "node_key": node_key(source, external_id, external_parent_id),
             "parent_key": parent_key,
@@ -107,10 +118,11 @@ def analyze(rows: list[dict[str, Any]], source: str) -> tuple[list[dict[str, Any
             "external_id": external_id,
             "external_parent_id": external_parent_id,
             "name": name,
-            "depth": depth_for(row_key),
-            "taipa": row.get("taipa"),
-            "locked": bool(row.get("locked")),
-            "sort_order": int(row.get("orderBy") or 0),
+            "depth": integer(depth_for(row_key), "depth", 16),
+            "taipa": taipa,
+            "locked": bool(source_locked),
+            "source_locked": source_locked,
+            "sort_order": integer(row.get("orderBy", 0) if row.get("orderBy") is not None else 0, "orderBy", 32),
         })
 
     prepared.sort(key=lambda row: (row["depth"], row["sort_order"], row["external_id"]))
@@ -158,6 +170,14 @@ def import_rows(
         "Content-Type": "application/json",
         "Prefer": "resolution=merge-duplicates,return=minimal",
     }
+    # Fail before begin/import mutations if the new migration is absent.
+    preflight = urllib.request.Request(
+        f"{url.rstrip('/')}/rest/v1/genealogy_nodes?select=node_key,source_locked&limit=0",
+        headers=headers,
+    )
+    with urllib.request.urlopen(preflight, timeout=30) as response:
+        if response.status != 200:
+            raise RuntimeError("genealogy schema preflight failed")
     call_rpc(
         url,
         headers,
@@ -201,6 +221,9 @@ def main() -> int:
     snapshot_at = args.snapshot_at or datetime.fromtimestamp(
         args.snapshot.stat().st_mtime, tz=timezone.utc
     ).isoformat()
+    parsed_snapshot_at = datetime.fromisoformat(snapshot_at.replace("Z", "+00:00"))
+    if parsed_snapshot_at.tzinfo is None:
+        raise ValueError("--snapshot-at must include a timezone")
     for row in rows:
         row["source_snapshot_at"] = snapshot_at
 

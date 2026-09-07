@@ -170,7 +170,7 @@ export function AiPastModal({ open, onClose }: Props) {
         setStep('preview');
       }
     }
-  }, [imageBase64, gender, showToast, t]);
+  }, [imageBase64, gender, aspectRatio, showToast, t]);
 
   /* ── Download ────────────────────────────────────── */
   const getWatermarkedBlob = useCallback(async (): Promise<Blob | null> => {

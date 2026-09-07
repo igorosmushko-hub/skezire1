@@ -48,7 +48,7 @@ export function LeaderboardClient({ locale }: Props) {
             {/* User's tribe badge */}
             {userTribe && userRank > 0 && (
               <div className="lb-user-badge">
-                <span className="lb-user-badge-tamga">{userTribe.tribe.tamga}</span>
+                {userTribe.tribe.tamga && <span className="lb-user-badge-tamga">{userTribe.tribe.tamga}</span>}
                 <div className="lb-user-badge-info">
                   <p className="lb-user-badge-name">
                     {isKk

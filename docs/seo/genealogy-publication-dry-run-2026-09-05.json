@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-09-05T15:41:58.212Z",
+  "readOnly": true,
+  "total": 794594,
+  "reachable_public": 3,
+  "proposedNewPublications": 0,
+  "awaitingPublicationBasis": 794591,
+  "concurrency": 8,
+  "searchLatencyMs": [
+    184,
+    210,
+    192,
+    206,
+    187,
+    204,
+    197,
+    193
+  ],
+  "scope": "eight simultaneous local HTTP searches over current three-public-node Neon selection; not a capacity or cold-start test",
+  "plan": {
+    "type": "Limit",
+    "actualRows": 1,
+    "children": [
+      {
+        "type": "Index Scan",
+        "index": "genealogy_nodes_public_children_idx",
+        "actualRows": 1,
+        "children": []
+      }
+    ]
+  },
+  "executionMs": 0.041
+}

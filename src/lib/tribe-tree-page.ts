@@ -1,5 +1,26 @@
-import type { Tribe, Zhuz } from './types';
+import type { SubTribe, Tribe, Zhuz } from './types';
 import type { TribeTreeNode } from './tribe-tree';
+
+function subtribeNode(subtribe: SubTribe, tribe: Tribe, zhuz: Zhuz, locale: string): TribeTreeNode {
+  const isKk = locale === 'kk';
+  const name = isKk ? subtribe.kk : subtribe.ru;
+  const secondaryName = [...new Set([isKk ? subtribe.ru : subtribe.kk, ...(subtribe.aliases ?? [])])]
+    .filter((item) => item !== name)
+    .join(' · ');
+  return {
+    id: `subtribe:${subtribe.id}`,
+    name,
+    secondaryName: secondaryName || undefined,
+    kind: 'subtribe',
+    href: `/${locale}/encyclopedia/${zhuz.id}/${tribe.id}#branch-${subtribe.id}`,
+    summary: subtribe.note?.[isKk ? 'kk' : 'ru']
+      ?? tribe.branchNote?.[isKk ? 'kk' : 'ru']
+      ?? (isKk
+        ? 'Бұл атау анықтамалықтағы дәстүрлі топ мүшелігін көрсетеді; ол биологиялық туыстықты не дәл осы атаудың жеке адамын растамайды.'
+        : 'Название показывает традиционную групповую принадлежность в справочнике; оно не подтверждает биологическое родство или личность одноимённого человека.'),
+    children: subtribe.children?.map((child) => subtribeNode(child, tribe, zhuz, locale)),
+  };
+}
 
 function tribeNode(tribe: Tribe, zhuz: Zhuz, locale: string): TribeTreeNode {
   const isKk = locale === 'kk';
@@ -11,12 +32,7 @@ function tribeNode(tribe: Tribe, zhuz: Zhuz, locale: string): TribeTreeNode {
     href: `/${locale}/encyclopedia/${zhuz.id}/${tribe.id}`,
     tamga: tribe.tamga,
     summary: isKk ? tribe.desc_kk : tribe.desc_ru,
-    children: tribe.subtribes?.map((subtribe) => ({
-      id: `subtribe:${subtribe.id}`,
-      name: isKk ? subtribe.kk : subtribe.ru,
-      secondaryName: isKk ? subtribe.ru : subtribe.kk,
-      kind: 'subtribe' as const,
-    })),
+    children: tribe.subtribes?.map((subtribe) => subtribeNode(subtribe, tribe, zhuz, locale)),
   };
 }
 

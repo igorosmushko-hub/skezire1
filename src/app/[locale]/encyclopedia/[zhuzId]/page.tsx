@@ -2,9 +2,11 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { TRIBES_DB } from '@/data/tribes';
+import { getEncyclopediaSources } from '@/data/encyclopedia-sources';
 import { ZhuzSection } from '@/components/encyclopedia/ZhuzSection';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { Pager } from '@/components/encyclopedia/Pager';
+import { TreeMapLink } from '@/components/encyclopedia/TreeMapLink';
 import Link from 'next/link';
 import { AiPromoBanner } from '@/components/AiPromoBanner';
 import '@/styles/encyclopedia.css';
@@ -69,6 +71,7 @@ export default async function ZhuzPage({ params }: PageProps) {
 
   const name = isKk ? zhuz.kk : zhuz.ru;
   const desc = isKk ? zhuz.desc_kk : zhuz.desc_ru;
+  const sources = getEncyclopediaSources(zhuzId);
 
   const prevZhuz = zhuzIndex > 0 ? TRIBES_DB[zhuzIndex - 1] : undefined;
   const nextZhuz = zhuzIndex < TRIBES_DB.length - 1 ? TRIBES_DB[zhuzIndex + 1] : undefined;
@@ -125,11 +128,27 @@ export default async function ZhuzPage({ params }: PageProps) {
         }}
       />
 
+      {sources.length > 0 && (
+        <section style={{ maxWidth: 800, margin: '0 auto', padding: '24px 20px 0' }} aria-labelledby="sources-title">
+          <h2 id="sources-title" style={{ fontSize: '1.1rem', color: '#003082', marginBottom: 12 }}>
+            {isKk ? 'Анықтамаға пайдаланылған дереккөздер' : 'Источники для справки'}
+          </h2>
+          <ul style={{ lineHeight: 1.8, paddingLeft: 20, color: '#444' }}>
+            {sources.map((source) => (
+              <li key={source.id}>
+                <a href={source.url} target="_blank" rel="noreferrer" style={{ color: '#003082' }}>{source.title}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section style={{ maxWidth: 800, margin: '0 auto', padding: '24px 20px 40px' }}>
         <h3 style={{ fontSize: '1.1rem', color: '#003082', marginBottom: 12 }}>
           {isKk ? 'Пайдалы сілтемелер' : 'Полезные ссылки'}
         </h3>
         <ul style={{ lineHeight: 1.8, paddingLeft: 20, color: '#444' }}>
+          <li><TreeMapLink href={`/${locale}/shezhire-tree?highlight=zhuz:${zhuzId}`} locale={locale} targetKind="zhuz" style={{ color: '#003082' }}>{isKk ? 'Картадан көру' : 'Посмотреть на карте'}</TreeMapLink></li>
           <li><Link href={`/${locale}/glossary`} style={{ color: '#003082' }}>{isKk ? 'Глоссарий — шежіре терминдері' : 'Глоссарий — термины шежіре'}</Link></li>
           <li><Link href={`/${locale}/blog/how-to-find-your-tribe`} style={{ color: '#003082' }}>{isKk ? 'Руыңды қалай білуге болады?' : 'Как узнать свой род?'}</Link></li>
           <li><Link href={`/${locale}/blog/zheti-ata-seven-ancestors`} style={{ color: '#003082' }}>{isKk ? 'Жеті ата — 7 буын дәстүрі' : 'Жеті ата — традиция 7 поколений'}</Link></li>

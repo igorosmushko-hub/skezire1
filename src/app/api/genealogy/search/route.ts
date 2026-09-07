@@ -11,8 +11,9 @@ const allowedSource = (value: string) => value === 'repo' || value === process.e
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const query = normalizeTreeSearch(searchParams.get('q') ?? '');
   const source = searchParams.get('source') ?? 'repo';
+  const rawQuery = searchParams.get('q') ?? '';
+  const query = source === 'repo' ? normalizeTreeSearch(rawQuery) : rawQuery.trim();
   const locale = validLocale(searchParams.get('locale'));
   const minQueryLength = source === 'repo' ? 2 : 3;
   if (!validSource(source) || !allowedSource(source) || query.length < minQueryLength || query.length > 80) {
