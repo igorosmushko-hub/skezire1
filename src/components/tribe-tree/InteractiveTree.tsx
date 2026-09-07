@@ -11,6 +11,7 @@ import {
 } from 'react';
 import {
   findTreePath,
+  getNextTreeLevel,
   computeViewportFitScale,
   layoutTree,
   mergeTreeChildren,
@@ -67,7 +68,7 @@ export function InteractiveTree({
   );
   const initialTargetId = initialPath.at(-1)?.id ?? initialTree.id;
   const [expanded, setExpanded] = useState<Set<string>>(
-    () => new Set([initialTree.id, ...initialPath.slice(0, -1).map((node) => node.id)]),
+    () => new Set([initialTree.id, ...initialPath.map((node) => node.id)]),
   );
   const [selectedId, setSelectedId] = useState(initialTargetId);
   const lastUrlSelection = useRef(initialTargetId);
@@ -86,11 +87,13 @@ export function InteractiveTree({
   const hasInteractedRef = useRef(false);
   const [joinOpen, setJoinOpen] = useState(initialJoin);
   const [linkStatus, setLinkStatus] = useState<'idle' | 'copied' | 'error'>('idle');
+  const [expandingLevel, setExpandingLevel] = useState(false);
 
   const layout = useMemo(() => layoutTree(tree, expanded), [expanded, tree]);
   const resetLayout = useMemo(() => layoutTree(tree, new Set([tree.id])), [tree]);
   const selectedPath = useMemo(() => findTreePath(tree, selectedId), [selectedId, tree]);
   const selected = selectedPath.at(-1) ?? tree;
+  const nextLevel = useMemo(() => getNextTreeLevel(selected, expanded), [selected, expanded]);
   const selectedTribe = useMemo(() => {
     if (selected.kind !== 'tribe') return null;
     const tribeId = selected.id.replace(/^tribe:/, '');
@@ -183,6 +186,25 @@ export function InteractiveTree({
     }
   }, [locale, source]);
 
+  useEffect(() => {
+    const target = initialPath.at(-1);
+    if (initialFocusId && target && (target.children === undefined || target.nextChildrenOffset === 0)) void loadChildren(target);
+  }, [initialFocusId, initialPath, loadChildren]);
+
+  const expandNode = (node: TribeTreeNode) => {
+    setExpanded((current) => new Set(current).add(node.id));
+    return loadChildren(node);
+  };
+
+  const expandNextLevel = async () => {
+    // ponytail: bulk expansion is limited to the curated repo tree; external sources stay paginated per node.
+    if (source !== 'repo' || expandingLevel || loadingIds.size) return;
+    hasInteractedRef.current = true;
+    setExpandingLevel(true);
+    await Promise.all(nextLevel.map(expandNode));
+    setExpandingLevel(false);
+  };
+
   const centerNode = useCallback((id: string, requestedScale?: number) => {
     const viewport = viewportRef.current;
     const node = layout.nodes.find((item) => item.id === id);
@@ -251,13 +273,15 @@ export function InteractiveTree({
   };
 
   const focusSearchResult = (node: SearchResult) => {
+    const target = findTreePath(tree, node.id).at(-1) ?? node;
+    hasInteractedRef.current = true;
     setTree((current) => mergeTreePath(current, node.path));
-    setExpanded(new Set(node.path.slice(0, -1).map((pathNode) => pathNode.id)));
+    setExpanded((current) => new Set([...current, ...node.path.map((pathNode) => pathNode.id)]));
     setSelectedId(node.id);
     setLinkStatus('idle');
     setQuery('');
     requestCenter(node.id, 1);
-    void loadChildren(node);
+    if (target.children === undefined || target.nextChildrenOffset === 0) void loadChildren(target);
     ymGoal('public_tree_search_result', { kind: node.kind });
   };
 
@@ -440,6 +464,16 @@ export function InteractiveTree({
         )}
       </div>
 
+      {source === 'repo' && (
+        <div className="tt-level-controls">
+          <button type="button" className="tt-detail-link" disabled={expandingLevel || loadingIds.size > 0 || !nextLevel.length} onClick={() => void expandNextLevel()}>
+            {expandingLevel ? (isKk ? 'Жүктелуде…' : 'Загрузка…') : (isKk ? 'Келесі деңгейді ашу' : 'Раскрыть следующий уровень')}
+          </button>
+          <span>{selected.name}</span>
+          {nextLevel.some((node) => loadErrors.has(node.id)) && <p role="alert">{isKk ? 'Тармақ жүктелмеді. Қайталап көріңіз.' : 'Ветвь не загрузилась. Повторите попытку.'}</p>}
+        </div>
+      )}
+
       <nav className="tt-mobile-browser" aria-label={isKk ? 'Шежіре тармақтары' : 'Ветви шежіре'}>
         <div className="tt-mobile-browser-head">
           <button
@@ -467,12 +501,12 @@ export function InteractiveTree({
         ) : loadErrors.has(selected.id) && !selected.children?.length ? (
           <div className="tt-mobile-message" role="alert">
             <p>{isKk ? 'Тармақ жүктелмеді.' : 'Не удалось загрузить ветвь.'}</p>
-            <button type="button" onClick={() => void loadChildren(selected)}>
+            <button type="button" onClick={() => void expandNode(selected)}>
               {isKk ? 'Қайталау' : 'Повторить'}
             </button>
           </div>
         ) : selected.hasChildren && selected.children === undefined ? (
-          <button type="button" onClick={() => void loadChildren(selected)}>
+          <button type="button" onClick={() => void expandNode(selected)}>
             {isKk ? 'Тармақтарды көрсету' : 'Показать ветви'}
           </button>
         ) : selected.children?.length ? (
@@ -495,7 +529,7 @@ export function InteractiveTree({
         {selected.children?.length && selected.nextChildrenOffset != null ? (
           <div>
             {loadErrors.has(selected.id) && <p role="alert">{isKk ? 'Тармақ жүктелмеді.' : 'Не удалось загрузить ветвь.'}</p>}
-            <button type="button" disabled={loadingIds.has(selected.id)} onClick={() => void loadChildren(selected)}>
+            <button type="button" disabled={loadingIds.has(selected.id)} onClick={() => void expandNode(selected)}>
               {loadingIds.has(selected.id) ? (isKk ? 'Жүктелуде…' : 'Загрузка…') : (isKk ? 'Тағы тармақтарды көрсету' : 'Показать ещё ветви')}
             </button>
           </div>
@@ -547,6 +581,9 @@ export function InteractiveTree({
                 className={`tt-node tt-node--${node.kind}${isSelected ? ' is-selected' : ''}`}
                 style={{ left: node.x, top: node.y, width: TREE_NODE_WIDTH, height: TREE_NODE_HEIGHT }}
                 onClick={() => selectNode(node)}
+                onFocus={(event) => {
+                  if (event.currentTarget.matches(':focus-visible')) requestCenter(node.id);
+                }}
                 aria-expanded={node.hasChildren ? isExpanded : undefined}
               >
                 {node.tamga && <span className="tt-node-tamga" aria-hidden="true">{node.tamga}</span>}
@@ -595,7 +632,7 @@ export function InteractiveTree({
             }}>{isKk ? 'Тармақ сілтемесін көшіру' : 'Скопировать ссылку на ветвь'}</button>
             <span role="status">{linkStatus === 'copied' ? (isKk ? 'Сілтеме көшірілді' : 'Ссылка скопирована') : linkStatus === 'error' ? (isKk ? 'Сілтемені браузердің мекенжай жолағынан көшіріңіз' : 'Скопируйте ссылку из адресной строки браузера') : ''}</span>
             {selected.hasChildren && (selected.children === undefined || selected.nextChildrenOffset != null) && (
-              <button type="button" className="tt-detail-link" disabled={loadingIds.has(selected.id)} onClick={() => void loadChildren(selected)}>
+              <button type="button" className="tt-detail-link" disabled={loadingIds.has(selected.id)} onClick={() => void expandNode(selected)}>
                 {loadingIds.has(selected.id) ? (isKk ? 'Жүктелуде…' : 'Загрузка…') : (isKk ? 'Тағы тармақтарды көрсету' : 'Показать ещё ветви')}
               </button>
             )}

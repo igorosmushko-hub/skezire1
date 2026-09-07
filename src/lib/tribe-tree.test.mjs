@@ -5,6 +5,7 @@ import {
   findTreePath,
   flattenTree,
   getExpandedPathIdsForSearchResult,
+  getNextTreeLevel,
   layoutTree,
   mergeTreeChildren,
   mergeTreePath,
@@ -28,6 +29,40 @@ const tree = {
     children: [{ id: 'aday', name: 'Адай', kind: 'tribe' }],
   }],
 };
+
+test('opens one real reference level at a time without loading descendants or losing siblings', () => {
+  for (const locale of ['ru', 'kk']) {
+    const full = buildTribeTree(locale, TRIBES_DB);
+    const id = 'subtribe:konyrat-kotenshi';
+    const path = findTreePath(full, id);
+    let lazy = mergeTreePath(pruneTree(full, 1), path.map(node => pruneTree(node, 0)));
+    const expanded = new Set(path.map(node => node.id));
+    const openLevel = () => {
+      const nodes = getNextTreeLevel(findTreePath(lazy, id).at(-1), expanded);
+      for (const node of nodes) {
+        expanded.add(node.id);
+        lazy = mergeTreeChildren(lazy, node.id, findTreePath(full, node.id).at(-1).children.map(child => pruneTree(child, 0)));
+      }
+      return nodes.map(node => node.id);
+    };
+    assert.deepEqual(openLevel(), [id]);
+    assert.equal(findTreePath(lazy, 'subtribe:konyrat-bes-ata').at(-1).children, undefined);
+    openLevel();
+    openLevel();
+    assert.deepEqual(findTreePath(lazy, 'subtribe:konyrat-sangyl-agysai').map(node => node.id), [
+      'alash', 'zhuz:orta', 'tribe:konyrat', id, 'subtribe:konyrat-bes-ata',
+      'subtribe:konyrat-sangyl', 'subtribe:konyrat-sangyl-agysai',
+    ]);
+    assert.ok(findTreePath(lazy, 'subtribe:konyrat-sangyl-samai').length);
+    assert.equal(findTreePath(lazy, 'zhuz:uly').at(-1).children, undefined);
+    const layout = layoutTree(lazy, expanded);
+    assert.equal(layout.edges.length, layout.nodes.length - 1);
+    assert.ok(layout.nodes.some(node => node.id === 'subtribe:konyrat-sangyl-agysai' && node.depth === 6));
+    assert.deepEqual(getNextTreeLevel(findTreePath(lazy, 'subtribe:konyrat-sangyl-agysai').at(-1), expanded), []);
+    expanded.delete('subtribe:konyrat-bes-ata');
+    assert.deepEqual(getNextTreeLevel(findTreePath(lazy, id).at(-1), expanded).map(node => node.id), ['subtribe:konyrat-bes-ata']);
+  }
+});
 
 test('normalizes, searches and resolves an ancestor path', () => {
   assert.equal(normalizeTreeSearch('  Кіші-жүз '), 'кіші жүз');

@@ -5,7 +5,7 @@ import { TRIBES_DB } from '@/data/tribes';
 import type { SubTribe } from '@/lib/types';
 import { buildTribeTree } from '@/lib/tribe-tree-page';
 import { getInitialGenealogyTree } from '@/lib/genealogy-data';
-import { findTreePath, stringifyJsonLd } from '@/lib/tribe-tree';
+import { findTreePath, mergeTreePath, pruneTree, stringifyJsonLd } from '@/lib/tribe-tree';
 import '@/styles/shezhire-tree.css';
 import '@/styles/tribe-race.css';
 
@@ -80,7 +80,8 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
     if (initialFocusId && !findTreePath(tree, initialFocusId).length) {
       focusUnavailable = true;
     } else {
-      genealogy = { tree, source: 'repo' };
+      const path = initialFocusId ? findTreePath(tree, initialFocusId) : [];
+      genealogy = { tree: mergeTreePath(pruneTree(tree, 1), path.map(node => pruneTree(node, 0))), source: 'repo' };
     }
   } else {
     try {
@@ -182,7 +183,7 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
         )}
         {genealogy ? (
           <InteractiveTree
-            key={`${locale}:${initialFocusId ?? 'root'}:${join === '1' ? 'join' : 'view'}`}
+            key={`${genealogy.source}:${locale}:${initialFocusId ?? 'root'}:${join === '1' ? 'join' : 'view'}`}
             locale={locale}
             tree={genealogy.tree}
             source={genealogy.source}

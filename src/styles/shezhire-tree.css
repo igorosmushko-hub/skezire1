@@ -212,6 +212,9 @@
 .tt-search-results small { color: #7a766f; }
 .tt-search-results p { padding: 14px; color: #77736c; font-size: .9rem; }
 
+.tt-level-controls { display: none; }
+.tt-level-controls button:disabled { opacity: .55; cursor: default; }
+
 .tt-mobile-browser {
   overflow: hidden;
   border: 1px solid rgba(10, 22, 40, .1);
@@ -597,6 +600,7 @@
 }
 
 @media (min-width: 761px) {
+  .tt-level-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 14px; }
   .tt-mobile-browser { display: none; }
   .tt-viewport { display: block; }
 }
