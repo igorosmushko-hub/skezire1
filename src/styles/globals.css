@@ -102,6 +102,11 @@ button { cursor: pointer; font-family: inherit; }
 .navbar.scrolled {
   box-shadow: var(--shadow-sm);
 }
+.navbar.menu-open { z-index: 1000; }
+.navbar.menu-open > *:not(.nav-ornament):not(.nav-burger) {
+  opacity: 0;
+  pointer-events: none;
+}
 
 .nav-brand {
   display: flex; align-items: center; gap: 8px;
@@ -144,6 +149,7 @@ button { cursor: pointer; font-family: inherit; }
 /* Mobile menu (rendered outside nav to avoid backdrop-filter issues) */
 .mobile-menu {
   position: fixed; inset: 0; z-index: 950;
+  overflow: hidden;
   visibility: hidden; pointer-events: none;
   transition: visibility .3s;
 }

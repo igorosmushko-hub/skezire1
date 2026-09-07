@@ -51,14 +51,16 @@ for (const locale of ['kk', 'ru']) {
   assert.equal(elements(footer.Footer(), 'a').filter(link => link.props.href === `/${locale}/shezhire-tree`).length, 1);
   const navigations = [];
   const language = load('src/components/LangSwitcher.tsx', {
-    '@/i18n/routing': { useRouter: () => ({ replace: (...args) => navigations.push(args) }), usePathname: () => '/shezhire-tree' },
-  }, { document: {}, localStorage: { setItem() {} }, window: { location: { search: '?highlight=tribe%3Anaiman&join=1', hash: '#tree-explorer-title' } } });
+    '@/i18n/routing': {},
+  }, { document: {}, localStorage: { setItem() {} }, window: { location: {
+    pathname: `/${locale}/shezhire-tree`, search: '?highlight=tribe%3Anaiman&join=1', hash: '#tree-explorer-title',
+    assign: value => navigations.push(value),
+  } } });
   const buttons = elements(language.LangSwitcher({ locale }), 'button');
   buttons[locale === 'kk' ? 0 : 1].props.onClick();
   assert.equal(navigations.length, 0);
   buttons[locale === 'kk' ? 1 : 0].props.onClick();
-  assert.equal(navigations[0][0], '/shezhire-tree?highlight=tribe%3Anaiman&join=1#tree-explorer-title');
-  assert.equal(navigations[0][1].locale, locale === 'kk' ? 'ru' : 'kk');
+  assert.equal(navigations[0], `/${locale === 'kk' ? 'ru' : 'kk'}/shezhire-tree?highlight=tribe%3Anaiman&join=1#tree-explorer-title`);
 }
 console.log('PASS: map navigation and footer in kk/ru; locale switch preserves deep-link query and fragment.');
 

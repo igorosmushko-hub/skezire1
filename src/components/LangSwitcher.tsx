@@ -1,16 +1,12 @@
 'use client';
 
-import { useRouter, usePathname } from '@/i18n/routing';
-
 export function LangSwitcher({ locale }: { locale: string }) {
-  const router = useRouter();
-  const pathname = usePathname();
-
   const switchLocale = (newLocale: 'kk' | 'ru') => {
     if (newLocale === locale) return;
     document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=31536000`;
     localStorage.setItem('shejire-lang', newLocale);
-    router.replace(`${pathname}${window.location.search}${window.location.hash}`, { locale: newLocale });
+    const path = window.location.pathname.replace(/^\/(?:kk|ru)(?=\/|$)/, `/${newLocale}`);
+    window.location.assign(`${path}${window.location.search}${window.location.hash}`);
   };
 
   return (
