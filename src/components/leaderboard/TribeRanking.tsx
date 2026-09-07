@@ -46,7 +46,7 @@ export function TribeRanking({ tribes, locale }: Props) {
             >
               <span className="lb-rank-pos">{i < 3 ? MEDALS[i] : i + 1}</span>
               <div className="lb-rank-tribe">
-                <span className="lb-rank-tamga">{found?.tribe.tamga}</span>
+                {found?.tribe.tamga && <span className="lb-rank-tamga">{found?.tribe.tamga}</span>}
                 <span className="lb-rank-name">
                   {tribeName}
                   {isUserTribe && (

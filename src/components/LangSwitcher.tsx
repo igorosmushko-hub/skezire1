@@ -10,7 +10,7 @@ export function LangSwitcher({ locale }: { locale: string }) {
     if (newLocale === locale) return;
     document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=31536000`;
     localStorage.setItem('shejire-lang', newLocale);
-    router.replace(pathname, { locale: newLocale });
+    router.replace(`${pathname}${window.location.search}${window.location.hash}`, { locale: newLocale });
   };
 
   return (

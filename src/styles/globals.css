@@ -1703,14 +1703,14 @@ button { cursor: pointer; font-family: inherit; }
   .container { padding: 0 24px; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1279px) {
   .navbar { padding: 0 20px; }
   .nav-links { display: none; }
   .nav-burger { display: flex; cursor: pointer; z-index: 1000; }
-  .nav-login-btn { display: none; }
-  .nav-auth { display: none; }
   .lang-switcher { margin-left: auto; margin-right: 8px; }
+}
 
+@media (max-width: 768px) {
   .family-form { padding: 28px 20px; }
   .form-row { grid-template-columns: 1fr; }
   .tribe-card { padding: 18px 16px; }
@@ -2167,9 +2167,9 @@ a.tribe-meta-val:hover { text-decoration: underline; }
 .nav-login-btn:hover, .nav-logout-btn:hover {
   background: var(--border); border-color: rgba(0,0,0,.15);
 }
-@media (max-width: 768px) {
-  .nav-auth { display: none; }
-  .nav-login-btn { display: none; }
+@media (max-width: 1279px) {
+  .navbar > .nav-auth { display: none; }
+  .navbar > .nav-login-btn { display: none; }
 }
 
 /* ── Login Modal Card (dark themed) ── */

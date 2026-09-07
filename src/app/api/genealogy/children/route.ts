@@ -13,6 +13,11 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const node = searchParams.get('node');
   const source = searchParams.get('source') ?? 'repo';
+  const offsetValue = searchParams.get('offset') ?? '0';
+  const offset = Number(offsetValue);
+  if (!/^\d{1,7}$/.test(offsetValue) || !Number.isSafeInteger(offset) || offset > 1000000) {
+    return NextResponse.json({ error: 'invalid_request' }, { status: 400 });
+  }
   const locale = validLocale(searchParams.get('locale'));
   if (!validKey(node) || !validSource(source) || !allowedSource(source)) {
     return NextResponse.json({ error: 'invalid_request' }, { status: 400 });
@@ -22,13 +27,13 @@ export async function GET(request: Request) {
     const children = source === 'repo'
       ? getRepositoryChildren(locale, node!)
       : node!.startsWith(`${source}:`)
-        ? await getPublicGenealogyChildren(node!)
+        ? await getPublicGenealogyChildren(node!, offset)
         : null;
     if (children === null) {
       return NextResponse.json({ error: 'node_not_found' }, { status: 404 });
     }
     return NextResponse.json(
-      { children },
+      source === 'repo' ? { children, nextOffset: null } : children,
       { headers: { 'Cache-Control': source === 'repo'
         ? 'public, s-maxage=300, stale-while-revalidate=3600'
         : 'no-store' } },

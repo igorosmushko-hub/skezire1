@@ -115,7 +115,16 @@ export function LinkedText({
 
   for (const entry of entries) {
     const keyLower = entry.keyword.toLowerCase();
-    const idx = textLower.indexOf(keyLower);
+    // A clan name must be a whole word: Ысты is not part of салыстыру.
+    // Continue after rejected occurrences so a later standalone name can link.
+    let idx = textLower.indexOf(keyLower);
+    const wordCharacter = /[\p{L}\p{M}\p{N}_]/u;
+    while (idx !== -1) {
+      const before = Array.from(textLower.slice(0, idx)).at(-1) ?? '';
+      const after = Array.from(textLower.slice(idx + keyLower.length))[0] ?? '';
+      if (!wordCharacter.test(before) && !wordCharacter.test(after)) break;
+      idx = textLower.indexOf(keyLower, idx + keyLower.length);
+    }
     if (idx === -1) continue;
 
     const end = idx + entry.keyword.length;
