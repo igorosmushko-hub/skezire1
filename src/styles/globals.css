@@ -149,6 +149,7 @@ button { cursor: pointer; font-family: inherit; }
 /* Mobile menu (rendered outside nav to avoid backdrop-filter issues) */
 .mobile-menu {
   position: fixed; inset: 0; z-index: 950;
+  overflow: hidden;
   visibility: hidden; pointer-events: none;
   transition: visibility .3s;
 }
