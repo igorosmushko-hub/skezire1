@@ -103,6 +103,10 @@ button { cursor: pointer; font-family: inherit; }
   box-shadow: var(--shadow-sm);
 }
 .navbar.menu-open { z-index: 1000; }
+.navbar.menu-open > *:not(.nav-ornament):not(.nav-burger) {
+  opacity: 0;
+  pointer-events: none;
+}
 
 .nav-brand {
   display: flex; align-items: center; gap: 8px;
