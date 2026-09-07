@@ -63,10 +63,10 @@ export function NavbarClient({ locale, links, brand, auth, langSwitcher }: Navba
       else element.removeAttribute('inert');
     });
     if (menuOpen) {
-      const frame = window.requestAnimationFrame(() => {
+      const focusTimer = window.setTimeout(() => {
         menuRef.current?.querySelector<HTMLElement>('.mobile-menu-link')?.focus();
-      });
-      return () => window.cancelAnimationFrame(frame);
+      }, 0);
+      return () => window.clearTimeout(focusTimer);
     }
   }, [menuOpen]);
 
