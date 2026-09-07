@@ -48,7 +48,7 @@ for (const locale of ['kk', 'ru']) {
   const footer = load('src/components/Footer.tsx', {
     'next-intl': { ...intl, useLocale: () => locale }, 'next/link': { default: 'a' },
   });
-  assert(elements(footer.Footer(), 'a').some(link => link.props.href === `/${locale}/shezhire-tree`));
+  assert.equal(elements(footer.Footer(), 'a').filter(link => link.props.href === `/${locale}/shezhire-tree`).length, 1);
   const navigations = [];
   const language = load('src/components/LangSwitcher.tsx', {
     '@/i18n/routing': { useRouter: () => ({ replace: (...args) => navigations.push(args) }), usePathname: () => '/shezhire-tree' },

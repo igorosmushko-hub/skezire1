@@ -10,7 +10,8 @@
   baseline are missing. Environment files were not copied.
 - Merge resolves the overlapping genealogy implementation in favor of the
   reviewed public-only reference release, retaining main's SEO/performance work.
-  A runtime check caught duplicate tree sitemap entries; each locale now has one.
+  Duplicate tree sitemap entries and footer links are removed; runtime checks
+  require exactly one per locale.
 - Import the server's Robokassa SDK integration and Docker/Caddy configuration.
   The mobile login selector fix is already covered by the reference release's
   direct-child selectors at the 1279px navigation breakpoint.

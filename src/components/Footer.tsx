@@ -30,9 +30,6 @@ export function Footer() {
             <Link href={`/${locale}/zheti-ata`} className="footer-link">
               {locale === 'kk' ? 'Жеті ата' : 'Жеті ата'}
             </Link>
-            <Link href={`/${locale}/shezhire-tree`} className="footer-link">
-              {locale === 'kk' ? 'Рулар ағашы' : 'Дерево родов'}
-            </Link>
             <Link href={`/${locale}/order/canvas`} className="footer-link">
               {locale === 'kk' ? 'Картина тапсырыс беру' : 'Заказать картину'}
             </Link>
