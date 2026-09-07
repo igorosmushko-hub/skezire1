@@ -7,7 +7,7 @@
 .tt-hero {
   position: relative;
   overflow: hidden;
-  padding: 112px 24px 72px;
+  padding: 88px 24px 44px;
   color: #fff;
   background:
     radial-gradient(circle at 82% 15%, rgba(212, 168, 67, .24), transparent 28%),
@@ -37,7 +37,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
   color: rgba(255, 255, 255, .64);
   font-size: .82rem;
 }
@@ -75,7 +75,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px 28px;
-  margin-top: 30px;
+  margin-top: 22px;
   color: rgba(255, 255, 255, .68);
   font-size: .86rem;
 }
@@ -86,8 +86,21 @@
 .tt-shell {
   max-width: 1240px;
   margin: 0 auto;
-  padding: clamp(44px, 7vw, 88px) 24px 96px;
+  padding: clamp(32px, 5vw, 56px) 24px 80px;
 }
+
+.tt-provenance {
+  margin: 10px 0 20px;
+  color: #67645f;
+  font-size: .9rem;
+}
+.tt-provenance summary {
+  width: fit-content;
+  cursor: pointer;
+  color: #4f4b44;
+  font-weight: 700;
+}
+.tt-provenance p { margin-top: 8px; line-height: 1.6; }
 
 .tt-explorer-heading {
   display: grid;
@@ -560,11 +573,11 @@
 }
 
 @media (max-width: 760px) {
-  .tt-hero { padding: 92px 20px 52px; }
-  .tt-hero nav { margin-bottom: 22px; }
+  .tt-hero { padding: 76px 20px 32px; }
+  .tt-hero nav { margin-bottom: 16px; }
   .tt-hero h1 { font-size: clamp(2.25rem, 12vw, 3.5rem); }
   .tt-hero-facts { gap: 8px 18px; }
-  .tt-shell { padding: 42px 14px 72px; }
+  .tt-shell { padding: 30px 14px 64px; }
   .tt-explorer-heading { display: block; }
   .tt-explorer-heading > p { margin-top: 12px; }
   .tt-search-panel { max-width: none; }

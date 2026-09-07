@@ -453,6 +453,7 @@
    TRIBE BREADCRUMB BAR
    ================================================================ */
 .tribe-breadcrumb-bar {
+  margin-top: 64px;
   background: var(--surface-secondary);
   border-bottom: 1px solid var(--border);
   padding: 14px 0;

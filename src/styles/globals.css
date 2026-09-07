@@ -102,6 +102,7 @@ button { cursor: pointer; font-family: inherit; }
 .navbar.scrolled {
   box-shadow: var(--shadow-sm);
 }
+.navbar.menu-open { z-index: 1000; }
 
 .nav-brand {
   display: flex; align-items: center; gap: 8px;
