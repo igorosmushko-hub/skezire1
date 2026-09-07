@@ -49,7 +49,7 @@ try {
       await next.click();
       await node(page, names[3]).waitFor();
       assert.ok(await node(page, names[4]).count(), 'sibling stays present');
-      assert.equal(await page.locator('.tt-lines path').count(), await page.locator('.tt-node').count() - 1);
+      await page.waitForFunction(() => document.querySelectorAll('.tt-lines path').length === document.querySelectorAll('.tt-node').length - 1);
       await page.keyboard.press('Tab');
       await node(page, names[3]).focus();
       await page.waitForFunction(() => {
@@ -92,9 +92,39 @@ try {
     await (width > 760 ? node(page, names[4]) : mobileChild(names[4])).waitFor();
     assert.ok((await page.locator('.tt-detail-path').textContent()).includes(names[1]));
     assert.ok(await page.locator('.tt-detail-summary').textContent());
+    const deepNames = kk ? ['Киікші', 'Бекбаулы', 'Қожаберген', 'Шуақ'] : ['Киикши', 'Бекбаулы', 'Кожаберген', 'Шуак'];
+    await page.goto(`${base}/${locale}/shezhire-tree?view=reference&highlight=subtribe:konyrat-qurban`);
+    await (width > 760 ? node(page, deepNames[0]) : mobileChild(deepNames[0])).waitFor();
+    if (width > 760) {
+      const next = page.getByRole('button', { name: kk ? 'Келесі деңгейді ашу' : 'Раскрыть следующий уровень', exact: true });
+      await next.click();
+      await node(page, deepNames[1]).waitFor();
+      await next.click();
+      await node(page, deepNames[2]).waitFor();
+      await page.waitForFunction(() => document.querySelectorAll('.tt-lines path').length === document.querySelectorAll('.tt-node').length - 1);
+    } else {
+      await mobileChild(deepNames[0]).click();
+      await mobileChild(deepNames[1]).click();
+      await mobileChild(deepNames[2]).waitFor();
+    }
+    await page.locator(width > 760 ? '.tt-viewport' : '.tt-mobile-browser').screenshot({ path: `${out}/${locale}-${width}-depth8.png` });
+    await page.locator('#tribe-tree-search').fill(deepNames[2]);
+    await page.locator('.tt-search-results button').filter({ has: page.locator('span').getByText(deepNames[2], { exact: true }) }).click();
+    await page.waitForFunction(() => new URL(location.href).searchParams.get('highlight') === 'subtribe:konyrat-bekbauly-qozhabergen');
+    await page.reload();
+    await page.locator('.tt-detail h3').getByText(deepNames[2], { exact: true }).waitFor();
+    assert.ok((await page.locator('.tt-detail-path').textContent()).includes(deepNames[1]));
+    if (width <= 760) {
+      await page.locator('.tt-mobile-browser-head button').click();
+      await page.locator('.tt-mobile-browser').getByRole('button', { name: kk ? 'Тағы тармақтарды көрсету' : 'Показать ещё ветви', exact: true }).click();
+    } else {
+      await node(page, deepNames[1]).click();
+      await page.getByRole('button', { name: kk ? 'Келесі деңгейді ашу' : 'Раскрыть следующий уровень', exact: true }).click();
+    }
+    await (width > 760 ? node(page, deepNames[3]) : mobileChild(deepNames[3])).waitFor();
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     assert.deepEqual(errors, []);
-    console.log(`PASS: ${locale}/${width}, real depth 6, lazy requests, siblings, search/reload, keyboard, no overflow${width > 760 ? ', failed load/retry, cached collapse/reopen' : ''}`);
+    console.log(`PASS: ${locale}/${width}, real depths 6 and 8, lazy requests, siblings, search/reload, keyboard, no overflow${width > 760 ? ', failed load/retry, cached collapse/reopen' : ''}`);
     await context.close();
   }
 } finally {

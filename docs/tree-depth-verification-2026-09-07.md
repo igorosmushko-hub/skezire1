@@ -1,6 +1,6 @@
 # Public map depth — local verification, 2026-09-07
 
-Base: `f6becbc`. No commit, merge, push or deployment was performed.
+Historical local verification before the later depth-8 release: base `f6becbc`. At this stage no commit, merge, push or deployment had been performed. See `tree-depth-release-2026-09-07.md` for the subsequent expansion and VPS release.
 
 ## Change
 
