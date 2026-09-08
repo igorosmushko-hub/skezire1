@@ -10,11 +10,17 @@ const out = process.env.QA_ARTIFACT_DIR || 'output/playwright/tree-depth';
 await mkdir(out, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const node = (page, name) => page.locator('.tt-node').filter({ has: page.locator('strong').getByText(name, { exact: true }) });
+const detail = (page, mobile) => mobile ? page.locator('.tt-preview') : page.locator('.tt-desktop-detail .tt-detail');
+const selectNode = async (page, name) => {
+  await node(page, name).focus();
+  await page.keyboard.press('Enter');
+};
 try {
   for (const locale of ['ru', 'kk']) for (const width of [1440, 375]) {
     const kk = locale === 'kk';
     const names = kk ? ['Көтенші', 'Бес ата', 'Саңғыл', 'Ағысай', 'Самай'] : ['Котенши', 'Бес ата', 'Сангыл', 'Агысай', 'Самай'];
-    const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: 'reduce' });
+    const mobile = width <= 760;
+    const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: 'reduce', isMobile: mobile, hasTouch: mobile });
     const page = await context.newPage();
     const errors = [];
     const loads = [];
@@ -27,10 +33,11 @@ try {
       }
     });
     await page.goto(`${base}/${locale}/shezhire-tree?view=reference&highlight=subtribe:konyrat-kotenshi`);
-    await page.locator('.tt-detail h3').getByText(names[0], { exact: true }).waitFor();
-    const mobileChild = name => page.locator('.tt-mobile-browser li button').filter({ has: page.locator('strong').getByText(name, { exact: true }) });
-    await (width > 760 ? node(page, names[1]) : mobileChild(names[1])).waitFor();
-    assert.deepEqual(loads, ['subtribe:konyrat-kotenshi'], 'deep link loads only its immediate children');
+    await detail(page, mobile).locator('h3').getByText(names[0], { exact: true }).waitFor();
+    await node(page, names[1]).waitFor();
+    if (mobile) {
+      assert.deepEqual(new Set(loads), new Set(['subtribe:konyrat-kotenshi', 'tribe:konyrat']), 'mobile deep link loads the focus and its parent context');
+    } else assert.deepEqual(loads, ['subtribe:konyrat-kotenshi'], 'desktop deep link loads only its immediate children');
     if (width > 760) {
       assert.equal(await node(page, names[2]).count(), 0, 'next depth is still unloaded');
       const next = page.getByRole('button', { name: kk ? 'Келесі деңгейді ашу' : 'Раскрыть следующий уровень', exact: true });
@@ -67,18 +74,18 @@ try {
       assert.equal(loads.length, before, 'cached branch reopens without a request');
       await page.locator('.tt-viewport').screenshot({ path: `${out}/${locale}-${width}.png` });
       await node(page, names[3]).click();
-      assert.equal(await page.locator('.tt-detail h3').textContent(), names[3], 'mouse click selects without moving on pointer-down');
+      assert.equal(await detail(page, false).locator('h3').textContent(), names[3], 'mouse click selects without moving on pointer-down');
     } else {
-      await mobileChild(names[1]).click();
-      await mobileChild(names[2]).click();
-      await mobileChild(names[3]).waitFor();
-      assert.ok(await mobileChild(names[4]).isVisible());
-      await page.locator('.tt-mobile-browser').screenshot({ path: `${out}/${locale}-${width}.png` });
-      await mobileChild(names[3]).click();
-      await page.locator('.tt-mobile-empty').waitFor();
-      await page.locator('.tt-mobile-browser-head button').click();
-      await mobileChild(names[4]).click();
-      assert.equal(await page.locator('.tt-detail h3').textContent(), names[4]);
+      await selectNode(page, names[1]);
+      await node(page, names[2]).waitFor();
+      await selectNode(page, names[2]);
+      await node(page, names[3]).waitFor();
+      assert.ok(await node(page, names[4]).isVisible(), 'sibling stays visible in the mobile canvas');
+      await page.locator('.tt-stage').screenshot({ path: `${out}/${locale}-${width}.png` });
+      await selectNode(page, names[4]);
+      assert.equal(await detail(page, true).locator('h3').textContent(), names[4]);
+      await page.locator('.tt-context button').click();
+      await node(page, names[3]).waitFor();
     }
     const beforeSearch = loads.length;
     await page.locator('#tribe-tree-search').fill(names[2]);
@@ -86,15 +93,23 @@ try {
     await result.focus();
     await page.keyboard.press('Enter');
     await page.waitForFunction(() => new URL(location.href).searchParams.get('highlight') === 'subtribe:konyrat-sangyl');
-    await (width > 760 ? node(page, names[3]) : mobileChild(names[3])).waitFor();
+    await node(page, names[3]).waitFor();
     assert.equal(loads.length, beforeSearch, 'search reuses loaded children');
     await page.reload();
-    await (width > 760 ? node(page, names[4]) : mobileChild(names[4])).waitFor();
-    assert.ok((await page.locator('.tt-detail-path').textContent()).includes(names[1]));
-    assert.ok(await page.locator('.tt-detail-summary').textContent());
+    await node(page, names[4]).waitFor();
+    if (mobile) {
+      await page.locator('.tt-preview-more').click();
+      await page.locator('.tt-sheet[open] .tt-detail-path').waitFor();
+      assert.ok((await page.locator('.tt-sheet[open] .tt-detail-path').textContent()).includes(names[1]));
+      assert.ok(await page.locator('.tt-sheet[open] .tt-detail-summary').textContent());
+      await page.keyboard.press('Escape');
+    } else {
+      assert.ok((await page.locator('.tt-desktop-detail .tt-detail-path').textContent()).includes(names[1]));
+      assert.ok(await page.locator('.tt-desktop-detail .tt-detail-summary').textContent());
+    }
     const deepNames = kk ? ['Киікші', 'Бекбаулы', 'Қожаберген', 'Шуақ'] : ['Киикши', 'Бекбаулы', 'Кожаберген', 'Шуак'];
     await page.goto(`${base}/${locale}/shezhire-tree?view=reference&highlight=subtribe:konyrat-qurban`);
-    await (width > 760 ? node(page, deepNames[0]) : mobileChild(deepNames[0])).waitFor();
+    await node(page, deepNames[0]).waitFor();
     if (width > 760) {
       const next = page.getByRole('button', { name: kk ? 'Келесі деңгейді ашу' : 'Раскрыть следующий уровень', exact: true });
       await next.click();
@@ -103,25 +118,30 @@ try {
       await node(page, deepNames[2]).waitFor();
       await page.waitForFunction(() => document.querySelectorAll('.tt-lines path').length === document.querySelectorAll('.tt-node').length - 1);
     } else {
-      await mobileChild(deepNames[0]).click();
-      await mobileChild(deepNames[1]).click();
-      await mobileChild(deepNames[2]).waitFor();
+      await selectNode(page, deepNames[0]);
+      await node(page, deepNames[1]).waitFor();
+      await selectNode(page, deepNames[1]);
+      await node(page, deepNames[2]).waitFor();
     }
-    await page.locator(width > 760 ? '.tt-viewport' : '.tt-mobile-browser').screenshot({ path: `${out}/${locale}-${width}-depth8.png` });
+    await page.locator(width > 760 ? '.tt-viewport' : '.tt-stage').screenshot({ path: `${out}/${locale}-${width}-depth8.png` });
     await page.locator('#tribe-tree-search').fill(deepNames[2]);
     await page.locator('.tt-search-results button').filter({ has: page.locator('span').getByText(deepNames[2], { exact: true }) }).click();
     await page.waitForFunction(() => new URL(location.href).searchParams.get('highlight') === 'subtribe:konyrat-bekbauly-qozhabergen');
     await page.reload();
-    await page.locator('.tt-detail h3').getByText(deepNames[2], { exact: true }).waitFor();
-    assert.ok((await page.locator('.tt-detail-path').textContent()).includes(deepNames[1]));
+    await detail(page, mobile).locator('h3').getByText(deepNames[2], { exact: true }).waitFor();
+    if (mobile) {
+      await page.locator('.tt-preview-more').click();
+      assert.ok((await page.locator('.tt-sheet[open] .tt-detail-path').textContent()).includes(deepNames[1]));
+      await page.keyboard.press('Escape');
+    } else assert.ok((await page.locator('.tt-desktop-detail .tt-detail-path').textContent()).includes(deepNames[1]));
     if (width <= 760) {
-      await page.locator('.tt-mobile-browser-head button').click();
-      await page.locator('.tt-mobile-browser').getByRole('button', { name: kk ? 'Тағы тармақтарды көрсету' : 'Показать ещё ветви', exact: true }).click();
+      await selectNode(page, deepNames[1]);
+      await selectNode(page, deepNames[1]);
     } else {
       await node(page, deepNames[1]).click();
       await page.getByRole('button', { name: kk ? 'Келесі деңгейді ашу' : 'Раскрыть следующий уровень', exact: true }).click();
     }
-    await (width > 760 ? node(page, deepNames[3]) : mobileChild(deepNames[3])).waitFor();
+    await node(page, deepNames[3]).waitFor();
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     assert.deepEqual(errors, []);
     console.log(`PASS: ${locale}/${width}, real depths 6 and 8, lazy requests, siblings, search/reload, keyboard, no overflow${width > 760 ? ', failed load/retry, cached collapse/reopen' : ''}`);
