@@ -5,7 +5,7 @@ import { TRIBES_DB } from '@/data/tribes';
 import type { SubTribe } from '@/lib/types';
 import { buildTribeTree } from '@/lib/tribe-tree-page';
 import { getInitialGenealogyTree } from '@/lib/genealogy-data';
-import { findTreePath, stringifyJsonLd } from '@/lib/tribe-tree';
+import { findTreePath, mergeTreePath, pruneTree, stringifyJsonLd } from '@/lib/tribe-tree';
 import '@/styles/shezhire-tree.css';
 import '@/styles/tribe-race.css';
 
@@ -80,7 +80,8 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
     if (initialFocusId && !findTreePath(tree, initialFocusId).length) {
       focusUnavailable = true;
     } else {
-      genealogy = { tree, source: 'repo' };
+      const path = initialFocusId ? findTreePath(tree, initialFocusId) : [];
+      genealogy = { tree: mergeTreePath(pruneTree(tree, 1), path.map(node => pruneTree(node, 0))), source: 'repo' };
     }
   } else {
     try {
@@ -176,13 +177,13 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
           <details className="tt-provenance">
             <summary>{isKk ? 'Дерек пен әдіс туралы' : 'О данных и методе'}</summary>
             <p>{isKk
-              ? 'Анықтамалық редакциясы — 2026 жылғы 6 қыркүйек. Бұл дәстүрлі топ мүшелігінің авторлық картасы және Tumalas құрылымынан өзгеше болуы мүмкін; дереккөздер ру карточкаларында ашылады. Зерттеуге Tumalas-тың 2026 жылғы 20 тамыздағы көшірмесі пайдаланылды. Оның құрылымдық тексерісі (6 қыркүйек) биологиялық туыстықты растамайды.'
-              : 'Справочная редакция — 6 сентября 2026 года. Это авторская карта традиционной групповой принадлежности и она может отличаться от структуры Tumalas; источники открываются в карточках родов. Для исследования использован снимок Tumalas от 20 августа 2026 года. Его структурная проверка (6 сентября) не подтверждает биологическое родство.'}</p>
+              ? 'Анықтамалық редакциясы — 2026 жылғы 7 қыркүйек. Бұл дәстүрлі топ мүшелігінің авторлық картасы және Tumalas құрылымынан өзгеше болуы мүмкін; дереккөздер ру карточкаларында ашылады. Зерттеуге Tumalas-тың 2026 жылғы 20 тамыздағы көшірмесі пайдаланылды. Оның құрылымдық тексерісі (6 қыркүйек) биологиялық туыстықты растамайды.'
+              : 'Справочная редакция — 7 сентября 2026 года. Это авторская карта традиционной групповой принадлежности и она может отличаться от структуры Tumalas; источники открываются в карточках родов. Для исследования использован снимок Tumalas от 20 августа 2026 года. Его структурная проверка (6 сентября) не подтверждает биологическое родство.'}</p>
           </details>
         )}
         {genealogy ? (
           <InteractiveTree
-            key={`${locale}:${initialFocusId ?? 'root'}:${join === '1' ? 'join' : 'view'}`}
+            key={`${genealogy.source}:${locale}:${initialFocusId ?? 'root'}:${join === '1' ? 'join' : 'view'}`}
             locale={locale}
             tree={genealogy.tree}
             source={genealogy.source}

@@ -91,7 +91,7 @@ console.log('PASS: map navigation and footer in kk/ru; locale switch preserves d
   });
   for (const locale of ['ru', 'kk']) {
     const empty = locale === 'ru' ? 'У этой ветви нет продолжения.' : 'Бұл тармақта жалғасы жоқ.';
-    const expand = locale === 'ru' ? 'Показать ветви' : 'Тармақтарды көрсету';
+    const expand = locale === 'ru' ? 'Показать ещё ветви' : 'Тағы тармақтарды көрсету';
     for (const hasChildren of [true, false]) {
       const html = renderToStaticMarkup(require('react').createElement(InteractiveTree, {
         locale, source: 'repo', tree: { id: 'root', name: 'Root', kind: 'root', hasChildren },

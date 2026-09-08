@@ -45,7 +45,7 @@ function assertSources(sources, label) {
 for (const id of enrichedIds) {
   const tribe = tribes.find(item => item.id === id);
   assert.ok(tribe, `${id}: missing tribe`);
-  assert.equal(tribe.updatedAt, '2026-09-06', `${id}: missing release date`);
+  assert.equal(tribe.updatedAt, id === 'konyrat' ? '2026-09-07' : '2026-09-06', `${id}: missing release date`);
   assertSources(tribe.sources, id);
   if (pilotIds.includes(id)) {
     assert.deepEqual(tribe.notable, []);
@@ -78,6 +78,7 @@ for (const [tribeId, ...ids] of [
   ['kerey', 'kerey-ashamayly', 'kerey-siban', 'kerey-shimoyyn'],
   ['konyrat', 'konyrat-kotenshi', 'konyrat-bes-ata', 'konyrat-sangyl', 'konyrat-sangyl-agysai'],
   ['konyrat', 'konyrat-kotenshi', 'konyrat-zhamanbay', 'konyrat-qyrgyzali', 'konyrat-qyrgyzali-abyz'],
+  ['konyrat', 'konyrat-kotenshi', 'konyrat-zhamanbay', 'konyrat-qurban', 'konyrat-qurban-kiikshi', 'konyrat-kiikshi-bekbauly', 'konyrat-bekbauly-qozhabergen'],
   ['aday', 'aday-kelimberdi', 'aday-zhemeney'],
   ['taz', 'taz-sharga', 'taz-aqserke'],
 ]) {
@@ -126,7 +127,7 @@ for (const id of enrichedIds) {
     assert.equal(schema.datePublished, undefined);
     assert.equal(schema.dateModified, tribe.updatedAt, `${route}: JSON-LD date`);
     assert.deepEqual(schema.citation, tribe.sources.map(source => source.url), `${route}: JSON-LD citations`);
-    assert.ok(sitemap.includes(`<loc>https://skezire.kz${route}</loc>\n<lastmod>2026-09-06T00:00:00.000Z</lastmod>`), `${route}: sitemap date`);
+    assert.ok(sitemap.includes(`<loc>https://skezire.kz${route}</loc>\n<lastmod>${tribe.updatedAt}T00:00:00.000Z</lastmod>`), `${route}: sitemap date`);
     assert.equal((article.match(/class="tribe-subtribe-tag"/g) ?? []).length, branches(tribe.subtribes).length);
     for (const parent of [{id: `tribe:${id}`, children: tribe.subtribes}, ...branches(tribe.subtribes).filter(b => b.children?.length).map(b => ({id:`subtribe:${b.id}`, children:b.children}))]) {
       const res = await fetch(`${base}/api/genealogy/children?source=repo&locale=${locale}&node=${encodeURIComponent(parent.id)}`);

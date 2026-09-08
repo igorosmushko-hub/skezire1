@@ -48,7 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
     entries.push({
       url: `${baseUrl}/${locale}/shezhire-tree`,
-      lastModified: DATES.encyclopedia,
+      lastModified: new Date('2026-09-07'),
       changeFrequency: 'monthly',
       priority: 0.9,
       alternates: { languages: { kk: `${baseUrl}/kk/shezhire-tree`, ru: `${baseUrl}/ru/shezhire-tree` } },

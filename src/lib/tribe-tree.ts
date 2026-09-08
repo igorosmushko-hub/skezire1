@@ -157,6 +157,17 @@ export function getExpandedPathIdsForSearchResult(root: TribeTreeNode, targetId:
   return ids;
 }
 
+export function getNextTreeLevel(root: TribeTreeNode, expanded: ReadonlySet<string>): TribeTreeNode[] {
+  let level = [root];
+  while (level.length) {
+    const pending = level.filter((node) => (node.hasChildren || node.children?.length)
+      && (!expanded.has(node.id) || node.children === undefined || node.nextChildrenOffset === 0));
+    if (pending.length) return pending;
+    level = level.flatMap((node) => node.children ?? []);
+  }
+  return [];
+}
+
 export function layoutTree(root: TribeTreeNode, expanded: ReadonlySet<string>): TribeTreeLayout {
   const nodes: PositionedTreeNode[] = [];
   const edgeIds: Array<{ from: string; to: string }> = [];

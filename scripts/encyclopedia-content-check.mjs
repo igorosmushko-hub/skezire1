@@ -42,10 +42,10 @@ for (const tribe of tribes) {
 
 assert.equal(tribes.filter(tribe => tribe.subtribes?.length).length, 22);
 const countBranches = (items = []) => items.reduce((count, branch) => count + 1 + countBranches(branch.children), 0);
-assert.equal(tribes.reduce((count, tribe) => count + countBranches(tribe.subtribes), 0), 325);
+assert.equal(tribes.reduce((count, tribe) => count + countBranches(tribe.subtribes), 0), 340);
 assert.ok(['katagan', 'merkit', 'teleu', 'tileu', 'karatay', 'tolengit'].every(id => {
   const tribe = tribes.find(item => item.id === id);
   return /нұсқа|верси|ашық мәселе|тексер|профильдік|тексеріл|провер|открытым вопросом|бекітілм/i.test(`${tribe?.desc_kk} ${tribe?.desc_ru} ${tribe?.history_kk} ${tribe?.history_ru}`);
 }));
 
-console.log('PASS: 4 sections, 47 stable tribe IDs, 325 branch IDs, RU/KK editorial copy, and a source record for every page.');
+console.log('PASS: 4 sections, 47 stable tribe IDs, 340 branch IDs, RU/KK editorial copy, and a source record for every page.');

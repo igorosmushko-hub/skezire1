@@ -28,9 +28,18 @@ const cases = [
 ];
 const browser = await chromium.launch({ headless: true, executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE });
 const results = [];
+const selectedTitle = (page, mobile) => mobile ? page.locator('.tt-preview h3') : page.locator('.tt-desktop-detail .tt-detail h3');
+async function openDetails(page, mobile) {
+  if (!mobile) return page.locator('.tt-desktop-detail');
+  await page.locator('.tt-preview-more').click();
+  const sheet = page.locator('.tt-sheet[open]');
+  await sheet.waitFor();
+  return sheet;
+}
 try {
   for (const width of [1440, 375]) for (const locale of ['ru', 'kk']) {
-    const context = await browser.newContext({ viewport: { width, height: 900 } });
+    const mobile = width <= 760;
+    const context = await browser.newContext({ viewport: { width, height: 900 }, isMobile: mobile, hasTouch: mobile });
     await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: base });
     const page = await context.newPage();
     page.setDefaultTimeout(15_000);
@@ -47,11 +56,12 @@ try {
       });
       assert.ok(order, 'gold CTA precedes history');
       await cta.click();
-      await page.locator('.tt-detail h3').waitFor();
+      await selectedTitle(page, mobile).waitFor();
       assert.equal(new URL(page.url()).searchParams.get('view'), 'reference');
       assert.equal(new URL(page.url()).searchParams.get('highlight'), `tribe:${tribe}`);
       if (tribe === 'dulat') {
-        await page.getByRole('button', { name: locale === 'ru' ? 'Вступить в род' : 'Руға қосылу' }).click();
+        const details = await openDetails(page, mobile);
+        await details.getByRole('button', { name: locale === 'ru' ? 'Вступить в род' : 'Руға қосылу' }).click();
         await page.locator('.join-close').waitFor();
         assert.equal(await page.locator('.join-tamga').count(), 0);
         await page.locator('.join-close').click();
@@ -64,20 +74,23 @@ try {
       const hit = page.locator('.tt-search-results button').filter({ has: page.locator('small').filter({ hasText: tribeName }) });
       await hit.first().click();
       await page.waitForFunction(id => new URL(location.href).searchParams.get('highlight') === id, `subtribe:${branch}`);
-      const path = await page.locator('.tt-detail-path').textContent();
+      const details = await openDetails(page, mobile);
+      const path = await details.locator('.tt-detail-path').textContent();
       for (const ancestor of expectedPath.slice(1, -1)) assert.ok(path.includes(ancestor.name), `${branch}: missing ancestor ${ancestor.name}`);
-      assert.ok(await page.locator('.tt-detail-summary').textContent(), `${branch}: missing source version note`);
+      assert.ok(await details.locator('.tt-detail-summary').textContent(), `${branch}: missing source version note`);
+      if (mobile) await page.keyboard.press('Escape');
       await page.reload();
-      assert.equal(await page.locator('.tt-detail h3').textContent(), locale === 'kk' ? kk : ru);
-      await page.getByRole('button', { name: locale === 'ru' ? 'Скопировать ссылку на ветвь' : 'Тармақ сілтемесін көшіру', exact: true }).click();
-      await page.getByRole('status').filter({ hasText: locale === 'ru' ? 'Ссылка скопирована' : 'Сілтеме көшірілді' }).waitFor();
+      await selectedTitle(page, mobile).getByText(locale === 'kk' ? kk : ru, { exact: true }).waitFor();
+      const reloadedDetails = await openDetails(page, mobile);
+      await reloadedDetails.getByRole('button', { name: locale === 'ru' ? 'Скопировать ссылку на ветвь' : 'Тармақ сілтемесін көшіру', exact: true }).click();
+      await reloadedDetails.getByRole('status').filter({ hasText: locale === 'ru' ? 'Ссылка скопирована' : 'Сілтеме көшірілді' }).waitFor();
       const copied = new URL(await page.evaluate(() => navigator.clipboard.readText()));
       assert.equal(copied.searchParams.get('view'), 'reference');
       assert.equal(copied.searchParams.get('highlight'), `subtribe:${branch}`);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
       if (tribe === 'dulat') await page.screenshot({ path: `${out}/map-${locale}-${width}.png`, fullPage: true });
-      const details = page.locator(`.tt-detail a[href="${article}#branch-${branch}"]`);
-      await details.click();
+      const articleLink = reloadedDetails.locator(`a[href="${article}#branch-${branch}"]`);
+      await articleLink.click();
       await page.waitForURL(url => url.hash === `#branch-${branch}`);
       assert.ok(await page.locator(`#branch-${branch}`).isVisible());
       await page.locator('#tribe-sources-title').scrollIntoViewIfNeeded();

@@ -5,6 +5,7 @@ import {
   findTreePath,
   flattenTree,
   getExpandedPathIdsForSearchResult,
+  getNextTreeLevel,
   layoutTree,
   mergeTreeChildren,
   mergeTreePath,
@@ -29,10 +30,64 @@ const tree = {
   }],
 };
 
+test('opens one real reference level at a time without loading descendants or losing siblings', () => {
+  for (const locale of ['ru', 'kk']) {
+    const full = buildTribeTree(locale, TRIBES_DB);
+    const id = 'subtribe:konyrat-kotenshi';
+    const path = findTreePath(full, id);
+    let lazy = mergeTreePath(pruneTree(full, 1), path.map(node => pruneTree(node, 0)));
+    const expanded = new Set(path.map(node => node.id));
+    const openLevel = () => {
+      const nodes = getNextTreeLevel(findTreePath(lazy, id).at(-1), expanded);
+      for (const node of nodes) {
+        expanded.add(node.id);
+        lazy = mergeTreeChildren(lazy, node.id, findTreePath(full, node.id).at(-1).children.map(child => pruneTree(child, 0)));
+      }
+      return nodes.map(node => node.id);
+    };
+    assert.deepEqual(openLevel(), [id]);
+    assert.equal(findTreePath(lazy, 'subtribe:konyrat-bes-ata').at(-1).children, undefined);
+    openLevel();
+    openLevel();
+    assert.deepEqual(findTreePath(lazy, 'subtribe:konyrat-sangyl-agysai').map(node => node.id), [
+      'alash', 'zhuz:orta', 'tribe:konyrat', id, 'subtribe:konyrat-bes-ata',
+      'subtribe:konyrat-sangyl', 'subtribe:konyrat-sangyl-agysai',
+    ]);
+    assert.ok(findTreePath(lazy, 'subtribe:konyrat-sangyl-samai').length);
+    assert.equal(findTreePath(lazy, 'zhuz:uly').at(-1).children, undefined);
+    const layout = layoutTree(lazy, expanded);
+    assert.equal(layout.edges.length, layout.nodes.length - 1);
+    assert.ok(layout.nodes.some(node => node.id === 'subtribe:konyrat-sangyl-agysai' && node.depth === 6));
+    assert.deepEqual(getNextTreeLevel(findTreePath(lazy, 'subtribe:konyrat-sangyl-agysai').at(-1), expanded), []);
+    expanded.delete('subtribe:konyrat-bes-ata');
+    assert.deepEqual(getNextTreeLevel(findTreePath(lazy, id).at(-1), expanded).map(node => node.id), ['subtribe:konyrat-bes-ata']);
+  }
+});
+
 test('normalizes, searches and resolves an ancestor path', () => {
   assert.equal(normalizeTreeSearch('  Кіші-жүз '), 'кіші жүз');
   assert.equal(searchTree(tree, 'младший')[0]?.id, 'kishi');
   assert.deepEqual(findTreePath(tree, 'aday').map((node) => node.id), ['alash', 'kishi', 'aday']);
+});
+
+test('preserves the source-backed Qurban membership path through depth 8', () => {
+  for (const locale of ['ru', 'kk']) {
+    const full = buildTribeTree(locale, TRIBES_DB);
+    const path = findTreePath(full, 'subtribe:konyrat-bekbauly-qozhabergen');
+    assert.deepEqual(path.map(node => node.id), [
+      'alash', 'zhuz:orta', 'tribe:konyrat', 'subtribe:konyrat-kotenshi',
+      'subtribe:konyrat-zhamanbay', 'subtribe:konyrat-qurban',
+      'subtribe:konyrat-qurban-kiikshi', 'subtribe:konyrat-kiikshi-bekbauly',
+      'subtribe:konyrat-bekbauly-qozhabergen',
+    ]);
+    const layout = layoutTree(full, new Set(path.map(node => node.id)));
+    assert.equal(layout.nodes.find(node => node.id === path.at(-1).id).depth, 8);
+    assert.equal(layout.edges.length, layout.nodes.length - 1);
+    assert.equal(findTreePath(full, 'subtribe:konyrat-kiikshi-zhartybas').at(-2).id, 'subtribe:konyrat-qurban-kiikshi');
+    assert.match(findTreePath(full, 'subtribe:konyrat-kiikshi-zhartybas').at(-1).summary, /488–489/);
+    assert.ok(path.at(-1).href.endsWith('#branch-konyrat-bekbauly-qozhabergen'));
+    assert.equal(searchTree(full, locale === 'kk' ? 'Қожаберген' : 'Кожаберген')[0].id, path.at(-1).id);
+  }
 });
 
 test('renders only expanded levels and connects every visible child', () => {
