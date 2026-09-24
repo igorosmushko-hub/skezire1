@@ -1,0 +1,14 @@
+User-Agent: *
+Allow: /
+Disallow: /_next/
+Disallow: /agents/
+Disallow: /api/
+
+User-Agent: Yandex
+Allow: /
+Disallow: /_next/
+Disallow: /agents/
+Disallow: /api/
+
+Host: https://skezire.kz
+Sitemap: https://skezire.kz/sitemap.xml

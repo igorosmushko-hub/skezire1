@@ -77,7 +77,7 @@ export async function GET(req: NextRequest) {
     '/ai/past', '/ai/ancestor', '/ai/action-figure', '/ai/pet-humanize',
     '/ai/ghibli-style', '/ai/family-portrait', '/ai/national-costume',
     '/ai/family-portrait/create', '/order/canvas', '/pricing',
-    '/leaderboard', '/shezhire-tree',
+    '/leaderboard',
   ];
 
   const urls = locales.flatMap((locale) =>

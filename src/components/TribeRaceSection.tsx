@@ -129,7 +129,7 @@ export function TribeRaceSection({ locale }: { locale: string }) {
         {/* User's tribe badge */}
         {userTribeInfo && userTribeRank > 0 && (
           <div className="race-user-badge">
-            <span className="race-user-tamga">{userTribeInfo.tribe.tamga}</span>
+            {userTribeInfo.tribe.tamga && <span className="race-user-tamga">{userTribeInfo.tribe.tamga}</span>}
             <div className="race-user-info">
               <p className="race-user-name">
                 {isKk ? userTribeInfo.tribe.kk : userTribeInfo.tribe.ru}
@@ -165,7 +165,7 @@ export function TribeRaceSection({ locale }: { locale: string }) {
                   <span className="race-top-pos">
                     {i < 3 ? MEDALS[i] : `${i + 1}`}
                   </span>
-                  <span className="race-top-tamga">{found?.tribe.tamga}</span>
+                  {found?.tribe.tamga && <span className="race-top-tamga">{found?.tribe.tamga}</span>}
                   <div className="race-top-info">
                     <div className="race-top-name-row">
                       <span className="race-top-name">{tribeName}</span>

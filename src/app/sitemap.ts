@@ -13,19 +13,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     encyclopedia: new Date('2026-03-01'),
     glossary: new Date('2026-02-28'),
     zhetiAta: new Date('2026-02-28'),
+    leaderboard: new Date('2026-03-30'),
     blog: new Date('2026-03-21'),
     legal: new Date('2026-03-07'),
   };
 
   const entries: MetadataRoute.Sitemap = [];
-
-  // Root — redirects to /kk
-  entries.push({
-    url: `${baseUrl}/`,
-    lastModified: DATES.home,
-    changeFrequency: 'weekly',
-    priority: 1.0,
-  });
 
   // Main pages
   for (const locale of locales) {
@@ -53,19 +46,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.9,
     });
+    entries.push({
+      url: `${baseUrl}/${locale}/shezhire-tree`,
+      lastModified: new Date('2026-09-07'),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+      alternates: { languages: { kk: `${baseUrl}/kk/shezhire-tree`, ru: `${baseUrl}/ru/shezhire-tree` } },
+    });
   }
 
   // Tribe race pages
   for (const locale of locales) {
     entries.push({
       url: `${baseUrl}/${locale}/leaderboard`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.9,
-    });
-    entries.push({
-      url: `${baseUrl}/${locale}/shezhire-tree`,
-      lastModified: new Date(),
+      lastModified: DATES.leaderboard,
       changeFrequency: 'daily',
       priority: 0.9,
     });
@@ -95,13 +89,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.9,
       });
     }
-    // Family portrait creation page
-    entries.push({
-      url: `${baseUrl}/${locale}/ai/family-portrait/create`,
-      lastModified: DATES.ai,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    });
     // Order canvas page
     entries.push({
       url: `${baseUrl}/${locale}/order/canvas`,
@@ -154,7 +141,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       for (const tribe of zhuz.tribes) {
         entries.push({
           url: `${baseUrl}/${locale}/encyclopedia/${zhuz.id}/${tribe.id}`,
-          lastModified: DATES.encyclopedia,
+          lastModified: tribe.updatedAt ? new Date(tribe.updatedAt) : DATES.encyclopedia,
           changeFrequency: 'monthly',
           priority: 0.8,
         });

@@ -18,8 +18,14 @@ export function Footer() {
             <Link href={`/${locale}/ai`} className="footer-link">
               {locale === 'kk' ? 'AI Мүмкіндіктері' : 'AI Функции'}
             </Link>
+            <Link href={`/${locale}/pricing`} className="footer-link">
+              {locale === 'kk' ? 'Тарифтер' : 'Тарифы'}
+            </Link>
             <Link href={`/${locale}/encyclopedia`} className="footer-link">
               {locale === 'kk' ? 'Энциклопедия' : 'Энциклопедия'}
+            </Link>
+            <Link href={`/${locale}/shezhire-tree`} className="footer-link">
+              {locale === 'kk' ? 'Рулар ағашы' : 'Дерево родов'}
             </Link>
             <Link href={`/${locale}/zheti-ata`} className="footer-link">
               {locale === 'kk' ? 'Жеті ата' : 'Жеті ата'}

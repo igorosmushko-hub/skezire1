@@ -102,6 +102,11 @@ button { cursor: pointer; font-family: inherit; }
 .navbar.scrolled {
   box-shadow: var(--shadow-sm);
 }
+.navbar.menu-open { z-index: 1000; }
+.navbar.menu-open > *:not(.nav-ornament):not(.nav-burger) {
+  opacity: 0;
+  pointer-events: none;
+}
 
 .nav-brand {
   display: flex; align-items: center; gap: 8px;
@@ -144,6 +149,7 @@ button { cursor: pointer; font-family: inherit; }
 /* Mobile menu (rendered outside nav to avoid backdrop-filter issues) */
 .mobile-menu {
   position: fixed; inset: 0; z-index: 950;
+  overflow: hidden;
   visibility: hidden; pointer-events: none;
   transition: visibility .3s;
 }
@@ -293,7 +299,6 @@ button { cursor: pointer; font-family: inherit; }
 /* Ornament background overlay */
 .hero-ornament {
   position: absolute; inset: 0; pointer-events: none;
-  background: url('/ornament-hero.webp') center/cover no-repeat;
   opacity: 0.08;
 }
 
@@ -586,7 +591,6 @@ button { cursor: pointer; font-family: inherit; }
 }
 .about-ornament {
   position: absolute; inset: 0; pointer-events: none;
-  background: url('/ornament-about.webp') center/cover no-repeat;
   opacity: 0.15;
 }
 .about > .container { position: relative; z-index: 1; }
@@ -1718,14 +1722,14 @@ button { cursor: pointer; font-family: inherit; }
   .container { padding: 0 24px; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1279px) {
   .navbar { padding: 0 20px; }
   .nav-links { display: none; }
   .nav-burger { display: flex; cursor: pointer; z-index: 1000; }
-  .navbar > .nav-login-btn { display: none; }
-  .navbar > .nav-auth { display: none; }
   .lang-switcher { margin-left: auto; margin-right: 8px; }
+}
 
+@media (max-width: 768px) {
   .family-form { padding: 28px 20px; }
   .form-row { grid-template-columns: 1fr; }
   .tribe-card { padding: 18px 16px; }
@@ -2182,7 +2186,7 @@ a.tribe-meta-val:hover { text-decoration: underline; }
 .nav-login-btn:hover, .nav-logout-btn:hover {
   background: var(--border); border-color: rgba(0,0,0,.15);
 }
-@media (max-width: 768px) {
+@media (max-width: 1279px) {
   .navbar > .nav-auth { display: none; }
   .navbar > .nav-login-btn { display: none; }
 }

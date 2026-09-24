@@ -1,0 +1,90 @@
+[
+  {
+    "id": "crawl:title_duplicate",
+    "title": "title_duplicate: Duplicate title (2 URLs)",
+    "outcome": "fixed",
+    "scope": "local-only",
+    "reason": "KK/RU title различаются; локальный smoke-test.",
+    "verification": {
+      "command": "seo crawl https://skezire.kz/ --severity medium --max-pages 100",
+      "expected": "Re-run the crawl and confirm this title appears on only one indexable URL."
+    }
+  },
+  {
+    "id": "crawl:noindex",
+    "title": "noindex: Noindex found (2 URLs)",
+    "outcome": "no-change",
+    "scope": "local-only",
+    "reason": "Сохранён noindex форм; из sitemap они исключены.",
+    "verification": {
+      "command": "seo crawl https://skezire.kz/ --severity medium --max-pages 100",
+      "expected": "Re-run the crawl or URL Inspection and confirm no effective meta robots or X-Robots-Tag noindex remains, including the equivalent none directive."
+    }
+  },
+  {
+    "id": "crawl:hsts_missing",
+    "title": "hsts_missing: HSTS header missing (172 URLs)",
+    "outcome": "deferred",
+    "scope": "local-only",
+    "reason": "Отдельная серверная настройка HTTPS, не SEO-блокер.",
+    "verification": {
+      "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+      "expected": "Re-run the crawl and confirm hasHsts is true for HTTPS pages."
+    }
+  },
+  {
+    "id": "crawl:structured_data_missing",
+    "title": "structured_data_missing: No structured data detected (18 URLs)",
+    "outcome": "no-change",
+    "scope": "local-only",
+    "reason": "Подходящий тип schema не подтверждён; фиктивная разметка не добавляется.",
+    "verification": {
+      "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+      "expected": "Re-run the crawl and confirm structuredDataFormats lists the added format, then validate the page with a structured data tester."
+    }
+  },
+  {
+    "id": "crawl:image_oversized_candidate",
+    "title": "image_oversized_candidate: Oversized image candidates (16 URLs)",
+    "outcome": "deferred",
+    "scope": "local-only",
+    "reason": "Реальные фоновые ресурсы улучшены отдельно; не все кандидаты srcset признаны дефектами.",
+    "verification": {
+      "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+      "expected": "Re-run the crawl and confirm oversizedImageCandidates is empty, then spot-check the page in a browser performance trace if the image is important."
+    }
+  },
+  {
+    "id": "crawl:title_too_wide",
+    "title": "title_too_wide: Title may truncate on some devices (9 URLs)",
+    "outcome": "deferred",
+    "scope": "local-only",
+    "reason": "Эвристика ширины требует редакторского решения.",
+    "verification": {
+      "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+      "expected": "Re-run the audit and review estimatedPixels, referencePixels, confidence, and profile. Confirm the important wording appears early."
+    }
+  },
+  {
+    "id": "crawl:orphan_page",
+    "title": "orphan_page: No observed internal links (4 URLs)",
+    "outcome": "changed",
+    "scope": "local-only",
+    "reason": "Публичные HTML-ссылки на все4страницы есть, цели200; orphan_page исчез из локальных обходов.",
+    "verification": {
+      "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+      "expected": "Re-run a complete crawl from the same site entry point and confirm an observed internal link reaches the page."
+    }
+  },
+  {
+    "id": "crawl:redirected_url",
+    "title": "redirected_url: URL redirects (1 URL)",
+    "outcome": "no-change",
+    "scope": "local-only",
+    "reason": "Языковой редирект сохранён, корень удалён из sitemap.",
+    "verification": {
+      "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+      "expected": "Re-run the crawl and confirm the requested URL is the same as the final URL, or that the redirect is intentional."
+    }
+  }
+]

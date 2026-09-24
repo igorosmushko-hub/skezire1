@@ -55,7 +55,7 @@ export function EncTabs({ zhuzes, locale, moreLabel }: EncTabsProps) {
                   className="enc-tribe-card"
                 >
                   <div className="enc-tribe-card-header">
-                    <div className="enc-tribe-card-tamga">{tribe.tamga}</div>
+                    {tribe.tamga && <div className="enc-tribe-card-tamga">{tribe.tamga}</div>}
                     <div>
                       <div className="enc-tribe-card-name">{name}</div>
                       {altName && <div className="enc-tribe-card-subname">{altName}</div>}

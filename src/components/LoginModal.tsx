@@ -27,6 +27,9 @@ export function LoginModal({ open, onClose }: Props) {
   const confirmationRef = useRef<ConfirmationResult | null>(null);
   const recaptchaRef = useRef<RecaptchaVerifierType | null>(null);
   const containerIdRef = useRef(0);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const modalCardRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   /* ── Reset on close ── */
   const handleClose = useCallback(() => {
@@ -38,20 +41,45 @@ export function LoginModal({ open, onClose }: Props) {
     confirmationRef.current = null;
     onClose();
   }, [onClose]);
+  const handleCloseRef = useRef(handleClose);
+  handleCloseRef.current = handleClose;
 
   /* ── ESC + scroll lock ── */
   useEffect(() => {
     if (!open) return;
+    previousFocusRef.current = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    closeButtonRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') handleClose();
+      if (e.key === 'Escape') {
+        handleCloseRef.current();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+
+      const focusable = modalCardRef.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (!focusable?.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
+      previousFocusRef.current?.focus();
     };
-  }, [open, handleClose]);
+  }, [open]);
 
   /* ── Cleanup reCAPTCHA on unmount ── */
   useEffect(() => {
@@ -165,10 +193,11 @@ export function LoginModal({ open, onClose }: Props) {
       className="modal open"
       role="dialog"
       aria-modal="true"
+      data-login-modal="true"
       onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
     >
-      <div className="modal-card login-card">
-        <button className="modal-close" onClick={handleClose} aria-label="Close">
+      <div ref={modalCardRef} className="modal-card login-card">
+        <button ref={closeButtonRef} className="modal-close" onClick={handleClose} aria-label="Close">
           ✕
         </button>
 

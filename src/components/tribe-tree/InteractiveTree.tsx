@@ -1,155 +1,719 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import Link from 'next/link';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from 'react';
+import {
+  findTreePath,
+  getNextTreeLevel,
+  computeViewportFitScale,
+  layoutTree,
+  mergeTreeChildren,
+  mergeTreePath,
+  normalizeTreeSearch,
+  TREE_NODE_HEIGHT,
+  TREE_NODE_WIDTH,
+  type TribeTreeNode,
+} from '@/lib/tribe-tree';
+import { ymGoal } from '@/lib/analytics';
 import { TRIBES_DB } from '@/data/tribes';
-import { useTribeStats } from '@/hooks/useTribeStats';
 import { TribeJoinModal } from './TribeJoinModal';
-import type { Tribe, Zhuz } from '@/lib/types';
 
 interface Props {
   locale: string;
-  highlightTribeId?: string;
+  tree: TribeTreeNode;
+  source: string;
+  initialFocusId?: string;
+  initialJoin?: boolean;
 }
 
-export function InteractiveTree({ locale, highlightTribeId }: Props) {
+interface SearchResult extends TribeTreeNode {
+  path: TribeTreeNode[];
+}
+
+interface ViewTransform {
+  x: number;
+  y: number;
+  scale: number;
+}
+
+type Gesture =
+  | { type: 'pan'; startX: number; startY: number; origin: ViewTransform }
+  | { type: 'pinch'; distance: number; scale: number; canvasX: number; canvasY: number };
+
+const MIN_SCALE = 0.55;
+const MAX_SCALE = 2.2;
+const INITIAL_SCALE = 1;
+
+const clampScale = (value: number) => Math.min(MAX_SCALE, Math.max(MIN_SCALE, value));
+
+export function InteractiveTree({
+  locale,
+  tree: initialTree,
+  source,
+  initialFocusId,
+  initialJoin = false,
+}: Props) {
   const isKk = locale === 'kk';
-  const { data: stats } = useTribeStats();
-  const [expandedZhuz, setExpandedZhuz] = useState<string[]>(
-    highlightTribeId ? TRIBES_DB.map((z) => z.id) : []
+  const [tree, setTree] = useState(initialTree);
+  const initialPath = useMemo(
+    () => findTreePath(initialTree, initialFocusId ?? initialTree.id),
+    [initialFocusId, initialTree],
   );
-  const [selectedTribe, setSelectedTribe] = useState<{ tribe: Tribe; zhuz: Zhuz } | null>(null);
-
-  const getMemberCount = useCallback(
-    (tribeId: string) => stats?.tribes.find((t) => t.tribe_id === tribeId)?.member_count ?? 0,
-    [stats]
+  const initialTargetId = initialPath.at(-1)?.id ?? initialTree.id;
+  const [expanded, setExpanded] = useState<Set<string>>(
+    () => new Set([initialTree.id, ...initialPath.map((node) => node.id)]),
   );
+  const [selectedId, setSelectedId] = useState(initialTargetId);
+  const lastUrlSelection = useRef(initialTargetId);
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [searchStatus, setSearchStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [loadingIds, setLoadingIds] = useState<Set<string>>(() => new Set());
+  const [loadErrors, setLoadErrors] = useState<Set<string>>(() => new Set());
+  const [transform, setTransform] = useState<ViewTransform>({ x: 20, y: 80, scale: INITIAL_SCALE });
+  const [centerRequest, setCenterRequest] = useState({ id: initialTargetId, scale: INITIAL_SCALE, seq: 0 });
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const pointersRef = useRef(new Map<number, { x: number; y: number }>());
+  const gestureRef = useRef<Gesture | null>(null);
+  const suppressClickRef = useRef(false);
+  const hasCenteredRef = useRef(false);
+  const autoCenterRef = useRef(true);
+  const hasInteractedRef = useRef(false);
+  const [joinOpen, setJoinOpen] = useState(initialJoin);
+  const [previewOpen, setPreviewOpen] = useState(Boolean(initialFocusId));
+  const sheetRef = useRef<HTMLDialogElement>(null);
+  const [linkStatus, setLinkStatus] = useState<'idle' | 'copied' | 'error'>('idle');
+  const [expandingLevel, setExpandingLevel] = useState(false);
 
-  const getZhuzMemberCount = useCallback(
-    (zhuzId: string) => stats?.zhuzStats.find((z) => z.zhuzId === zhuzId)?.memberCount ?? 0,
-    [stats]
-  );
-
-  const toggleZhuz = (zhuzId: string) => {
-    setExpandedZhuz((prev) =>
-      prev.includes(zhuzId) ? prev.filter((id) => id !== zhuzId) : [...prev, zhuzId]
-    );
-  };
-
-  const groupTribes = (zhuz: Zhuz) => {
-    if (zhuz.id !== 'kishi') return [{ name: '', tribes: zhuz.tribes }];
-    const groups: Record<string, Tribe[]> = {};
-    for (const t of zhuz.tribes) {
-      const key = (isKk ? t.subgroup_kk : t.subgroup_ru) ?? '';
-      if (!groups[key]) groups[key] = [];
-      groups[key].push(t);
+  const layout = useMemo(() => layoutTree(tree, expanded), [expanded, tree]);
+  const resetLayout = useMemo(() => layoutTree(tree, new Set([tree.id])), [tree]);
+  const selectedPath = useMemo(() => findTreePath(tree, selectedId), [selectedId, tree]);
+  const selected = selectedPath.at(-1) ?? tree;
+  const nextLevel = useMemo(() => getNextTreeLevel(selected, expanded), [selected, expanded]);
+  const selectedTribe = useMemo(() => {
+    if (selected.kind !== 'tribe') return null;
+    const tribeId = selected.id.replace(/^tribe:/, '');
+    for (const zhuz of TRIBES_DB) {
+      const tribe = zhuz.tribes.find((item) => item.id === tribeId);
+      if (tribe) return { tribe, zhuz };
     }
-    return Object.entries(groups).map(([name, tribes]) => ({ name, tribes }));
+    return null;
+  }, [selected]);
+  const contextParent = selectedPath.at(-2);
+  const failedNode = [selected, contextParent].find((node) => node && loadErrors.has(node.id));
+  const sourceTribe = source === 'repo'
+    ? TRIBES_DB.flatMap((zhuz) => zhuz.tribes).find((tribe) => selectedPath.some((node) => node.id === `tribe:${tribe.id}`))
+    : undefined;
+  const normalizedQuery = source === 'repo' ? normalizeTreeSearch(query) : query.trim();
+  const minSearchLength = source === 'repo' ? 2 : 3;
+
+  useEffect(() => {
+    if (lastUrlSelection.current === selectedId) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set('highlight', selectedId);
+    window.history.replaceState(window.history.state, '', url);
+    lastUrlSelection.current = selectedId;
+  }, [selectedId]);
+
+  useEffect(() => {
+    ymGoal('public_tree_open', { locale, mode: source === 'repo' ? 'encyclopedia' : 'published', deep_link: Boolean(initialFocusId) });
+  }, [initialFocusId, locale, source]);
+
+  useEffect(() => {
+    if (normalizedQuery.length < minSearchLength) {
+      setResults([]);
+      setSearchStatus('idle');
+      return;
+    }
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      setSearchStatus('loading');
+      try {
+        const params = new URLSearchParams({
+          q: normalizedQuery,
+          locale,
+          source,
+        });
+        const response = await fetch(`/api/genealogy/search?${params}`, { signal: controller.signal });
+        if (!response.ok) throw new Error('search_failed');
+        const payload = await response.json() as { results?: SearchResult[] };
+        setResults(payload.results ?? []);
+        setSearchStatus('success');
+        ymGoal('public_tree_search', { status: 'success', count: payload.results?.length ?? 0 });
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+        setResults([]);
+        setSearchStatus('error');
+        ymGoal('public_tree_search', { status: 'error' });
+      }
+    }, 250);
+    return () => {
+      controller.abort();
+      window.clearTimeout(timer);
+    };
+  }, [locale, minSearchLength, normalizedQuery, source]);
+
+  const pendingLoads = useRef(new Set<string>());
+  const loadChildren = useCallback(async (node: TribeTreeNode) => {
+    if (!node.hasChildren || (node.children !== undefined && node.nextChildrenOffset == null)) return node.children ?? [];
+    if (pendingLoads.current.has(node.id)) return node.children ?? [];
+    pendingLoads.current.add(node.id);
+    setLoadingIds((current) => new Set(current).add(node.id));
+    setLoadErrors((current) => {
+      const next = new Set(current);
+      next.delete(node.id);
+      return next;
+    });
+    try {
+      const params = new URLSearchParams({ node: node.id, locale, source, offset: String(node.nextChildrenOffset ?? 0) });
+      const response = await fetch(`/api/genealogy/children?${params}`);
+      if (!response.ok) throw new Error('children_failed');
+      const payload = await response.json() as { children?: TribeTreeNode[]; nextOffset?: number | null };
+      const children = payload.children ?? [];
+      setTree((current) => mergeTreeChildren(current, node.id, children, payload.nextOffset ?? null));
+      ymGoal('public_tree_load', { status: 'success', count: children.length });
+      return children;
+    } catch {
+      setLoadErrors((current) => new Set(current).add(node.id));
+      ymGoal('public_tree_load', { status: 'error' });
+      return [];
+    } finally {
+      pendingLoads.current.delete(node.id);
+      setLoadingIds((current) => {
+        const next = new Set(current);
+        next.delete(node.id);
+        return next;
+      });
+    }
+  }, [locale, source]);
+
+  useEffect(() => {
+    const target = initialPath.at(-1);
+    if (initialFocusId && target && (target.children === undefined || target.nextChildrenOffset === 0)) void loadChildren(target);
+    const parent = initialPath.at(-2);
+    if (initialFocusId && window.matchMedia('(max-width: 760px)').matches && parent) void loadChildren(parent);
+  }, [initialFocusId, initialPath, loadChildren]);
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 760px)');
+    const closeOnDesktop = () => { if (!media.matches) sheetRef.current?.close(); };
+    media.addEventListener('change', closeOnDesktop);
+    return () => media.removeEventListener('change', closeOnDesktop);
+  }, []);
+
+  const expandNode = (node: TribeTreeNode) => {
+    setExpanded((current) => new Set(current).add(node.id));
+    return loadChildren(node);
   };
+
+  const expandNextLevel = async () => {
+    // ponytail: bulk expansion is limited to the curated repo tree; external sources stay paginated per node.
+    if (source !== 'repo' || expandingLevel || loadingIds.size) return;
+    hasInteractedRef.current = true;
+    setExpandingLevel(true);
+    await Promise.all(nextLevel.map(expandNode));
+    setExpandingLevel(false);
+  };
+
+  const centerNode = useCallback((id: string, requestedScale?: number) => {
+    const viewport = viewportRef.current;
+    const node = layout.nodes.find((item) => item.id === id);
+    if (!viewport || !node) return;
+    const rect = viewport.getBoundingClientRect();
+    const mobile = window.matchMedia('(max-width: 760px)').matches;
+    const parentId = findTreePath(tree, id).at(-2)?.id;
+    const parent = layout.nodes.find((item) => item.id === parentId);
+    setTransform((current) => {
+      const scale = clampScale(requestedScale ?? current.scale);
+      if (mobile) {
+        // Keep a readable two-column neighbourhood; the rest stays reachable by panning.
+        const left = parent && (node.x - parent.x + TREE_NODE_WIDTH) * scale <= rect.width - 24 ? parent.x : node.x;
+        const peers = layout.nodes.filter((item) => parent?.children?.some((child) => child.id === item.id) && Math.abs(item.y - node.y) <= 3 * 74);
+        const top = Math.min(node.y, parent?.y ?? node.y, ...peers.map((item) => item.y));
+        const bottom = Math.max(node.y, parent?.y ?? node.y, ...peers.map((item) => item.y)) + TREE_NODE_HEIGHT;
+        const availableHeight = Math.max(160, rect.height - 270);
+        const midpoint = bottom - top < availableHeight / scale ? (top + bottom) / 2 : node.y + TREE_NODE_HEIGHT / 2;
+        return { x: 12 - left * scale, y: 78 + availableHeight / 2 - midpoint * scale, scale };
+      }
+      return {
+        x: rect.width * 0.36 - (node.x + TREE_NODE_WIDTH / 2) * scale,
+        y: rect.height / 2 - (node.y + TREE_NODE_HEIGHT / 2) * scale,
+        scale,
+      };
+    });
+  }, [layout.nodes, tree]);
+
+  useEffect(() => {
+    if (hasCenteredRef.current) return;
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const scale = window.matchMedia('(max-width: 760px)').matches
+      ? Math.min(1, (viewport.clientWidth - 24) / 410)
+      : computeViewportFitScale(layout.width, viewport.clientWidth, 24, MIN_SCALE, INITIAL_SCALE);
+    setCenterRequest((current) => ({ id: initialTargetId, scale, seq: current.seq + 1 }));
+    hasCenteredRef.current = true;
+  }, [initialTargetId, layout.width]);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport || typeof ResizeObserver === 'undefined') return;
+    let previousWidth = viewport.clientWidth;
+    const observer = new ResizeObserver(([entry]) => {
+      const width = entry.contentRect.width;
+      if (!width || width === previousWidth || hasInteractedRef.current) return;
+      previousWidth = width;
+      const scale = window.matchMedia('(max-width: 760px)').matches
+        ? Math.min(1, (width - 24) / 410)
+        : computeViewportFitScale(layout.width, width, 24, MIN_SCALE, INITIAL_SCALE);
+      setCenterRequest((current) => ({ id: selectedId, scale, seq: current.seq + 1 }));
+    });
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, [layout.width, selectedId]);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      if (autoCenterRef.current) centerNode(centerRequest.id, centerRequest.scale);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [centerNode, centerRequest]);
+
+  const requestCenter = (id: string, scale = transform.scale) => {
+    autoCenterRef.current = true;
+    setCenterRequest((current) => ({ id, scale, seq: current.seq + 1 }));
+  };
+
+  const selectNode = (node: TribeTreeNode) => {
+    if (suppressClickRef.current) return;
+    hasInteractedRef.current = true;
+    setSelectedId(node.id);
+    setPreviewOpen(true);
+    setLinkStatus('idle');
+    if (node.hasChildren || node.children?.length) {
+      setExpanded((current) => {
+        const next = new Set(current);
+        if (next.has(node.id)) next.delete(node.id);
+        else next.add(node.id);
+        return next;
+      });
+      void loadChildren(node);
+    }
+    const parent = findTreePath(tree, node.id).at(-2);
+    if (window.matchMedia('(max-width: 760px)').matches && parent && (parent.children === undefined || parent.nextChildrenOffset === 0)) void loadChildren(parent);
+    requestCenter(node.id);
+    ymGoal('public_tree_node', { kind: node.kind, action: node.hasChildren || node.children?.length ? (expanded.has(node.id) ? 'collapse' : 'expand') : 'select' });
+  };
+
+  const focusSearchResult = (node: SearchResult) => {
+    const target = findTreePath(tree, node.id).at(-1) ?? node;
+    hasInteractedRef.current = true;
+    setTree((current) => mergeTreePath(current, node.path));
+    setExpanded((current) => new Set([...current, ...node.path.map((pathNode) => pathNode.id)]));
+    setSelectedId(node.id);
+    setPreviewOpen(true);
+    setLinkStatus('idle');
+    setQuery('');
+    const viewport = viewportRef.current;
+    const mobile = window.matchMedia('(max-width: 760px)').matches;
+    requestCenter(node.id, mobile && viewport ? Math.min(1, (viewport.clientWidth - 24) / 410) : 1);
+    const parent = node.path.at(-2);
+    if (mobile && parent) void loadChildren(findTreePath(tree, parent.id).at(-1) ?? parent);
+    if (target.children === undefined || target.nextChildrenOffset === 0) void loadChildren(target);
+    ymGoal('public_tree_search_result', { kind: node.kind });
+  };
+
+  const zoomAt = useCallback((clientX: number, clientY: number, factor: number) => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    hasInteractedRef.current = true;
+    autoCenterRef.current = false;
+    const rect = viewport.getBoundingClientRect();
+    const pointX = clientX - rect.left;
+    const pointY = clientY - rect.top;
+    setTransform((current) => {
+      const scale = clampScale(current.scale * factor);
+      const canvasX = (pointX - current.x) / current.scale;
+      const canvasY = (pointY - current.y) / current.scale;
+      return { x: pointX - canvasX * scale, y: pointY - canvasY * scale, scale };
+    });
+  }, []);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const handleWheel = (event: WheelEvent) => {
+      if (!event.ctrlKey && !event.metaKey) return;
+      event.preventDefault();
+      zoomAt(event.clientX, event.clientY, event.deltaY < 0 ? 1.12 : 0.89);
+    };
+    viewport.addEventListener('wheel', handleWheel, { passive: false });
+    return () => viewport.removeEventListener('wheel', handleWheel);
+  }, [zoomAt]);
+
+  const zoomFromCenter = (factor: number) => {
+    const rect = viewportRef.current?.getBoundingClientRect();
+    if (rect) zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, factor);
+  };
+
+  const resetView = () => {
+    hasInteractedRef.current = false;
+    setExpanded(new Set([tree.id]));
+    setSelectedId(tree.id);
+    setPreviewOpen(false);
+    setLinkStatus('idle');
+    const viewport = viewportRef.current;
+    const nextScale = viewport
+      ? window.matchMedia('(max-width: 760px)').matches
+        ? Math.min(1, (viewport.clientWidth - 24) / 410)
+        : computeViewportFitScale(resetLayout.width, viewport.clientWidth, 24, MIN_SCALE, INITIAL_SCALE)
+      : MIN_SCALE;
+    requestCenter(tree.id, nextScale);
+  };
+
+  const closeJoin = () => {
+    setJoinOpen(false);
+    const url = new URL(window.location.href);
+    url.searchParams.delete('join');
+    window.history.replaceState(null, '', url);
+  };
+
+  const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    if ((event.target as HTMLElement).closest('.tt-toolbar, .tt-search-panel, .tt-context, .tt-load-status')) return;
+    const startedOnNode = Boolean((event.target as HTMLElement).closest('.tt-node'));
+    if (!startedOnNode) event.currentTarget.setPointerCapture(event.pointerId);
+    pointersRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    suppressClickRef.current = false;
+
+    const points = [...pointersRef.current.values()];
+    if (points.length === 1) {
+      gestureRef.current = { type: 'pan', startX: points[0].x, startY: points[0].y, origin: transform };
+    } else if (points.length === 2) {
+      autoCenterRef.current = false;
+      hasInteractedRef.current = true;
+      suppressClickRef.current = true;
+      for (const pointerId of pointersRef.current.keys()) {
+        if (!event.currentTarget.hasPointerCapture(pointerId)) {
+          event.currentTarget.setPointerCapture(pointerId);
+        }
+      }
+      const [a, b] = points;
+      const rect = event.currentTarget.getBoundingClientRect();
+      const midpointX = (a.x + b.x) / 2;
+      const midpointY = (a.y + b.y) / 2;
+      const distance = Math.hypot(a.x - b.x, a.y - b.y);
+      gestureRef.current = {
+        type: 'pinch',
+        distance: Math.max(1, distance),
+        scale: transform.scale,
+        canvasX: (midpointX - rect.left - transform.x) / transform.scale,
+        canvasY: (midpointY - rect.top - transform.y) / transform.scale,
+      };
+    }
+  };
+
+  const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!pointersRef.current.has(event.pointerId)) return;
+    pointersRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    const points = [...pointersRef.current.values()];
+    const gesture = gestureRef.current;
+
+    if (points.length === 1 && gesture?.type === 'pan') {
+      const dx = points[0].x - gesture.startX;
+      const dy = points[0].y - gesture.startY;
+      if (Math.abs(dx) + Math.abs(dy) > 5) {
+        autoCenterRef.current = false;
+        suppressClickRef.current = true;
+        hasInteractedRef.current = true;
+        if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
+          event.currentTarget.setPointerCapture(event.pointerId);
+        }
+      }
+      setTransform({ ...gesture.origin, x: gesture.origin.x + dx, y: gesture.origin.y + dy });
+    } else if (points.length === 2) {
+      const [a, b] = points;
+      const midpointX = (a.x + b.x) / 2;
+      const midpointY = (a.y + b.y) / 2;
+      const distance = Math.hypot(a.x - b.x, a.y - b.y);
+      const pinch = gesture?.type === 'pinch' ? gesture : null;
+      if (!pinch) return;
+      const rect = event.currentTarget.getBoundingClientRect();
+      suppressClickRef.current = true;
+      hasInteractedRef.current = true;
+      const scale = clampScale(pinch.scale * (distance / pinch.distance));
+      setTransform({
+        x: midpointX - rect.left - pinch.canvasX * scale,
+        y: midpointY - rect.top - pinch.canvasY * scale,
+        scale,
+      });
+    }
+  };
+
+  const handlePointerEnd = (event: ReactPointerEvent<HTMLDivElement>) => {
+    pointersRef.current.delete(event.pointerId);
+    const remaining = [...pointersRef.current.values()];
+    if (remaining.length === 1) {
+      gestureRef.current = {
+        type: 'pan',
+        startX: remaining[0].x,
+        startY: remaining[0].y,
+        origin: transform,
+      };
+    } else {
+      gestureRef.current = null;
+      window.setTimeout(() => { suppressClickRef.current = false; }, 0);
+    }
+  };
+
+  const renderDetail = (inSheet = false) => (
+      <article className="tt-detail" aria-live="polite">
+        <div className="tt-detail-path">
+          {selectedPath.map((node, index) => (
+            <span key={node.id}>{index > 0 && <b>→</b>}{node.name}</span>
+          ))}
+        </div>
+        <div className="tt-detail-main">
+          <div className="tt-detail-title">
+            {selected.tamga && <span aria-hidden="true">{selected.tamga}</span>}
+            <div>
+              <p>{isKk ? 'Таңдалған түйін' : 'Выбранный узел'}</p>
+              <h3>{selected.name}</h3>
+            </div>
+          </div>
+          {selected.summary && <p className="tt-detail-summary">{selected.summary}</p>}
+          <div className="tt-detail-actions">
+            <button type="button" className="tt-detail-link" onClick={async () => {
+              const url = new URL(window.location.pathname, window.location.origin);
+              url.searchParams.set('highlight', selected.id);
+              if (source === 'repo') url.searchParams.set('view', 'reference');
+              try {
+                await navigator.clipboard.writeText(url.href);
+                setLinkStatus('copied');
+                ymGoal('public_tree_link', { kind: selected.kind, status: 'copied' });
+              } catch {
+                setLinkStatus('error');
+              }
+            }}>{isKk ? 'Тармақ сілтемесін көшіру' : 'Скопировать ссылку на ветвь'}</button>
+            <span role="status">{linkStatus === 'copied' ? (isKk ? 'Сілтеме көшірілді' : 'Ссылка скопирована') : linkStatus === 'error' ? (isKk ? 'Сілтемені браузердің мекенжай жолағынан көшіріңіз' : 'Скопируйте ссылку из адресной строки браузера') : ''}</span>
+            {selected.hasChildren && (selected.children === undefined || selected.nextChildrenOffset != null) && (
+              <button type="button" className="tt-detail-link" disabled={loadingIds.has(selected.id)} onClick={() => void expandNode(selected)}>
+                {loadingIds.has(selected.id) ? (isKk ? 'Жүктелуде…' : 'Загрузка…') : (isKk ? 'Тағы тармақтарды көрсету' : 'Показать ещё ветви')}
+              </button>
+            )}
+            {loadErrors.has(selected.id) && <p role="alert">{isKk ? 'Тармақ жүктелмеді. Қайталап көріңіз.' : 'Ветвь не загрузилась. Повторите попытку.'}</p>}
+            {selected.href && (
+              <Link href={selected.href} className="tt-detail-link" onClick={() => ymGoal('public_tree_article', { kind: selected.kind })}>
+                {inSheet ? (isKk ? 'Энциклопедиядағы мақала' : 'Статья в энциклопедии') : (isKk ? 'Толық мәліметті ашу' : 'Подробнее')} <span aria-hidden="true">→</span>
+              </Link>
+            )}
+            {selectedTribe && (
+              <button type="button" className="tt-detail-link tt-detail-join" onClick={() => { sheetRef.current?.close(); setJoinOpen(true); }}>
+                {isKk ? 'Руға қосылу' : 'Вступить в род'} <span aria-hidden="true">+</span>
+              </button>
+            )}
+          </div>
+        </div>
+      </article>
+  );
 
   return (
-    <div>
-      {/* Алаш root */}
-      <div className="tree-root">
-        <div className="tree-root-badge">
-          <span>АЛАШ</span>
-          {stats && (
-            <span className="tree-root-count">
-              {stats.totalUsers.toLocaleString()} {isKk ? 'мүше' : 'участников'}
-            </span>
-          )}
+    <section className="tt-explorer ym-hide-content" aria-labelledby="tree-explorer-title">
+      <div className="tt-explorer-heading">
+        <div>
+          <span className="tt-eyebrow">{isKk ? 'Интерактивті карта' : 'Интерактивная карта'}</span>
+          <h2 id="tree-explorer-title">{isKk ? 'Рулар ағашын зерттеңіз' : 'Исследуйте дерево родов'}</h2>
         </div>
-        <div className="tree-root-line" />
+        <p>{isKk ? 'Түйінді ашыңыз, ағашты саусақпен жылжытыңыз және масштабтаңыз.' : 'Раскрывайте узлы, перемещайте дерево пальцем и меняйте масштаб.'}</p>
       </div>
 
-      {/* Жузы */}
-      <div className="tree-zhuzs">
-        {TRIBES_DB.map((zhuz) => {
-          const isExpanded = expandedZhuz.includes(zhuz.id);
-          const zhuzCount = getZhuzMemberCount(zhuz.id);
-          const groups = groupTribes(zhuz);
-
-          return (
-            <div key={zhuz.id} className="tree-zhuz">
-              <button
-                className="tree-zhuz-header"
-                onClick={() => toggleZhuz(zhuz.id)}
-              >
-                <div className="tree-zhuz-header-left">
-                  <div className={`tree-zhuz-icon tree-zhuz-icon--${zhuz.id}`}>
-                    {zhuz.tribes.length}
-                  </div>
-                  <div>
-                    <h3 className="tree-zhuz-name">{isKk ? zhuz.kk : zhuz.ru}</h3>
-                    <p className="tree-zhuz-meta">
-                      {zhuz.tribes.length} {isKk ? 'ру' : 'родов'}
-                      {zhuzCount > 0 && ` · ${zhuzCount.toLocaleString()} ${isKk ? 'мүше' : 'уч.'}`}
-                    </p>
-                  </div>
-                </div>
-                <svg
-                  className={`tree-zhuz-arrow ${isExpanded ? 'tree-zhuz-arrow--open' : ''}`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+      <div className="tt-search-panel">
+        <label htmlFor="tribe-tree-search">{isKk ? 'Руды немесе тармақты табу' : 'Найти род или ветвь'}</label>
+        <div className="tt-search-box">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.3-4.3m2.3-5.2a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" /></svg>
+          <input
+            id="tribe-tree-search"
+            className="ym-disable-keys"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder={isKk ? 'Мысалы: Адай, Найман, Байұлы' : 'Например: Адай, Найман, Байулы'}
+            autoComplete="off"
+          />
+          {query && <button type="button" onClick={() => setQuery('')} aria-label={isKk ? 'Іздеуді тазарту' : 'Очистить поиск'}>×</button>}
+        </div>
+        {normalizedQuery.length >= minSearchLength && (
+          <div className="tt-search-results" aria-live="polite">
+            {searchStatus === 'loading' ? (
+              <p>{isKk ? 'Ізделуде…' : 'Ищем…'}</p>
+            ) : searchStatus === 'error' ? (
+              <p>{isKk ? 'Іздеу уақытша қолжетімсіз' : 'Поиск временно недоступен'}</p>
+            ) : results.length ? results.map((node) => (
+              <button key={node.id} type="button" onClick={() => focusSearchResult(node)}>
+                <span>{node.name}</span>
+                <small>{node.path.slice(0, -1).map((item) => item.name).join(' → ')}</small>
               </button>
-
-              {isExpanded && (
-                <div className="tree-zhuz-body">
-                  {groups.map((group) => (
-                    <div key={group.name || 'all'}>
-                      {group.name && (
-                        <h4 className={`tree-subgroup-label tree-subgroup-label--${zhuz.id}`}>
-                          {group.name}
-                        </h4>
-                      )}
-                      <div className="tree-tribes-grid">
-                        {group.tribes.map((tribe) => {
-                          const count = getMemberCount(tribe.id);
-                          const isHighlighted = tribe.id === highlightTribeId;
-
-                          return (
-                            <button
-                              key={tribe.id}
-                              className={`tree-tribe-card ${isHighlighted ? `tree-tribe-card--highlighted tree-tribe-card--${zhuz.id}` : ''}`}
-                              onClick={() => setSelectedTribe({ tribe, zhuz })}
-                            >
-                              <span className="tree-tribe-tamga">{tribe.tamga}</span>
-                              <span className="tree-tribe-name">
-                                {isKk ? tribe.kk : tribe.ru}
-                              </span>
-                              {count > 0 && (
-                                <span className={`tree-tribe-count tree-tribe-count--${zhuz.id}`}>
-                                  {count.toLocaleString()}
-                                </span>
-                              )}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
+            )) : searchStatus === 'success' ? (
+              <p>{isKk ? 'Сәйкестік табылмады' : 'Совпадений не найдено'}</p>
+            ) : null}
+          </div>
+        )}
       </div>
 
-      {selectedTribe && (
+      {source === 'repo' && (
+        <div className="tt-level-controls">
+          <button type="button" className="tt-detail-link" disabled={expandingLevel || loadingIds.size > 0 || !nextLevel.length} onClick={() => void expandNextLevel()}>
+            {expandingLevel ? (isKk ? 'Жүктелуде…' : 'Загрузка…') : (isKk ? 'Келесі деңгейді ашу' : 'Раскрыть следующий уровень')}
+          </button>
+          <span>{selected.name}</span>
+          {nextLevel.some((node) => loadErrors.has(node.id)) && <p role="alert">{isKk ? 'Тармақ жүктелмеді. Қайталап көріңіз.' : 'Ветвь не загрузилась. Повторите попытку.'}</p>}
+        </div>
+      )}
+
+      <div className="tt-stage">
+      <div
+        ref={viewportRef}
+        className="tt-viewport"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerEnd}
+        onPointerCancel={handlePointerEnd}
+        tabIndex={0}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget) return;
+          const delta: Record<string, [number, number]> = { ArrowLeft: [60, 0], ArrowRight: [-60, 0], ArrowUp: [0, 60], ArrowDown: [0, -60] };
+          const move = delta[event.key];
+          if (!move) return;
+          event.preventDefault();
+          hasInteractedRef.current = true;
+          autoCenterRef.current = false;
+          setTransform((current) => ({ ...current, x: current.x + move[0], y: current.y + move[1] }));
+        }}
+        aria-label={isKk ? 'Қазақ руларының интерактивті ағашы' : 'Интерактивное дерево казахских родов'}
+      >
+        <div className="tt-toolbar" aria-label={isKk ? 'Масштаб басқару' : 'Управление масштабом'}>
+          <button type="button" onClick={() => zoomFromCenter(1.18)} aria-label={isKk ? 'Үлкейту' : 'Приблизить'}>+</button>
+          <button type="button" onClick={() => zoomFromCenter(0.85)} aria-label={isKk ? 'Кішірейту' : 'Отдалить'}>−</button>
+          <button type="button" className="tt-reset" onClick={resetView}>{isKk ? 'Басы' : 'Сначала'}</button>
+        </div>
+        <nav className="tt-context" aria-label={isKk ? 'Ағаштағы орын' : 'Положение в дереве'}>
+          {selectedPath.at(-2) && <button type="button" onClick={() => {
+            const parent = selectedPath.at(-2)!;
+            focusSearchResult({ ...parent, path: selectedPath.slice(0, -1) });
+          }}>← {selectedPath.at(-2)!.name}</button>}
+          <span>{selected.name}</span>
+        </nav>
+        {failedNode ? <div className="tt-load-status" role="alert">
+          <span>{isKk ? 'Тармақ жүктелмеді.' : 'Ветвь не загрузилась.'}</span>
+          <button type="button" onClick={() => void expandNode(failedNode)}>{isKk ? 'Қайталау' : 'Повторить'}</button>
+        </div> : (loadingIds.has(selected.id) || (contextParent && loadingIds.has(contextParent.id))) && <p className="tt-load-status" role="status">{isKk ? 'Жүктелуде…' : 'Загрузка…'}</p>}
+        <p className="tt-gesture-hint">{isKk ? 'Бір саусақ — жылжыту · Екі саусақ — масштаб' : 'Один палец — двигать · Два — масштаб'}</p>
+
+        <div
+          className="tt-canvas"
+          style={{
+            width: layout.width,
+            height: layout.height,
+            transform: `translate3d(${transform.x}px, ${transform.y}px, 0) scale(${transform.scale})`,
+          }}
+        >
+          <svg className="tt-lines" width={layout.width} height={layout.height} aria-hidden="true">
+            {layout.edges.map(({ from, to }) => {
+              const x1 = from.x + TREE_NODE_WIDTH;
+              const y1 = from.y + TREE_NODE_HEIGHT / 2;
+              const x2 = to.x;
+              const y2 = to.y + TREE_NODE_HEIGHT / 2;
+              const bend = (x2 - x1) * 0.5;
+              return <path key={`${from.id}-${to.id}`} d={`M ${x1} ${y1} C ${x1 + bend} ${y1}, ${x2 - bend} ${y2}, ${x2} ${y2}`} />;
+            })}
+          </svg>
+
+          {layout.nodes.map((node) => {
+            const isExpanded = expanded.has(node.id);
+            const isSelected = selectedId === node.id;
+            return (
+              <button
+                key={node.id}
+                data-node-id={node.id}
+                type="button"
+                className={`tt-node tt-node--${node.kind}${isSelected ? ' is-selected' : ''}`}
+                style={{ left: node.x, top: node.y, width: TREE_NODE_WIDTH, height: TREE_NODE_HEIGHT }}
+                onClick={() => selectNode(node)}
+                onFocus={(event) => {
+                  if (event.currentTarget.matches(':focus-visible')) requestCenter(node.id);
+                }}
+                aria-expanded={node.hasChildren ? isExpanded : undefined}
+              >
+                {node.tamga && <span className="tt-node-tamga" aria-hidden="true">{node.tamga}</span>}
+                <span className="tt-node-copy">
+                  <strong>{node.name}</strong>
+                  {node.secondaryName && node.secondaryName !== node.name && <small>{node.secondaryName}</small>}
+                </span>
+                {node.hasChildren && (
+                  <span className="tt-node-toggle" aria-hidden="true">
+                    {loadingIds.has(node.id) ? '…' : isExpanded ? '−' : '+'}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {previewOpen && (
+        <article className="tt-preview" aria-label={isKk ? 'Таңдалған тармақ' : 'Выбранная ветвь'}>
+          <button type="button" className="tt-preview-close" aria-label={isKk ? 'Карточканы жабу' : 'Закрыть карточку'} onClick={() => setPreviewOpen(false)}>×</button>
+          <h3>{selected.name}</h3>
+          {selected.summary && <p>{selected.summary}</p>}
+          <button type="button" className="tt-detail-link tt-preview-more" aria-haspopup="dialog" onClick={() => { hasInteractedRef.current = true; autoCenterRef.current = false; sheetRef.current?.showModal(); }}>{isKk ? 'Толығырақ' : 'Подробнее'} <span aria-hidden="true">↑</span></button>
+        </article>
+      )}
+      </div>
+      <div className="tt-desktop-detail">{renderDetail()}</div>
+      <dialog className="tt-sheet" ref={sheetRef} aria-labelledby="tt-sheet-title">
+        <div className="tt-sheet-header">
+          <h3 id="tt-sheet-title">{selected.name}</h3>
+          <button type="button" aria-label={isKk ? 'Ағашқа оралу' : 'Вернуться к дереву'} onClick={() => sheetRef.current?.close()}>×</button>
+        </div>
+        {renderDetail(true)}
+        <nav className="tt-sheet-branches" aria-label={isKk ? 'Шежіре тармақтары' : 'Ветви шежіре'}>
+          <h4>{isKk ? 'Тармақтар' : 'Ветви'}</h4>
+          {loadingIds.has(selected.id) && <p role="status">{isKk ? 'Жүктелуде…' : 'Загрузка…'}</p>}
+          {!selected.hasChildren && !selected.children?.length && <p>{isKk ? 'Бұл тармақта жалғасы жоқ.' : 'У этой ветви нет продолжения.'}</p>}
+          {selected.children?.map((child) => <button type="button" className="tt-detail-link" key={child.id} onClick={() => {
+            sheetRef.current?.close();
+            selectNode(child);
+          }}>{child.name} <span aria-hidden="true">→</span></button>)}
+        </nav>
+        {sourceTribe?.sources?.length ? (
+          <section className="tt-sheet-sources" aria-labelledby="tt-sources-title">
+            <h4 id="tt-sources-title">{isKk ? 'Дереккөздер' : 'Источники'}: {isKk ? sourceTribe.kk : sourceTribe.ru}</h4>
+            <ul>{sourceTribe.sources.map((item) => <li key={item.url}>
+              <a href={item.url} target="_blank" rel="noopener noreferrer">{item.title} ↗</a>
+              <p>{isKk ? item.locator_kk : item.locator_ru}</p>
+            </li>)}</ul>
+          </section>
+        ) : null}
+      </dialog>
+      {joinOpen && selectedTribe && (
         <TribeJoinModal
           tribe={selectedTribe.tribe}
           zhuz={selectedTribe.zhuz}
           locale={locale}
-          onClose={() => setSelectedTribe(null)}
+          onClose={closeJoin}
           onJoined={() => {
-            setSelectedTribe(null);
+            const url = new URL(window.location.href);
+            url.searchParams.delete('join');
+            window.history.replaceState(null, '', url);
             window.location.reload();
           }}
         />
       )}
-    </div>
+    </section>
   );
 }

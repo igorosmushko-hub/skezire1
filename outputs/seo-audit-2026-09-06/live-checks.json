@@ -1,0 +1,2072 @@
+{
+  "generatedAt": "2026-09-06T11:13:50.553057+00:00",
+  "pages": [
+    {
+      "url": "https://skezire.kz/kk",
+      "finalUrl": "https://skezire.kz/kk",
+      "status": 200,
+      "headers": {
+        "Alt-Svc": "h3=\":443\"; ma=2592000",
+        "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "Content-Type": "text/html; charset=utf-8",
+        "Date": "Sun, 06 Sep 2026 11:13:48 GMT",
+        "Link": "<https://skezire.kz/kk>; rel=\"alternate\"; hreflang=\"kk\", <https://skezire.kz/ru>; rel=\"alternate\"; hreflang=\"ru\", <https://skezire.kz/>; rel=\"alternate\"; hreflang=\"x-default\"",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Set-Cookie": "NEXT_LOCALE=kk; Path=/; SameSite=lax",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "Via": "1.1 Caddy",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Powered-By": "Next.js",
+        "Connection": "close",
+        "Transfer-Encoding": "chunked"
+      },
+      "assets": [
+        "https://mc.yandex.ru/watch/107086067",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fnewyear.jpg&w=640&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fsteppe.jpg&w=640&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fyurt.jpg&w=640&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fyurt.jpg&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Faction-figure-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fancestor-rejuvenated.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fancestor-rejuvenated.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fbefore-cat.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fbefore-elderly-woman.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fbefore-woman.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fghibli-style-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpast-1.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpast-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpet-humanize-1.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpet-humanize-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/1793473f54f4d5c3.css",
+        "https://skezire.kz/_next/static/chunks/2868ee8a6f0872db.js",
+        "https://skezire.kz/_next/static/chunks/42ce61aced01e3cc.js",
+        "https://skezire.kz/_next/static/chunks/4cf5ec1647eeed6b.js",
+        "https://skezire.kz/_next/static/chunks/4f9a87acdf55583b.js",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/56e3743330b3fc35.js",
+        "https://skezire.kz/_next/static/chunks/5d1ef6119d9fea6e.css",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/884cb48c81ca7054.js",
+        "https://skezire.kz/_next/static/chunks/8bbc06f1fce93127.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/b43b42858548d28d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/d52f86d909a5a039.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "blockedAssets": [
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fnewyear.jpg&w=640&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fsteppe.jpg&w=640&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fyurt.jpg&w=640&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fyurt.jpg&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Faction-figure-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fancestor-rejuvenated.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fancestor-rejuvenated.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fbefore-cat.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fbefore-elderly-woman.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fbefore-woman.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fghibli-style-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpast-1.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpast-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpet-humanize-1.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpet-humanize-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/1793473f54f4d5c3.css",
+        "https://skezire.kz/_next/static/chunks/2868ee8a6f0872db.js",
+        "https://skezire.kz/_next/static/chunks/42ce61aced01e3cc.js",
+        "https://skezire.kz/_next/static/chunks/4cf5ec1647eeed6b.js",
+        "https://skezire.kz/_next/static/chunks/4f9a87acdf55583b.js",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/56e3743330b3fc35.js",
+        "https://skezire.kz/_next/static/chunks/5d1ef6119d9fea6e.css",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/884cb48c81ca7054.js",
+        "https://skezire.kz/_next/static/chunks/8bbc06f1fce93127.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/b43b42858548d28d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/d52f86d909a5a039.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "hreflang": [
+        {
+          "rel": "alternate",
+          "hreflang": "kk",
+          "href": "https://skezire.kz/kk"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ru",
+          "href": "https://skezire.kz/ru"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://skezire.kz/kk"
+        }
+      ],
+      "links": [
+        "/kk",
+        "/kk#form-section",
+        "/kk/ai",
+        "/kk/zheti-ata",
+        "/kk/encyclopedia",
+        "/kk/leaderboard",
+        "/kk/order/canvas",
+        "/kk/blog",
+        "/kk#form-section",
+        "/kk/ai",
+        "/kk/zheti-ata",
+        "/kk/encyclopedia",
+        "/kk/leaderboard",
+        "/kk/order/canvas",
+        "/kk/blog",
+        "#form-section",
+        "#ai-section",
+        "/kk/ai/past",
+        "/kk/ai/ancestor",
+        "/kk/ai/pet-humanize",
+        "#ai-section",
+        "#form-section",
+        "#form-section",
+        "#ai-section",
+        "/kk/ai/family-portrait",
+        "/kk/ai/past",
+        "/kk/ai/ancestor",
+        "/kk/ai/action-figure",
+        "/kk/ai/pet-humanize",
+        "/kk/ai/ghibli-style",
+        "/kk/ai/national-costume",
+        "/kk/ai/family-portrait/create",
+        "/kk/ai",
+        "/kk/encyclopedia",
+        "/kk/zheti-ata",
+        "/kk/order/canvas",
+        "/kk/blog",
+        "/kk/glossary",
+        "/kk/oferta",
+        "/kk/privacy",
+        "/kk/delivery",
+        "/kk/refund",
+        "/kk/payment-policy",
+        "/kk/contacts"
+      ],
+      "meta": [
+        {
+          "charset": "utf-8"
+        },
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1, viewport-fit=cover"
+        },
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        },
+        {
+          "name": "description",
+          "content": "Шежіре — қазақ ата-тегінің онлайн ағашы. Жеті атаңызды біліңіз, руыңызды анықтаңыз, шежіре ағашын жасаңыз. AI фото трансформация — 990 ₸-дан. Шежіре постерін холстқа басып алыңыз."
+        },
+        {
+          "name": "author",
+          "content": "Шежіре"
+        },
+        {
+          "name": "keywords",
+          "content": "шежіре, қазақ руы, жеті ата, жүз, ру, генеалогия, ата-тек, AI фото, шежіре ағашы, қазақ тарихы"
+        },
+        {
+          "name": "robots",
+          "content": "index, follow"
+        },
+        {
+          "name": "googlebot",
+          "content": "index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"
+        },
+        {
+          "name": "google-site-verification",
+          "content": "No2iqR-patC5OJeOVvMagXhL2u1U1WX6FHjOxztqf1E"
+        },
+        {
+          "property": "og:title",
+          "content": "Шежіре — Қазақша шежіре ағашы онлайн"
+        },
+        {
+          "property": "og:description",
+          "content": "Жеті атаңызды біліңіз, руыңызды анықтаңыз. AI фото — 990 ₸-дан. Постер холстқа."
+        },
+        {
+          "property": "og:url",
+          "content": "https://skezire.kz/kk"
+        },
+        {
+          "property": "og:site_name",
+          "content": "Шежіре"
+        },
+        {
+          "property": "og:locale",
+          "content": "kk_KZ"
+        },
+        {
+          "property": "og:image",
+          "content": "https://skezire.kz/kk/opengraph-image"
+        },
+        {
+          "property": "og:image:width",
+          "content": "1200"
+        },
+        {
+          "property": "og:image:height",
+          "content": "630"
+        },
+        {
+          "property": "og:image:alt",
+          "content": "Шежіре — казахское генеалогическое дерево"
+        },
+        {
+          "property": "og:type",
+          "content": "website"
+        },
+        {
+          "name": "twitter:card",
+          "content": "summary_large_image"
+        },
+        {
+          "name": "twitter:title",
+          "content": "Шежіре — Қазақша шежіре ағашы онлайн"
+        },
+        {
+          "name": "twitter:description",
+          "content": "Жеті атаңызды біліңіз, руыңызды анықтаңыз. AI фото — 990 ₸-дан. Постер холстқа."
+        },
+        {
+          "name": "twitter:image",
+          "content": "https://skezire.kz/kk/opengraph-image"
+        }
+      ],
+      "textFile": "live/kk.txt"
+    },
+    {
+      "url": "https://skezire.kz/ru",
+      "finalUrl": "https://skezire.kz/ru",
+      "status": 200,
+      "headers": {
+        "Alt-Svc": "h3=\":443\"; ma=2592000",
+        "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "Content-Type": "text/html; charset=utf-8",
+        "Date": "Sun, 06 Sep 2026 11:13:48 GMT",
+        "Link": "<https://skezire.kz/kk>; rel=\"alternate\"; hreflang=\"kk\", <https://skezire.kz/ru>; rel=\"alternate\"; hreflang=\"ru\", <https://skezire.kz/>; rel=\"alternate\"; hreflang=\"x-default\"",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Set-Cookie": "NEXT_LOCALE=ru; Path=/; SameSite=lax",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "Via": "1.1 Caddy",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Powered-By": "Next.js",
+        "Connection": "close",
+        "Transfer-Encoding": "chunked"
+      },
+      "assets": [
+        "https://mc.yandex.ru/watch/107086067",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fnewyear.jpg&w=640&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fsteppe.jpg&w=640&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fyurt.jpg&w=640&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fyurt.jpg&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Faction-figure-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fancestor-rejuvenated.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fancestor-rejuvenated.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fbefore-cat.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fbefore-elderly-woman.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fbefore-woman.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fghibli-style-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpast-1.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpast-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpet-humanize-1.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpet-humanize-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/1793473f54f4d5c3.css",
+        "https://skezire.kz/_next/static/chunks/2868ee8a6f0872db.js",
+        "https://skezire.kz/_next/static/chunks/42ce61aced01e3cc.js",
+        "https://skezire.kz/_next/static/chunks/4cf5ec1647eeed6b.js",
+        "https://skezire.kz/_next/static/chunks/4f9a87acdf55583b.js",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/56e3743330b3fc35.js",
+        "https://skezire.kz/_next/static/chunks/5d1ef6119d9fea6e.css",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/884cb48c81ca7054.js",
+        "https://skezire.kz/_next/static/chunks/8bbc06f1fce93127.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/b43b42858548d28d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/d52f86d909a5a039.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "blockedAssets": [
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fnewyear.jpg&w=640&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fsteppe.jpg&w=640&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fyurt.jpg&w=640&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-backgrounds%2Fyurt.jpg&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Faction-figure-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fancestor-rejuvenated.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fancestor-rejuvenated.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fbefore-cat.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fbefore-elderly-woman.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fbefore-woman.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fghibli-style-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpast-1.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpast-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpet-humanize-1.webp&w=3840&q=75",
+        "https://skezire.kz/_next/image?url=%2Fai-examples%2Fpet-humanize-1.webp&w=828&q=75",
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/1793473f54f4d5c3.css",
+        "https://skezire.kz/_next/static/chunks/2868ee8a6f0872db.js",
+        "https://skezire.kz/_next/static/chunks/42ce61aced01e3cc.js",
+        "https://skezire.kz/_next/static/chunks/4cf5ec1647eeed6b.js",
+        "https://skezire.kz/_next/static/chunks/4f9a87acdf55583b.js",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/56e3743330b3fc35.js",
+        "https://skezire.kz/_next/static/chunks/5d1ef6119d9fea6e.css",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/884cb48c81ca7054.js",
+        "https://skezire.kz/_next/static/chunks/8bbc06f1fce93127.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/b43b42858548d28d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/d52f86d909a5a039.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "hreflang": [
+        {
+          "rel": "alternate",
+          "hreflang": "kk",
+          "href": "https://skezire.kz/kk"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ru",
+          "href": "https://skezire.kz/ru"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://skezire.kz/kk"
+        }
+      ],
+      "links": [
+        "/ru",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/zheti-ata",
+        "/ru/encyclopedia",
+        "/ru/leaderboard",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/zheti-ata",
+        "/ru/encyclopedia",
+        "/ru/leaderboard",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "#form-section",
+        "#ai-section",
+        "/ru/ai/past",
+        "/ru/ai/ancestor",
+        "/ru/ai/pet-humanize",
+        "#ai-section",
+        "#form-section",
+        "#form-section",
+        "#ai-section",
+        "/ru/ai/family-portrait",
+        "/ru/ai/past",
+        "/ru/ai/ancestor",
+        "/ru/ai/action-figure",
+        "/ru/ai/pet-humanize",
+        "/ru/ai/ghibli-style",
+        "/ru/ai/national-costume",
+        "/ru/ai/family-portrait/create",
+        "/ru/ai",
+        "/ru/encyclopedia",
+        "/ru/zheti-ata",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru/glossary",
+        "/ru/oferta",
+        "/ru/privacy",
+        "/ru/delivery",
+        "/ru/refund",
+        "/ru/payment-policy",
+        "/ru/contacts"
+      ],
+      "meta": [
+        {
+          "charset": "utf-8"
+        },
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1, viewport-fit=cover"
+        },
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        },
+        {
+          "name": "description",
+          "content": "Шежіре — казахское генеалогическое дерево онлайн. Узнайте свой род, жуз и семь поколений предков. Создайте шежіре дерево. AI фото трансформация — от 990 ₸. Закажите постер на холсте."
+        },
+        {
+          "name": "author",
+          "content": "Шежіре"
+        },
+        {
+          "name": "keywords",
+          "content": "шежіре, шежире, казахское генеалогическое дерево, казахские роды, жузы, жеті ата, генеалогия казахов, AI фото, родословная"
+        },
+        {
+          "name": "robots",
+          "content": "index, follow"
+        },
+        {
+          "name": "googlebot",
+          "content": "index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"
+        },
+        {
+          "name": "google-site-verification",
+          "content": "No2iqR-patC5OJeOVvMagXhL2u1U1WX6FHjOxztqf1E"
+        },
+        {
+          "property": "og:title",
+          "content": "Шежіре — Казахское генеалогическое дерево онлайн"
+        },
+        {
+          "property": "og:description",
+          "content": "Узнайте свой род и 7 поколений предков. AI фото — от 990 ₸. Постер на холсте."
+        },
+        {
+          "property": "og:url",
+          "content": "https://skezire.kz/ru"
+        },
+        {
+          "property": "og:site_name",
+          "content": "Шежіре"
+        },
+        {
+          "property": "og:locale",
+          "content": "ru_RU"
+        },
+        {
+          "property": "og:image",
+          "content": "https://skezire.kz/ru/opengraph-image"
+        },
+        {
+          "property": "og:image:width",
+          "content": "1200"
+        },
+        {
+          "property": "og:image:height",
+          "content": "630"
+        },
+        {
+          "property": "og:image:alt",
+          "content": "Шежіре — казахское генеалогическое дерево"
+        },
+        {
+          "property": "og:type",
+          "content": "website"
+        },
+        {
+          "name": "twitter:card",
+          "content": "summary_large_image"
+        },
+        {
+          "name": "twitter:title",
+          "content": "Шежіре — Казахское генеалогическое дерево онлайн"
+        },
+        {
+          "name": "twitter:description",
+          "content": "Узнайте свой род и 7 поколений предков. AI фото — от 990 ₸. Постер на холсте."
+        },
+        {
+          "name": "twitter:image",
+          "content": "https://skezire.kz/ru/opengraph-image"
+        }
+      ],
+      "textFile": "live/ru.txt"
+    },
+    {
+      "url": "https://skezire.kz/kk/blog/how-to-create-shezhire",
+      "finalUrl": "https://skezire.kz/kk/blog/how-to-create-shezhire",
+      "status": 200,
+      "headers": {
+        "Alt-Svc": "h3=\":443\"; ma=2592000",
+        "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "Content-Type": "text/html; charset=utf-8",
+        "Date": "Sun, 06 Sep 2026 11:13:48 GMT",
+        "Link": "<https://skezire.kz/kk/blog/how-to-create-shezhire>; rel=\"alternate\"; hreflang=\"kk\", <https://skezire.kz/ru/blog/how-to-create-shezhire>; rel=\"alternate\"; hreflang=\"ru\", <https://skezire.kz/blog/how-to-create-shezhire>; rel=\"alternate\"; hreflang=\"x-default\"",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Set-Cookie": "NEXT_LOCALE=kk; Path=/; SameSite=lax",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "Via": "1.1 Caddy",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Powered-By": "Next.js",
+        "Connection": "close",
+        "Transfer-Encoding": "chunked"
+      },
+      "assets": [
+        "https://mc.yandex.ru/watch/107086067",
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/3f11269e54d5b173.css",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/6a07c1072df80f5f.css",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "blockedAssets": [
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/3f11269e54d5b173.css",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/6a07c1072df80f5f.css",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "hreflang": [
+        {
+          "rel": "alternate",
+          "hreflang": "kk",
+          "href": "https://skezire.kz/kk/blog/how-to-create-shezhire"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ru",
+          "href": "https://skezire.kz/ru/blog/how-to-create-shezhire"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://skezire.kz/kk/blog/how-to-create-shezhire"
+        }
+      ],
+      "links": [
+        "/kk",
+        "/kk#form-section",
+        "/kk/ai",
+        "/kk/zheti-ata",
+        "/kk/encyclopedia",
+        "/kk/leaderboard",
+        "/kk/order/canvas",
+        "/kk/blog",
+        "/kk#form-section",
+        "/kk/ai",
+        "/kk/zheti-ata",
+        "/kk/encyclopedia",
+        "/kk/leaderboard",
+        "/kk/order/canvas",
+        "/kk/blog",
+        "/kk",
+        "/kk/blog",
+        "/kk/glossary",
+        "/kk/ai/past",
+        "/kk/glossary",
+        "/kk/zheti-ata",
+        "/kk/ai/ancestor",
+        "/kk/glossary",
+        "/kk/zheti-ata",
+        "/kk/blog/what-is-shezhire",
+        "/kk/blog/three-zhuz",
+        "/kk/blog/tamga-symbol",
+        "/kk/encyclopedia",
+        "/kk/glossary",
+        "/kk/ai",
+        "/kk",
+        "/kk/blog",
+        "/kk/ai/past",
+        "/kk/ai/ancestor",
+        "/kk/ai/ghibli-style",
+        "/kk/ai",
+        "/kk#form-section",
+        "/kk/ai",
+        "/kk/encyclopedia",
+        "/kk/zheti-ata",
+        "/kk/order/canvas",
+        "/kk/blog",
+        "/kk/glossary",
+        "/kk/oferta",
+        "/kk/privacy",
+        "/kk/delivery",
+        "/kk/refund",
+        "/kk/payment-policy",
+        "/kk/contacts"
+      ],
+      "meta": [
+        {
+          "charset": "utf-8"
+        },
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1, viewport-fit=cover"
+        },
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        },
+        {
+          "name": "description",
+          "content": "Шежіре ағашын жасаудың қадамдық нұсқаулығы: деректерді қайдан табу, қалай жазу, цифрлық шежіре жасау."
+        },
+        {
+          "name": "author",
+          "content": "Шежіре"
+        },
+        {
+          "name": "keywords",
+          "content": "шежіре жасау, шежіре ағашы, генеалогия, ата-тек тарихы, шежіре қалай жасалады"
+        },
+        {
+          "name": "robots",
+          "content": "index, follow"
+        },
+        {
+          "name": "googlebot",
+          "content": "index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"
+        },
+        {
+          "name": "google-site-verification",
+          "content": "No2iqR-patC5OJeOVvMagXhL2u1U1WX6FHjOxztqf1E"
+        },
+        {
+          "property": "og:title",
+          "content": "Шежіре қалай жасалады? — Толық нұсқаулық"
+        },
+        {
+          "property": "og:description",
+          "content": "Шежіре ағашын жасаудың қадамдық нұсқаулығы: деректерді қайдан табу, қалай жазу, цифрлық шежіре жасау."
+        },
+        {
+          "property": "og:url",
+          "content": "https://skezire.kz/kk/blog/how-to-create-shezhire"
+        },
+        {
+          "property": "og:site_name",
+          "content": "Шежіре"
+        },
+        {
+          "property": "og:image",
+          "content": "https://skezire.kz/kk/opengraph-image"
+        },
+        {
+          "property": "og:image:width",
+          "content": "1200"
+        },
+        {
+          "property": "og:image:height",
+          "content": "630"
+        },
+        {
+          "property": "og:image:alt",
+          "content": "Шежіре қалай жасалады? — Толық нұсқаулық"
+        },
+        {
+          "property": "og:type",
+          "content": "article"
+        },
+        {
+          "property": "article:published_time",
+          "content": "2026-03-03"
+        },
+        {
+          "name": "twitter:card",
+          "content": "summary_large_image"
+        },
+        {
+          "name": "twitter:title",
+          "content": "Шежіре қалай жасалады? — Толық нұсқаулық"
+        },
+        {
+          "name": "twitter:description",
+          "content": "Шежіре ағашын жасаудың қадамдық нұсқаулығы: деректерді қайдан табу, қалай жазу, цифрлық шежіре жасау."
+        },
+        {
+          "name": "twitter:image",
+          "content": "https://skezire.kz/kk/opengraph-image"
+        }
+      ],
+      "textFile": "live/kk__blog__how-to-create-shezhire.txt"
+    },
+    {
+      "url": "https://skezire.kz/ru/blog/how-to-create-shezhire",
+      "finalUrl": "https://skezire.kz/ru/blog/how-to-create-shezhire",
+      "status": 200,
+      "headers": {
+        "Alt-Svc": "h3=\":443\"; ma=2592000",
+        "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "Content-Type": "text/html; charset=utf-8",
+        "Date": "Sun, 06 Sep 2026 11:13:49 GMT",
+        "Link": "<https://skezire.kz/kk/blog/how-to-create-shezhire>; rel=\"alternate\"; hreflang=\"kk\", <https://skezire.kz/ru/blog/how-to-create-shezhire>; rel=\"alternate\"; hreflang=\"ru\", <https://skezire.kz/blog/how-to-create-shezhire>; rel=\"alternate\"; hreflang=\"x-default\"",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Set-Cookie": "NEXT_LOCALE=ru; Path=/; SameSite=lax",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "Via": "1.1 Caddy",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Powered-By": "Next.js",
+        "Connection": "close",
+        "Transfer-Encoding": "chunked"
+      },
+      "assets": [
+        "https://mc.yandex.ru/watch/107086067",
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/3f11269e54d5b173.css",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/6a07c1072df80f5f.css",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "blockedAssets": [
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/3f11269e54d5b173.css",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/6a07c1072df80f5f.css",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "hreflang": [
+        {
+          "rel": "alternate",
+          "hreflang": "kk",
+          "href": "https://skezire.kz/kk/blog/how-to-create-shezhire"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ru",
+          "href": "https://skezire.kz/ru/blog/how-to-create-shezhire"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://skezire.kz/kk/blog/how-to-create-shezhire"
+        }
+      ],
+      "links": [
+        "/ru",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/zheti-ata",
+        "/ru/encyclopedia",
+        "/ru/leaderboard",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/zheti-ata",
+        "/ru/encyclopedia",
+        "/ru/leaderboard",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru",
+        "/ru/blog",
+        "/ru/glossary",
+        "/ru/ai/past",
+        "/ru/glossary",
+        "/ru/zheti-ata",
+        "/ru/ai/ancestor",
+        "/ru/glossary",
+        "/ru/blog/what-is-shezhire",
+        "/ru/blog/three-zhuz",
+        "/ru/blog/tamga-symbol",
+        "/ru/encyclopedia",
+        "/ru/glossary",
+        "/ru/ai",
+        "/ru",
+        "/ru/blog",
+        "/ru/ai/past",
+        "/ru/ai/ancestor",
+        "/ru/ai/ghibli-style",
+        "/ru/ai",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/encyclopedia",
+        "/ru/zheti-ata",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru/glossary",
+        "/ru/oferta",
+        "/ru/privacy",
+        "/ru/delivery",
+        "/ru/refund",
+        "/ru/payment-policy",
+        "/ru/contacts"
+      ],
+      "meta": [
+        {
+          "charset": "utf-8"
+        },
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1, viewport-fit=cover"
+        },
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        },
+        {
+          "name": "description",
+          "content": "Пошаговое руководство по составлению генеалогического дерева: где найти данные, как записать, как создать цифровое шежіре."
+        },
+        {
+          "name": "author",
+          "content": "Шежіре"
+        },
+        {
+          "name": "keywords",
+          "content": "как составить генеалогическое дерево, шежіре, родословная, генеалогия, семейное дерево"
+        },
+        {
+          "name": "robots",
+          "content": "index, follow"
+        },
+        {
+          "name": "googlebot",
+          "content": "index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"
+        },
+        {
+          "name": "google-site-verification",
+          "content": "No2iqR-patC5OJeOVvMagXhL2u1U1WX6FHjOxztqf1E"
+        },
+        {
+          "property": "og:title",
+          "content": "Как составить генеалогическое дерево? — Полное руководство"
+        },
+        {
+          "property": "og:description",
+          "content": "Пошаговое руководство по составлению генеалогического дерева: где найти данные, как записать, как создать цифровое шежіре."
+        },
+        {
+          "property": "og:url",
+          "content": "https://skezire.kz/ru/blog/how-to-create-shezhire"
+        },
+        {
+          "property": "og:site_name",
+          "content": "Шежіре"
+        },
+        {
+          "property": "og:image",
+          "content": "https://skezire.kz/ru/opengraph-image"
+        },
+        {
+          "property": "og:image:width",
+          "content": "1200"
+        },
+        {
+          "property": "og:image:height",
+          "content": "630"
+        },
+        {
+          "property": "og:image:alt",
+          "content": "Как составить генеалогическое дерево? — Полное руководство"
+        },
+        {
+          "property": "og:type",
+          "content": "article"
+        },
+        {
+          "property": "article:published_time",
+          "content": "2026-03-03"
+        },
+        {
+          "name": "twitter:card",
+          "content": "summary_large_image"
+        },
+        {
+          "name": "twitter:title",
+          "content": "Как составить генеалогическое дерево? — Полное руководство"
+        },
+        {
+          "name": "twitter:description",
+          "content": "Пошаговое руководство по составлению генеалогического дерева: где найти данные, как записать, как создать цифровое шежіре."
+        },
+        {
+          "name": "twitter:image",
+          "content": "https://skezire.kz/ru/opengraph-image"
+        }
+      ],
+      "textFile": "live/ru__blog__how-to-create-shezhire.txt"
+    },
+    {
+      "url": "https://skezire.kz/kk/encyclopedia",
+      "finalUrl": "https://skezire.kz/kk/encyclopedia",
+      "status": 200,
+      "headers": {
+        "Alt-Svc": "h3=\":443\"; ma=2592000",
+        "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "Content-Type": "text/html; charset=utf-8",
+        "Date": "Sun, 06 Sep 2026 11:13:49 GMT",
+        "Link": "<https://skezire.kz/kk/encyclopedia>; rel=\"alternate\"; hreflang=\"kk\", <https://skezire.kz/ru/encyclopedia>; rel=\"alternate\"; hreflang=\"ru\", <https://skezire.kz/encyclopedia>; rel=\"alternate\"; hreflang=\"x-default\"",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Set-Cookie": "NEXT_LOCALE=kk; Path=/; SameSite=lax",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "Via": "1.1 Caddy",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Powered-By": "Next.js",
+        "Connection": "close",
+        "Transfer-Encoding": "chunked"
+      },
+      "assets": [
+        "https://mc.yandex.ru/watch/107086067",
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/3f11269e54d5b173.css",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/75614bfcadc75ad5.css",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/cd31a5bc2a06be3e.js",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "blockedAssets": [
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/3f11269e54d5b173.css",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/75614bfcadc75ad5.css",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/cd31a5bc2a06be3e.js",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "hreflang": [
+        {
+          "rel": "alternate",
+          "hreflang": "kk",
+          "href": "https://skezire.kz/kk/encyclopedia"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ru",
+          "href": "https://skezire.kz/ru/encyclopedia"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://skezire.kz/kk/encyclopedia"
+        }
+      ],
+      "links": [
+        "/kk",
+        "/kk#form-section",
+        "/kk/ai",
+        "/kk/zheti-ata",
+        "/kk/encyclopedia",
+        "/kk/leaderboard",
+        "/kk/order/canvas",
+        "/kk/blog",
+        "/kk#form-section",
+        "/kk/ai",
+        "/kk/zheti-ata",
+        "/kk/encyclopedia",
+        "/kk/leaderboard",
+        "/kk/order/canvas",
+        "/kk/blog",
+        "/kk/encyclopedia/uly/dulat",
+        "/kk/encyclopedia/uly/jalayir",
+        "/kk/encyclopedia/uly/shapyrashty",
+        "/kk/encyclopedia/uly/ysty",
+        "/kk/encyclopedia/uly/oshakty",
+        "/kk/encyclopedia/uly/sirgeli",
+        "/kk/encyclopedia/uly/kanly",
+        "/kk/encyclopedia/uly/alban",
+        "/kk/encyclopedia/uly/suan",
+        "/kk/encyclopedia/uly/shanishkily",
+        "/kk/encyclopedia/uly/janyis",
+        "/kk/encyclopedia/uly/katagan",
+        "/kk/glossary",
+        "/kk/blog",
+        "/kk/ai/past",
+        "/kk/ai/ancestor",
+        "/kk/ai",
+        "/kk#form-section",
+        "/kk/ai",
+        "/kk/encyclopedia",
+        "/kk/zheti-ata",
+        "/kk/order/canvas",
+        "/kk/blog",
+        "/kk/glossary",
+        "/kk/oferta",
+        "/kk/privacy",
+        "/kk/delivery",
+        "/kk/refund",
+        "/kk/payment-policy",
+        "/kk/contacts"
+      ],
+      "meta": [
+        {
+          "charset": "utf-8"
+        },
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1, viewport-fit=cover"
+        },
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        },
+        {
+          "name": "description",
+          "content": "Ұлы, Орта, Кіші жүз және Жүзден тыс — 47 рудың толық тарихы мен шежіресі. Казақ рулары туралы толық мәлімет."
+        },
+        {
+          "name": "author",
+          "content": "Шежіре"
+        },
+        {
+          "name": "keywords",
+          "content": "қазақ рулары, энциклопедия, жүз, ру, тамға, ұран, шежіре, Ұлы жүз, Орта жүз, Кіші жүз"
+        },
+        {
+          "name": "robots",
+          "content": "index, follow"
+        },
+        {
+          "name": "googlebot",
+          "content": "index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"
+        },
+        {
+          "name": "google-site-verification",
+          "content": "No2iqR-patC5OJeOVvMagXhL2u1U1WX6FHjOxztqf1E"
+        },
+        {
+          "property": "og:title",
+          "content": "Қазақ рулары энциклопедиясы | Шежіре"
+        },
+        {
+          "property": "og:description",
+          "content": "Ұлы, Орта, Кіші жүз және Жүзден тыс — 47 рудың толық тарихы."
+        },
+        {
+          "property": "og:url",
+          "content": "https://skezire.kz/kk/encyclopedia"
+        },
+        {
+          "property": "og:site_name",
+          "content": "Шежіре"
+        },
+        {
+          "property": "og:image",
+          "content": "https://skezire.kz/kk/opengraph-image"
+        },
+        {
+          "property": "og:image:width",
+          "content": "1200"
+        },
+        {
+          "property": "og:image:height",
+          "content": "630"
+        },
+        {
+          "property": "og:image:alt",
+          "content": "Шежіре — Энциклопедия казахских родов"
+        },
+        {
+          "property": "og:type",
+          "content": "website"
+        },
+        {
+          "name": "twitter:card",
+          "content": "summary_large_image"
+        },
+        {
+          "name": "twitter:title",
+          "content": "Қазақ рулары энциклопедиясы | Шежіре"
+        },
+        {
+          "name": "twitter:description",
+          "content": "Ұлы, Орта, Кіші жүз және Жүзден тыс — 47 рудың толық тарихы."
+        },
+        {
+          "name": "twitter:image",
+          "content": "https://skezire.kz/kk/opengraph-image"
+        }
+      ],
+      "textFile": "live/kk__encyclopedia.txt"
+    },
+    {
+      "url": "https://skezire.kz/ru/encyclopedia",
+      "finalUrl": "https://skezire.kz/ru/encyclopedia",
+      "status": 200,
+      "headers": {
+        "Alt-Svc": "h3=\":443\"; ma=2592000",
+        "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "Content-Type": "text/html; charset=utf-8",
+        "Date": "Sun, 06 Sep 2026 11:13:49 GMT",
+        "Link": "<https://skezire.kz/kk/encyclopedia>; rel=\"alternate\"; hreflang=\"kk\", <https://skezire.kz/ru/encyclopedia>; rel=\"alternate\"; hreflang=\"ru\", <https://skezire.kz/encyclopedia>; rel=\"alternate\"; hreflang=\"x-default\"",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Set-Cookie": "NEXT_LOCALE=ru; Path=/; SameSite=lax",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "Via": "1.1 Caddy",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Powered-By": "Next.js",
+        "Connection": "close",
+        "Transfer-Encoding": "chunked"
+      },
+      "assets": [
+        "https://mc.yandex.ru/watch/107086067",
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/3f11269e54d5b173.css",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/75614bfcadc75ad5.css",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/cd31a5bc2a06be3e.js",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "blockedAssets": [
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/3f11269e54d5b173.css",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/75614bfcadc75ad5.css",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/cd31a5bc2a06be3e.js",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "hreflang": [
+        {
+          "rel": "alternate",
+          "hreflang": "kk",
+          "href": "https://skezire.kz/kk/encyclopedia"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ru",
+          "href": "https://skezire.kz/ru/encyclopedia"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://skezire.kz/kk/encyclopedia"
+        }
+      ],
+      "links": [
+        "/ru",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/zheti-ata",
+        "/ru/encyclopedia",
+        "/ru/leaderboard",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/zheti-ata",
+        "/ru/encyclopedia",
+        "/ru/leaderboard",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru/encyclopedia/uly/dulat",
+        "/ru/encyclopedia/uly/jalayir",
+        "/ru/encyclopedia/uly/shapyrashty",
+        "/ru/encyclopedia/uly/ysty",
+        "/ru/encyclopedia/uly/oshakty",
+        "/ru/encyclopedia/uly/sirgeli",
+        "/ru/encyclopedia/uly/kanly",
+        "/ru/encyclopedia/uly/alban",
+        "/ru/encyclopedia/uly/suan",
+        "/ru/encyclopedia/uly/shanishkily",
+        "/ru/encyclopedia/uly/janyis",
+        "/ru/encyclopedia/uly/katagan",
+        "/ru/glossary",
+        "/ru/blog",
+        "/ru/ai/past",
+        "/ru/ai/ancestor",
+        "/ru/ai",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/encyclopedia",
+        "/ru/zheti-ata",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru/glossary",
+        "/ru/oferta",
+        "/ru/privacy",
+        "/ru/delivery",
+        "/ru/refund",
+        "/ru/payment-policy",
+        "/ru/contacts"
+      ],
+      "meta": [
+        {
+          "charset": "utf-8"
+        },
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1, viewport-fit=cover"
+        },
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        },
+        {
+          "name": "description",
+          "content": "Старший, Средний, Младший жуз и Вне жузов — полная история 47 казахских родов. Происхождение, тамга, уран, известные люди."
+        },
+        {
+          "name": "author",
+          "content": "Шежіре"
+        },
+        {
+          "name": "keywords",
+          "content": "казахские роды, энциклопедия, жуз, род, тамга, уран, шежіре, Старший жуз, Средний жуз, Младший жуз"
+        },
+        {
+          "name": "robots",
+          "content": "index, follow"
+        },
+        {
+          "name": "googlebot",
+          "content": "index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"
+        },
+        {
+          "name": "google-site-verification",
+          "content": "No2iqR-patC5OJeOVvMagXhL2u1U1WX6FHjOxztqf1E"
+        },
+        {
+          "property": "og:title",
+          "content": "Энциклопедия казахских родов | Шежіре"
+        },
+        {
+          "property": "og:description",
+          "content": "Полная история 47 казахских родов: происхождение, тамга, уран, известные люди."
+        },
+        {
+          "property": "og:url",
+          "content": "https://skezire.kz/ru/encyclopedia"
+        },
+        {
+          "property": "og:site_name",
+          "content": "Шежіре"
+        },
+        {
+          "property": "og:image",
+          "content": "https://skezire.kz/ru/opengraph-image"
+        },
+        {
+          "property": "og:image:width",
+          "content": "1200"
+        },
+        {
+          "property": "og:image:height",
+          "content": "630"
+        },
+        {
+          "property": "og:image:alt",
+          "content": "Шежіре — Энциклопедия казахских родов"
+        },
+        {
+          "property": "og:type",
+          "content": "website"
+        },
+        {
+          "name": "twitter:card",
+          "content": "summary_large_image"
+        },
+        {
+          "name": "twitter:title",
+          "content": "Энциклопедия казахских родов | Шежіре"
+        },
+        {
+          "name": "twitter:description",
+          "content": "Полная история 47 казахских родов: происхождение, тамга, уран, известные люди."
+        },
+        {
+          "name": "twitter:image",
+          "content": "https://skezire.kz/ru/opengraph-image"
+        }
+      ],
+      "textFile": "live/ru__encyclopedia.txt"
+    },
+    {
+      "url": "https://skezire.kz/kk/shezhire-tree",
+      "finalUrl": "https://skezire.kz/kk/shezhire-tree",
+      "status": 200,
+      "headers": {
+        "Alt-Svc": "h3=\":443\"; ma=2592000",
+        "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "Content-Type": "text/html; charset=utf-8",
+        "Date": "Sun, 06 Sep 2026 11:13:49 GMT",
+        "Link": "<https://skezire.kz/kk/shezhire-tree>; rel=\"alternate\"; hreflang=\"kk\", <https://skezire.kz/ru/shezhire-tree>; rel=\"alternate\"; hreflang=\"ru\", <https://skezire.kz/shezhire-tree>; rel=\"alternate\"; hreflang=\"x-default\"",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Set-Cookie": "NEXT_LOCALE=kk; Path=/; SameSite=lax",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "Via": "1.1 Caddy",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Powered-By": "Next.js",
+        "Connection": "close",
+        "Transfer-Encoding": "chunked"
+      },
+      "assets": [
+        "https://mc.yandex.ru/watch/107086067",
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/4cf5ec1647eeed6b.js",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/55ffcacc67ea864b.css",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/7d3934f84dc1dd0b.js",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "blockedAssets": [
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/4cf5ec1647eeed6b.js",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/55ffcacc67ea864b.css",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/7d3934f84dc1dd0b.js",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "hreflang": [
+        {
+          "rel": "alternate",
+          "hreflang": "kk",
+          "href": "https://skezire.kz/kk/shezhire-tree"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ru",
+          "href": "https://skezire.kz/ru/shezhire-tree"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://skezire.kz/kk/shezhire-tree"
+        }
+      ],
+      "links": [
+        "/kk",
+        "/kk#form-section",
+        "/kk/ai",
+        "/kk/zheti-ata",
+        "/kk/encyclopedia",
+        "/kk/leaderboard",
+        "/kk/order/canvas",
+        "/kk/blog",
+        "/kk#form-section",
+        "/kk/ai",
+        "/kk/zheti-ata",
+        "/kk/encyclopedia",
+        "/kk/leaderboard",
+        "/kk/order/canvas",
+        "/kk/blog",
+        "/kk/ai",
+        "/kk/encyclopedia",
+        "/kk/zheti-ata",
+        "/kk/order/canvas",
+        "/kk/blog",
+        "/kk/glossary",
+        "/kk/oferta",
+        "/kk/privacy",
+        "/kk/delivery",
+        "/kk/refund",
+        "/kk/payment-policy",
+        "/kk/contacts"
+      ],
+      "meta": [
+        {
+          "charset": "utf-8"
+        },
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1, viewport-fit=cover"
+        },
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        },
+        {
+          "name": "description",
+          "content": "Интерактивті шежіре ағашы: Алаш → Ұлы жүз, Орта жүз, Кіші жүз → 47 ру. Руыңызды тауып, қосылыңыз және жарысқа қатысыңыз!"
+        },
+        {
+          "name": "author",
+          "content": "Шежіре"
+        },
+        {
+          "name": "keywords",
+          "content": "шежіре, қазақ руы, жеті ата, жүз, ру, генеалогия, ата-тек, AI фото, жасанды интеллект, гибли стилі"
+        },
+        {
+          "name": "robots",
+          "content": "index, follow"
+        },
+        {
+          "name": "googlebot",
+          "content": "index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"
+        },
+        {
+          "name": "google-site-verification",
+          "content": "No2iqR-patC5OJeOVvMagXhL2u1U1WX6FHjOxztqf1E"
+        },
+        {
+          "property": "og:title",
+          "content": "Шежіре ағашы — Алаш, жүздер, 47 ру"
+        },
+        {
+          "property": "og:description",
+          "content": "Интерактивті шежіре ағашы: Алаш → Жүздер → 47 ру"
+        },
+        {
+          "property": "og:url",
+          "content": "https://skezire.kz/kk/shezhire-tree"
+        },
+        {
+          "property": "og:site_name",
+          "content": "Шежіре"
+        },
+        {
+          "property": "og:locale",
+          "content": "kk_KZ"
+        },
+        {
+          "property": "og:image",
+          "content": "https://skezire.kz/kk/opengraph-image"
+        },
+        {
+          "property": "og:image:width",
+          "content": "1200"
+        },
+        {
+          "property": "og:image:height",
+          "content": "630"
+        },
+        {
+          "property": "og:image:alt",
+          "content": "Шежіре ағашы"
+        },
+        {
+          "property": "og:type",
+          "content": "website"
+        },
+        {
+          "name": "twitter:card",
+          "content": "summary_large_image"
+        },
+        {
+          "name": "twitter:title",
+          "content": "Шежіре ағашы — Алаш, жүздер, 47 ру"
+        },
+        {
+          "name": "twitter:description",
+          "content": "Интерактивті шежіре ағашы: Алаш → Жүздер → 47 ру"
+        },
+        {
+          "name": "twitter:image",
+          "content": "https://skezire.kz/kk/opengraph-image"
+        }
+      ],
+      "textFile": "live/kk__shezhire-tree.txt"
+    },
+    {
+      "url": "https://skezire.kz/ru/shezhire-tree",
+      "finalUrl": "https://skezire.kz/ru/shezhire-tree",
+      "status": 200,
+      "headers": {
+        "Alt-Svc": "h3=\":443\"; ma=2592000",
+        "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "Content-Type": "text/html; charset=utf-8",
+        "Date": "Sun, 06 Sep 2026 11:13:50 GMT",
+        "Link": "<https://skezire.kz/kk/shezhire-tree>; rel=\"alternate\"; hreflang=\"kk\", <https://skezire.kz/ru/shezhire-tree>; rel=\"alternate\"; hreflang=\"ru\", <https://skezire.kz/shezhire-tree>; rel=\"alternate\"; hreflang=\"x-default\"",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Set-Cookie": "NEXT_LOCALE=ru; Path=/; SameSite=lax",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "Via": "1.1 Caddy",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Powered-By": "Next.js",
+        "Connection": "close",
+        "Transfer-Encoding": "chunked"
+      },
+      "assets": [
+        "https://mc.yandex.ru/watch/107086067",
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/4cf5ec1647eeed6b.js",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/55ffcacc67ea864b.css",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/7d3934f84dc1dd0b.js",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "blockedAssets": [
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/4cf5ec1647eeed6b.js",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/55ffcacc67ea864b.css",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/7d3934f84dc1dd0b.js",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "hreflang": [
+        {
+          "rel": "alternate",
+          "hreflang": "kk",
+          "href": "https://skezire.kz/kk/shezhire-tree"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ru",
+          "href": "https://skezire.kz/ru/shezhire-tree"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://skezire.kz/kk/shezhire-tree"
+        }
+      ],
+      "links": [
+        "/ru",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/zheti-ata",
+        "/ru/encyclopedia",
+        "/ru/leaderboard",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/zheti-ata",
+        "/ru/encyclopedia",
+        "/ru/leaderboard",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru/ai",
+        "/ru/encyclopedia",
+        "/ru/zheti-ata",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru/glossary",
+        "/ru/oferta",
+        "/ru/privacy",
+        "/ru/delivery",
+        "/ru/refund",
+        "/ru/payment-policy",
+        "/ru/contacts"
+      ],
+      "meta": [
+        {
+          "charset": "utf-8"
+        },
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1, viewport-fit=cover"
+        },
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        },
+        {
+          "name": "description",
+          "content": "Интерактивное дерево шежіре: Алаш → Старший, Средний, Младший жуз → 47 родов. Найдите свой род и присоединяйтесь!"
+        },
+        {
+          "name": "author",
+          "content": "Шежіре"
+        },
+        {
+          "name": "keywords",
+          "content": "шежіре, шежире, казахское генеалогическое дерево, казахские роды, жузы, жеті ата, генеалогия казахов, AI фото, нейросеть, стиль гибли"
+        },
+        {
+          "name": "robots",
+          "content": "index, follow"
+        },
+        {
+          "name": "googlebot",
+          "content": "index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"
+        },
+        {
+          "name": "google-site-verification",
+          "content": "No2iqR-patC5OJeOVvMagXhL2u1U1WX6FHjOxztqf1E"
+        },
+        {
+          "property": "og:title",
+          "content": "Дерево шежіре — Алаш, жузы, 47 родов"
+        },
+        {
+          "property": "og:description",
+          "content": "Интерактивное дерево шежіре: Алаш → Жузы → 47 родов"
+        },
+        {
+          "property": "og:url",
+          "content": "https://skezire.kz/ru/shezhire-tree"
+        },
+        {
+          "property": "og:site_name",
+          "content": "Шежіре"
+        },
+        {
+          "property": "og:locale",
+          "content": "ru_RU"
+        },
+        {
+          "property": "og:image",
+          "content": "https://skezire.kz/ru/opengraph-image"
+        },
+        {
+          "property": "og:image:width",
+          "content": "1200"
+        },
+        {
+          "property": "og:image:height",
+          "content": "630"
+        },
+        {
+          "property": "og:image:alt",
+          "content": "Дерево шежіре"
+        },
+        {
+          "property": "og:type",
+          "content": "website"
+        },
+        {
+          "name": "twitter:card",
+          "content": "summary_large_image"
+        },
+        {
+          "name": "twitter:title",
+          "content": "Дерево шежіре — Алаш, жузы, 47 родов"
+        },
+        {
+          "name": "twitter:description",
+          "content": "Интерактивное дерево шежіре: Алаш → Жузы → 47 родов"
+        },
+        {
+          "name": "twitter:image",
+          "content": "https://skezire.kz/ru/opengraph-image"
+        }
+      ],
+      "textFile": "live/ru__shezhire-tree.txt"
+    },
+    {
+      "url": "https://skezire.kz/ru/zheti-ata",
+      "finalUrl": "https://skezire.kz/ru/zheti-ata",
+      "status": 200,
+      "headers": {
+        "Alt-Svc": "h3=\":443\"; ma=2592000",
+        "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "Content-Type": "text/html; charset=utf-8",
+        "Date": "Sun, 06 Sep 2026 11:13:50 GMT",
+        "Link": "<https://skezire.kz/kk/zheti-ata>; rel=\"alternate\"; hreflang=\"kk\", <https://skezire.kz/ru/zheti-ata>; rel=\"alternate\"; hreflang=\"ru\", <https://skezire.kz/zheti-ata>; rel=\"alternate\"; hreflang=\"x-default\"",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Set-Cookie": "NEXT_LOCALE=ru; Path=/; SameSite=lax",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "Via": "1.1 Caddy",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Powered-By": "Next.js",
+        "Connection": "close",
+        "Transfer-Encoding": "chunked"
+      },
+      "assets": [
+        "https://mc.yandex.ru/watch/107086067",
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/1562e2a77601b553.css",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "blockedAssets": [
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/1562e2a77601b553.css",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/526ca3c405add68c.js",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d0b8fcb46b5da0ab.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "hreflang": [
+        {
+          "rel": "alternate",
+          "hreflang": "kk",
+          "href": "https://skezire.kz/kk/zheti-ata"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ru",
+          "href": "https://skezire.kz/ru/zheti-ata"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://skezire.kz/kk/zheti-ata"
+        }
+      ],
+      "links": [
+        "/ru",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/zheti-ata",
+        "/ru/encyclopedia",
+        "/ru/leaderboard",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/zheti-ata",
+        "/ru/encyclopedia",
+        "/ru/leaderboard",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru",
+        "/ru#form-section",
+        "/ru/ai",
+        "/ru/encyclopedia",
+        "/ru/zheti-ata",
+        "/ru/order/canvas",
+        "/ru/blog",
+        "/ru/glossary",
+        "/ru/oferta",
+        "/ru/privacy",
+        "/ru/delivery",
+        "/ru/refund",
+        "/ru/payment-policy",
+        "/ru/contacts"
+      ],
+      "meta": [
+        {
+          "charset": "utf-8"
+        },
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1, viewport-fit=cover"
+        },
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        },
+        {
+          "name": "description",
+          "content": "Что такое жеті ата? Казахская традиция знать семь поколений предков — экзогамия, род, тамга, единство племени. Полное объяснение."
+        },
+        {
+          "name": "author",
+          "content": "Шежіре"
+        },
+        {
+          "name": "keywords",
+          "content": "жеті ата, семь предков, казахская традиция, экзогамия, шежіре, генеалогия, род, жуз"
+        },
+        {
+          "name": "robots",
+          "content": "index, follow"
+        },
+        {
+          "name": "googlebot",
+          "content": "index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"
+        },
+        {
+          "name": "google-site-verification",
+          "content": "No2iqR-patC5OJeOVvMagXhL2u1U1WX6FHjOxztqf1E"
+        },
+        {
+          "property": "og:title",
+          "content": "Жеті ата — Традиция семи предков у казахов"
+        },
+        {
+          "property": "og:description",
+          "content": "Почему каждый казах должен знать семь предков? Полное объяснение."
+        },
+        {
+          "property": "og:url",
+          "content": "https://skezire.kz/ru/zheti-ata"
+        },
+        {
+          "property": "og:site_name",
+          "content": "Шежіре"
+        },
+        {
+          "property": "og:image",
+          "content": "https://skezire.kz/ru/opengraph-image"
+        },
+        {
+          "property": "og:image:width",
+          "content": "1200"
+        },
+        {
+          "property": "og:image:height",
+          "content": "630"
+        },
+        {
+          "property": "og:image:alt",
+          "content": "Жеті ата"
+        },
+        {
+          "property": "og:type",
+          "content": "article"
+        },
+        {
+          "name": "twitter:card",
+          "content": "summary_large_image"
+        },
+        {
+          "name": "twitter:title",
+          "content": "Жеті ата — Семь предков"
+        },
+        {
+          "name": "twitter:description",
+          "content": "Почему каждый казах должен знать семь предков? Полное объяснение."
+        },
+        {
+          "name": "twitter:image",
+          "content": "https://skezire.kz/ru/opengraph-image"
+        }
+      ],
+      "textFile": "live/ru__zheti-ata.txt"
+    },
+    {
+      "url": "https://skezire.kz/ru/seo-audit-missing-20260906",
+      "finalUrl": "https://skezire.kz/ru/seo-audit-missing-20260906",
+      "status": 404,
+      "headers": {
+        "Alt-Svc": "h3=\":443\"; ma=2592000",
+        "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "Content-Type": "text/html; charset=utf-8",
+        "Date": "Sun, 06 Sep 2026 11:13:50 GMT",
+        "Link": "<https://skezire.kz/kk/seo-audit-missing-20260906>; rel=\"alternate\"; hreflang=\"kk\", <https://skezire.kz/ru/seo-audit-missing-20260906>; rel=\"alternate\"; hreflang=\"ru\", <https://skezire.kz/seo-audit-missing-20260906>; rel=\"alternate\"; hreflang=\"x-default\"",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Set-Cookie": "NEXT_LOCALE=ru; Path=/; SameSite=lax",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "Via": "1.1 Caddy",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Powered-By": "Next.js",
+        "Connection": "close",
+        "Transfer-Encoding": "chunked"
+      },
+      "assets": [
+        "https://mc.yandex.ru/watch/107086067",
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "blockedAssets": [
+        "https://skezire.kz/_next/static/chunks/0395213fe1c8a164.js",
+        "https://skezire.kz/_next/static/chunks/51ddee8f1e24f7fa.js",
+        "https://skezire.kz/_next/static/chunks/66a8c16702b8a250.js",
+        "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+        "https://skezire.kz/_next/static/chunks/82abf2d65f5428ae.js",
+        "https://skezire.kz/_next/static/chunks/918a52c4652b69a9.js",
+        "https://skezire.kz/_next/static/chunks/a6dad97d9634a72d.js",
+        "https://skezire.kz/_next/static/chunks/c77a80631994443b.css",
+        "https://skezire.kz/_next/static/chunks/d2be314c3ece3fbe.js",
+        "https://skezire.kz/_next/static/chunks/d4cf4caae891f664.js",
+        "https://skezire.kz/_next/static/chunks/ff1a16fafef87110.js",
+        "https://skezire.kz/_next/static/chunks/turbopack-e7d64e65761a3868.js"
+      ],
+      "hreflang": [],
+      "links": [],
+      "meta": [
+        {
+          "charset": "utf-8"
+        },
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1, viewport-fit=cover"
+        },
+        {
+          "name": "robots",
+          "content": "noindex"
+        },
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        }
+      ],
+      "textFile": "live/ru__seo-audit-missing-20260906.txt"
+    }
+  ]
+}

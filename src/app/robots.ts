@@ -6,12 +6,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/_next/', '/agents/', '/api/'],
+        disallow: ['/agents/', '/api/'],
       },
       {
         userAgent: 'Yandex',
         allow: '/',
-        disallow: ['/_next/', '/agents/', '/api/'],
+        disallow: ['/agents/', '/api/'],
       },
     ],
     sitemap: 'https://skezire.kz/sitemap.xml',

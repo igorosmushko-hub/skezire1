@@ -36,7 +36,7 @@ export function LeaderboardTeaser({ locale }: { locale: string }) {
             return (
               <div key={tribe.tribe_id} className="lb-teaser-row">
                 <span className="lb-teaser-pos">{i < 3 ? MEDALS[i] : `${i + 1}`}</span>
-                <span className="lb-teaser-tamga">{found?.tribe.tamga}</span>
+                {found?.tribe.tamga && <span className="lb-teaser-tamga">{found?.tribe.tamga}</span>}
                 <span className="lb-teaser-name">{tribeName}</span>
                 <span className="lb-teaser-count">{tribe.member_count.toLocaleString()}</span>
               </div>

@@ -5,6 +5,10 @@ export interface NotablePerson {
 }
 
 export interface SubTribe {
+  children?: SubTribe[];
+  note?: { kk: string; ru: string };
+  aliases?: string[];
+  id: string;
   kk: string;
   ru: string;
 }
@@ -28,6 +32,16 @@ export interface Tribe {
   history_kk?: string;
   history_ru?: string;
   relatedTribes?: string[];
+  historyTitle?: { kk: string; ru: string };
+  branchNote?: { kk: string; ru: string };
+  branchTitle?: { kk: string; ru: string };
+  updatedAt?: string;
+  sources?: {
+    title: string;
+    url: string;
+    locator_kk: string;
+    locator_ru: string;
+  }[];
 }
 
 export interface Zhuz {

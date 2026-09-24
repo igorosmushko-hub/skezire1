@@ -1,0 +1,2192 @@
+{
+  "findings": {
+    "schemaVersion": 1,
+    "scope": "returned-report",
+    "coverage": {
+      "state": "complete",
+      "detail": "Every finding in the declared report scope is represented."
+    },
+    "counts": {
+      "total": 8,
+      "returned": 8,
+      "fixes": 1,
+      "reviews": 7,
+      "open": 8
+    },
+    "completion": {
+      "state": "pending",
+      "instruction": "Before finishing, return one allowed outcome and reason for every open item; the outcome count must equal counts.returned. A review is a decision task, not an instruction to change the site. Do not silently drop findings."
+    },
+    "verification": {
+      "requiredAfterChanges": true,
+      "instruction": "After edits, run each changed item's verification and rerun the originating report. A code change alone does not close a finding.",
+      "reportCheck": "Rerun seo report with the same inputs and confirm the finding is absent or its evidence now matches the intended state."
+    },
+    "sourcePaths": [
+      "actions"
+    ],
+    "items": [
+      {
+        "id": "crawl:title_duplicate",
+        "status": "open",
+        "title": "title_duplicate: Duplicate title (2 URLs)",
+        "confidence": "high",
+        "severity": "medium",
+        "affectedCount": 2,
+        "affectedUrls": {
+          "total": 2,
+          "returned": 2,
+          "complete": true,
+          "items": [
+            "https://skezire.kz/kk/ai",
+            "https://skezire.kz/ru/ai"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "title_duplicate"
+            }
+          }
+        },
+        "sourcePath": "actions[0]",
+        "evidence": {
+          "ruleId": "title_duplicate",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This ranks as a fix. Severity is 1200; 2 URLs are affected; estimated effort is low.",
+          "sampleUrls": [
+            "https://skezire.kz/kk/ai",
+            "https://skezire.kz/ru/ai"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity medium --max-pages 100",
+          "expected": "Re-run the crawl and confirm this title appears on only one indexable URL."
+        },
+        "type": "fix",
+        "fix": {
+          "instruction": "Rewrite each title so it reflects the specific page, including the unique entity, intent, location, product, or angle."
+        },
+        "allowedOutcomes": [
+          "fixed",
+          "deferred",
+          "not-needed"
+        ]
+      },
+      {
+        "id": "crawl:noindex",
+        "status": "open",
+        "title": "noindex: Noindex found (2 URLs)",
+        "confidence": "medium",
+        "severity": "medium",
+        "affectedCount": 2,
+        "affectedUrls": {
+          "total": 2,
+          "returned": 2,
+          "complete": true,
+          "items": [
+            "https://skezire.kz/kk/ai/family-portrait/create",
+            "https://skezire.kz/ru/ai/family-portrait/create"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "noindex"
+            }
+          }
+        },
+        "sourcePath": "actions[1]",
+        "evidence": {
+          "ruleId": "noindex",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/kk/ai/family-portrait/create",
+            "https://skezire.kz/ru/ai/family-portrait/create"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity medium --max-pages 100",
+          "expected": "Re-run the crawl or URL Inspection and confirm no effective meta robots or X-Robots-Tag noindex remains, including the equivalent none directive."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"noindex: Noindex found (2 URLs)\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Remove the noindex directive if the page should rank. Leave it in place only for intentionally private or low-value pages.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "crawl:hsts_missing",
+        "status": "open",
+        "title": "hsts_missing: HSTS header missing (172 URLs)",
+        "confidence": "medium",
+        "severity": "low",
+        "affectedCount": 172,
+        "affectedUrls": {
+          "total": 172,
+          "returned": 10,
+          "complete": false,
+          "items": [
+            "https://skezire.kz/kk",
+            "https://skezire.kz/kk/ai",
+            "https://skezire.kz/kk/ai/action-figure",
+            "https://skezire.kz/kk/ai/ancestor",
+            "https://skezire.kz/kk/ai/family-portrait",
+            "https://skezire.kz/kk/ai/family-portrait/create",
+            "https://skezire.kz/kk/ai/ghibli-style",
+            "https://skezire.kz/kk/ai/national-costume",
+            "https://skezire.kz/kk/ai/past",
+            "https://skezire.kz/kk/ai/pet-humanize"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "hsts_missing"
+            }
+          }
+        },
+        "sourcePath": "actions[2]",
+        "evidence": {
+          "ruleId": "hsts_missing",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/kk",
+            "https://skezire.kz/kk/ai",
+            "https://skezire.kz/kk/ai/action-figure",
+            "https://skezire.kz/kk/ai/ancestor",
+            "https://skezire.kz/kk/ai/family-portrait",
+            "https://skezire.kz/kk/ai/family-portrait/create",
+            "https://skezire.kz/kk/ai/ghibli-style",
+            "https://skezire.kz/kk/ai/national-costume",
+            "https://skezire.kz/kk/ai/past",
+            "https://skezire.kz/kk/ai/pet-humanize"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm hasHsts is true for HTTPS pages."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"hsts_missing: HSTS header missing (172 URLs)\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Send a Strict-Transport-Security header with a suitable max-age once the whole site is stable on HTTPS.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "crawl:structured_data_missing",
+        "status": "open",
+        "title": "structured_data_missing: No structured data detected (18 URLs)",
+        "confidence": "medium",
+        "severity": "low",
+        "affectedCount": 18,
+        "affectedUrls": {
+          "total": 18,
+          "returned": 10,
+          "complete": false,
+          "items": [
+            "https://skezire.kz/kk/contacts",
+            "https://skezire.kz/kk/delivery",
+            "https://skezire.kz/kk/leaderboard",
+            "https://skezire.kz/kk/oferta",
+            "https://skezire.kz/kk/order/canvas",
+            "https://skezire.kz/kk/payment-policy",
+            "https://skezire.kz/kk/privacy",
+            "https://skezire.kz/kk/refund",
+            "https://skezire.kz/kk/shezhire-tree",
+            "https://skezire.kz/ru/contacts"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "structured_data_missing"
+            }
+          }
+        },
+        "sourcePath": "actions[3]",
+        "evidence": {
+          "ruleId": "structured_data_missing",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/kk/contacts",
+            "https://skezire.kz/kk/delivery",
+            "https://skezire.kz/kk/leaderboard",
+            "https://skezire.kz/kk/oferta",
+            "https://skezire.kz/kk/order/canvas",
+            "https://skezire.kz/kk/payment-policy",
+            "https://skezire.kz/kk/privacy",
+            "https://skezire.kz/kk/refund",
+            "https://skezire.kz/kk/shezhire-tree",
+            "https://skezire.kz/ru/contacts"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm structuredDataFormats lists the added format, then validate the page with a structured data tester."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does a specific structured data type accurately describe the visible content on this page?",
+          "changeOnlyIf": "Add markup only when a specific schema type fits the page and every claimed property is supported by its visible content.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Add structured data only where a schema type genuinely describes the page, for example an article page describing its article. Validate the markup after adding it, and leave pages without a fitting schema type unmarked.",
+          "ifNotNeeded": "Leave the page unmarked and record that no suitable schema type was confirmed.",
+          "doNot": [
+            "Do not add Organization or another generic schema type only to clear this finding.",
+            "Do not copy site-wide markup onto unrelated page types."
+          ]
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "crawl:image_oversized_candidate",
+        "status": "open",
+        "title": "image_oversized_candidate: Oversized image candidates (16 URLs)",
+        "confidence": "medium",
+        "severity": "low",
+        "affectedCount": 16,
+        "affectedUrls": {
+          "total": 16,
+          "returned": 10,
+          "complete": false,
+          "items": [
+            "https://skezire.kz/kk",
+            "https://skezire.kz/kk/ai/action-figure",
+            "https://skezire.kz/kk/ai/ancestor",
+            "https://skezire.kz/kk/ai/family-portrait",
+            "https://skezire.kz/kk/ai/ghibli-style",
+            "https://skezire.kz/kk/ai/national-costume",
+            "https://skezire.kz/kk/ai/past",
+            "https://skezire.kz/kk/ai/pet-humanize",
+            "https://skezire.kz/ru",
+            "https://skezire.kz/ru/ai/action-figure"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "image_oversized_candidate"
+            }
+          }
+        },
+        "sourcePath": "actions[4]",
+        "evidence": {
+          "ruleId": "image_oversized_candidate",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/kk",
+            "https://skezire.kz/kk/ai/action-figure",
+            "https://skezire.kz/kk/ai/ancestor",
+            "https://skezire.kz/kk/ai/family-portrait",
+            "https://skezire.kz/kk/ai/ghibli-style",
+            "https://skezire.kz/kk/ai/national-costume",
+            "https://skezire.kz/kk/ai/past",
+            "https://skezire.kz/kk/ai/pet-humanize",
+            "https://skezire.kz/ru",
+            "https://skezire.kz/ru/ai/action-figure"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm oversizedImageCandidates is empty, then spot-check the page in a browser performance trace if the image is important."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"image_oversized_candidate: Oversized image candidates (16 URLs)\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Resize the source image, add responsive srcset sizes, and serve modern compressed formats such as WebP or AVIF where supported.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "crawl:title_too_wide",
+        "status": "open",
+        "title": "title_too_wide: Title may truncate on some devices (9 URLs)",
+        "confidence": "medium",
+        "severity": "low",
+        "affectedCount": 9,
+        "affectedUrls": {
+          "total": 9,
+          "returned": 9,
+          "complete": true,
+          "items": [
+            "https://skezire.kz/kk",
+            "https://skezire.kz/kk/ai/past",
+            "https://skezire.kz/kk/blog/ai-action-figure",
+            "https://skezire.kz/kk/blog/ai-photo-trends-2026",
+            "https://skezire.kz/ru",
+            "https://skezire.kz/ru/ai/past",
+            "https://skezire.kz/ru/blog/ai-action-figure",
+            "https://skezire.kz/ru/blog/guide-kazakh-tribes",
+            "https://skezire.kz/ru/blog/how-to-create-shezhire"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "title_too_wide"
+            }
+          }
+        },
+        "sourcePath": "actions[5]",
+        "evidence": {
+          "ruleId": "title_too_wide",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/kk",
+            "https://skezire.kz/kk/ai/past",
+            "https://skezire.kz/kk/blog/ai-action-figure",
+            "https://skezire.kz/kk/blog/ai-photo-trends-2026",
+            "https://skezire.kz/ru",
+            "https://skezire.kz/ru/ai/past",
+            "https://skezire.kz/ru/blog/ai-action-figure",
+            "https://skezire.kz/ru/blog/guide-kazakh-tribes",
+            "https://skezire.kz/ru/blog/how-to-create-shezhire"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the audit and review estimatedPixels, referencePixels, confidence, and profile. Confirm the important wording appears early."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"title_too_wide: Title may truncate on some devices (9 URLs)\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Review the title rather than shortening it blindly. Put the clearest page-specific wording first and remove filler only when meaning is preserved.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "crawl:orphan_page",
+        "status": "open",
+        "title": "orphan_page: No observed internal links (4 URLs)",
+        "confidence": "medium",
+        "severity": "low",
+        "affectedCount": 4,
+        "affectedUrls": {
+          "total": 4,
+          "returned": 4,
+          "complete": true,
+          "items": [
+            "https://skezire.kz/kk/pricing",
+            "https://skezire.kz/kk/shezhire-tree",
+            "https://skezire.kz/ru/pricing",
+            "https://skezire.kz/ru/shezhire-tree"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "orphan_page"
+            }
+          }
+        },
+        "sourcePath": "actions[6]",
+        "evidence": {
+          "ruleId": "orphan_page",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/kk/pricing",
+            "https://skezire.kz/kk/shezhire-tree",
+            "https://skezire.kz/ru/pricing",
+            "https://skezire.kz/ru/shezhire-tree"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run a complete crawl from the same site entry point and confirm an observed internal link reaches the page."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"orphan_page: No observed internal links (4 URLs)\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Check the page in a complete crawl and in the sitemap. If it is meant to be discovered, add a relevant link from a hub, navigation path, related page, or template.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "crawl:redirected_url",
+        "status": "open",
+        "title": "redirected_url: URL redirects (1 URL)",
+        "confidence": "medium",
+        "severity": "low",
+        "affectedCount": 1,
+        "affectedUrls": {
+          "total": 1,
+          "returned": 1,
+          "complete": true,
+          "items": [
+            "https://skezire.kz/"
+          ],
+          "report": {
+            "id": "affected-urls",
+            "params": {
+              "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+              "ruleId": "redirected_url"
+            }
+          }
+        },
+        "sourcePath": "actions[7]",
+        "evidence": {
+          "ruleId": "redirected_url",
+          "source": "crawl",
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "sampleUrls": [
+            "https://skezire.kz/"
+          ]
+        },
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm the requested URL is the same as the final URL, or that the redirect is intentional."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"redirected_url: URL redirects (1 URL)\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Observed state that needs intent confirmation before treating it as a defect. Check why the old URL was requested. Update internal links, canonicals, and sitemap entries to the final URL when appropriate. Keep one direct 301 when the old URL must remain supported.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      }
+    ]
+  },
+  "workflow": "report",
+  "site": "https://skezire.kz",
+  "generatedAt": "2026-09-06T11:12:46.261Z",
+  "summary": "Found 0 high, 4 medium, and 220 low technical issues across 172 crawled pages. Search Console and Google Analytics are not connected; provider-backed sections were skipped.",
+  "steps": [
+    {
+      "tool": "seo_crawl",
+      "status": "completed",
+      "summary": "Loaded technical evidence for 172 crawled pages."
+    },
+    {
+      "tool": "seo_report_narrative",
+      "status": "skipped",
+      "summary": "Skipped provider-backed search diagnosis because no Search Console property was selected."
+    }
+  ],
+  "actions": [
+    {
+      "id": "crawl:title_duplicate",
+      "kind": "fix",
+      "title": "title_duplicate: Duplicate title (2 URLs)",
+      "action": "Rewrite each title so it reflects the specific page, including the unique entity, intent, location, product, or angle.",
+      "confidence": "high",
+      "severity": "medium",
+      "affectedCount": 2,
+      "sampleUrls": [
+        "https://skezire.kz/kk/ai",
+        "https://skezire.kz/ru/ai"
+      ],
+      "affectedUrlsReport": {
+        "id": "affected-urls",
+        "params": {
+          "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+          "ruleId": "title_duplicate"
+        }
+      },
+      "evidence": {
+        "ruleId": "title_duplicate",
+        "source": "crawl",
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This ranks as a fix. Severity is 1200; 2 URLs are affected; estimated effort is low."
+      },
+      "verification": {
+        "command": "seo crawl https://skezire.kz/ --severity medium --max-pages 100",
+        "expected": "Re-run the crawl and confirm this title appears on only one indexable URL."
+      }
+    },
+    {
+      "id": "crawl:noindex",
+      "kind": "review",
+      "title": "noindex: Noindex found (2 URLs)",
+      "action": "Observed state that needs intent confirmation before treating it as a defect. Remove the noindex directive if the page should rank. Leave it in place only for intentionally private or low-value pages.",
+      "confidence": "medium",
+      "severity": "medium",
+      "affectedCount": 2,
+      "sampleUrls": [
+        "https://skezire.kz/kk/ai/family-portrait/create",
+        "https://skezire.kz/ru/ai/family-portrait/create"
+      ],
+      "affectedUrlsReport": {
+        "id": "affected-urls",
+        "params": {
+          "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+          "ruleId": "noindex"
+        }
+      },
+      "evidence": {
+        "ruleId": "noindex",
+        "source": "crawl",
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work."
+      },
+      "verification": {
+        "command": "seo crawl https://skezire.kz/ --severity medium --max-pages 100",
+        "expected": "Re-run the crawl or URL Inspection and confirm no effective meta robots or X-Robots-Tag noindex remains, including the equivalent none directive."
+      }
+    },
+    {
+      "id": "crawl:hsts_missing",
+      "kind": "review",
+      "title": "hsts_missing: HSTS header missing (172 URLs)",
+      "action": "Observed state that needs intent confirmation before treating it as a defect. Send a Strict-Transport-Security header with a suitable max-age once the whole site is stable on HTTPS.",
+      "confidence": "medium",
+      "severity": "low",
+      "affectedCount": 172,
+      "sampleUrls": [
+        "https://skezire.kz/kk",
+        "https://skezire.kz/kk/ai",
+        "https://skezire.kz/kk/ai/action-figure",
+        "https://skezire.kz/kk/ai/ancestor",
+        "https://skezire.kz/kk/ai/family-portrait",
+        "https://skezire.kz/kk/ai/family-portrait/create",
+        "https://skezire.kz/kk/ai/ghibli-style",
+        "https://skezire.kz/kk/ai/national-costume",
+        "https://skezire.kz/kk/ai/past",
+        "https://skezire.kz/kk/ai/pet-humanize"
+      ],
+      "affectedUrlsReport": {
+        "id": "affected-urls",
+        "params": {
+          "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+          "ruleId": "hsts_missing"
+        }
+      },
+      "evidence": {
+        "ruleId": "hsts_missing",
+        "source": "crawl",
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work."
+      },
+      "verification": {
+        "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+        "expected": "Re-run the crawl and confirm hasHsts is true for HTTPS pages."
+      }
+    },
+    {
+      "id": "crawl:structured_data_missing",
+      "kind": "review",
+      "title": "structured_data_missing: No structured data detected (18 URLs)",
+      "action": "Observed state that needs intent confirmation before treating it as a defect. Add structured data only where a schema type genuinely describes the page, for example an article page describing its article. Validate the markup after adding it, and leave pages without a fitting schema type unmarked.",
+      "confidence": "medium",
+      "severity": "low",
+      "affectedCount": 18,
+      "sampleUrls": [
+        "https://skezire.kz/kk/contacts",
+        "https://skezire.kz/kk/delivery",
+        "https://skezire.kz/kk/leaderboard",
+        "https://skezire.kz/kk/oferta",
+        "https://skezire.kz/kk/order/canvas",
+        "https://skezire.kz/kk/payment-policy",
+        "https://skezire.kz/kk/privacy",
+        "https://skezire.kz/kk/refund",
+        "https://skezire.kz/kk/shezhire-tree",
+        "https://skezire.kz/ru/contacts"
+      ],
+      "affectedUrlsReport": {
+        "id": "affected-urls",
+        "params": {
+          "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+          "ruleId": "structured_data_missing"
+        }
+      },
+      "evidence": {
+        "ruleId": "structured_data_missing",
+        "source": "crawl",
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work."
+      },
+      "verification": {
+        "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+        "expected": "Re-run the crawl and confirm structuredDataFormats lists the added format, then validate the page with a structured data tester."
+      }
+    },
+    {
+      "id": "crawl:image_oversized_candidate",
+      "kind": "review",
+      "title": "image_oversized_candidate: Oversized image candidates (16 URLs)",
+      "action": "Observed state that needs intent confirmation before treating it as a defect. Resize the source image, add responsive srcset sizes, and serve modern compressed formats such as WebP or AVIF where supported.",
+      "confidence": "medium",
+      "severity": "low",
+      "affectedCount": 16,
+      "sampleUrls": [
+        "https://skezire.kz/kk",
+        "https://skezire.kz/kk/ai/action-figure",
+        "https://skezire.kz/kk/ai/ancestor",
+        "https://skezire.kz/kk/ai/family-portrait",
+        "https://skezire.kz/kk/ai/ghibli-style",
+        "https://skezire.kz/kk/ai/national-costume",
+        "https://skezire.kz/kk/ai/past",
+        "https://skezire.kz/kk/ai/pet-humanize",
+        "https://skezire.kz/ru",
+        "https://skezire.kz/ru/ai/action-figure"
+      ],
+      "affectedUrlsReport": {
+        "id": "affected-urls",
+        "params": {
+          "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+          "ruleId": "image_oversized_candidate"
+        }
+      },
+      "evidence": {
+        "ruleId": "image_oversized_candidate",
+        "source": "crawl",
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work."
+      },
+      "verification": {
+        "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+        "expected": "Re-run the crawl and confirm oversizedImageCandidates is empty, then spot-check the page in a browser performance trace if the image is important."
+      }
+    },
+    {
+      "id": "crawl:title_too_wide",
+      "kind": "review",
+      "title": "title_too_wide: Title may truncate on some devices (9 URLs)",
+      "action": "Observed state that needs intent confirmation before treating it as a defect. Review the title rather than shortening it blindly. Put the clearest page-specific wording first and remove filler only when meaning is preserved.",
+      "confidence": "medium",
+      "severity": "low",
+      "affectedCount": 9,
+      "sampleUrls": [
+        "https://skezire.kz/kk",
+        "https://skezire.kz/kk/ai/past",
+        "https://skezire.kz/kk/blog/ai-action-figure",
+        "https://skezire.kz/kk/blog/ai-photo-trends-2026",
+        "https://skezire.kz/ru",
+        "https://skezire.kz/ru/ai/past",
+        "https://skezire.kz/ru/blog/ai-action-figure",
+        "https://skezire.kz/ru/blog/guide-kazakh-tribes",
+        "https://skezire.kz/ru/blog/how-to-create-shezhire"
+      ],
+      "affectedUrlsReport": {
+        "id": "affected-urls",
+        "params": {
+          "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+          "ruleId": "title_too_wide"
+        }
+      },
+      "evidence": {
+        "ruleId": "title_too_wide",
+        "source": "crawl",
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work."
+      },
+      "verification": {
+        "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+        "expected": "Re-run the audit and review estimatedPixels, referencePixels, confidence, and profile. Confirm the important wording appears early."
+      }
+    },
+    {
+      "id": "crawl:orphan_page",
+      "kind": "review",
+      "title": "orphan_page: No observed internal links (4 URLs)",
+      "action": "Observed state that needs intent confirmation before treating it as a defect. Check the page in a complete crawl and in the sitemap. If it is meant to be discovered, add a relevant link from a hub, navigation path, related page, or template.",
+      "confidence": "medium",
+      "severity": "low",
+      "affectedCount": 4,
+      "sampleUrls": [
+        "https://skezire.kz/kk/pricing",
+        "https://skezire.kz/kk/shezhire-tree",
+        "https://skezire.kz/ru/pricing",
+        "https://skezire.kz/ru/shezhire-tree"
+      ],
+      "affectedUrlsReport": {
+        "id": "affected-urls",
+        "params": {
+          "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+          "ruleId": "orphan_page"
+        }
+      },
+      "evidence": {
+        "ruleId": "orphan_page",
+        "source": "crawl",
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work."
+      },
+      "verification": {
+        "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+        "expected": "Re-run a complete crawl from the same site entry point and confirm an observed internal link reaches the page."
+      }
+    },
+    {
+      "id": "crawl:redirected_url",
+      "kind": "review",
+      "title": "redirected_url: URL redirects (1 URL)",
+      "action": "Observed state that needs intent confirmation before treating it as a defect. Check why the old URL was requested. Update internal links, canonicals, and sitemap entries to the final URL when appropriate. Keep one direct 301 when the old URL must remain supported.",
+      "confidence": "medium",
+      "severity": "low",
+      "affectedCount": 1,
+      "sampleUrls": [
+        "https://skezire.kz/"
+      ],
+      "affectedUrlsReport": {
+        "id": "affected-urls",
+        "params": {
+          "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+          "ruleId": "redirected_url"
+        }
+      },
+      "evidence": {
+        "ruleId": "redirected_url",
+        "source": "crawl",
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work."
+      },
+      "verification": {
+        "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+        "expected": "Re-run the crawl and confirm the requested URL is the same as the final URL, or that the redirect is intentional."
+      }
+    }
+  ],
+  "output": {
+    "narrative": {
+      "site": "https://skezire.kz",
+      "generatedAt": "2026-09-06T11:12:46.261Z",
+      "dataStatus": "unavailable",
+      "periodDays": 90,
+      "period": {
+        "startDate": "2026-06-05",
+        "endDate": "2026-09-02"
+      },
+      "headline": "Diagnosis unavailable; traffic anomaly analysis unavailable; content decay analysis unavailable; striking-distance analysis unavailable; quick-win analysis unavailable; multi-URL query analysis unavailable.",
+      "caveats": [
+        "Date window: 2026-06-05 to 2026-09-02.",
+        "Brand queries: no saved brand terms, so no brand filter was applied.",
+        "Data freshness: local cache allowed; rerun with --refresh to bypass cached GSC/HTTP data.",
+        "Search Console: skipped because no property was selected. Run `seo start` to add performance evidence.",
+        "Google Analytics: not included in this narrative; use refresh-priorities when Google Analytics value should influence prioritisation.",
+        "Content verification: not run because Search Console did not provide page candidates for this report.",
+        "Skipped 10 sections: Search Console data was skipped because no Search Console property was selected."
+      ],
+      "sections": [
+        {
+          "title": "Performance",
+          "bullets": [
+            "Traffic anomaly detection was not available for this run.",
+            "Page movement comparison was not available for this run.",
+            "Update correlation was not available for this run."
+          ]
+        },
+        {
+          "title": "Content Opportunities",
+          "bullets": [
+            "Could not assess content decay, multi-URL query, striking-distance, quick-win opportunities in this run; see report caveats."
+          ]
+        },
+        {
+          "title": "Change Measurements",
+          "bullets": [
+            "No measured changes are saved for this property yet."
+          ]
+        },
+        {
+          "title": "Technical Monitoring",
+          "bullets": [
+            "No crawl-diff run is saved yet.",
+            "No index-watch snapshot is saved yet.",
+            "No link-recover run is saved yet."
+          ]
+        }
+      ],
+      "priorities": [],
+      "diagnosis": {
+        "site": "https://skezire.kz",
+        "generatedAt": "2026-09-06T11:12:46.250Z",
+        "dataStatus": "unavailable",
+        "summary": {
+          "updateAttribution": "unavailable",
+          "updateAttributionStatus": "unavailable",
+          "classification": "insufficient-data",
+          "significantAnomalies": 0,
+          "updateMatches": 0,
+          "largestPageMovements": 0,
+          "decayItems": 0,
+          "cannibalItems": 0,
+          "strikingDistanceItems": 0,
+          "quickWinItems": 0
+        },
+        "skippedSections": [
+          {
+            "section": "traffic anomaly",
+            "reason": "Search Console data was skipped because no Search Console property was selected."
+          },
+          {
+            "section": "update correlation",
+            "reason": "Search Console data was skipped because no Search Console property was selected."
+          },
+          {
+            "section": "page movement segments",
+            "reason": "Search Console data was skipped because no Search Console property was selected."
+          },
+          {
+            "section": "query movement segments",
+            "reason": "Search Console data was skipped because no Search Console property was selected."
+          },
+          {
+            "section": "device movement segments",
+            "reason": "Search Console data was skipped because no Search Console property was selected."
+          },
+          {
+            "section": "country movement segments",
+            "reason": "Search Console data was skipped because no Search Console property was selected."
+          },
+          {
+            "section": "decay analysis",
+            "reason": "Search Console data was skipped because no Search Console property was selected."
+          },
+          {
+            "section": "cannibalisation analysis",
+            "reason": "Search Console data was skipped because no Search Console property was selected."
+          },
+          {
+            "section": "striking-distance opportunities",
+            "reason": "Search Console data was skipped because no Search Console property was selected."
+          },
+          {
+            "section": "quick-win opportunities",
+            "reason": "Search Console data was skipped because no Search Console property was selected."
+          }
+        ],
+        "partialReasons": [],
+        "priorities": [],
+        "anomaly": {
+          "site": "https://skezire.kz",
+          "generatedAt": "2026-09-06T11:12:46.240Z",
+          "anomalies": [],
+          "rows": 0
+        },
+        "updateCorrelation": {
+          "site": "https://skezire.kz",
+          "generatedAt": "2026-09-06T11:12:46.243Z",
+          "anomalies": [],
+          "overlappingUpdates": [],
+          "classification": "insufficient-data",
+          "attribution": "not-established",
+          "confidence": "none",
+          "confounders": [],
+          "summary": "https://skezire.kz update correlation was unavailable for this run.",
+          "evidence": [
+            "Update correlation was unavailable: Search Console data was skipped because no Search Console property was selected."
+          ],
+          "caveats": [
+            "GSC window: 90 days; recent comparison window: 7 days.",
+            "No update-correlation conclusion was produced."
+          ],
+          "actions": [
+            "Restore traffic anomaly evidence, then retry update correlation; use other report evidence in the meantime."
+          ],
+          "source": {
+            "name": "Google Search Status Dashboard incidents feed",
+            "url": "https://status.search.google.com/incidents.json",
+            "product": "Ranking"
+          }
+        },
+        "segments": {
+          "page": {
+            "schemaVersion": 2,
+            "site": "https://skezire.kz",
+            "dimension": "page",
+            "before": {
+              "startDate": "2026-03-07",
+              "endDate": "2026-06-04"
+            },
+            "after": {
+              "startDate": "2026-06-05",
+              "endDate": "2026-09-02"
+            },
+            "rangeDays": {
+              "before": 90,
+              "after": 90
+            },
+            "generatedAt": "2026-09-06T11:12:46.248Z",
+            "dataStatus": "unavailable",
+            "source": {
+              "provider": "google-search-console",
+              "dimension": "page",
+              "aggregationType": "auto",
+              "searchType": "web",
+              "dataState": "final",
+              "before": {
+                "rowsFetched": 0,
+                "calls": 0,
+                "maxRows": 100000,
+                "possiblyTruncated": false
+              },
+              "after": {
+                "rowsFetched": 0,
+                "calls": 0,
+                "maxRows": 100000,
+                "possiblyTruncated": false
+              },
+              "completeness": "unavailable"
+            },
+            "methodology": {
+              "id": "gsc_matched_retained_segment_impact",
+              "version": 2,
+              "missingRowsTreatedAsZero": false,
+              "equalLengthAdjacentWindows": true,
+              "clickDeltaBasis": "after-minus-before",
+              "positionDeltaDefinition": "after-minus-before-positive-is-worse",
+              "causeLanguage": "signals-not-attribution"
+            },
+            "filters": {
+              "limit": 0,
+              "unmatchedLimit": 0,
+              "maxRows": 100000
+            },
+            "selection": {
+              "beforeSourceRows": 0,
+              "afterSourceRows": 0,
+              "beforeInvalidRows": 0,
+              "afterInvalidRows": 0,
+              "beforeDuplicateRows": 0,
+              "afterDuplicateRows": 0,
+              "beforeConflictingRows": 0,
+              "afterConflictingRows": 0,
+              "matchedRows": 0,
+              "unmatchedBeforeRows": 0,
+              "unmatchedAfterRows": 0,
+              "returnedRows": 0,
+              "limitedRows": 0,
+              "returnedUnmatchedRows": 0,
+              "limitedUnmatchedRows": 0
+            },
+            "summary": {
+              "matchedRows": 0,
+              "returnedRows": 0,
+              "unmatchedRows": 0,
+              "verdict": "Segment movement could not be compared for this run."
+            },
+            "items": [],
+            "unmatchedSegments": [],
+            "warnings": [
+              "Search Console data was skipped because no Search Console property was selected."
+            ],
+            "caveats": [
+              "No segment movement conclusion was produced because the provider evidence was unavailable."
+            ]
+          },
+          "query": {
+            "schemaVersion": 2,
+            "site": "https://skezire.kz",
+            "dimension": "query",
+            "before": {
+              "startDate": "2026-03-07",
+              "endDate": "2026-06-04"
+            },
+            "after": {
+              "startDate": "2026-06-05",
+              "endDate": "2026-09-02"
+            },
+            "rangeDays": {
+              "before": 90,
+              "after": 90
+            },
+            "generatedAt": "2026-09-06T11:12:46.248Z",
+            "dataStatus": "unavailable",
+            "source": {
+              "provider": "google-search-console",
+              "dimension": "query",
+              "aggregationType": "auto",
+              "searchType": "web",
+              "dataState": "final",
+              "before": {
+                "rowsFetched": 0,
+                "calls": 0,
+                "maxRows": 100000,
+                "possiblyTruncated": false
+              },
+              "after": {
+                "rowsFetched": 0,
+                "calls": 0,
+                "maxRows": 100000,
+                "possiblyTruncated": false
+              },
+              "completeness": "unavailable"
+            },
+            "methodology": {
+              "id": "gsc_matched_retained_segment_impact",
+              "version": 2,
+              "missingRowsTreatedAsZero": false,
+              "equalLengthAdjacentWindows": true,
+              "clickDeltaBasis": "after-minus-before",
+              "positionDeltaDefinition": "after-minus-before-positive-is-worse",
+              "causeLanguage": "signals-not-attribution"
+            },
+            "filters": {
+              "limit": 0,
+              "unmatchedLimit": 0,
+              "maxRows": 100000
+            },
+            "selection": {
+              "beforeSourceRows": 0,
+              "afterSourceRows": 0,
+              "beforeInvalidRows": 0,
+              "afterInvalidRows": 0,
+              "beforeDuplicateRows": 0,
+              "afterDuplicateRows": 0,
+              "beforeConflictingRows": 0,
+              "afterConflictingRows": 0,
+              "matchedRows": 0,
+              "unmatchedBeforeRows": 0,
+              "unmatchedAfterRows": 0,
+              "returnedRows": 0,
+              "limitedRows": 0,
+              "returnedUnmatchedRows": 0,
+              "limitedUnmatchedRows": 0
+            },
+            "summary": {
+              "matchedRows": 0,
+              "returnedRows": 0,
+              "unmatchedRows": 0,
+              "verdict": "Segment movement could not be compared for this run."
+            },
+            "items": [],
+            "unmatchedSegments": [],
+            "warnings": [
+              "Search Console data was skipped because no Search Console property was selected."
+            ],
+            "caveats": [
+              "No segment movement conclusion was produced because the provider evidence was unavailable."
+            ]
+          },
+          "device": {
+            "schemaVersion": 2,
+            "site": "https://skezire.kz",
+            "dimension": "device",
+            "before": {
+              "startDate": "2026-03-07",
+              "endDate": "2026-06-04"
+            },
+            "after": {
+              "startDate": "2026-06-05",
+              "endDate": "2026-09-02"
+            },
+            "rangeDays": {
+              "before": 90,
+              "after": 90
+            },
+            "generatedAt": "2026-09-06T11:12:46.248Z",
+            "dataStatus": "unavailable",
+            "source": {
+              "provider": "google-search-console",
+              "dimension": "device",
+              "aggregationType": "auto",
+              "searchType": "web",
+              "dataState": "final",
+              "before": {
+                "rowsFetched": 0,
+                "calls": 0,
+                "maxRows": 100000,
+                "possiblyTruncated": false
+              },
+              "after": {
+                "rowsFetched": 0,
+                "calls": 0,
+                "maxRows": 100000,
+                "possiblyTruncated": false
+              },
+              "completeness": "unavailable"
+            },
+            "methodology": {
+              "id": "gsc_matched_retained_segment_impact",
+              "version": 2,
+              "missingRowsTreatedAsZero": false,
+              "equalLengthAdjacentWindows": true,
+              "clickDeltaBasis": "after-minus-before",
+              "positionDeltaDefinition": "after-minus-before-positive-is-worse",
+              "causeLanguage": "signals-not-attribution"
+            },
+            "filters": {
+              "limit": 0,
+              "unmatchedLimit": 0,
+              "maxRows": 100000
+            },
+            "selection": {
+              "beforeSourceRows": 0,
+              "afterSourceRows": 0,
+              "beforeInvalidRows": 0,
+              "afterInvalidRows": 0,
+              "beforeDuplicateRows": 0,
+              "afterDuplicateRows": 0,
+              "beforeConflictingRows": 0,
+              "afterConflictingRows": 0,
+              "matchedRows": 0,
+              "unmatchedBeforeRows": 0,
+              "unmatchedAfterRows": 0,
+              "returnedRows": 0,
+              "limitedRows": 0,
+              "returnedUnmatchedRows": 0,
+              "limitedUnmatchedRows": 0
+            },
+            "summary": {
+              "matchedRows": 0,
+              "returnedRows": 0,
+              "unmatchedRows": 0,
+              "verdict": "Segment movement could not be compared for this run."
+            },
+            "items": [],
+            "unmatchedSegments": [],
+            "warnings": [
+              "Search Console data was skipped because no Search Console property was selected."
+            ],
+            "caveats": [
+              "No segment movement conclusion was produced because the provider evidence was unavailable."
+            ]
+          },
+          "country": {
+            "schemaVersion": 2,
+            "site": "https://skezire.kz",
+            "dimension": "country",
+            "before": {
+              "startDate": "2026-03-07",
+              "endDate": "2026-06-04"
+            },
+            "after": {
+              "startDate": "2026-06-05",
+              "endDate": "2026-09-02"
+            },
+            "rangeDays": {
+              "before": 90,
+              "after": 90
+            },
+            "generatedAt": "2026-09-06T11:12:46.248Z",
+            "dataStatus": "unavailable",
+            "source": {
+              "provider": "google-search-console",
+              "dimension": "country",
+              "aggregationType": "auto",
+              "searchType": "web",
+              "dataState": "final",
+              "before": {
+                "rowsFetched": 0,
+                "calls": 0,
+                "maxRows": 100000,
+                "possiblyTruncated": false
+              },
+              "after": {
+                "rowsFetched": 0,
+                "calls": 0,
+                "maxRows": 100000,
+                "possiblyTruncated": false
+              },
+              "completeness": "unavailable"
+            },
+            "methodology": {
+              "id": "gsc_matched_retained_segment_impact",
+              "version": 2,
+              "missingRowsTreatedAsZero": false,
+              "equalLengthAdjacentWindows": true,
+              "clickDeltaBasis": "after-minus-before",
+              "positionDeltaDefinition": "after-minus-before-positive-is-worse",
+              "causeLanguage": "signals-not-attribution"
+            },
+            "filters": {
+              "limit": 0,
+              "unmatchedLimit": 0,
+              "maxRows": 100000
+            },
+            "selection": {
+              "beforeSourceRows": 0,
+              "afterSourceRows": 0,
+              "beforeInvalidRows": 0,
+              "afterInvalidRows": 0,
+              "beforeDuplicateRows": 0,
+              "afterDuplicateRows": 0,
+              "beforeConflictingRows": 0,
+              "afterConflictingRows": 0,
+              "matchedRows": 0,
+              "unmatchedBeforeRows": 0,
+              "unmatchedAfterRows": 0,
+              "returnedRows": 0,
+              "limitedRows": 0,
+              "returnedUnmatchedRows": 0,
+              "limitedUnmatchedRows": 0
+            },
+            "summary": {
+              "matchedRows": 0,
+              "returnedRows": 0,
+              "unmatchedRows": 0,
+              "verdict": "Segment movement could not be compared for this run."
+            },
+            "items": [],
+            "unmatchedSegments": [],
+            "warnings": [
+              "Search Console data was skipped because no Search Console property was selected."
+            ],
+            "caveats": [
+              "No segment movement conclusion was produced because the provider evidence was unavailable."
+            ]
+          }
+        },
+        "decay": {
+          "schemaVersion": 1,
+          "site": "https://skezire.kz",
+          "generatedAt": "2026-09-06T11:12:46.249Z",
+          "comparison": "previous-period",
+          "ranges": {
+            "current": {
+              "startDate": "2026-06-05",
+              "endDate": "2026-09-02"
+            },
+            "previous": {
+              "startDate": "2026-03-07",
+              "endDate": "2026-06-04"
+            }
+          },
+          "rangeDays": 90,
+          "dataStatus": "unavailable",
+          "source": {
+            "provider": "google-search-console",
+            "dimensions": [
+              "query",
+              "page"
+            ],
+            "aggregationType": "auto",
+            "searchType": "web",
+            "dataState": "final",
+            "current": {
+              "rowsFetched": 0,
+              "calls": 0,
+              "maxRows": 100000,
+              "possiblyTruncated": false
+            },
+            "previous": {
+              "rowsFetched": 0,
+              "calls": 0,
+              "maxRows": 100000,
+              "possiblyTruncated": false
+            },
+            "completeness": "unavailable"
+          },
+          "methodology": {
+            "id": "gsc_retained_query_page_decay_v2",
+            "version": 2,
+            "gscHistoryMonths": 16,
+            "missingRowsTreatedAsZero": false,
+            "urlShiftsExcluded": true,
+            "causeLanguage": "signals-not-attribution"
+          },
+          "filters": {
+            "minDropPct": 20,
+            "minPreviousClicks": 2,
+            "minClickLoss": 1,
+            "limit": 10,
+            "brand": "excluded"
+          },
+          "selection": {
+            "currentSourceRows": 0,
+            "previousSourceRows": 0,
+            "currentInvalidRows": 0,
+            "previousInvalidRows": 0,
+            "currentAggregatedRows": 0,
+            "previousAggregatedRows": 0,
+            "lowEvidenceRows": 0,
+            "lowActionabilityRows": 0,
+            "brandRows": 0,
+            "currentRowNotRetained": 0,
+            "urlShiftRows": 0,
+            "belowClickLossRows": 0,
+            "belowDropRows": 0,
+            "eligibleRows": 0,
+            "returnedRows": 0,
+            "limitedRows": 0,
+            "eligibleGroups": 0,
+            "returnedGroups": 0,
+            "limitedGroups": 0
+          },
+          "summary": {
+            "eligibleRows": 0,
+            "returnedRows": 0,
+            "groups": 0,
+            "observedRetainedQueryClickLoss": 0,
+            "returnedObservedRetainedQueryClickLoss": 0,
+            "brandFiltering": "excluded",
+            "verdict": "Decay analysis was skipped."
+          },
+          "caveats": [
+            "Decay analysis was skipped because required GSC data was unavailable."
+          ],
+          "recommendations": [
+            "Run this section again after the property has enough query/page history."
+          ],
+          "items": [],
+          "groups": [],
+          "templates": [],
+          "ledgerSummary": "GSC: 0 calls, 0 rows.",
+          "warnings": []
+        },
+        "cannibalization": {
+          "schemaVersion": 1,
+          "site": "https://skezire.kz",
+          "generatedAt": "2026-09-06T11:12:46.249Z",
+          "range": {
+            "startDate": "2026-06-05",
+            "endDate": "2026-09-02"
+          },
+          "rangeDays": 90,
+          "dataStatus": "unavailable",
+          "source": {
+            "provider": "google-search-console",
+            "searchType": "web",
+            "dataState": "final",
+            "pageExposure": {
+              "dimensions": [
+                "query",
+                "page"
+              ],
+              "aggregationType": "auto",
+              "rowsFetched": 0,
+              "validation": {
+                "retainedRows": 0,
+                "invalidRows": 0
+              },
+              "calls": 0,
+              "maxRows": 100000,
+              "possiblyTruncated": false
+            },
+            "propertyDemand": {
+              "dimensions": [
+                "query"
+              ],
+              "aggregationType": "byProperty",
+              "rowsFetched": 0,
+              "validation": {
+                "retainedRows": 0,
+                "invalidRows": 0
+              },
+              "calls": 0,
+              "maxRows": 100000,
+              "possiblyTruncated": false
+            },
+            "completeness": "unavailable"
+          },
+          "methodology": {
+            "id": "gsc_url_overlap_v2",
+            "version": 2,
+            "minimumPageImpressions": 10,
+            "minimumPageImpressionShare": 0.1,
+            "maximumDominantPageShare": 0.8,
+            "matching": "normalized_exact_query",
+            "finding": "url-overlap-candidate",
+            "requiresIntentReview": true
+          },
+          "verification": {
+            "status": "not-requested",
+            "technicalStateChecked": false,
+            "searchIntentChecked": false
+          },
+          "filters": {
+            "minImpressions": 50,
+            "limit": 25,
+            "brand": "excluded"
+          },
+          "selection": {
+            "sourceRows": 0,
+            "invalidRows": 0,
+            "validRows": 0,
+            "propertySourceRows": 0,
+            "propertyInvalidRows": 0,
+            "propertyQueryGroups": 0,
+            "queryGroups": 0,
+            "lowActionabilityQueries": 0,
+            "brandQueries": 0,
+            "belowMinimumQueries": 0,
+            "singlePageQueries": 0,
+            "incidentalPages": 0,
+            "dominantQueries": 0,
+            "missingPropertyQueries": 0,
+            "suppressedQueries": 0,
+            "eligibleClusters": 0,
+            "returnedClusters": 0,
+            "limitedClusters": 0,
+            "returnedSuppressions": 0,
+            "limitedSuppressions": 0
+          },
+          "summary": {
+            "eligibleClusters": 0,
+            "returnedClusters": 0,
+            "suppressedQueries": 0,
+            "brandFiltering": "excluded",
+            "verdict": "Multi-URL query analysis was unavailable."
+          },
+          "templates": [],
+          "suppressed": [],
+          "suppressionSummary": {},
+          "items": [],
+          "caveats": [
+            "Multi-URL query analysis was skipped because required GSC data was unavailable."
+          ],
+          "recommendations": [
+            "Run this section again after Search Console query/page data is available."
+          ],
+          "ledgerSummary": "GSC: 0 calls, 0 rows."
+        },
+        "strikingDistance": {
+          "site": "https://skezire.kz",
+          "generatedAt": "2026-09-06T11:12:46.249Z",
+          "range": {
+            "startDate": "2026-06-05",
+            "endDate": "2026-09-02"
+          },
+          "rangeDays": 90,
+          "source": {
+            "provider": "google-search-console",
+            "dimensions": [
+              "query",
+              "page"
+            ],
+            "searchType": "web",
+            "dataState": "final",
+            "rowsFetched": 0,
+            "calls": 0,
+            "maxRows": 100000,
+            "possiblyTruncated": false,
+            "completeness": "retained-query-rows-only"
+          },
+          "dataStatus": "empty",
+          "selection": {
+            "sourceRows": 0,
+            "invalidRows": 0,
+            "outsidePositionRows": 0,
+            "belowMinimumRows": 0,
+            "lowActionabilityRows": 0,
+            "brandRows": 0,
+            "eligibleRows": 0,
+            "returnedRows": 0,
+            "limitedRows": 0
+          },
+          "methodology": {
+            "id": "gsc_striking_distance_v2",
+            "source": "google_search_console_query_page_rows",
+            "position": {
+              "minimumExclusive": 10,
+              "maximumInclusive": 20
+            },
+            "ctrEligibilityFilter": false,
+            "priority": {
+              "method": "impressions_x_position_proximity",
+              "formula": "impressions * clamp((21 - position) / 10, 0.1, 1)",
+              "heuristic": true,
+              "estimatedClickLift": false
+            },
+            "grouping": {
+              "population": "all_eligible_rows_before_limit",
+              "sharedTemplateMinimumUniqueUrls": 2,
+              "lowConfidenceTemplatesAreShared": false
+            }
+          },
+          "verification": {
+            "requested": false,
+            "attempted": 0,
+            "verified": 0,
+            "technical": 0,
+            "failed": 0
+          },
+          "items": [],
+          "templates": [],
+          "groups": [],
+          "summary": {
+            "eligibleRows": 0,
+            "returnedRows": 0,
+            "eligibleImpressions": 0,
+            "returnedImpressions": 0,
+            "uniqueEligibleUrls": 0,
+            "uniqueEligibleQueries": 0,
+            "groups": 0,
+            "brandFiltering": "excluded",
+            "verdict": "Striking-distance analysis was skipped."
+          },
+          "caveats": [
+            "Striking-distance analysis was skipped because required GSC data was unavailable."
+          ],
+          "recommendations": [
+            "Run this section again after the property has enough query/page history."
+          ]
+        },
+        "quickWins": {
+          "site": "https://skezire.kz",
+          "generatedAt": "2026-09-06T11:12:46.250Z",
+          "range": {
+            "startDate": "2026-06-05",
+            "endDate": "2026-09-02"
+          },
+          "rangeDays": 90,
+          "source": {
+            "provider": "google-search-console",
+            "dimensions": [
+              "query",
+              "page"
+            ],
+            "searchType": "web",
+            "dataState": "final",
+            "rowsFetched": 0,
+            "calls": 0,
+            "maxRows": 100000,
+            "possiblyTruncated": false,
+            "completeness": "retained-query-rows-only"
+          },
+          "dataStatus": "empty",
+          "selection": {
+            "sourceRows": 0,
+            "invalidRows": 0,
+            "outsideBenchmarkPositionRows": 0,
+            "lowActionabilityRows": 0,
+            "brandRows": 0,
+            "benchmarkRows": 0,
+            "outsideCandidatePositionRows": 0,
+            "belowMinimumRows": 0,
+            "atOrAboveTargetRows": 0,
+            "eligibleRows": 0,
+            "returnedRows": 0,
+            "limitedRows": 0
+          },
+          "methodology": {
+            "id": "gsc_quick_wins_v2",
+            "source": "google_search_console_query_page_rows",
+            "position": {
+              "metric": "gsc_average_position",
+              "minimumInclusive": 4,
+              "maximumInclusive": 10
+            },
+            "benchmark": {
+              "method": "position_bucket_url_p75_v2",
+              "samplePopulation": "all_qualified_url_samples",
+              "leaveOut": "target_url",
+              "minimumUrlImpressions": 30,
+              "minimumQualifiedImpressions": 1000,
+              "minimumUrlSamples": 5,
+              "minimumPositiveUrlSamples": 3,
+              "fallback": {
+                "id": "seo_builtin_position_ctr",
+                "version": 1,
+                "kind": "built_in_heuristic",
+                "curve": {
+                  "1": 0.27,
+                  "2": 0.15,
+                  "3": 0.1,
+                  "4": 0.07,
+                  "5": 0.05,
+                  "6": 0.035,
+                  "7": 0.025,
+                  "8": 0.02,
+                  "9": 0.015,
+                  "10": 0.012
+                }
+              },
+              "heuristic": true
+            },
+            "priority": {
+              "method": "impressions_x_target_ctr_shortfall",
+              "formula": "impressions * max(0, target CTR - observed CTR)",
+              "heuristic": true,
+              "estimatedClickLift": false
+            }
+          },
+          "provenance": {
+            "inputScope": "provided_rows",
+            "selectionOrder": [
+              "valid_row",
+              "benchmark_position",
+              "query_quality",
+              "brand",
+              "candidate_position",
+              "minimum_impressions",
+              "target_ctr_shortfall",
+              "limit"
+            ],
+            "selection": {
+              "sourceRows": 0,
+              "invalidRows": 0,
+              "outsideBenchmarkPositionRows": 0,
+              "lowActionabilityRows": 0,
+              "brandRows": 0,
+              "benchmarkRows": 0,
+              "outsideCandidatePositionRows": 0,
+              "belowMinimumRows": 0,
+              "atOrAboveTargetRows": 0,
+              "eligibleRows": 0,
+              "returnedRows": 0,
+              "limitedRows": 0
+            },
+            "verification": {
+              "optional": true,
+              "population": "returned_rows_in_priority_order",
+              "fetchDeduplication": "exact_url"
+            }
+          },
+          "benchmark": {
+            "method": "position_bucket_url_p75_v2",
+            "peerRows": 0,
+            "byPosition": {
+              "1": {
+                "ctr": 0.27,
+                "source": "builtin_position_ctr_curve_v1",
+                "samplePopulation": "all_qualified_url_samples",
+                "rows": 0,
+                "impressions": 0,
+                "qualifiedImpressions": 0,
+                "urlSamples": 0,
+                "positiveUrlSamples": 0
+              },
+              "2": {
+                "ctr": 0.15,
+                "source": "builtin_position_ctr_curve_v1",
+                "samplePopulation": "all_qualified_url_samples",
+                "rows": 0,
+                "impressions": 0,
+                "qualifiedImpressions": 0,
+                "urlSamples": 0,
+                "positiveUrlSamples": 0
+              },
+              "3": {
+                "ctr": 0.1,
+                "source": "builtin_position_ctr_curve_v1",
+                "samplePopulation": "all_qualified_url_samples",
+                "rows": 0,
+                "impressions": 0,
+                "qualifiedImpressions": 0,
+                "urlSamples": 0,
+                "positiveUrlSamples": 0
+              },
+              "4": {
+                "ctr": 0.07,
+                "source": "builtin_position_ctr_curve_v1",
+                "samplePopulation": "all_qualified_url_samples",
+                "rows": 0,
+                "impressions": 0,
+                "qualifiedImpressions": 0,
+                "urlSamples": 0,
+                "positiveUrlSamples": 0
+              },
+              "5": {
+                "ctr": 0.05,
+                "source": "builtin_position_ctr_curve_v1",
+                "samplePopulation": "all_qualified_url_samples",
+                "rows": 0,
+                "impressions": 0,
+                "qualifiedImpressions": 0,
+                "urlSamples": 0,
+                "positiveUrlSamples": 0
+              },
+              "6": {
+                "ctr": 0.035,
+                "source": "builtin_position_ctr_curve_v1",
+                "samplePopulation": "all_qualified_url_samples",
+                "rows": 0,
+                "impressions": 0,
+                "qualifiedImpressions": 0,
+                "urlSamples": 0,
+                "positiveUrlSamples": 0
+              },
+              "7": {
+                "ctr": 0.025,
+                "source": "builtin_position_ctr_curve_v1",
+                "samplePopulation": "all_qualified_url_samples",
+                "rows": 0,
+                "impressions": 0,
+                "qualifiedImpressions": 0,
+                "urlSamples": 0,
+                "positiveUrlSamples": 0
+              },
+              "8": {
+                "ctr": 0.02,
+                "source": "builtin_position_ctr_curve_v1",
+                "samplePopulation": "all_qualified_url_samples",
+                "rows": 0,
+                "impressions": 0,
+                "qualifiedImpressions": 0,
+                "urlSamples": 0,
+                "positiveUrlSamples": 0
+              },
+              "9": {
+                "ctr": 0.015,
+                "source": "builtin_position_ctr_curve_v1",
+                "samplePopulation": "all_qualified_url_samples",
+                "rows": 0,
+                "impressions": 0,
+                "qualifiedImpressions": 0,
+                "urlSamples": 0,
+                "positiveUrlSamples": 0
+              },
+              "10": {
+                "ctr": 0.012,
+                "source": "builtin_position_ctr_curve_v1",
+                "samplePopulation": "all_qualified_url_samples",
+                "rows": 0,
+                "impressions": 0,
+                "qualifiedImpressions": 0,
+                "urlSamples": 0,
+                "positiveUrlSamples": 0
+              }
+            }
+          },
+          "verification": {
+            "requested": false,
+            "attemptedRows": 0,
+            "attemptedUrls": 0,
+            "verified": 0,
+            "technical": 0,
+            "failed": 0
+          },
+          "summary": {
+            "eligibleRows": 0,
+            "returnedRows": 0,
+            "eligibleImpressions": 0,
+            "returnedImpressions": 0,
+            "eligibleEstimatedCtrClickShortfall": 0,
+            "returnedEstimatedCtrClickShortfall": 0,
+            "uniqueEligibleUrls": 0,
+            "uniqueEligibleQueries": 0,
+            "repeatedQueryGroups": 0,
+            "templatePatterns": 0,
+            "brandFiltering": "excluded",
+            "verdict": "Quick-win analysis was skipped."
+          },
+          "caveats": [
+            "Quick-win analysis was skipped because required GSC data was unavailable."
+          ],
+          "recommendations": [
+            "Run this section again after the property has enough query/page history."
+          ],
+          "templates": [],
+          "templateRecommendations": [],
+          "groups": [],
+          "items": [],
+          "ledgerSummary": "No provider calls recorded.",
+          "warnings": []
+        }
+      },
+      "changeMeasurements": [],
+      "changeMeasurementAttempts": [],
+      "monitoring": {
+        "crawlRuns": [],
+        "indexWatch": {
+          "inspectedUrls": 0,
+          "currentIssues": 0,
+          "failed": 0,
+          "nonPass": 0,
+          "blocked": 0
+        }
+      },
+      "markdown": "# SEO report: https://skezire.kz\n\nDiagnosis unavailable; traffic anomaly analysis unavailable; content decay analysis unavailable; striking-distance analysis unavailable; quick-win analysis unavailable; multi-URL query analysis unavailable.\n\nPeriod: 2026-06-05 to 2026-09-02\n\n## Report Caveats\n- Date window: 2026-06-05 to 2026-09-02.\n- Brand queries: no saved brand terms, so no brand filter was applied.\n- Data freshness: local cache allowed; rerun with --refresh to bypass cached GSC/HTTP data.\n- Search Console: skipped because no property was selected. Run `seo start` to add performance evidence.\n- Google Analytics: not included in this narrative; use refresh-priorities when Google Analytics value should influence prioritisation.\n- Content verification: not run because Search Console did not provide page candidates for this report.\n- Skipped 10 sections: Search Console data was skipped because no Search Console property was selected.\n\n## Performance\n- Traffic anomaly detection was not available for this run.\n- Page movement comparison was not available for this run.\n- Update correlation was not available for this run.\n\n## Content Opportunities\n- Could not assess content decay, multi-URL query, striking-distance, quick-win opportunities in this run; see report caveats.\n\n## Change Measurements\n- No measured changes are saved for this property yet.\n\n## Technical Monitoring\n- No crawl-diff run is saved yet.\n- No index-watch snapshot is saved yet.\n- No link-recover run is saved yet.\n\n## Priorities"
+    }
+  },
+  "detail": "full",
+  "technicalCrawl": {
+    "status": "reused",
+    "reportId": "crawl_410607ff643046eda8e5035b8a66edf3",
+    "generatedAt": "2026-09-06T11:12:23.498Z",
+    "crawlStatus": "completed",
+    "capped": false,
+    "maxPages": 300,
+    "searchDataJoined": false,
+    "dataSources": {
+      "searchConsole": {
+        "status": "skipped",
+        "totalPages": 172,
+        "queriedPages": 0,
+        "joinedMetricPages": 0,
+        "joinedQueryPages": 0,
+        "pageLimit": 5000,
+        "pageLimitReached": false,
+        "retainedRowLimitReached": false,
+        "warning": "Search Console join skipped because no property was selected."
+      },
+      "analytics": {
+        "status": "skipped",
+        "observedMetrics": [],
+        "totalPages": 172,
+        "queriedPages": 0,
+        "joinedPages": 0,
+        "retainedRowLimit": 5000,
+        "retainedRowLimitReached": false,
+        "warning": "Analytics join skipped because no connection was selected."
+      }
+    },
+    "summary": {
+      "totalPages": 172,
+      "statusOnlyPages": 0,
+      "indexablePages": 170,
+      "nonIndexablePages": 2,
+      "statusErrors": 0,
+      "discoveredUrls": 173,
+      "queuedUrls": 173,
+      "crawledUrls": 172,
+      "skippedUrls": 0,
+      "skipReasons": [],
+      "skippedUrlsByImpact": {
+        "coverageAffecting": 0,
+        "nonImpacting": 0
+      },
+      "failedUrls": 0,
+      "observedInternalLinks": 4053,
+      "pageLimitReached": false,
+      "attemptedRequests": 173,
+      "responseRequests": 173,
+      "failedRequests": 0,
+      "abortedRequests": 0,
+      "extractionFailures": 0,
+      "requestByStatus": {
+        "200": 173
+      },
+      "avgRequestMs": 436,
+      "highIssues": 0,
+      "mediumIssues": 4,
+      "lowIssues": 220,
+      "avgResponseMs": 435,
+      "byStatus": {
+        "200": 172
+      },
+      "byCategory": {
+        "response": 1,
+        "security": 172,
+        "metadata": 11,
+        "images": 16,
+        "indexability": 2,
+        "structured-data": 18,
+        "links": 4
+      }
+    },
+    "topFixes": [
+      {
+        "ruleId": "title_duplicate",
+        "title": "Duplicate title",
+        "category": "metadata",
+        "severity": "medium",
+        "count": 2,
+        "sampleUrls": [
+          "https://skezire.kz/kk/ai",
+          "https://skezire.kz/ru/ai"
+        ],
+        "recommendation": "fix",
+        "score": 1290,
+        "scoreFactors": {
+          "severity": 1200,
+          "affectedUrls": 2,
+          "searchVisibleUrls": 0,
+          "clicks": 0,
+          "impressions": 0,
+          "sessions": 0,
+          "effort": "low",
+          "effortScore": 60
+        },
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This ranks as a fix. Severity is 1200; 2 URLs are affected; estimated effort is low.",
+        "howToFix": "Rewrite each title so it reflects the specific page, including the unique entity, intent, location, product, or angle.",
+        "howToVerify": "Re-run the crawl and confirm this title appears on only one indexable URL.",
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity medium --max-pages 100",
+          "expected": "Re-run the crawl and confirm this title appears on only one indexable URL."
+        }
+      }
+    ],
+    "reviewObservations": [
+      {
+        "ruleId": "noindex",
+        "title": "Noindex found",
+        "category": "indexability",
+        "severity": "medium",
+        "count": 2,
+        "sampleUrls": [
+          "https://skezire.kz/kk/ai/family-portrait/create",
+          "https://skezire.kz/ru/ai/family-portrait/create"
+        ],
+        "recommendation": "review",
+        "score": 1260,
+        "scoreFactors": {
+          "severity": 1200,
+          "affectedUrls": 2,
+          "searchVisibleUrls": 0,
+          "clicks": 0,
+          "impressions": 0,
+          "sessions": 0,
+          "effort": "medium",
+          "effortScore": 30
+        },
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+        "howToFix": "Remove the noindex directive if the page should rank. Leave it in place only for intentionally private or low-value pages.",
+        "howToVerify": "Re-run the crawl or URL Inspection and confirm no effective meta robots or X-Robots-Tag noindex remains, including the equivalent none directive.",
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity medium --max-pages 100",
+          "expected": "Re-run the crawl or URL Inspection and confirm no effective meta robots or X-Robots-Tag noindex remains, including the equivalent none directive."
+        }
+      },
+      {
+        "ruleId": "hsts_missing",
+        "title": "HSTS header missing",
+        "category": "security",
+        "severity": "low",
+        "count": 172,
+        "sampleUrls": [
+          "https://skezire.kz/kk",
+          "https://skezire.kz/kk/ai",
+          "https://skezire.kz/kk/ai/action-figure",
+          "https://skezire.kz/kk/ai/ancestor",
+          "https://skezire.kz/kk/ai/family-portrait",
+          "https://skezire.kz/kk/ai/family-portrait/create",
+          "https://skezire.kz/kk/ai/ghibli-style",
+          "https://skezire.kz/kk/ai/national-costume",
+          "https://skezire.kz/kk/ai/past",
+          "https://skezire.kz/kk/ai/pet-humanize"
+        ],
+        "recommendation": "review",
+        "score": 474,
+        "scoreFactors": {
+          "severity": 100,
+          "affectedUrls": 172,
+          "searchVisibleUrls": 0,
+          "clicks": 0,
+          "impressions": 0,
+          "sessions": 0,
+          "effort": "medium",
+          "effortScore": 30
+        },
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+        "howToFix": "Send a Strict-Transport-Security header with a suitable max-age once the whole site is stable on HTTPS.",
+        "howToVerify": "Re-run the crawl and confirm hasHsts is true for HTTPS pages.",
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm hasHsts is true for HTTPS pages."
+        }
+      },
+      {
+        "ruleId": "title_too_wide",
+        "title": "Title may truncate on some devices",
+        "category": "metadata",
+        "severity": "low",
+        "count": 9,
+        "sampleUrls": [
+          "https://skezire.kz/kk",
+          "https://skezire.kz/kk/ai/past",
+          "https://skezire.kz/kk/blog/ai-action-figure",
+          "https://skezire.kz/kk/blog/ai-photo-trends-2026",
+          "https://skezire.kz/ru",
+          "https://skezire.kz/ru/ai/past",
+          "https://skezire.kz/ru/blog/ai-action-figure",
+          "https://skezire.kz/ru/blog/guide-kazakh-tribes",
+          "https://skezire.kz/ru/blog/how-to-create-shezhire"
+        ],
+        "recommendation": "review",
+        "score": 178,
+        "scoreFactors": {
+          "severity": 100,
+          "affectedUrls": 9,
+          "searchVisibleUrls": 0,
+          "clicks": 0,
+          "impressions": 0,
+          "sessions": 0,
+          "effort": "low",
+          "effortScore": 60
+        },
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+        "howToFix": "Review the title rather than shortening it blindly. Put the clearest page-specific wording first and remove filler only when meaning is preserved.",
+        "howToVerify": "Re-run the audit and review estimatedPixels, referencePixels, confidence, and profile. Confirm the important wording appears early.",
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the audit and review estimatedPixels, referencePixels, confidence, and profile. Confirm the important wording appears early."
+        }
+      },
+      {
+        "ruleId": "structured_data_missing",
+        "title": "No structured data detected",
+        "category": "structured-data",
+        "severity": "low",
+        "count": 18,
+        "sampleUrls": [
+          "https://skezire.kz/kk/contacts",
+          "https://skezire.kz/kk/delivery",
+          "https://skezire.kz/kk/leaderboard",
+          "https://skezire.kz/kk/oferta",
+          "https://skezire.kz/kk/order/canvas",
+          "https://skezire.kz/kk/payment-policy",
+          "https://skezire.kz/kk/privacy",
+          "https://skezire.kz/kk/refund",
+          "https://skezire.kz/kk/shezhire-tree",
+          "https://skezire.kz/ru/contacts"
+        ],
+        "recommendation": "review",
+        "score": 166,
+        "scoreFactors": {
+          "severity": 100,
+          "affectedUrls": 18,
+          "searchVisibleUrls": 0,
+          "clicks": 0,
+          "impressions": 0,
+          "sessions": 0,
+          "effort": "medium",
+          "effortScore": 30
+        },
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+        "howToFix": "Add structured data only where a schema type genuinely describes the page, for example an article page describing its article. Validate the markup after adding it, and leave pages without a fitting schema type unmarked.",
+        "howToVerify": "Re-run the crawl and confirm structuredDataFormats lists the added format, then validate the page with a structured data tester.",
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm structuredDataFormats lists the added format, then validate the page with a structured data tester."
+        }
+      },
+      {
+        "ruleId": "image_oversized_candidate",
+        "title": "Oversized image candidates",
+        "category": "images",
+        "severity": "low",
+        "count": 16,
+        "sampleUrls": [
+          "https://skezire.kz/kk",
+          "https://skezire.kz/kk/ai/action-figure",
+          "https://skezire.kz/kk/ai/ancestor",
+          "https://skezire.kz/kk/ai/family-portrait",
+          "https://skezire.kz/kk/ai/ghibli-style",
+          "https://skezire.kz/kk/ai/national-costume",
+          "https://skezire.kz/kk/ai/past",
+          "https://skezire.kz/kk/ai/pet-humanize",
+          "https://skezire.kz/ru",
+          "https://skezire.kz/ru/ai/action-figure"
+        ],
+        "recommendation": "review",
+        "score": 162,
+        "scoreFactors": {
+          "severity": 100,
+          "affectedUrls": 16,
+          "searchVisibleUrls": 0,
+          "clicks": 0,
+          "impressions": 0,
+          "sessions": 0,
+          "effort": "medium",
+          "effortScore": 30
+        },
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+        "howToFix": "Resize the source image, add responsive srcset sizes, and serve modern compressed formats such as WebP or AVIF where supported.",
+        "howToVerify": "Re-run the crawl and confirm oversizedImageCandidates is empty, then spot-check the page in a browser performance trace if the image is important.",
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm oversizedImageCandidates is empty, then spot-check the page in a browser performance trace if the image is important."
+        }
+      },
+      {
+        "ruleId": "orphan_page",
+        "title": "No observed internal links",
+        "category": "links",
+        "severity": "low",
+        "count": 4,
+        "sampleUrls": [
+          "https://skezire.kz/kk/pricing",
+          "https://skezire.kz/kk/shezhire-tree",
+          "https://skezire.kz/ru/pricing",
+          "https://skezire.kz/ru/shezhire-tree"
+        ],
+        "recommendation": "review",
+        "score": 138,
+        "scoreFactors": {
+          "severity": 100,
+          "affectedUrls": 4,
+          "searchVisibleUrls": 0,
+          "clicks": 0,
+          "impressions": 0,
+          "sessions": 0,
+          "effort": "medium",
+          "effortScore": 30
+        },
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+        "howToFix": "Check the page in a complete crawl and in the sitemap. If it is meant to be discovered, add a relevant link from a hub, navigation path, related page, or template.",
+        "howToVerify": "Re-run a complete crawl from the same site entry point and confirm an observed internal link reaches the page.",
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run a complete crawl from the same site entry point and confirm an observed internal link reaches the page."
+        }
+      },
+      {
+        "ruleId": "redirected_url",
+        "title": "URL redirects",
+        "category": "response",
+        "severity": "low",
+        "count": 1,
+        "sampleUrls": [
+          "https://skezire.kz/"
+        ],
+        "recommendation": "review",
+        "score": 132,
+        "scoreFactors": {
+          "severity": 100,
+          "affectedUrls": 1,
+          "searchVisibleUrls": 0,
+          "clicks": 0,
+          "impressions": 0,
+          "sessions": 0,
+          "effort": "medium",
+          "effortScore": 30
+        },
+        "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+        "howToFix": "Check why the old URL was requested. Update internal links, canonicals, and sitemap entries to the final URL when appropriate. Keep one direct 301 when the old URL must remain supported.",
+        "howToVerify": "Re-run the crawl and confirm the requested URL is the same as the final URL, or that the redirect is intentional.",
+        "verification": {
+          "command": "seo crawl https://skezire.kz/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm the requested URL is the same as the final URL, or that the redirect is intentional."
+        }
+      }
+    ],
+    "issueGroupsComplete": true
+  },
+  "nextCommands": [
+    {
+      "command": "seo audit-page --url https://skezire.kz",
+      "why": "Inspect one important page in detail after the site-level crawl."
+    },
+    {
+      "command": "seo start",
+      "why": "Connect Search Console when you want traffic, query, and ranking evidence alongside the crawl."
+    }
+  ],
+  "outputBudget": {
+    "schemaVersion": 1,
+    "maxBytes": 98304,
+    "originalBytes": 61521,
+    "returnedBytes": 61756,
+    "truncated": false,
+    "omissions": [],
+    "omissionsTruncated": false,
+    "detail": "The complete structured report fits within the agent output budget."
+  }
+}

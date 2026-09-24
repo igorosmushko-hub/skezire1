@@ -19,7 +19,19 @@ interface NavbarClientProps {
 
 export function NavbarClient({ locale, links, brand, auth, langSwitcher }: NavbarClientProps) {
   const navRef = useRef<HTMLElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
+  const wasMenuOpen = useRef(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1280px)');
+    const closeOnDesktop = () => {
+      if (desktop.matches) setMenuOpen(false);
+    };
+    desktop.addEventListener('change', closeOnDesktop);
+    return () => desktop.removeEventListener('change', closeOnDesktop);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +49,30 @@ export function NavbarClient({ locale, links, brand, auth, langSwitcher }: Navba
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const background = Array.from(document.body.children).filter((element) => (
+      element !== navRef.current && element !== menuRef.current
+    ));
+    const navBackground = navRef.current
+      ? Array.from(navRef.current.children).filter((element) => (
+        !element.matches('.nav-ornament, .nav-burger')
+      ))
+      : [];
+    [...background, ...navBackground].forEach((element) => {
+      if (menuOpen) element.setAttribute('inert', '');
+      else element.removeAttribute('inert');
+    });
+    if (menuOpen) {
+      const focusTimer = window.setTimeout(() => {
+        menuRef.current?.querySelector<HTMLElement>('.mobile-menu-link')?.focus();
+      }, 0);
+      wasMenuOpen.current = true;
+      return () => window.clearTimeout(focusTimer);
+    }
+    if (wasMenuOpen.current) burgerRef.current?.focus();
+    wasMenuOpen.current = false;
   }, [menuOpen]);
 
   // Body scroll-lock when mobile menu is open (iOS-safe)
@@ -81,6 +117,7 @@ export function NavbarClient({ locale, links, brand, auth, langSwitcher }: Navba
           className="nav-burger"
           aria-label="Menu"
           aria-expanded={menuOpen}
+          ref={burgerRef}
           onClick={toggleMenu}
         >
           {menuOpen ? '\u2715' : '\u2630'}
@@ -88,7 +125,7 @@ export function NavbarClient({ locale, links, brand, auth, langSwitcher }: Navba
       </nav>
 
       {/* Mobile menu — rendered OUTSIDE nav to avoid backdrop-filter containing block */}
-      <div className={`mobile-menu${menuOpen ? ' open' : ''}`}>
+      <div className={`mobile-menu${menuOpen ? ' open' : ''}`} ref={menuRef}>
         <div className="mobile-menu-overlay" onClick={closeMenu} />
         <div className="mobile-menu-content">
           {links.map((link) => (

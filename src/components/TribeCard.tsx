@@ -34,22 +34,22 @@ export function TribeCard({ tribe, locale }: TribeCardProps) {
   return (
     <div ref={cardRef} className="tribe-card" style={{ display: 'block' }} aria-live="polite">
       <div className="tc-header">
-        <div className="tc-tamga">{tribe.tamga}</div>
+        {tribe.tamga && <div className="tc-tamga">{tribe.tamga}</div>}
         <div>
           <div className="tc-name">{name}</div>
-          <div className="tc-uran">{tribe.uran}</div>
+          {tribe.uran && <div className="tc-uran">{tribe.uran}</div>}
         </div>
       </div>
       <p className="tc-desc">{desc}</p>
       <div className="tc-meta">
-        <div className="tc-row">
+        {region && <div className="tc-row">
           <span className="tc-label">{t('region')}:</span>
           <span className="tc-val">{region}</span>
-        </div>
-        <div className="tc-row">
+        </div>}
+        {tribe.uran && <div className="tc-row">
           <span className="tc-label">{t('uran')}:</span>
           <span className="tc-val tc-uran-val">{tribe.uran}</span>
-        </div>
+        </div>}
         {subgroup && (
           <div className="tc-row">
             <span className="tc-label">{t('subgroup')}:</span>

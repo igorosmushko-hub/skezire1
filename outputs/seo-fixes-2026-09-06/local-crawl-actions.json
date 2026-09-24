@@ -1,0 +1,677 @@
+{
+  "view": "actions",
+  "report": {
+    "id": "site-crawl",
+    "summary": {
+      "totalPages": 89,
+      "statusOnlyPages": 0,
+      "indexablePages": 88,
+      "nonIndexablePages": 1,
+      "statusErrors": 0,
+      "discoveredUrls": 90,
+      "queuedUrls": 90,
+      "crawledUrls": 89,
+      "skippedUrls": 0,
+      "skipReasons": [],
+      "skippedUrlsByImpact": {
+        "coverageAffecting": 0,
+        "nonImpacting": 0
+      },
+      "failedUrls": 0,
+      "observedInternalLinks": 2439,
+      "pageLimitReached": false,
+      "attemptedRequests": 90,
+      "responseRequests": 90,
+      "failedRequests": 0,
+      "abortedRequests": 0,
+      "extractionFailures": 0,
+      "requestByStatus": {
+        "200": 90
+      },
+      "avgRequestMs": 60,
+      "highIssues": 0,
+      "mediumIssues": 10,
+      "lowIssues": 197,
+      "avgResponseMs": 60,
+      "byStatus": {
+        "200": 89
+      },
+      "byCategory": {
+        "response": 1,
+        "metadata": 12,
+        "indexability": 89,
+        "images": 8,
+        "international": 88,
+        "canonical": 1,
+        "structured-data": 8
+      }
+    }
+  },
+  "findings": {
+    "schemaVersion": 1,
+    "scope": "returned-report",
+    "coverage": {
+      "state": "unknown",
+      "detail": "The findings include every recognised item returned by this report; source acquisition completeness is not declared."
+    },
+    "counts": {
+      "total": 10,
+      "returned": 10,
+      "fixes": 3,
+      "reviews": 7,
+      "open": 10
+    },
+    "completion": {
+      "state": "pending",
+      "instruction": "Before finishing, return one allowed outcome and reason for every open item; the outcome count must equal counts.returned. A review is a decision task, not an instruction to change the site. Do not silently drop findings."
+    },
+    "verification": {
+      "requiredAfterChanges": true,
+      "instruction": "After edits, run each changed item's verification and rerun the originating report. A code change alone does not close a finding.",
+      "reportCheck": "Re-run the same health configuration first. Use a full crawl only when the health evidence is clean and the question needs page-body analysis."
+    },
+    "sourcePaths": [
+      "reviewObservations",
+      "topFixes"
+    ],
+    "items": [
+      {
+        "id": "canonical_mismatch",
+        "status": "open",
+        "title": "Canonical differs from final URL",
+        "severity": "medium",
+        "affectedCount": 1,
+        "affectedUrls": {
+          "total": 1,
+          "returned": 1,
+          "complete": true,
+          "items": [
+            "http://127.0.0.1:3106/kk/ai/family-portrait/create"
+          ]
+        },
+        "sourcePath": "reviewObservations[0]",
+        "evidence": {
+          "count": 1,
+          "sampleUrls": [
+            "http://127.0.0.1:3106/kk/ai/family-portrait/create"
+          ],
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "score": 1245,
+          "scoreFactors": {
+            "severity": 1200,
+            "affectedUrls": 1,
+            "searchVisibleUrls": 0,
+            "clicks": 0,
+            "impressions": 0,
+            "sessions": 0,
+            "effort": "medium",
+            "effortScore": 30
+          }
+        },
+        "verification": {
+          "command": "seo crawl http://127.0.0.1:3106/ --severity medium --max-pages 100",
+          "expected": "Re-run the page audit and confirm the canonical matches the fetched final URL, or inspect the preferred target instead."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"Canonical differs from final URL\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "If this page should rank, make the canonical self-referencing. If another URL is preferred, make sure internal links and redirects also point there.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "noindex",
+        "status": "open",
+        "title": "Noindex found",
+        "severity": "medium",
+        "affectedCount": 1,
+        "affectedUrls": {
+          "total": 1,
+          "returned": 1,
+          "complete": true,
+          "items": [
+            "http://127.0.0.1:3106/kk/ai/family-portrait/create"
+          ]
+        },
+        "sourcePath": "reviewObservations[1]",
+        "evidence": {
+          "count": 1,
+          "sampleUrls": [
+            "http://127.0.0.1:3106/kk/ai/family-portrait/create"
+          ],
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "score": 1245,
+          "scoreFactors": {
+            "severity": 1200,
+            "affectedUrls": 1,
+            "searchVisibleUrls": 0,
+            "clicks": 0,
+            "impressions": 0,
+            "sessions": 0,
+            "effort": "medium",
+            "effortScore": 30
+          }
+        },
+        "verification": {
+          "command": "seo crawl http://127.0.0.1:3106/ --severity medium --max-pages 100",
+          "expected": "Re-run the crawl or URL Inspection and confirm no effective meta robots or X-Robots-Tag noindex remains, including the equivalent none directive."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"Noindex found\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Remove the noindex directive if the page should rank. Leave it in place only for intentionally private or low-value pages.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "canonicalized_page",
+        "status": "open",
+        "title": "Canonicalized page",
+        "severity": "low",
+        "affectedCount": 88,
+        "affectedUrls": {
+          "total": 88,
+          "returned": 10,
+          "complete": false,
+          "items": [
+            "http://127.0.0.1:3106/kk",
+            "http://127.0.0.1:3106/kk/ai",
+            "http://127.0.0.1:3106/kk/ai/action-figure",
+            "http://127.0.0.1:3106/kk/ai/ancestor",
+            "http://127.0.0.1:3106/kk/ai/family-portrait",
+            "http://127.0.0.1:3106/kk/ai/ghibli-style",
+            "http://127.0.0.1:3106/kk/ai/national-costume",
+            "http://127.0.0.1:3106/kk/ai/past",
+            "http://127.0.0.1:3106/kk/ai/pet-humanize",
+            "http://127.0.0.1:3106/kk/blog"
+          ]
+        },
+        "sourcePath": "reviewObservations[2]",
+        "evidence": {
+          "count": 88,
+          "sampleUrls": [
+            "http://127.0.0.1:3106/kk",
+            "http://127.0.0.1:3106/kk/ai",
+            "http://127.0.0.1:3106/kk/ai/action-figure",
+            "http://127.0.0.1:3106/kk/ai/ancestor",
+            "http://127.0.0.1:3106/kk/ai/family-portrait",
+            "http://127.0.0.1:3106/kk/ai/ghibli-style",
+            "http://127.0.0.1:3106/kk/ai/national-costume",
+            "http://127.0.0.1:3106/kk/ai/past",
+            "http://127.0.0.1:3106/kk/ai/pet-humanize",
+            "http://127.0.0.1:3106/kk/blog"
+          ],
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "score": 306,
+          "scoreFactors": {
+            "severity": 100,
+            "affectedUrls": 88,
+            "searchVisibleUrls": 0,
+            "clicks": 0,
+            "impressions": 0,
+            "sessions": 0,
+            "effort": "medium",
+            "effortScore": 30
+          }
+        },
+        "verification": {
+          "command": "seo crawl http://127.0.0.1:3106/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm the canonical target matches the intended indexable URL."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"Canonicalized page\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "If this URL should rank, make the canonical self-referencing. If another URL is preferred, make internal links and sitemap entries point to that preferred URL.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "title_too_wide",
+        "status": "open",
+        "title": "Title may truncate on some devices",
+        "severity": "low",
+        "affectedCount": 4,
+        "affectedUrls": {
+          "total": 4,
+          "returned": 4,
+          "complete": true,
+          "items": [
+            "http://127.0.0.1:3106/kk",
+            "http://127.0.0.1:3106/kk/ai/past",
+            "http://127.0.0.1:3106/kk/blog/ai-action-figure",
+            "http://127.0.0.1:3106/kk/blog/ai-photo-trends-2026"
+          ]
+        },
+        "sourcePath": "reviewObservations[3]",
+        "evidence": {
+          "count": 4,
+          "sampleUrls": [
+            "http://127.0.0.1:3106/kk",
+            "http://127.0.0.1:3106/kk/ai/past",
+            "http://127.0.0.1:3106/kk/blog/ai-action-figure",
+            "http://127.0.0.1:3106/kk/blog/ai-photo-trends-2026"
+          ],
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "score": 168,
+          "scoreFactors": {
+            "severity": 100,
+            "affectedUrls": 4,
+            "searchVisibleUrls": 0,
+            "clicks": 0,
+            "impressions": 0,
+            "sessions": 0,
+            "effort": "low",
+            "effortScore": 60
+          }
+        },
+        "verification": {
+          "command": "seo crawl http://127.0.0.1:3106/ --severity low --max-pages 100",
+          "expected": "Re-run the audit and review estimatedPixels, referencePixels, confidence, and profile. Confirm the important wording appears early."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"Title may truncate on some devices\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Review the title rather than shortening it blindly. Put the clearest page-specific wording first and remove filler only when meaning is preserved.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "image_oversized_candidate",
+        "status": "open",
+        "title": "Oversized image candidates",
+        "severity": "low",
+        "affectedCount": 8,
+        "affectedUrls": {
+          "total": 8,
+          "returned": 8,
+          "complete": true,
+          "items": [
+            "http://127.0.0.1:3106/kk",
+            "http://127.0.0.1:3106/kk/ai/action-figure",
+            "http://127.0.0.1:3106/kk/ai/ancestor",
+            "http://127.0.0.1:3106/kk/ai/family-portrait",
+            "http://127.0.0.1:3106/kk/ai/ghibli-style",
+            "http://127.0.0.1:3106/kk/ai/national-costume",
+            "http://127.0.0.1:3106/kk/ai/past",
+            "http://127.0.0.1:3106/kk/ai/pet-humanize"
+          ]
+        },
+        "sourcePath": "reviewObservations[4]",
+        "evidence": {
+          "count": 8,
+          "sampleUrls": [
+            "http://127.0.0.1:3106/kk",
+            "http://127.0.0.1:3106/kk/ai/action-figure",
+            "http://127.0.0.1:3106/kk/ai/ancestor",
+            "http://127.0.0.1:3106/kk/ai/family-portrait",
+            "http://127.0.0.1:3106/kk/ai/ghibli-style",
+            "http://127.0.0.1:3106/kk/ai/national-costume",
+            "http://127.0.0.1:3106/kk/ai/past",
+            "http://127.0.0.1:3106/kk/ai/pet-humanize"
+          ],
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "score": 146,
+          "scoreFactors": {
+            "severity": 100,
+            "affectedUrls": 8,
+            "searchVisibleUrls": 0,
+            "clicks": 0,
+            "impressions": 0,
+            "sessions": 0,
+            "effort": "medium",
+            "effortScore": 30
+          }
+        },
+        "verification": {
+          "command": "seo crawl http://127.0.0.1:3106/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm oversizedImageCandidates is empty, then spot-check the page in a browser performance trace if the image is important."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"Oversized image candidates\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Resize the source image, add responsive srcset sizes, and serve modern compressed formats such as WebP or AVIF where supported.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "structured_data_missing",
+        "status": "open",
+        "title": "No structured data detected",
+        "severity": "low",
+        "affectedCount": 8,
+        "affectedUrls": {
+          "total": 8,
+          "returned": 8,
+          "complete": true,
+          "items": [
+            "http://127.0.0.1:3106/kk/contacts",
+            "http://127.0.0.1:3106/kk/delivery",
+            "http://127.0.0.1:3106/kk/leaderboard",
+            "http://127.0.0.1:3106/kk/oferta",
+            "http://127.0.0.1:3106/kk/order/canvas",
+            "http://127.0.0.1:3106/kk/payment-policy",
+            "http://127.0.0.1:3106/kk/privacy",
+            "http://127.0.0.1:3106/kk/refund"
+          ]
+        },
+        "sourcePath": "reviewObservations[5]",
+        "evidence": {
+          "count": 8,
+          "sampleUrls": [
+            "http://127.0.0.1:3106/kk/contacts",
+            "http://127.0.0.1:3106/kk/delivery",
+            "http://127.0.0.1:3106/kk/leaderboard",
+            "http://127.0.0.1:3106/kk/oferta",
+            "http://127.0.0.1:3106/kk/order/canvas",
+            "http://127.0.0.1:3106/kk/payment-policy",
+            "http://127.0.0.1:3106/kk/privacy",
+            "http://127.0.0.1:3106/kk/refund"
+          ],
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "score": 146,
+          "scoreFactors": {
+            "severity": 100,
+            "affectedUrls": 8,
+            "searchVisibleUrls": 0,
+            "clicks": 0,
+            "impressions": 0,
+            "sessions": 0,
+            "effort": "medium",
+            "effortScore": 30
+          }
+        },
+        "verification": {
+          "command": "seo crawl http://127.0.0.1:3106/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm structuredDataFormats lists the added format, then validate the page with a structured data tester."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does a specific structured data type accurately describe the visible content on this page?",
+          "changeOnlyIf": "Add markup only when a specific schema type fits the page and every claimed property is supported by its visible content.",
+          "ifConfirmed": "Add structured data only where a schema type genuinely describes the page, for example an article page describing its article. Validate the markup after adding it, and leave pages without a fitting schema type unmarked.",
+          "ifNotNeeded": "Leave the page unmarked and record that no suitable schema type was confirmed.",
+          "doNot": [
+            "Do not add Organization or another generic schema type only to clear this finding.",
+            "Do not copy site-wide markup onto unrelated page types."
+          ]
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "redirected_url",
+        "status": "open",
+        "title": "URL redirects",
+        "severity": "low",
+        "affectedCount": 1,
+        "affectedUrls": {
+          "total": 1,
+          "returned": 1,
+          "complete": true,
+          "items": [
+            "http://127.0.0.1:3106/"
+          ]
+        },
+        "sourcePath": "reviewObservations[6]",
+        "evidence": {
+          "count": 1,
+          "sampleUrls": [
+            "http://127.0.0.1:3106/"
+          ],
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This is a review observation. Confirm it before scheduling implementation work.",
+          "score": 132,
+          "scoreFactors": {
+            "severity": 100,
+            "affectedUrls": 1,
+            "searchVisibleUrls": 0,
+            "clicks": 0,
+            "impressions": 0,
+            "sessions": 0,
+            "effort": "medium",
+            "effortScore": 30
+          }
+        },
+        "verification": {
+          "command": "seo crawl http://127.0.0.1:3106/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm the requested URL is the same as the final URL, or that the redirect is intentional."
+        },
+        "type": "review",
+        "review": {
+          "question": "Does the retained evidence and confirmed intent show that \"URL redirects\" needs a change?",
+          "changeOnlyIf": "Make a change only when the retained evidence and required intent support it.",
+          "ifConfirmed": "Check why the old URL was requested. Update internal links, canonicals, and sitemap entries to the final URL when appropriate. Keep one direct 301 when the old URL must remain supported.",
+          "ifNotNeeded": "Record no change and cite the evidence or confirmed intent that makes a change unnecessary.",
+          "doNot": []
+        },
+        "allowedOutcomes": [
+          "changed",
+          "no-change",
+          "deferred"
+        ]
+      },
+      {
+        "id": "meta_description_duplicate",
+        "status": "open",
+        "title": "Duplicate meta description",
+        "severity": "medium",
+        "affectedCount": 4,
+        "affectedUrls": {
+          "total": 4,
+          "returned": 4,
+          "complete": true,
+          "items": [
+            "http://127.0.0.1:3106/kk/shezhire-tree",
+            "http://127.0.0.1:3106/kk/shezhire-tree?view=reference&highlight=tribe%3Adulat",
+            "http://127.0.0.1:3106/kk/shezhire-tree?view=reference&highlight=tribe%3Ajalayir",
+            "http://127.0.0.1:3106/kk/shezhire-tree?view=reference&highlight=tribe%3Asirgeli"
+          ]
+        },
+        "sourcePath": "topFixes[0]",
+        "evidence": {
+          "count": 4,
+          "sampleUrls": [
+            "http://127.0.0.1:3106/kk/shezhire-tree",
+            "http://127.0.0.1:3106/kk/shezhire-tree?view=reference&highlight=tribe%3Adulat",
+            "http://127.0.0.1:3106/kk/shezhire-tree?view=reference&highlight=tribe%3Ajalayir",
+            "http://127.0.0.1:3106/kk/shezhire-tree?view=reference&highlight=tribe%3Asirgeli"
+          ],
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This ranks as a fix. Severity is 1200; 4 URLs are affected; estimated effort is low.",
+          "score": 1320,
+          "scoreFactors": {
+            "severity": 1200,
+            "affectedUrls": 4,
+            "searchVisibleUrls": 0,
+            "clicks": 0,
+            "impressions": 0,
+            "sessions": 0,
+            "effort": "low",
+            "effortScore": 60
+          }
+        },
+        "verification": {
+          "command": "seo crawl http://127.0.0.1:3106/ --severity medium --max-pages 100",
+          "expected": "Re-run the crawl and confirm this description appears on only one URL."
+        },
+        "type": "fix",
+        "fix": {
+          "instruction": "Write a distinct description for each page that explains what is unique about that URL."
+        },
+        "allowedOutcomes": [
+          "fixed",
+          "deferred",
+          "not-needed"
+        ]
+      },
+      {
+        "id": "title_duplicate",
+        "status": "open",
+        "title": "Duplicate title",
+        "severity": "medium",
+        "affectedCount": 4,
+        "affectedUrls": {
+          "total": 4,
+          "returned": 4,
+          "complete": true,
+          "items": [
+            "http://127.0.0.1:3106/kk/shezhire-tree",
+            "http://127.0.0.1:3106/kk/shezhire-tree?view=reference&highlight=tribe%3Adulat",
+            "http://127.0.0.1:3106/kk/shezhire-tree?view=reference&highlight=tribe%3Ajalayir",
+            "http://127.0.0.1:3106/kk/shezhire-tree?view=reference&highlight=tribe%3Asirgeli"
+          ]
+        },
+        "sourcePath": "topFixes[1]",
+        "evidence": {
+          "count": 4,
+          "sampleUrls": [
+            "http://127.0.0.1:3106/kk/shezhire-tree",
+            "http://127.0.0.1:3106/kk/shezhire-tree?view=reference&highlight=tribe%3Adulat",
+            "http://127.0.0.1:3106/kk/shezhire-tree?view=reference&highlight=tribe%3Ajalayir",
+            "http://127.0.0.1:3106/kk/shezhire-tree?view=reference&highlight=tribe%3Asirgeli"
+          ],
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This ranks as a fix. Severity is 1200; 4 URLs are affected; estimated effort is low.",
+          "score": 1320,
+          "scoreFactors": {
+            "severity": 1200,
+            "affectedUrls": 4,
+            "searchVisibleUrls": 0,
+            "clicks": 0,
+            "impressions": 0,
+            "sessions": 0,
+            "effort": "low",
+            "effortScore": 60
+          }
+        },
+        "verification": {
+          "command": "seo crawl http://127.0.0.1:3106/ --severity medium --max-pages 100",
+          "expected": "Re-run the crawl and confirm this title appears on only one indexable URL."
+        },
+        "type": "fix",
+        "fix": {
+          "instruction": "Rewrite each title so it reflects the specific page, including the unique entity, intent, location, product, or angle."
+        },
+        "allowedOutcomes": [
+          "fixed",
+          "deferred",
+          "not-needed"
+        ]
+      },
+      {
+        "id": "hreflang_incomplete",
+        "status": "open",
+        "title": "Hreflang missing self reference",
+        "severity": "low",
+        "affectedCount": 88,
+        "affectedUrls": {
+          "total": 88,
+          "returned": 10,
+          "complete": false,
+          "items": [
+            "http://127.0.0.1:3106/kk",
+            "http://127.0.0.1:3106/kk/ai",
+            "http://127.0.0.1:3106/kk/ai/action-figure",
+            "http://127.0.0.1:3106/kk/ai/ancestor",
+            "http://127.0.0.1:3106/kk/ai/family-portrait",
+            "http://127.0.0.1:3106/kk/ai/ghibli-style",
+            "http://127.0.0.1:3106/kk/ai/national-costume",
+            "http://127.0.0.1:3106/kk/ai/past",
+            "http://127.0.0.1:3106/kk/ai/pet-humanize",
+            "http://127.0.0.1:3106/kk/blog"
+          ]
+        },
+        "sourcePath": "topFixes[2]",
+        "evidence": {
+          "count": 88,
+          "sampleUrls": [
+            "http://127.0.0.1:3106/kk",
+            "http://127.0.0.1:3106/kk/ai",
+            "http://127.0.0.1:3106/kk/ai/action-figure",
+            "http://127.0.0.1:3106/kk/ai/ancestor",
+            "http://127.0.0.1:3106/kk/ai/family-portrait",
+            "http://127.0.0.1:3106/kk/ai/ghibli-style",
+            "http://127.0.0.1:3106/kk/ai/national-costume",
+            "http://127.0.0.1:3106/kk/ai/past",
+            "http://127.0.0.1:3106/kk/ai/pet-humanize",
+            "http://127.0.0.1:3106/kk/blog"
+          ],
+          "whyThisRanks": "No joined GSC visibility is available for these affected URLs; Search Console evidence is skipped. This ranks as a fix. Severity is 100; 88 URLs are affected; estimated effort is low.",
+          "score": 336,
+          "scoreFactors": {
+            "severity": 100,
+            "affectedUrls": 88,
+            "searchVisibleUrls": 0,
+            "clicks": 0,
+            "impressions": 0,
+            "sessions": 0,
+            "effort": "low",
+            "effortScore": 60
+          }
+        },
+        "verification": {
+          "command": "seo crawl http://127.0.0.1:3106/ --severity low --max-pages 100",
+          "expected": "Re-run the crawl and confirm one hreflang href matches the fetched final URL."
+        },
+        "type": "fix",
+        "fix": {
+          "instruction": "Add one hreflang entry that points to this page's final URL. Keep x-default as an additional fallback only where it is useful."
+        },
+        "allowedOutcomes": [
+          "fixed",
+          "deferred",
+          "not-needed"
+        ]
+      }
+    ]
+  },
+  "retainedEvidence": {
+    "caveats": [],
+    "warnings": []
+  },
+  "outputBudget": {
+    "schemaVersion": 1,
+    "maxBytes": 98304,
+    "originalBytes": 19374,
+    "returnedBytes": 19609,
+    "truncated": false,
+    "omissions": [],
+    "omissionsTruncated": false,
+    "detail": "The complete structured report fits within the agent output budget."
+  }
+}

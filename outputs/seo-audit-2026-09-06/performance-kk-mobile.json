@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "methodology": "performance-v2",
+  "dataStatus": "complete",
+  "id": "perf_17d141e6fe531b4651ec",
+  "url": "https://skezire.kz/kk",
+  "finalUrl": "https://skezire.kz/kk",
+  "strategy": "mobile",
+  "generatedAt": "2026-09-06T11:13:04.255Z",
+  "cache": {
+    "status": "miss",
+    "ttlHours": 24
+  },
+  "source": "lighthouse",
+  "score": 65,
+  "grade": "needs-work",
+  "headline": "Lighthouse lab performance score is 65/100.",
+  "metrics": {
+    "firstContentfulPaint": {
+      "value": 3262.072,
+      "displayValue": "3.3 s",
+      "score": 0.41,
+      "rating": "poor",
+      "source": "lighthouse-lab"
+    },
+    "largestContentfulPaint": {
+      "value": 10997.03,
+      "displayValue": "11.0 s",
+      "score": 0,
+      "rating": "poor",
+      "source": "lighthouse-lab"
+    },
+    "totalBlockingTime": {
+      "value": 159.456,
+      "displayValue": "160 ms",
+      "score": 0.94,
+      "rating": "good",
+      "source": "lighthouse-lab"
+    },
+    "cumulativeLayoutShift": {
+      "value": 0.012,
+      "displayValue": "0.012",
+      "score": 1,
+      "rating": "good",
+      "source": "lighthouse-lab"
+    },
+    "speedIndex": {
+      "value": 4539,
+      "displayValue": "4.5 s",
+      "score": 0.72,
+      "rating": "needs-work",
+      "source": "lighthouse-lab"
+    },
+    "serverResponseTime": {
+      "value": 145,
+      "displayValue": "Root document took 150 ms",
+      "score": 1,
+      "rating": "good",
+      "source": "lighthouse-lab"
+    }
+  },
+  "labInsights": [
+    {
+      "id": "cache-insight",
+      "title": "Use efficient cache lifetimes",
+      "displayValue": "Est savings of 70 KiB",
+      "score": 0,
+      "evidence": [
+        {
+          "type": "debugdata",
+          "wastedBytes": 71817.6
+        },
+        {
+          "url": "https://mc.yandex.ru/metrika/tag.js?id=107086067",
+          "cacheLifetimeMs": 3600000,
+          "totalBytes": 88990,
+          "wastedBytes": 71192
+        },
+        {
+          "cacheLifetimeMs": 0,
+          "totalBytes": 402,
+          "wastedBytes": 402
+        }
+      ]
+    },
+    {
+      "id": "forced-reflow-insight",
+      "title": "Forced reflow",
+      "score": 0,
+      "evidence": [
+        {
+          "type": "table"
+        }
+      ]
+    },
+    {
+      "id": "image-delivery-insight",
+      "title": "Improve image delivery",
+      "displayValue": "Est savings of 424 KiB",
+      "score": 0,
+      "evidence": [
+        {
+          "type": "debugdata",
+          "wastedBytes": 433739
+        },
+        {
+          "url": "https://skezire.kz/ornament-about.webp",
+          "totalBytes": 394422,
+          "wastedBytes": 219659
+        },
+        {
+          "url": "https://skezire.kz/ornament-hero.webp",
+          "totalBytes": 284438,
+          "wastedBytes": 109675
+        }
+      ]
+    },
+    {
+      "id": "inp-breakdown-insight",
+      "title": "INP breakdown",
+      "score": null,
+      "evidence": []
+    },
+    {
+      "id": "lcp-breakdown-insight",
+      "title": "LCP breakdown",
+      "score": 0,
+      "evidence": [
+        {
+          "type": "table"
+        },
+        {
+          "type": "node",
+          "lhId": "page-1-DIV",
+          "path": "1,HTML,1,BODY,4,SECTION,0,DIV",
+          "selector": "body > section#hero > div.hero-ornament"
+        }
+      ]
+    },
+    {
+      "id": "lcp-discovery-insight",
+      "title": "LCP request discovery",
+      "score": 0,
+      "evidence": [
+        {
+          "type": "checklist"
+        },
+        {
+          "type": "node",
+          "lhId": "page-1-DIV",
+          "path": "1,HTML,1,BODY,4,SECTION,0,DIV",
+          "selector": "body > section#hero > div.hero-ornament"
+        }
+      ]
+    },
+    {
+      "id": "legacy-javascript-insight",
+      "title": "Legacy JavaScript",
+      "displayValue": "Est savings of 13 KiB",
+      "score": 0.5,
+      "evidence": [
+        {
+          "type": "debugdata",
+          "wastedBytes": 13708
+        },
+        {
+          "url": "https://skezire.kz/_next/static/chunks/69be39811437728d.js",
+          "wastedBytes": 13708
+        }
+      ]
+    },
+    {
+      "id": "network-dependency-tree-insight",
+      "title": "Network dependency tree",
+      "score": 0,
+      "evidence": [
+        {
+          "type": "list-section"
+        },
+        {
+          "type": "list-section",
+          "title": "Preconnected origins"
+        }
+      ]
+    }
+  ],
+  "labDataStatus": {
+    "provider": "lighthouse",
+    "status": "available",
+    "reason": "Lighthouse 13.4.1 completed a mobile navigation lab run."
+  },
+  "fieldDataStatus": {
+    "provider": "crux",
+    "status": "not_configured",
+    "reason": "Chrome UX Report field data is not configured.",
+    "checkedUrl": "https://skezire.kz/kk",
+    "checkedOrigin": "https://skezire.kz",
+    "formFactor": "PHONE"
+  },
+  "caveats": [
+    "Lighthouse is one controlled lab run; its score and timings can vary between runs and are not field Core Web Vitals.",
+    "Navigation Lighthouse uses Total Blocking Time as a lab responsiveness diagnostic; field INP comes from CrUX when available.",
+    "Field Core Web Vitals were not checked in this run."
+  ],
+  "topActions": [
+    {
+      "title": "Improve the largest visible content",
+      "plainEnglish": "Lighthouse LCP is 11.0 s (Lighthouse lab run).",
+      "action": "Optimize the LCP resource, render path, and HTML delivery, then repeat controlled lab runs.",
+      "evidence": {
+        "metric": "Lighthouse LCP",
+        "value": 10997.03,
+        "source": "Lighthouse lab run"
+      }
+    }
+  ],
+  "outputBudget": {
+    "schemaVersion": 1,
+    "maxBytes": 98304,
+    "originalBytes": 3878,
+    "returnedBytes": 4111,
+    "truncated": false,
+    "omissions": [],
+    "omissionsTruncated": false,
+    "detail": "The complete structured report fits within the agent output budget."
+  }
+}

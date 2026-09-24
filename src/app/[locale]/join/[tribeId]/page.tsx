@@ -7,5 +7,5 @@ export default async function JoinTribePage({
 }) {
   const { locale, tribeId } = await params;
   // Redirect to the tree page with the tribe highlighted
-  redirect(`/${locale}/shezhire-tree?highlight=${tribeId}`);
+  redirect(`/${locale}/shezhire-tree?highlight=${tribeId}&join=1`);
 }
