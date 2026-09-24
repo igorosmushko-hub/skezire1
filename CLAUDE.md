@@ -20,8 +20,7 @@ npm run lint       # ESLint
 - **Robokassa** — оплата (тенге)
 - **Kie AI API** — генерация изображений
 - **Telegram Bot API** — уведомления админу
-- **Vercel** — хостинг, автодеплой из `main`
-- **Docker** — мультистейдж сборка (standalone)
+- **Docker** — мультистейдж сборка (standalone), за Caddy (реверс-прокси + TLS)
 
 ## Структура проекта
 
@@ -94,9 +93,10 @@ src/
 
 ## Деплой
 
-- **Продакшен**: Vercel, автодеплой при push в `main`
+- **Продакшен**: VPS на ps.kz, ручной деплой по SSH — `git pull` + `docker compose -f docker-compose.prod.yml up --build -d`
 - **Домен**: skezire.kz
-- **Docker**: `docker compose up` (порт 3000)
+- **Docker**: `web` (Next.js standalone, порт 3000, внутренний) + `caddy` (реверс-прокси, TLS, порты 80/443) — см. `docker-compose.prod.yml` и `Caddyfile`
+- Push в `main` сам по себе НЕ деплоит — нужен ручной шаг на сервере
 
 ## Дизайн
 

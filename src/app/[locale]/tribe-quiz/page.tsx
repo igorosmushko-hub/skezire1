@@ -42,7 +42,9 @@ export default async function TribeQuizPage({
     <main className="quiz-page">
       <div className="container">
         <TribeQuizLanding locale={locale} />
-        <TribeQuizWizard locale={locale} />
+        <div id="quiz-start">
+          <TribeQuizWizard locale={locale} />
+        </div>
       </div>
     </main>
   );
