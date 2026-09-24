@@ -48,13 +48,27 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: payErr.message }, { status: 500 });
   }
 
+  // Daily tribe-quiz completions + conversions to tribe join
+  const { data: quizRows, error: quizErr } = await supabase
+    .from('tribe_quiz_results')
+    .select('created_at, joined_tribe_id')
+    .gte('created_at', sinceIso)
+    .order('created_at', { ascending: false });
+
+  if (quizErr) {
+    return NextResponse.json({ error: quizErr.message }, { status: 500 });
+  }
+
   // Build last 30 days as keys
-  const dateMap: Record<string, { registrations: number; payments: number; amount: number }> = {};
+  const dateMap: Record<
+    string,
+    { registrations: number; payments: number; amount: number; quizzes: number; quizJoins: number }
+  > = {};
   for (let i = 0; i < days; i++) {
     const d = new Date();
     d.setDate(d.getDate() - i);
     const key = d.toISOString().slice(0, 10);
-    dateMap[key] = { registrations: 0, payments: 0, amount: 0 };
+    dateMap[key] = { registrations: 0, payments: 0, amount: 0, quizzes: 0, quizJoins: 0 };
   }
 
   for (const row of regRows ?? []) {
@@ -67,6 +81,14 @@ export async function GET(req: NextRequest) {
     if (key && dateMap[key]) {
       dateMap[key].payments++;
       dateMap[key].amount += row.amount_kzt ?? 0;
+    }
+  }
+
+  for (const row of quizRows ?? []) {
+    const key = row.created_at?.slice(0, 10);
+    if (key && dateMap[key]) {
+      dateMap[key].quizzes++;
+      if (row.joined_tribe_id) dateMap[key].quizJoins++;
     }
   }
 

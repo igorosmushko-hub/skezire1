@@ -7,6 +7,8 @@ interface StatsRow {
   registrations: number;
   payments: number;
   amount: number;
+  quizzes: number;
+  quizJoins: number;
 }
 
 export default function AdminDashboard() {
@@ -51,6 +53,9 @@ export default function AdminDashboard() {
   const reg7 = last7.reduce((s, r) => s + r.registrations, 0);
   const pay7 = last7.reduce((s, r) => s + r.payments, 0);
   const amt7 = last7.reduce((s, r) => s + r.amount, 0);
+  const quiz7 = last7.reduce((s, r) => s + r.quizzes, 0);
+  const quizJoin7 = last7.reduce((s, r) => s + r.quizJoins, 0);
+  const quizConversion7 = quiz7 > 0 ? Math.round((quizJoin7 / quiz7) * 100) : 0;
 
   function formatDate(iso: string) {
     const [y, m, d] = iso.split('-');
@@ -113,6 +118,8 @@ export default function AdminDashboard() {
               <Card label="Регистрации (7 дней)" value={reg7} />
               <Card label="Оплаты (7 дней)" value={pay7} />
               <Card label="Выручка (7 дней)" value={fmtAmount(amt7)} highlight />
+              <Card label="Тесты «Узнай свой род» (7 дней)" value={quiz7} />
+              <Card label="Конверсия тест → род (7 дней)" value={`${quizConversion7}%`} />
               <Card label="Регистрации (30 дней)" value={totalReg} />
               <Card label="Оплаты (30 дней)" value={totalPay} />
               <Card label="Выручка (30 дней)" value={fmtAmount(totalAmt)} highlight />
@@ -127,6 +134,8 @@ export default function AdminDashboard() {
                     <th style={th}>Регистрации</th>
                     <th style={th}>Оплаты</th>
                     <th style={th}>Сумма</th>
+                    <th style={th}>Тесты рода</th>
+                    <th style={th}>→ Присоединились</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -147,6 +156,12 @@ export default function AdminDashboard() {
                       </td>
                       <td style={{ ...td, color: row.amount > 0 ? '#fbbf24' : '#94a3b8' }}>
                         {row.amount > 0 ? fmtAmount(row.amount) : '—'}
+                      </td>
+                      <td style={{ ...td, color: row.quizzes > 0 ? '#93c5fd' : '#94a3b8' }}>
+                        {row.quizzes > 0 ? row.quizzes : '—'}
+                      </td>
+                      <td style={{ ...td, color: row.quizJoins > 0 ? '#86efac' : '#94a3b8' }}>
+                        {row.quizJoins > 0 ? row.quizJoins : '—'}
                       </td>
                     </tr>
                   ))}
