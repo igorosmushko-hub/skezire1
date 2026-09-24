@@ -8,6 +8,7 @@ import { AiSection } from '@/components/AiSection';
 import { AiShowcase } from '@/components/AiShowcase';
 import { FamilyPortraitCta } from '@/components/FamilyPortraitCta';
 import { TribeRaceSection } from '@/components/TribeRaceSection';
+import { TribeQuizCta } from '@/components/TribeQuizCta';
 import '@/styles/tribe-race-section.css';
 
 import { JsonLd } from '@/components/JsonLd';
@@ -69,6 +70,7 @@ export default async function HomePage() {
       <Hero />
       <AiShowcase />
       <TribeRaceSection locale={locale} />
+      <TribeQuizCta />
       <About />
       <OrnamentDivider />
       <FormTreeContainer locale={locale} />

@@ -17,6 +17,8 @@ export interface Tribe {
   desc_ru: string;
   region_kk: string;
   region_ru: string;
+  /** Нормализованные коды современных областей РК — см. src/data/kz-regions.ts */
+  regions: string[];
   tamga: string;
   uran: string;
   subgroup_kk?: string;

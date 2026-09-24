@@ -71,7 +71,7 @@ async function handleResult(req: NextRequest, formData?: FormData) {
       .update({ status: 'paid', paid_at: new Date().toISOString() })
       .eq('id', Shp_paymentId)
       .eq('inv_id', Number(InvId))
-      .select('id, user_id, package_id')
+      .select('id, user_id, package_id, quiz_result_id')
       .single();
 
     if (payErr || !payment) {
@@ -80,22 +80,38 @@ async function handleResult(req: NextRequest, formData?: FormData) {
     }
 
     // Credit generations to user
-    const { data: pkg } = await supabase
-      .from('packages')
-      .select('generations')
-      .eq('id', payment.package_id)
-      .single();
+    if (payment.package_id) {
+      const { data: pkg } = await supabase
+        .from('packages')
+        .select('generations')
+        .eq('id', payment.package_id)
+        .single();
 
-    if (pkg) {
-      const { error: rpcErr } = await supabase.rpc('increment_paid_generations', {
-        p_user_id: payment.user_id,
-        p_amount: pkg.generations,
-      });
+      if (pkg) {
+        const { error: rpcErr } = await supabase.rpc('increment_paid_generations', {
+          p_user_id: payment.user_id,
+          p_amount: pkg.generations,
+        });
 
-      if (rpcErr) {
-        await notify(`❌ Failed to credit generations: ${rpcErr.message}`);
+        if (rpcErr) {
+          await notify(`❌ Failed to credit generations: ${rpcErr.message}`);
+        } else {
+          await notify(`✅ Payment OK! InvId=${InvId}, +${pkg.generations} generations`);
+        }
+      }
+    }
+
+    // Unlock tribe quiz result
+    if (payment.quiz_result_id) {
+      const { error: quizErr } = await supabase
+        .from('tribe_quiz_results')
+        .update({ paid: true, paid_at: new Date().toISOString() })
+        .eq('id', payment.quiz_result_id);
+
+      if (quizErr) {
+        await notify(`❌ Failed to unlock quiz result: ${quizErr.message}`);
       } else {
-        await notify(`✅ Payment OK! InvId=${InvId}, +${pkg.generations} generations`);
+        await notify(`✅ Quiz result unlocked! InvId=${InvId}, resultId=${payment.quiz_result_id}`);
       }
     }
   }

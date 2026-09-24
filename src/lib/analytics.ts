@@ -27,6 +27,7 @@ export const footerClick = (link: string) => ymGoal('footer_click', { link });
 // ── Hero ────────────────────────────────────────────────────
 export const heroCreateTree = () => ymGoal('hero_create_tree');
 export const heroAiFeatures = () => ymGoal('hero_ai_features');
+export const heroTribeQuiz = () => ymGoal('hero_tribe_quiz');
 
 // ── Auth ────────────────────────────────────────────────────
 export const authLoginOpen = () => ymGoal('auth_login_open');

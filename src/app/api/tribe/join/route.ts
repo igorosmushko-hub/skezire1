@@ -16,14 +16,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'db_not_configured' }, { status: 503 });
   }
 
-  let body: { zhuzId?: string; tribeId?: string };
+  let body: { zhuzId?: string; tribeId?: string; quizResultId?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: 'invalid_json' }, { status: 400 });
   }
 
-  const { zhuzId, tribeId } = body;
+  const { zhuzId, tribeId, quizResultId } = body;
   if (!zhuzId || !tribeId) {
     return NextResponse.json({ error: 'zhuzId and tribeId required' }, { status: 400 });
   }
@@ -66,6 +66,13 @@ export async function POST(req: NextRequest) {
 
   if (error) {
     return NextResponse.json({ error: 'update_failed' }, { status: 500 });
+  }
+
+  if (quizResultId) {
+    await supabase
+      .from('tribe_quiz_results')
+      .update({ joined_tribe_id: tribeId })
+      .eq('id', quizResultId);
   }
 
   return NextResponse.json({ ok: true, zhuzId, tribeId });

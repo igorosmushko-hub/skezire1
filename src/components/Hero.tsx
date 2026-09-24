@@ -1,10 +1,12 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { heroCreateTree, heroAiFeatures } from '@/lib/analytics';
+import { useTranslations, useLocale } from 'next-intl';
+import Link from 'next/link';
+import { heroCreateTree, heroAiFeatures, heroTribeQuiz } from '@/lib/analytics';
 
 export function Hero() {
   const t = useTranslations('hero');
+  const locale = useLocale();
 
   return (
     <section id="hero" className="hero">
@@ -19,6 +21,7 @@ export function Hero() {
         <div className="hero-btns">
           <a href="#form-section" className="btn btn-primary" onClick={heroCreateTree}>{t('btn.create')}</a>
           <a href="#ai-section" className="btn btn-ai-hero" onClick={heroAiFeatures}>{t('btn.ai')}</a>
+          <Link href={`/${locale}/tribe-quiz`} className="btn btn-quiz-hero" onClick={heroTribeQuiz}>{t('btn.quiz')}</Link>
         </div>
       </div>
 

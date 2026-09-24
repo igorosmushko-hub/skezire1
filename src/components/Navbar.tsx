@@ -10,7 +10,7 @@ export function Navbar({ locale }: { locale: string }) {
   const links = [
     { href: '/#form-section' as const, label: t('create') },
     { href: '/ai' as const, label: t('ai'), className: 'nav-ai-link' },
-    { href: '/zheti-ata' as const, label: t('zhetiAta') },
+    { href: '/tribe-quiz' as const, label: t('tribeQuiz') },
     { href: '/encyclopedia' as const, label: t('enc') },
     { href: '/leaderboard' as const, label: t('race'), className: 'nav-race-link' },
     { href: '/order/canvas' as const, label: t('orderCanvas'), className: 'nav-order-link' },

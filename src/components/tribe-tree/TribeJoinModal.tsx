@@ -11,9 +11,11 @@ interface Props {
   locale: string;
   onClose: () => void;
   onJoined: () => void;
+  /** ID результата квиза "Узнай свой род" — для трекинга конверсии тест → присоединение */
+  quizResultId?: string | null;
 }
 
-export function TribeJoinModal({ tribe, zhuz, locale, onClose, onJoined }: Props) {
+export function TribeJoinModal({ tribe, zhuz, locale, onClose, onJoined, quizResultId }: Props) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -32,7 +34,7 @@ export function TribeJoinModal({ tribe, zhuz, locale, onClose, onJoined }: Props
       const res = await fetch('/api/tribe/join', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ zhuzId: zhuz.id, tribeId: tribe.id }),
+        body: JSON.stringify({ zhuzId: zhuz.id, tribeId: tribe.id, quizResultId }),
       });
 
       const data = await res.json();
