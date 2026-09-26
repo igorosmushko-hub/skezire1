@@ -7,15 +7,8 @@ import { pricingBuy } from '@/lib/analytics';
 import { RobokassaWidget } from '@/components/RobokassaWidget';
 import { LoginModal } from '@/components/LoginModal';
 import { useAuth } from '@/components/AuthProvider';
-
-interface Package {
-  id: string;
-  slug: string;
-  name_ru: string;
-  name_kk: string;
-  generations: number;
-  price_kzt: number;
-}
+import { usePackages, type Package } from '@/hooks/usePackages';
+import { PackagesStatus } from '@/components/PackagesStatus';
 
 interface Props {
   open: boolean;
@@ -23,29 +16,14 @@ interface Props {
   locale?: string;
 }
 
-const PACKAGES_CACHE: { data: Package[] | null } = { data: null };
-
 export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
   const t = useTranslations('pricing');
   const { user } = useAuth();
-  const [packages, setPackages] = useState<Package[]>(PACKAGES_CACHE.data ?? []);
-  const [loading, setLoading] = useState(!PACKAGES_CACHE.data);
+  const { packages, loading, loadError, retry } = usePackages(open);
   const [buying, setBuying] = useState<string | null>(null);
   const [paymentData, setPaymentData] = useState<{ url: string; params: Record<string, unknown> } | null>(null);
   const [showLogin, setShowLogin] = useState(false);
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    if (!open || PACKAGES_CACHE.data) return;
-    fetch('/api/packages')
-      .then((r) => r.json())
-      .then((d) => {
-        PACKAGES_CACHE.data = d.packages;
-        setPackages(d.packages);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [open]);
 
   const handleClose = useCallback(() => {
     setBuying(null);
@@ -98,28 +76,27 @@ export function PricingModal({ open, onClose, locale = 'ru' }: Props) {
 
   if (!open) return null;
 
-  const isKk = locale === 'kk';
-
   const modal = (
     <div
       className="modal open"
       role="dialog"
       aria-modal="true"
+      aria-labelledby="pricing-modal-title"
       onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
     >
       <div className="modal-card pricing-card">
-        <button className="modal-close" onClick={handleClose} aria-label="Close">
+        <button className="modal-close" onClick={handleClose} aria-label={t('close')}>
           &#10005;
         </button>
 
         <div className="pricing-header">
           <div className="modal-icon">&#9889;</div>
-          <h2 className="modal-title">{t('limitTitle')}</h2>
+          <h2 id="pricing-modal-title" className="modal-title">{t('limitTitle')}</h2>
           <p className="modal-text">{t('limitDesc')}</p>
         </div>
 
-        {loading ? (
-          <div className="pricing-loading">...</div>
+        {loading || loadError || packages.length === 0 ? (
+          <PackagesStatus loading={loading} loadError={loadError} retry={retry} />
         ) : (
           <div className="pricing-grid">
             {packages.map((pkg) => {

@@ -71,9 +71,15 @@ console.log('PASS: map navigation and footer in kk/ru; locale switch preserves d
   let onChange;
   const desktop = { matches: false, addEventListener: (_type, listener) => { onChange = listener; }, removeEventListener: (_type, listener) => assert.equal(listener, onChange) };
   const client = load('src/components/NavbarClient.tsx', {
-    react: { ...state, useEffect: effect => effects.push(effect) }, '@/i18n/routing': { Link: 'a' },
+    react: { ...state, useEffect: effect => effects.push(effect) }, '@/i18n/routing': { Link: 'a', usePathname: () => '/encyclopedia/orta/argyn' },
   }, { window: { matchMedia: query => { assert.equal(query, '(min-width: 1280px)'); return desktop; } } });
-  client.NavbarClient({ locale: 'ru', links: [], brand: null, auth: null, langSwitcher: null });
+  const renderedNav = client.NavbarClient({ locale: 'ru', links: [
+    { href: '/encyclopedia', label: 'Энциклопедия' },
+    { href: '/ai', label: 'AI' },
+  ], brand: null, auth: null, langSwitcher: null });
+  for (const link of elements(renderedNav, 'a')) {
+    assert.equal(link.props['aria-current'], link.props.href === '/encyclopedia' ? 'page' : undefined);
+  }
   const cleanup = effects[0]();
   onChange(); assert.equal(state.updates.length, 0);
   desktop.matches = true; onChange();
@@ -90,7 +96,7 @@ console.log('PASS: map navigation and footer in kk/ru; locale switch preserves d
     '@/lib/analytics': { ymGoal() {} }, '@/data/tribes': { TRIBES_DB: [] }, './TribeJoinModal': { TribeJoinModal: () => null },
   });
   for (const locale of ['ru', 'kk']) {
-    const empty = locale === 'ru' ? 'У этой ветви нет продолжения.' : 'Бұл тармақта жалғасы жоқ.';
+    const empty = locale === 'ru' ? 'Продолжение этой ветви пока не добавлено.' : 'Бұл тармақтың жалғасы әзірге қосылмаған.';
     const expand = locale === 'ru' ? 'Показать ещё ветви' : 'Тағы тармақтарды көрсету';
     for (const hasChildren of [true, false]) {
       const html = renderToStaticMarkup(require('react').createElement(InteractiveTree, {

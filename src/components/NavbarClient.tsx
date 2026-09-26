@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback, type ReactNode } from 'react';
-import { Link } from '@/i18n/routing';
+import { Link, usePathname } from '@/i18n/routing';
 
 interface NavLink {
   href: string;
@@ -18,6 +18,10 @@ interface NavbarClientProps {
 }
 
 export function NavbarClient({ locale, links, brand, auth, langSwitcher }: NavbarClientProps) {
+  const pathname = usePathname();
+  const isCurrent = (href: string) => !href.includes('#') && (
+    pathname === href || pathname.startsWith(`${href}/`)
+  );
   const navRef = useRef<HTMLElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
@@ -99,13 +103,13 @@ export function NavbarClient({ locale, links, brand, auth, langSwitcher }: Navba
 
   return (
     <>
-      <nav className={`navbar${menuOpen ? ' menu-open' : ''}`} id="navbar" ref={navRef}>
+      <nav className={`navbar${menuOpen ? ' menu-open' : ''}`} id="navbar" ref={navRef} aria-label={locale === 'kk' ? 'Негізгі мәзір' : 'Основная навигация'}>
         <div className="nav-ornament" />
         {brand}
         <ul className="nav-links">
           {links.map((link) => (
             <li key={link.href}>
-              <Link href={link.href as '/'} locale={locale} className={link.className}>
+              <Link href={link.href as '/'} locale={locale} className={link.className} aria-current={isCurrent(link.href) ? 'page' : undefined}>
                 {link.label}
               </Link>
             </li>
@@ -115,7 +119,8 @@ export function NavbarClient({ locale, links, brand, auth, langSwitcher }: Navba
         {langSwitcher}
         <button
           className="nav-burger"
-          aria-label="Menu"
+          aria-label={locale === 'kk' ? (menuOpen ? 'Мәзірді жабу' : 'Мәзірді ашу') : (menuOpen ? 'Закрыть меню' : 'Открыть меню')}
+          aria-controls="mobile-navigation"
           aria-expanded={menuOpen}
           ref={burgerRef}
           onClick={toggleMenu}
@@ -125,7 +130,7 @@ export function NavbarClient({ locale, links, brand, auth, langSwitcher }: Navba
       </nav>
 
       {/* Mobile menu — rendered OUTSIDE nav to avoid backdrop-filter containing block */}
-      <div className={`mobile-menu${menuOpen ? ' open' : ''}`} ref={menuRef}>
+      <div id="mobile-navigation" className={`mobile-menu${menuOpen ? ' open' : ''}`} ref={menuRef}>
         <div className="mobile-menu-overlay" onClick={closeMenu} />
         <div className="mobile-menu-content">
           {links.map((link) => (
@@ -134,6 +139,7 @@ export function NavbarClient({ locale, links, brand, auth, langSwitcher }: Navba
               href={link.href as '/'}
               locale={locale}
               className={`mobile-menu-link${link.className ? ` ${link.className}` : ''}`}
+              aria-current={isCurrent(link.href) ? 'page' : undefined}
               onClick={closeMenu}
             >
               {link.label}

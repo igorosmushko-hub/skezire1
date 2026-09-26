@@ -1,39 +1,23 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { RobokassaWidget } from '@/components/RobokassaWidget';
 import { LoginModal } from '@/components/LoginModal';
 import { useAuth } from '@/components/AuthProvider';
+import { usePackages, type Package } from '@/hooks/usePackages';
+import { PackagesStatus } from '@/components/PackagesStatus';
 import '@/styles/pricing-page.css';
-
-interface Package {
-  id: string;
-  slug: string;
-  name_ru: string;
-  name_kk: string;
-  generations: number;
-  price_kzt: number;
-}
 
 export function PricingPageClient({ locale }: { locale: string }) {
   const t = useTranslations('pricing');
   const { user } = useAuth();
   const isKk = locale === 'kk';
-  const [packages, setPackages] = useState<Package[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { packages, loading, loadError, retry } = usePackages();
   const [buying, setBuying] = useState<string | null>(null);
   const [paymentData, setPaymentData] = useState<{ url: string; params: Record<string, unknown> } | null>(null);
   const [showLogin, setShowLogin] = useState(false);
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    fetch('/api/packages')
-      .then((r) => r.json())
-      .then((d) => setPackages(d.packages))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
 
   const handleBuy = useCallback(async (pkg: Package) => {
     if (!user) {
@@ -72,8 +56,8 @@ export function PricingPageClient({ locale }: { locale: string }) {
           <p>{t('subtitle')}</p>
         </div>
 
-        {loading ? (
-          <div className="pricing-page-loading">...</div>
+        {loading || loadError || packages.length === 0 ? (
+          <PackagesStatus variant="page" loading={loading} loadError={loadError} retry={retry} />
         ) : (
           <div className="pricing-page-grid">
             {packages.map((pkg) => {

@@ -1,5 +1,5 @@
 .quiz-page {
-  padding: 3rem 0 5rem;
+  padding: calc(64px + 2rem) 0 5rem;
   min-height: 60vh;
 }
 
@@ -16,7 +16,7 @@
   text-align: center;
 }
 .quiz-intro-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-.quiz-intro h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.75rem; }
+.quiz-intro h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.75rem; }
 .quiz-intro p { color: var(--muted, #6b7280); line-height: 1.6; margin-bottom: 1.5rem; }
 .quiz-intro-price {
   font-size: .85rem; font-weight: 600;

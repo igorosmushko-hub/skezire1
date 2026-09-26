@@ -73,7 +73,7 @@
 .blog-date {
   display: inline-block;
   font-size: .82rem;
-  color: rgba(255,255,255,.5);
+  color: var(--text);
   margin-top: 6px;
 }
 
