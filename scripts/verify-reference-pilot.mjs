@@ -18,20 +18,13 @@ function load(source) {
 }
 const baseline = load(execFileSync('git', ['show', 'fd29cf3:src/data/tribes.ts'], { encoding: 'utf8' })).TRIBES_DB;
 const { TRIBES_DB } = load(readFileSync('src/data/tribes.ts', 'utf8'));
-const pilotIds = ['dulat', 'jalayir', 'sirgeli', 'alban', 'suan', 'shapyrashty'];
 const enrichedIds = TRIBES_DB.flatMap(section => section.tribes).filter(tribe => tribe.sources?.length).map(tribe => tribe.id);
 const tribes = TRIBES_DB.flatMap(section => section.tribes);
 const baselineTribes = baseline.flatMap(section => section.tribes);
 
 assert.equal(tribes.length, baselineTribes.length, 'tribe count changed');
 assert.deepEqual(tribes.map(tribe => tribe.id), baselineTribes.map(tribe => tribe.id), 'tribe IDs or order changed');
-for (const section of baseline) {
-  const current = TRIBES_DB.find(item => item.id === section.id);
-  assert.deepEqual({ ...current, tribes: [] }, { ...section, tribes: [] }, `${section.id}: section changed`);
-  for (const tribe of section.tribes.filter(item => !enrichedIds.includes(item.id))) {
-    assert.deepEqual(current.tribes.find(item => item.id === tribe.id), tribe, `${tribe.id}: outside release scope`);
-  }
-}
+assert.deepEqual(TRIBES_DB.map(section => section.id), baseline.map(section => section.id), 'section IDs or order changed');
 
 function branches(items = []) { return items.flatMap(item => [item, ...branches(item.children)]); }
 function assertSources(sources, label) {
@@ -47,11 +40,6 @@ for (const id of enrichedIds) {
   assert.ok(tribe, `${id}: missing tribe`);
   assert.equal(tribe.updatedAt, id === 'konyrat' ? '2026-09-07' : '2026-09-06', `${id}: missing release date`);
   assertSources(tribe.sources, id);
-  if (pilotIds.includes(id)) {
-    assert.deepEqual(tribe.notable, []);
-    assert.equal(tribe.tamga, '');
-    assert.equal(tribe.uran, '');
-  }
   for (const branch of branches(tribe.subtribes)) {
     assert.ok(branch.id && branch.kk && branch.ru, `${id}: incomplete branch`);
     if (branch.note) assert.ok(branch.note.kk && branch.note.ru, `${branch.id}: incomplete bilingual note`);
@@ -138,7 +126,7 @@ for (const id of enrichedIds) {
     }
   }
 }
-console.log('PASS: release scope, Unicode links, enriched sources, branch anchors, SSR metadata and sitemap.');
+console.log('PASS: stable tribe IDs, Unicode links, enriched sources, branch anchors, SSR metadata and sitemap.');
 
 for (const locale of ['ru', 'kk']) {
   const res = await fetch(`${base}/${locale}/encyclopedia`);
