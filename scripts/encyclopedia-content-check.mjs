@@ -31,7 +31,9 @@ for (const section of sections) {
 for (const tribe of tribes) {
   assert.ok(tribe.desc_kk.length > 30 && tribe.desc_ru.length > 30, `${tribe.id}: missing bilingual summary`);
   assert.ok(tribe.history_kk && tribe.history_ru, `${tribe.id}: missing bilingual history boundary`);
-  assert.ok(!tribe.notable.length || ['dulat', 'janyis', 'argyn', 'naiman', 'aday'].includes(tribe.id), `${tribe.id}: biography outside accepted SEO09 scope`);
+  for (const person of tribe.notable) {
+    assert.ok(person.name?.trim() && person.role_kk?.trim() && person.role_ru?.trim(), `${tribe.id}: incomplete bilingual biography`);
+  }
   const sources = getEncyclopediaSources(tribe.id);
   assert.ok(sources.length > 0, `${tribe.id}: no source`);
   for (const source of sources) {

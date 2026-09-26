@@ -193,17 +193,20 @@ console.log('PASS: desktop transition closes mobile menu; unloaded branches rema
     '@/components/LinkedText': { LinkedText: ({ text }) => React.createElement('p', null, text) },
   });
   const cardDependencies = { react: React, 'next/link': { default: 'a' }, 'next-intl': { useTranslations: () => key => key } };
-  for (const [file, component, props] of [
-    ['TribeCardEnc', 'TribeCardEnc', { tribe: dulat, moreLabel: 'More' }],
-    ['TribeTabs', 'TribeTabs', { tribes: [dulat], labels: {} }],
-    ['EncTabs', 'EncTabs', { zhuzes: [{ ...tribes.TRIBES_DB[0], tribes: [dulat] }], moreLabel: 'More' }],
+  for (const [file, component, getProps] of [
+    ['TribeCardEnc', 'TribeCardEnc', tribe => ({ tribe, moreLabel: 'More' })],
+    ['TribeTabs', 'TribeTabs', tribe => ({ tribes: [tribe], labels: {} })],
+    ['EncTabs', 'EncTabs', tribe => ({ zhuzes: [{ ...tribes.TRIBES_DB[0], tribes: [tribe] }], moreLabel: 'More' })],
   ]) {
     const Component = load(`src/components/encyclopedia/${file}.tsx`, cardDependencies)[component];
-    const markup = renderToStaticMarkup(React.createElement(Component, { ...props, locale: 'ru', zhuzId: 'uly' }));
-    assert(!/class="[^"]*tamga/.test(markup), `${file}: empty symbol tile`);
-    assert(markup.includes('Дулат'), `${file}: tribe name retained`);
+    const renderCard = tribe => renderToStaticMarkup(React.createElement(Component, { ...getProps(tribe), locale: 'ru', zhuzId: 'uly' }));
+    const populated = renderCard(dulat);
+    assert(/class="[^"]*tamga/.test(populated) && populated.includes(dulat.tamga), `${file}: populated symbol retained`);
+    assert(populated.includes('Дулат'), `${file}: tribe name retained`);
+    const empty = renderCard({ ...dulat, tamga: '' });
+    assert(!/class="[^"]*tamga/.test(empty), `${file}: empty symbol tile`);
   }
-  const emptyNotable = tribes.TRIBES_DB.find(zhuz => zhuz.id === 'uly').tribes.find(tribe => tribe.id === 'jalayir');
+  const emptyNotable = tribes.TRIBES_DB.find(zhuz => zhuz.id === 'uly').tribes.find(tribe => tribe.id === 'suan');
   const detailLabels = { tamga: 'Тамга', uran: 'Уран', region: 'Регион', subgroup: 'Подгруппа', notable: 'Известные представители' };
   const dulatDetail = renderToStaticMarkup(React.createElement(TribeDetail, { tribe: dulat, locale: 'ru', zhuzName: 'Старший жуз', zhuzId: 'uly', labels: detailLabels }));
   assert(dulatDetail.includes('Названия ветвей'));
