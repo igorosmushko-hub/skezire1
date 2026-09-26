@@ -7,6 +7,7 @@ import { AiPromoBanner } from '@/components/AiPromoBanner';
 import { AiInlineHint } from '@/components/AiInlineHint';
 import { LinkedText } from '@/components/LinkedText';
 import '@/styles/blog.css';
+import '@/styles/encyclopedia.css';
 
 interface PageProps {
   params: Promise<{ locale: string; slug: string }>;

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { AiPromoBanner } from '@/components/AiPromoBanner';
 import { AiInlineHint } from '@/components/AiInlineHint';
 import '@/styles/glossary.css';
+import '@/styles/encyclopedia.css';
 
 interface Term {
   id: string;

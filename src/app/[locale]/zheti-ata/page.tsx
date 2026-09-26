@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import '@/styles/zheti-ata.css';
+import '@/styles/encyclopedia.css';
 
 export async function generateMetadata({
   params,

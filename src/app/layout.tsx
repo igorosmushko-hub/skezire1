@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { Viewport } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { Cormorant_Garamond, Inter } from 'next/font/google';
 import { getLocale } from 'next-intl/server';
@@ -9,6 +9,10 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
+};
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://skezire.kz'),
 };
 
 const cormorant = Cormorant_Garamond({

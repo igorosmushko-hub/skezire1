@@ -13,6 +13,8 @@ export function LangSwitcher({ locale }: { locale: string }) {
     <div className="lang-switcher">
       <button
         className={`lang-btn ${locale === 'kk' ? 'active' : ''}`}
+        aria-label="Қазақша"
+        aria-pressed={locale === 'kk'}
         onClick={() => switchLocale('kk')}
       >
         KK
@@ -20,6 +22,8 @@ export function LangSwitcher({ locale }: { locale: string }) {
       <span className="lang-sep">/</span>
       <button
         className={`lang-btn ${locale === 'ru' ? 'active' : ''}`}
+        aria-label="Русский"
+        aria-pressed={locale === 'ru'}
         onClick={() => switchLocale('ru')}
       >
         RU
