@@ -23,6 +23,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Main pages
   for (const locale of locales) {
     entries.push({
+      url: `${baseUrl}/${locale}/tribe-quiz`,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    });
+    entries.push({
       url: `${baseUrl}/${locale}`,
       lastModified: DATES.home,
       changeFrequency: 'weekly',

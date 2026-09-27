@@ -19,12 +19,8 @@ interface FamilyRole {
 }
 
 const ROLES: FamilyRole[] = [
-  { key: 'grandfather', kk: 'Ата', ru: 'Дедушка', icon: '\uD83D\uDC74' },
-  { key: 'grandmother', kk: '\u04D8\u0436\u0435', ru: 'Бабушка', icon: '\uD83D\uDC75' },
-  { key: 'father', kk: '\u04D8\u043A\u0435', ru: 'Отец', icon: '\uD83D\uDC68' },
-  { key: 'mother', kk: '\u0410\u043D\u0430', ru: 'Мать', icon: '\uD83D\uDC69' },
-  { key: 'son', kk: '\u04B0\u043B', ru: 'Сын', icon: '\uD83D\uDC66' },
-  { key: 'daughter', kk: '\u049A\u044B\u0437', ru: 'Дочь', icon: '\uD83D\uDC67' },
+  { key: 'person-1', kk: '1-адам', ru: 'Человек 1', icon: '\uD83D\uDC64' },
+  { key: 'person-2', kk: '2-адам', ru: 'Человек 2', icon: '\uD83D\uDC64' },
 ];
 
 interface PhotoSlot {

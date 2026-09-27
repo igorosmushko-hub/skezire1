@@ -7,7 +7,7 @@ import { useAuth } from '@/components/AuthProvider';
 import { LoginModal } from '@/components/LoginModal';
 import '@/styles/order.css';
 import { RobokassaWidget } from '@/components/RobokassaWidget';
-import { orderSubmit, orderPromoAi, orderSelectProduct } from '@/lib/analytics';
+import { orderSubmit, orderPromoAi } from '@/lib/analytics';
 
 interface Product {
   id: string;
@@ -28,6 +28,9 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
   const { user, loading: authLoading } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
 
+  const [productsLoading, setProductsLoading] = useState(true);
+  const [productsError, setProductsError] = useState(false);
+  const [productsAttempt, setProductsAttempt] = useState(0);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<string>('');
   const [recipientName, setRecipientName] = useState('');
@@ -40,18 +43,31 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
   const [paymentData, setPaymentData] = useState<{ url: string; params: Record<string, unknown> } | null>(null);
 
   useEffect(() => {
-    fetch('/api/products')
-      .then((r) => r.json())
-      .then((d) => {
-        setProducts(d.products ?? []);
-        if (d.products?.length) setSelectedProduct(d.products[0].id);
+    if (!imageUrl) return;
+    const controller = new AbortController();
+    setProductsLoading(true);
+    setProductsError(false);
+    setProducts([]);
+    setSelectedProduct('');
+    fetch('/api/products', { signal: controller.signal, cache: 'no-store' })
+      .then(async (response) => {
+        if (!response.ok) throw new Error('Products unavailable');
+        const data = await response.json();
+        if (!Array.isArray(data.products)) throw new Error('Invalid products');
+        if (!controller.signal.aborted) {
+          setProducts(data.products);
+          setSelectedProduct(data.products[0]?.id ?? '');
+        }
       })
-      .catch(() => {});
-  }, []);
+      .catch(() => { if (!controller.signal.aborted) setProductsError(true); })
+      .finally(() => { if (!controller.signal.aborted) setProductsLoading(false); });
+    return () => controller.abort();
+  }, [imageUrl, productsAttempt]);
 
   const selectedProductData = products.find((p) => p.id === selectedProduct);
 
   const handleSubmit = useCallback(async () => {
+    if (!imageUrl || productsLoading || !selectedProductData || authLoading) return;
     orderSubmit();
     if (!user) {
       setShowLogin(true);
@@ -96,7 +112,7 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
       setError(t('errorCreate'));
       setSubmitting(false);
     }
-  }, [user, selectedProduct, recipientName, recipientPhone, city, address, postalCode, imageUrl, aiType, locale, t]);
+  }, [user, productsLoading, selectedProductData, authLoading, selectedProduct, recipientName, recipientPhone, city, address, postalCode, imageUrl, aiType, locale, t]);
 
   const hasImage = !!imageUrl;
 
@@ -136,7 +152,7 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
             </div>
           )}
 
-          <div className="order-layout">
+          {hasImage && <div className="order-layout">
             {/* Preview */}
             <div className="order-preview">
               <h3>{t('preview')}</h3>
@@ -154,6 +170,16 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
             <div className="order-form">
               {/* Product selection */}
               <h3>{t('selectProduct')}</h3>
+              {(productsLoading || productsError || products.length === 0) && (
+                <div role="status" aria-live="polite">
+                  <p>{t(productsLoading ? 'productsLoading' : productsError ? 'productsError' : 'productsEmpty')}</p>
+                  {!productsLoading && (
+                    <button type="button" className="btn btn-ai" onClick={() => setProductsAttempt((value) => value + 1)}>
+                      {t('productsRetry')}
+                    </button>
+                  )}
+                </div>
+              )}
               <div className="order-products">
                 {products.map((p) => (
                   <label
@@ -178,8 +204,9 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
               <h3>{t('deliveryTitle')}</h3>
               <div className="order-fields">
                 <div className="order-field">
-                  <label>{t('recipientName')} *</label>
+                  <label htmlFor="order-recipient-name">{t('recipientName')} *</label>
                   <input
+                    id="order-recipient-name"
                     type="text"
                     value={recipientName}
                     onChange={(e) => setRecipientName(e.target.value)}
@@ -187,8 +214,9 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
                   />
                 </div>
                 <div className="order-field">
-                  <label>{t('recipientPhone')} *</label>
+                  <label htmlFor="order-recipient-phone">{t('recipientPhone')} *</label>
                   <input
+                    id="order-recipient-phone"
                     type="tel"
                     value={recipientPhone}
                     onChange={(e) => setRecipientPhone(e.target.value)}
@@ -196,8 +224,9 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
                   />
                 </div>
                 <div className="order-field">
-                  <label>{t('city')} *</label>
+                  <label htmlFor="order-city">{t('city')} *</label>
                   <input
+                    id="order-city"
                     type="text"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
@@ -205,8 +234,9 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
                   />
                 </div>
                 <div className="order-field">
-                  <label>{t('address')} *</label>
+                  <label htmlFor="order-address">{t('address')} *</label>
                   <input
+                    id="order-address"
                     type="text"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
@@ -214,8 +244,9 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
                   />
                 </div>
                 <div className="order-field">
-                  <label>{t('postalCode')}</label>
+                  <label htmlFor="order-postal-code">{t('postalCode')}</label>
                   <input
+                    id="order-postal-code"
                     type="text"
                     value={postalCode}
                     onChange={(e) => setPostalCode(e.target.value)}
@@ -245,12 +276,12 @@ export function OrderCanvasClient({ locale }: { locale: string }) {
               <button
                 className="btn btn-ai order-submit"
                 onClick={handleSubmit}
-                disabled={submitting}
+                disabled={submitting || !hasImage || productsLoading || !selectedProductData || authLoading}
               >
                 {submitting ? t('processing') : t('pay')}
               </button>
             </div>
-          </div>
+          </div>}
         </div>
       </main>
     </>

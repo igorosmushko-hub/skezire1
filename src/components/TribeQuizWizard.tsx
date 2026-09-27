@@ -168,7 +168,7 @@ export function TribeQuizWizard({ locale }: { locale: string }) {
     return (
       <div className="quiz-card quiz-intro">
         <div className="quiz-intro-icon">&#127961;</div>
-        <h1>{isKk ? 'Өз руыңызды табыңыз' : 'Узнайте свой род'}</h1>
+        <h2>{isKk ? 'Өз руыңызды табыңыз' : 'Узнайте свой род'}</h2>
         <p>
           {isKk
             ? `${QUIZ_QUESTIONS.length} сұраққа жауап беріңіз — біз сіздің шыққан тегіңіз туралы болжам жасаймыз. Бәрін білу міндетті емес, «білмеймін» деп өткізе беруге болады.`

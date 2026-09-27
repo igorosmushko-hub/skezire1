@@ -1,7 +1,7 @@
 /* ── Legal pages: oferta, privacy, delivery, refund, contacts ── */
 
 .legal-main {
-  padding: 2rem 0 4rem;
+  padding: calc(64px + 2rem) 0 4rem;
   min-height: 60vh;
 }
 
@@ -113,7 +113,7 @@
 
 @media (max-width: 640px) {
   .legal-main {
-    padding: 1.5rem 0 3rem;
+    padding: calc(64px + 1.5rem) 0 3rem;
   }
 
   .legal-main h1 {

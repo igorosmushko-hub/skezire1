@@ -684,7 +684,7 @@ export function InteractiveTree({
         <nav className="tt-sheet-branches" aria-label={isKk ? 'Шежіре тармақтары' : 'Ветви шежіре'}>
           <h4>{isKk ? 'Тармақтар' : 'Ветви'}</h4>
           {loadingIds.has(selected.id) && <p role="status">{isKk ? 'Жүктелуде…' : 'Загрузка…'}</p>}
-          {!selected.hasChildren && !selected.children?.length && <p>{isKk ? 'Бұл тармақта жалғасы жоқ.' : 'У этой ветви нет продолжения.'}</p>}
+          {!selected.hasChildren && !selected.children?.length && <p>{isKk ? 'Бұл тармақтың жалғасы әзірге қосылмаған.' : 'Продолжение этой ветви пока не добавлено.'}</p>}
           {selected.children?.map((child) => <button type="button" className="tt-detail-link" key={child.id} onClick={() => {
             sheetRef.current?.close();
             selectNode(child);

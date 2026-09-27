@@ -188,6 +188,21 @@
   max-width: 720px;
 }
 
+.enc-directory { padding: 36px 0 48px; background: var(--surface-secondary); }
+.enc-directory h2 { font-size: 1.4rem; margin-bottom: 20px; }
+.enc-directory-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+.enc-directory-group h3 { font-size: 1rem; margin-bottom: 12px; }
+.enc-directory-group ul { display: grid; gap: 5px; }
+.enc-directory-group a { color: var(--text); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; }
+.enc-directory-group a:hover, .enc-directory-group a:focus-visible { text-decoration-color: currentColor; }
+
+@media (max-width: 768px) {
+  .enc-directory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) {
+  .enc-directory-grid { grid-template-columns: 1fr; }
+}
+
 /* ── Tribe grid inside tabs ────────────────────────────────────── */
 .enc-tribe-grid {
   display: grid;
@@ -611,7 +626,7 @@
    ================================================================ */
 @media (max-width: 768px) {
   .enc-hero { min-height: 22vh; padding: calc(68px + env(safe-area-inset-top, 0px)) 16px 32px; }
-  .enc-hero--compact { min-height: 14vh; padding: calc(64px + env(safe-area-inset-top, 0px)) 16px 24px; }
+  .enc-hero--compact { min-height: 14vh; padding: calc(80px + env(safe-area-inset-top, 0px)) 16px 24px; }
   .enc-hero--hub { padding: calc(68px + env(safe-area-inset-top, 0px)) 16px 40px; }
   .enc-hero-title { font-size: clamp(1.5rem, 7vw, 2.2rem); }
 
@@ -667,8 +682,8 @@
   .tribe-tabs-content { padding: 14px 12px; }
   .enc-tribes-grid { gap: 12px; }
 
-  .enc-hero { padding: calc(64px + env(safe-area-inset-top, 0px)) 12px 28px; }
-  .enc-hero--compact { padding: calc(60px + env(safe-area-inset-top, 0px)) 12px 20px; }
+  .enc-hero { padding: calc(80px + env(safe-area-inset-top, 0px)) 12px 28px; }
+  .enc-hero--compact { padding: calc(80px + env(safe-area-inset-top, 0px)) 12px 20px; }
   .enc-hero-sub { font-size: .82rem; }
 
   .enc-pager a { font-size: .75rem; padding: 3px 8px; }

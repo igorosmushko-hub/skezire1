@@ -23,7 +23,9 @@ export function EncTabs({ zhuzes, locale, moreLabel }: EncTabsProps) {
           {zhuzes.map((z, i) => (
             <button
               key={z.id}
+              type="button"
               className={`enc-tab${i === activeIdx ? ' enc-tab--active' : ''}`}
+              aria-pressed={i === activeIdx}
               onClick={() => setActiveIdx(i)}
             >
               {isKk ? z.kk : z.ru}

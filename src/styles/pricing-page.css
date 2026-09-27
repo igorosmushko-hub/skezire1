@@ -1,7 +1,7 @@
 /* ── Pricing page (full page, not modal) ── */
 
 .pricing-page {
-  padding: 3rem 0 5rem;
+  padding: calc(64px + 3rem) 0 5rem;
   min-height: 60vh;
 }
 
@@ -118,7 +118,7 @@
 .pricing-page-loading {
   text-align: center;
   padding: 3rem;
-  color: var(--muted, #6b7280);
+  color: var(--text, #1D1D1F);
 }
 
 @media (max-width: 768px) {

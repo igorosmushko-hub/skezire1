@@ -106,7 +106,7 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: isKk ? 'Басты бет' : 'Главная', item: `${BASE_URL}/${locale}` },
-      { '@type': 'ListItem', position: 2, name: isKk ? 'Рулар ағашы' : 'Дерево родов', item: pageUrl },
+      { '@type': 'ListItem', position: 2, name: isKk ? 'Рулар картасы' : 'Карта родов', item: pageUrl },
     ],
   };
   const genealogyJsonLd = genealogy ? {
@@ -151,7 +151,7 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
           <nav aria-label={isKk ? 'Навигация жолы' : 'Хлебные крошки'}>
             <Link href={`/${locale}`}>{isKk ? 'Басты бет' : 'Главная'}</Link>
             <span aria-hidden="true">/</span>
-            <span>{isKk ? 'Рулар ағашы' : 'Дерево родов'}</span>
+            <span>{isKk ? 'Рулар картасы' : 'Карта родов'}</span>
           </nav>
           <span className="tt-hero-kicker">{isKk ? 'ҚАЗАҚ ШЕЖІРЕСІ' : 'КАЗАХСКАЯ ШЕЖІРЕ'}</span>
           <h1>{isKk ? 'Қазақ руларының генеалогиялық картасы' : 'Генеалогическая карта казахских родов'}</h1>

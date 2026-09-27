@@ -15,7 +15,7 @@
   --white:      #FFFFFF;
   --off-white:  #FAFAFA;
   --text:       #1D1D1F;
-  --muted:      #86868B;
+  --muted:      #62626B;
   --border:     rgba(0,0,0,.08);
 
   /* Surfaces */
@@ -52,6 +52,21 @@
   --shadow-lg:   0 12px 40px rgba(0,0,0,.10);
   --shadow-xl:   0 24px 64px rgba(0,0,0,.14);
   --shadow-gold: 0 4px 20px rgba(212,168,67,.25);
+}
+
+.nav-links a[aria-current="page"],
+.mobile-menu-link[aria-current="page"] {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--blue-light);
+  outline-offset: 3px;
+}
+
+#form-section, #quiz-start {
+  scroll-margin-top: 80px;
 }
 
 /* ── Reset ────────────────────────────────────────────────────── */
@@ -280,6 +295,7 @@ button { cursor: pointer; font-family: inherit; }
 /* orn-line removed — replaced by .section-overline */
 
 .section-desc { text-align: center; color: var(--muted); margin-top: -32px; margin-bottom: 48px; }
+.form-requirement-note { text-align: center; color: var(--muted); margin: -36px auto 32px; max-width: 640px; font-size: .88rem; }
 .section-desc.dim { color: rgba(255,255,255,.5); }
 
 /* Ornament divider between sections */

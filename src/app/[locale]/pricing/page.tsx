@@ -68,13 +68,6 @@ export default async function PricingPage({
       description: isKk
         ? 'AI фото трансформация: экшн-фигурка, Гибли стилі, ата-баба фотосы, питомецті адамға айналдыру'
         : 'AI фото трансформация: экшн-фигурка, стиль Гибли, фото предка, питомец в человека',
-      offers: {
-        '@type': 'AggregateOffer',
-        priceCurrency: 'KZT',
-        lowPrice: '0',
-        offerCount: '3',
-        availability: 'https://schema.org/InStock',
-      },
     },
     {
       '@context': 'https://schema.org',

@@ -188,6 +188,9 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
           <h2>{t('h2')}</h2>
         </div>
         <p className="section-desc">{t('desc')}</p>
+        <p className="form-requirement-note">{isKk
+          ? 'Нәтижеге AI өңдеген фотосурет кіреді, сондықтан фото жүктеу қажет.'
+          : 'В результат входит фото с AI-обработкой, поэтому для создания потребуется загрузить фото.'}</p>
 
         <form className="family-form" noValidate onSubmit={handleSubmit}>
           {/* ── Step indicators ── */}
@@ -261,7 +264,7 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
 
           {/* ── Photo upload + gender ── */}
           <div className="form-photo-section">
-            <label className="form-photo-label">
+            <label className="form-photo-label" htmlFor="form-photo-input">
               {isKk ? 'Сіздің фотоңыз' : 'Ваше фото'}
               <span className="form-photo-required">*</span>
             </label>
@@ -286,7 +289,11 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
             ) : (
               <div
                 className={`form-photo-drop${photoDragOver ? ' dragover' : ''}`}
+                role="button"
+                tabIndex={0}
+                aria-label={isKk ? 'Фото жүктеу' : 'Загрузить фото'}
                 onClick={() => photoInputRef.current?.click()}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); photoInputRef.current?.click(); } }}
                 onDrop={handlePhotoDrop}
                 onDragOver={(e) => { e.preventDefault(); setPhotoDragOver(true); }}
                 onDragLeave={() => setPhotoDragOver(false)}
@@ -300,6 +307,7 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
             )}
 
             <input
+              id="form-photo-input"
               ref={photoInputRef}
               type="file"
               accept="image/jpeg,image/png,image/webp"
@@ -389,7 +397,7 @@ export function FormSection({ locale, onSubmit }: FormSectionProps) {
           <div className="ancestors-grid" id="ancestors-grid">
             {defs.map((def, i) => (
               <div key={i} className={`anc-field ${focusedAnc === i ? 'anc-focused' : ''}`}>
-                <span className="anc-label">{def.label}</span>
+                <label className="anc-label" htmlFor={`anc-${i}`}>{def.label}</label>
                 <div className="anc-input-wrap">
                   <span className="anc-badge">{def.kaz}</span>
                   <input

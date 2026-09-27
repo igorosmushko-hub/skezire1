@@ -4,6 +4,7 @@ import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { BLOG_POSTS } from '@/data/blog';
 import { AiPromoBanner } from '@/components/AiPromoBanner';
 import '@/styles/blog.css';
+import '@/styles/encyclopedia.css';
 
 export async function generateMetadata({
   params,

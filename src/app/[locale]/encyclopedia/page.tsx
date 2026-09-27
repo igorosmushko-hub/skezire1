@@ -91,8 +91,8 @@ export default async function EncyclopediaPage({
     },
   };
 
-  // Filter to main 3 zhuzes for tabs (exclude "other")
-  const mainZhuzes = TRIBES_DB.filter((z) => z.id !== 'other');
+  // Include the fourth catalog group so every indexed tribe is reachable from the hub.
+  const mainZhuzes = TRIBES_DB;
 
   return (
     <>
@@ -113,6 +113,26 @@ export default async function EncyclopediaPage({
         locale={locale}
         moreLabel={t('openZhuz')}
       />
+
+      <section className="enc-directory" aria-labelledby="enc-directory-title">
+        <div className="container">
+          <h2 id="enc-directory-title">{isKk ? 'Барлық рулар' : 'Все роды'}</h2>
+          <div className="enc-directory-grid">
+            {TRIBES_DB.map((zhuz) => (
+              <div key={zhuz.id} className="enc-directory-group">
+                <h3><a href={`/${locale}/encyclopedia/${zhuz.id}`}>{isKk ? zhuz.kk : zhuz.ru}</a></h3>
+                <ul>
+                  {zhuz.tribes.map((tribe) => (
+                    <li key={tribe.id}>
+                      <a href={`/${locale}/encyclopedia/${zhuz.id}/${tribe.id}`}>{isKk ? tribe.kk : tribe.ru}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Related sections */}
       <section className="enc-related">
