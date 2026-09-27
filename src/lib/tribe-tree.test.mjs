@@ -235,11 +235,12 @@ test('keeps nested branch paths, notes and encyclopedia anchors in the reference
 });
 
 test('marks legacy branch lists as non-biological when no editorial note is available', () => {
-  const tribe = TRIBES_DB.flatMap((zhuz) => zhuz.tribes)
-    .find((item) => item.subtribes?.length && !item.branchNote);
-  assert.ok(tribe);
-
-  const tree = buildTribeTree('ru', TRIBES_DB);
+  // The catalogue may become fully annotated; exercise the legacy fallback explicitly.
+  const fixture = structuredClone(TRIBES_DB);
+  const tribe = fixture.flatMap((zhuz) => zhuz.tribes).find(item => item.subtribes?.length);
+  delete tribe.branchNote;
+  delete tribe.subtribes[0].note;
+  const tree = buildTribeTree('ru', fixture);
   const branch = findTreePath(tree, `subtribe:${tribe.subtribes[0].id}`).at(-1);
   assert.match(branch?.summary ?? '', /не подтверждает биологическое родство/);
 });

@@ -18,6 +18,8 @@ function load(source) {
 }
 const baseline = load(execFileSync('git', ['show', 'fd29cf3:src/data/tribes.ts'], { encoding: 'utf8' })).TRIBES_DB;
 const { TRIBES_DB } = load(readFileSync('src/data/tribes.ts', 'utf8'));
+const expansion = JSON.parse(readFileSync('docs/research/2026-09-27-reference-expansion.json', 'utf8'));
+const expandedTribes = new Set(expansion.tribes.filter(tribe => tribe.additions.length).map(tribe => tribe.id));
 const enrichedIds = TRIBES_DB.flatMap(section => section.tribes).filter(tribe => tribe.sources?.length).map(tribe => tribe.id);
 const tribes = TRIBES_DB.flatMap(section => section.tribes);
 const baselineTribes = baseline.flatMap(section => section.tribes);
@@ -38,7 +40,7 @@ function assertSources(sources, label) {
 for (const id of enrichedIds) {
   const tribe = tribes.find(item => item.id === id);
   assert.ok(tribe, `${id}: missing tribe`);
-  assert.equal(tribe.updatedAt, id === 'konyrat' ? '2026-09-07' : '2026-09-06', `${id}: missing release date`);
+  assert.equal(tribe.updatedAt, expandedTribes.has(id) ? expansion.reviewedAt : id === 'konyrat' ? '2026-09-07' : '2026-09-06', `${id}: missing release date`);
   assertSources(tribe.sources, id);
   for (const branch of branches(tribe.subtribes)) {
     assert.ok(branch.id && branch.kk && branch.ru, `${id}: incomplete branch`);
