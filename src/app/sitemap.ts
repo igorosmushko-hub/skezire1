@@ -8,9 +8,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Meaningful dates per section (updated when content actually changes)
   const DATES = {
-    home: new Date('2026-03-30'),
+    home: new Date('2026-10-29'),
     ai: new Date('2026-03-30'),
-    encyclopedia: new Date('2026-03-01'),
+    encyclopedia: new Date('2026-10-29'),
     glossary: new Date('2026-02-28'),
     zhetiAta: new Date('2026-02-28'),
     leaderboard: new Date('2026-03-30'),
