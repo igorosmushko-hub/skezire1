@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { InteractiveTree } from '@/components/tribe-tree/InteractiveTree';
+import { HashFocusRedirect } from '@/components/tribe-tree/HashFocusRedirect';
 import { TRIBES_DB } from '@/data/tribes';
 import type { SubTribe } from '@/lib/types';
 import { buildTribeTree } from '@/lib/tribe-tree-page';
@@ -142,6 +143,7 @@ export default async function ShezhireTreePage({ params, searchParams }: PagePro
 
   return (
     <main className="tt-page">
+      <HashFocusRedirect />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: stringifyJsonLd(breadcrumbJsonLd) }} />
       {genealogyJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: stringifyJsonLd(genealogyJsonLd) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: stringifyJsonLd(directoryJsonLd) }} />

@@ -67,7 +67,7 @@ export function TribeDetail({ tribe, locale, zhuzName, zhuzId, labels }: TribeDe
         const showOwnNote = Boolean(ownNote) && !introNotes.includes(ownNote as string);
         return (
         <li key={branch.id} id={`branch-${branch.id}`}>
-          <Link className="tribe-subtribe-tag" href={`/${locale}/shezhire-tree?view=reference&highlight=${encodeURIComponent(`subtribe:${branch.id}`)}`}>
+          <Link className="tribe-subtribe-tag" href={`/${locale}/shezhire-tree?view=reference#${encodeURIComponent(`subtribe:${branch.id}`)}`}>
             {isKk ? branch.kk : branch.ru}
           </Link>
           {showOwnNote && <p className="tribe-card-desc">{ownNote}</p>}
@@ -121,7 +121,7 @@ export function TribeDetail({ tribe, locale, zhuzName, zhuzId, labels }: TribeDe
         <LinkedText text={desc} locale={locale} className="tribe-card-desc" selfPath={`/encyclopedia/${zhuzId}/${tribe.id}`} />
         {tribe.sources && tribe.sources.length > 0 && (
           <p className="tribe-card-desc" style={{ marginTop: 16 }}>
-            <TreeMapLink locale={locale} targetKind="tribe" href={`/${locale}/shezhire-tree?view=reference&highlight=${encodeURIComponent(`tribe:${tribe.id}`)}`} className="btn btn-primary" style={{ minHeight: 48, whiteSpace: 'normal', textAlign: 'center' }}>
+            <TreeMapLink locale={locale} targetKind="tribe" href={`/${locale}/shezhire-tree?view=reference#${encodeURIComponent(`tribe:${tribe.id}`)}`} className="btn btn-primary" style={{ minHeight: 48, whiteSpace: 'normal', textAlign: 'center' }}>
               {isKk ? 'Рулар картасынан көру' : 'Посмотреть на карте родов'}
             </TreeMapLink>
           </p>

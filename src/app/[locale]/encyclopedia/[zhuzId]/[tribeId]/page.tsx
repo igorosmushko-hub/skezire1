@@ -266,7 +266,7 @@ export default async function TribePage({ params }: PageProps) {
           {isKk ? 'Пайдалы сілтемелер' : 'Полезные ссылки'}
         </h3>
         <ul style={{ lineHeight: 1.8, paddingLeft: 20, color: '#444' }}>
-          <li><TreeMapLink href={`/${locale}/shezhire-tree?highlight=${tribeId}`} locale={locale} targetKind="tribe" style={{ color: '#003082' }}>{isKk ? 'Картадан көру' : 'Посмотреть на карте'}</TreeMapLink></li>
+          <li><TreeMapLink href={`/${locale}/shezhire-tree#tribe:${tribeId}`} locale={locale} targetKind="tribe" style={{ color: '#003082' }}>{isKk ? 'Картадан көру' : 'Посмотреть на карте'}</TreeMapLink></li>
           <li><Link href={`/${locale}/glossary`} style={{ color: '#003082' }}>{isKk ? 'Глоссарий — шежіре терминдері' : 'Глоссарий — термины шежіре'}</Link></li>
           <li><Link href={`/${locale}/blog/how-to-find-your-tribe`} style={{ color: '#003082' }}>{isKk ? 'Руыңды қалай білуге болады?' : 'Как узнать свой род?'}</Link></li>
           <li><Link href={`/${locale}/blog/zheti-ata-seven-ancestors`} style={{ color: '#003082' }}>{isKk ? 'Жеті ата — 7 буын дәстүрі' : 'Жеті ата — традиция 7 поколений'}</Link></li>
