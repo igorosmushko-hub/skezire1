@@ -17,7 +17,7 @@ export function Hero() {
       <div className="hero-content">
         <div className="hero-badge">{t('badge')}</div>
         <h1 className="hero-title">
-          <span className="title-kaz">Шежіре</span>
+          <span className="title-kaz">Шежіре</span>{' '}
           <span className="title-sub">{t('sub')}</span>
         </h1>
         <p className="hero-desc">{t('desc')}</p>
