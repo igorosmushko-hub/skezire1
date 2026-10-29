@@ -55,8 +55,8 @@ export function TribeDetail({ tribe, locale, zhuzName, zhuzId, labels }: TribeDe
     }
   };
   countNotes(subtribes ?? []);
-  const sharedNote = [...noteCounts.entries()].find(([, count]) => count > 1)?.[0];
-  const introNotes = [branchNote?.[noteLang], sharedNote].filter(
+  const sharedNotes = [...noteCounts.entries()].filter(([, count]) => count > 1).map(([text]) => text);
+  const introNotes = [branchNote?.[noteLang], ...sharedNotes].filter(
     (text, index, all): text is string => Boolean(text) && all.indexOf(text) === index,
   );
 
