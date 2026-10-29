@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { TRIBES_DB } from '@/data/tribes';
+import { hubDescription, hubTitle } from '@/lib/encyclopedia-seo';
 import { EncTabs } from '@/components/encyclopedia/EncTabs';
 import { AiPromoBanner } from '@/components/AiPromoBanner';
 import '@/styles/encyclopedia.css';
@@ -15,30 +16,27 @@ export async function generateMetadata({
   const base = 'https://skezire.kz';
   const url = `${base}/${locale}/encyclopedia`;
   const ogImage = `${base}/${locale}/opengraph-image`;
+  const tribeCount = TRIBES_DB.reduce((sum, zhuz) => sum + zhuz.tribes.length, 0);
+  const title = hubTitle(tribeCount, isKk);
+  const description = hubDescription(tribeCount, isKk);
 
   return {
-    title: isKk
-      ? 'Қазақ рулары энциклопедиясы | Шежіре'
-      : 'Энциклопедия казахских родов | Шежіре',
-    description: isKk
-      ? 'Төрт бөлімдегі қазақ руларының 47 карточкасы. Тармақ атаулары, шежіре нұсқалары, дереккөздер және интерактивті картаға сілтемелер.'
-      : '47 карточек казахских родов в четырёх разделах. Названия ветвей, версии шежіре, источники и переходы на интерактивную карту.',
+    title,
+    description,
     keywords: isKk
       ? 'қазақ рулары, энциклопедия, жүз, ру, тармақтар, дереккөздер, шежіре, Ұлы жүз, Орта жүз, Кіші жүз'
       : 'казахские роды, энциклопедия, жуз, род, ветви, источники, шежіре, Старший жуз, Средний жуз, Младший жуз',
     openGraph: {
       type: 'website',
-      title: isKk ? 'Қазақ рулары энциклопедиясы | Шежіре' : 'Энциклопедия казахских родов | Шежіре',
-      description: isKk
-        ? 'Төрт бөлімдегі қазақ руларының 47 карточкасы. Тармақ атаулары, шежіре нұсқалары, дереккөздер және интерактивті картаға сілтемелер.'
-        : '47 карточек казахских родов в четырёх разделах. Названия ветвей, версии шежіре, источники и переходы на интерактивную карту.',
+      title,
+      description,
       url,
       siteName: 'Шежіре',
       images: [{ url: ogImage, width: 1200, height: 630, alt: 'Шежіре — Энциклопедия казахских родов' }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: isKk ? 'Қазақ рулары энциклопедиясы | Шежіре' : 'Энциклопедия казахских родов | Шежіре',
+      title,
       images: [ogImage],
     },
     alternates: {

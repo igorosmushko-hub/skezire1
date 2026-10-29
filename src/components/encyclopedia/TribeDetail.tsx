@@ -2,6 +2,7 @@ import type { Tribe, SubTribe } from '@/lib/types';
 import Link from 'next/link';
 import { TreeMapLink } from './TreeMapLink';
 import { LinkedText } from '@/components/LinkedText';
+import { tribeHeading } from '@/lib/encyclopedia-seo';
 
 interface TribeDetailTranslations {
   tamga: string;
@@ -62,7 +63,7 @@ export function TribeDetail({ tribe, locale, zhuzName, zhuzId, labels }: TribeDe
       <div className="tribe-card-hero">
         {tribe.tamga && <div className="tribe-card-tamga-icon">{tribe.tamga}</div>}
         <div className="tribe-card-hero-text">
-          <h1 className="tribe-card-name">{name}</h1>
+          <h1 className="tribe-card-name">{tribeHeading(name, zhuzId, isKk)}</h1>
           {tribe.uran && (
             <p className="tribe-card-uran">&ldquo;{tribe.uran}&rdquo;</p>
           )}

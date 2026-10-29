@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { TRIBES_DB } from '@/data/tribes';
 import { getEncyclopediaSources } from '@/data/encyclopedia-sources';
+import { cardDescription, tribeTitle } from '@/lib/encyclopedia-seo';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { TreeMapLink } from '@/components/encyclopedia/TreeMapLink';
 import { TribeDetail } from '@/components/encyclopedia/TribeDetail';
@@ -29,10 +30,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const base = 'https://skezire.kz';
   const url = `${base}/${locale}/encyclopedia/${zhuzId}/${tribeId}`;
   const ogImage = `${base}/${locale}/opengraph-image`;
+  const title = tribeTitle(tribeName, zhuzName, zhuzId, isKk);
+  const description = isKk
+    ? cardDescription(tribe.desc_kk, tribe.history_kk)
+    : cardDescription(tribe.desc_ru, tribe.history_ru);
 
   return {
-    title: `${tribeName} — ${zhuzName} | Шежіре`,
-    description: isKk ? tribe.desc_kk : tribe.desc_ru,
+    title,
+    description,
     keywords: tribe.sources?.length
       ? (isKk ? `${tribeName}, ${zhuzName}, ру тармақтары, шежіре, дереккөздер` : `${tribeName}, ${zhuzName}, подразделения рода, шежіре, источники`)
       : isKk
@@ -40,15 +45,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       : `${tribeName}, ${zhuzName}, тамга, уран, шежіре, казахский род`,
     openGraph: {
       type: 'website',
-      title: `${tribeName} — ${zhuzName} | Шежіре`,
-      description: isKk ? tribe.desc_kk : tribe.desc_ru,
+      title,
+      description,
       url,
       siteName: 'Шежіре',
       images: [{ url: ogImage, width: 1200, height: 630, alt: tribeName }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${tribeName} | Шежіре`,
+      title,
       images: [ogImage],
     },
     alternates: {

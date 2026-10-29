@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { TRIBES_DB } from '@/data/tribes';
 import { getEncyclopediaSources } from '@/data/encyclopedia-sources';
+import { trimDescription, zhuzTitle } from '@/lib/encyclopedia-seo';
 import { ZhuzSection } from '@/components/encyclopedia/ZhuzSection';
 import { Breadcrumb } from '@/components/encyclopedia/Breadcrumb';
 import { Pager } from '@/components/encyclopedia/Pager';
@@ -25,28 +26,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const base = 'https://skezire.kz';
   const url = `${base}/${locale}/encyclopedia/${zhuzId}`;
   const ogImage = `${base}/${locale}/opengraph-image`;
+  const title = zhuzTitle(zhuz, zhuz.tribes.length, isKk);
+  const description = trimDescription(isKk ? zhuz.desc_kk : zhuz.desc_ru);
 
   return {
-    title: isKk
-      ? `${name} — ${zhuz.tribes.length} ру | Шежіре Энциклопедия`
-      : `${name} — ${zhuz.tribes.length} родов | Шежіре Энциклопедия`,
-    description: isKk ? zhuz.desc_kk : zhuz.desc_ru,
+    title,
+    description,
     keywords: isKk
       ? `${name}, рулары, шежіре, тамға, ұран, қазақ рулары энциклопедия`
       : `${name}, роды, шежіре, тамга, уран, энциклопедия казахских родов`,
     openGraph: {
       type: 'website',
-      title: isKk
-        ? `${name} — ${zhuz.tribes.length} ру | Шежіре`
-        : `${name} — ${zhuz.tribes.length} родов | Шежіре`,
-      description: isKk ? zhuz.desc_kk : zhuz.desc_ru,
+      title,
+      description,
       url,
       siteName: 'Шежіре',
       images: [{ url: ogImage, width: 1200, height: 630, alt: name }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: isKk ? `${name} | Шежіре` : `${name} | Шежіре`,
+      title,
       images: [ogImage],
     },
     alternates: {
