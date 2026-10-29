@@ -43,17 +43,38 @@ export function TribeDetail({ tribe, locale, zhuzName, zhuzId, labels }: TribeDe
   const name = isKk ? tribe.kk : tribe.ru;
   const branchNote = tribe.branchNote ?? BRANCH_NOTES[tribe.id];
 
+  // A note repeated on several branches (a shared source / disclaimer line) is shown
+  // once above the list; a branch keeps its own note only when it differs.
+  const noteLang = isKk ? 'kk' : 'ru';
+  const noteCounts = new Map<string, number>();
+  const countNotes = (branches: SubTribe[]) => {
+    for (const branch of branches) {
+      const text = branch.note?.[noteLang];
+      if (text) noteCounts.set(text, (noteCounts.get(text) ?? 0) + 1);
+      if (branch.children?.length) countNotes(branch.children);
+    }
+  };
+  countNotes(subtribes ?? []);
+  const sharedNote = [...noteCounts.entries()].find(([, count]) => count > 1)?.[0];
+  const introNotes = [branchNote?.[noteLang], sharedNote].filter(
+    (text, index, all): text is string => Boolean(text) && all.indexOf(text) === index,
+  );
+
   const renderBranches = (branches: SubTribe[]) => (
     <ul className="tribe-branch-list">
-      {branches.map((branch) => (
+      {branches.map((branch) => {
+        const ownNote = branch.note?.[noteLang];
+        const showOwnNote = Boolean(ownNote) && !introNotes.includes(ownNote as string);
+        return (
         <li key={branch.id} id={`branch-${branch.id}`}>
           <Link className="tribe-subtribe-tag" href={`/${locale}/shezhire-tree?view=reference&highlight=${encodeURIComponent(`subtribe:${branch.id}`)}`}>
             {isKk ? branch.kk : branch.ru}
           </Link>
-          {branch.note && <p className="tribe-card-desc">{branch.note[isKk ? 'kk' : 'ru']}</p>}
+          {showOwnNote && <p className="tribe-card-desc">{ownNote}</p>}
           {branch.children?.length ? renderBranches(branch.children) : null}
         </li>
-      ))}
+        );
+      })}
     </ul>
   );
 
@@ -119,7 +140,9 @@ export function TribeDetail({ tribe, locale, zhuzName, zhuzId, labels }: TribeDe
       {subtribes && subtribes.length > 0 && (
         <div className="tribe-card-section">
           <h2 className="tribe-card-section-title">{tribe.branchTitle?.[isKk ? 'kk' : 'ru'] ?? (isKk ? 'Тармақ атаулары' : 'Названия ветвей')}</h2>
-          {branchNote && <p className="tribe-card-desc" style={{ marginBottom: 16 }}>{branchNote[isKk ? 'kk' : 'ru']}</p>}
+          {introNotes.map((text) => (
+            <p key={text} className="tribe-card-desc" style={{ marginBottom: 16 }}>{text}</p>
+          ))}
           {renderBranches(subtribes)}
         </div>
       )}
