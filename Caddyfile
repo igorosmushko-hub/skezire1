@@ -1,3 +1,7 @@
-skezire.kz, www.skezire.kz {
+skezire.kz {
     reverse_proxy web:3000
+}
+
+www.skezire.kz {
+    redir https://skezire.kz{uri} permanent
 }
