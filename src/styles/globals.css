@@ -2474,3 +2474,62 @@ a.tribe-meta-val:hover { text-decoration: underline; }
   .fp-cta-img { width: 110px; }
   .fp-cta-btn { width: 100%; justify-content: center; }
 }
+
+/* ── Home: links to the main tribe cards ───────────────────────── */
+.home-tribes { padding: 56px 0; background: #F5F0E8; }
+.home-tribes h2 {
+  font-family: var(--ff-display);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  color: #003082;
+  text-align: center;
+  margin-bottom: 28px;
+}
+.home-tribes-groups { display: grid; gap: 24px; }
+.home-tribes-group h3 {
+  font-size: .85rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #9B7D2E;
+  margin-bottom: 10px;
+}
+.home-tribes-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+.home-tribes-grid a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 10px 14px;
+  background: #FFFFFF;
+  border: 1px solid #C8A84B;
+  border-radius: 10px;
+  color: #003082;
+  font-weight: 500;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.home-tribes-grid a:hover,
+.home-tribes-grid a:focus-visible { background: #003082; color: #FFFFFF; }
+.home-tribes-all { margin-top: 28px; text-align: center; }
+.home-tribes-all a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 10px 28px;
+  border-radius: 999px;
+  background: #003082;
+  color: #FFFFFF;
+  font-weight: 600;
+  text-decoration: none;
+}
+.home-tribes-all a:hover,
+.home-tribes-all a:focus-visible { background: #C8A84B; color: #003082; }
+@media (max-width: 640px) {
+  .home-tribes { padding: 40px 0; }
+  .home-tribes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
